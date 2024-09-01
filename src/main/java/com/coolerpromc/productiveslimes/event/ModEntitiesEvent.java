@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.entity.slime.DirtSlime;
 import com.coolerpromc.productiveslimes.entity.slime.GoldSlime;
 import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 public class ModEntitiesEvent {
     @SubscribeEvent
     public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+        event.put(ModEntities.DIRT_SLIME.get(), DirtSlime.createAttributes().build());
         event.put(ModEntities.IRON_SLIME.get(), IronSlime.createAttributes().build());
         event.put(ModEntities.GOLD_SLIME.get(), GoldSlime.createAttributes().build());
     }

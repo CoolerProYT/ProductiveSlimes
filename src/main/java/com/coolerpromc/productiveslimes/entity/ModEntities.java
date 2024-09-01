@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.entity;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.entity.slime.DirtSlime;
 import com.coolerpromc.productiveslimes.entity.slime.GoldSlime;
 import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
 
+    public static final DeferredHolder<EntityType<?>, EntityType<DirtSlime>> DIRT_SLIME =
+            ENTITY_TYPES.register("dirt_slime", () -> EntityType.Builder.of(DirtSlime::new, MobCategory.CREATURE).build("dirt_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<IronSlime>> IRON_SLIME =
             ENTITY_TYPES.register("iron_slime", () -> EntityType.Builder.of(IronSlime::new, MobCategory.CREATURE).build("iron_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<GoldSlime>> GOLD_SLIME =

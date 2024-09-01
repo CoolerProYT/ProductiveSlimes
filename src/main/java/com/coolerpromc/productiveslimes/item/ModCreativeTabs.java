@@ -17,8 +17,10 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems(((pParameters, pOutput) -> {
+                        pOutput.accept(ModItems.DIRT_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.IRON_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.GOLD_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.DIRT_SLIME_BALL.get());
                         pOutput.accept(ModItems.IRON_SLIME_BALL.get());
                         pOutput.accept(ModItems.GOLD_SLIME_BALL.get());
                     })).build());

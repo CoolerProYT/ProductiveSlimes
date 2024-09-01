@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes;
 
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.entity.renderer.DirtSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.renderer.GoldSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.renderer.IronSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
@@ -58,6 +59,7 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            EntityRenderers.register(ModEntities.DIRT_SLIME.get(), DirtSlimeRenderer::new);
             EntityRenderers.register(ModEntities.IRON_SLIME.get(), IronSlimeRenderer::new);
             EntityRenderers.register(ModEntities.GOLD_SLIME.get(), GoldSlimeRenderer::new);
         }

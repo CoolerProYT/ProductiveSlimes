@@ -1,12 +1,9 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -20,14 +17,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class GoldSlime extends BaseSlime{
-    public GoldSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 6500);
+public class DirtSlime extends BaseSlime{
+    public DirtSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel, 1000);
     }
 
     @Override
     public void dropResource() {
-        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.GOLD_SLIME_BALL.get(), this.getSize()));
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.DIRT_SLIME_BALL.get(), this.getSize()));
         this.level().addFreshEntity(itemEntity);
     }
 
@@ -47,7 +44,7 @@ public class GoldSlime extends BaseSlime{
                         transformSlime(pPlayer, pHand);
                     }*/
 
-                    if (pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                    if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand);
                     }
                 }
@@ -83,6 +80,6 @@ public class GoldSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.GOLD_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.DIRT_SLIME_BALL.get()));
     }
 }

@@ -14,8 +14,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 @EventBusSubscriber(modid = ProductiveSlimes.MODID)
@@ -27,30 +25,35 @@ public class ModEntityInteractEvent {
             ItemStack itemStack = player.getItemInHand(event.getHand());
 
             if (itemStack.getItem() == Items.IRON_BLOCK){
-                Level level = event.getLevel();
-                if (!level.isClientSide) {
-                    Slime vanillaSlime = (Slime) event.getTarget();
+                transformSlime(event, player, itemStack, ModEntities.IRON_SLIME.get().create(event.getLevel()));
+            }
 
-                    if (player.getItemInHand(event.getHand()).getCount() > vanillaSlime.getSize()){
-                        if (!player.getAbilities().instabuild){
-                            itemStack.shrink(vanillaSlime.getSize() + 1);
-                        }
+            if(itemStack.getItem() == Items.DIRT){
+                transformSlime(event, player, itemStack, ModEntities.DIRT_SLIME.get().create(event.getLevel()));
+            }
+        }
+    }
 
-                        IronSlime ironSlime = ModEntities.IRON_SLIME.get().create(level);
-                        if (ironSlime != null) {
-                            ironSlime.moveTo(vanillaSlime.getX(), vanillaSlime.getY(), vanillaSlime.getZ(), vanillaSlime.getYRot(), vanillaSlime.getXRot());
-                            ironSlime.setSize(vanillaSlime.getSize(), true);
-                            level.addFreshEntity(ironSlime);
-                        }
+    protected static void transformSlime(PlayerInteractEvent.EntityInteract event, Player player, ItemStack itemStack, BaseSlime entity){
+        Level level = event.getLevel();
+        if (!level.isClientSide) {
+            Slime vanillaSlime = (Slime) event.getTarget();
 
-                        vanillaSlime.discard();
-
-                        level.playSound(null, vanillaSlime.getX(), vanillaSlime.getY(), vanillaSlime.getZ(), SoundEvents.IRON_GOLEM_REPAIR, SoundSource.NEUTRAL, 1.0F, 1.0F);
-
-                        event.setCancellationResult(InteractionResult.SUCCESS);
-                        event.setCanceled(true);
-                    }
+            if (player.getItemInHand(event.getHand()).getCount() > vanillaSlime.getSize()){
+                if (!player.getAbilities().instabuild){
+                    itemStack.shrink(vanillaSlime.getSize() + 1);
                 }
+
+                if (entity != null) {
+                    entity.moveTo(vanillaSlime.getX(), vanillaSlime.getY(), vanillaSlime.getZ(), vanillaSlime.getYRot(), vanillaSlime.getXRot());
+                    entity.setSize(vanillaSlime.getSize(), true);
+                    level.addFreshEntity(entity);
+                }
+
+                vanillaSlime.discard();
+
+                event.setCancellationResult(InteractionResult.SUCCESS);
+                event.setCanceled(true);
             }
         }
     }

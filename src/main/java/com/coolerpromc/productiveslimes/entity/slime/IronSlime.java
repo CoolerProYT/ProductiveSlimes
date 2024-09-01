@@ -41,34 +41,41 @@ public class IronSlime extends BaseSlime{
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
-                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK) {
-                        IronSlime slime = this;
-                        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-                        if (!pPlayer.getAbilities().instabuild){
-                            itemStack.shrink(slime.getSize() + 1);
-                        }
-
-                        GoldSlime goldSlime = ModEntities.GOLD_SLIME.get().create(this.level());
-                        if (goldSlime != null) {
-                            goldSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-                            goldSlime.setSize(slime.getSize(), true);
-                            this.level().addFreshEntity(goldSlime);
-                        }
-
-                        slime.discard();
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        transformSlime(pPlayer, pHand);
                     }
-
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.IRON_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        this.setSize(this.getSize() + 1, false);
-                        this.setHealth(this.getMaxHealth());
-                        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
+                        growthSlime(pPlayer, pHand);
                     }
                 }
             }
         }
 
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    protected void transformSlime(Player pPlayer, InteractionHand pHand){
+        IronSlime slime = this;
+        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+
+        if (!pPlayer.getAbilities().instabuild){
+            itemStack.shrink(slime.getSize() + 1);
+        }
+
+        GoldSlime goldSlime = ModEntities.GOLD_SLIME.get().create(this.level());
+        if (goldSlime != null) {
+            goldSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
+            goldSlime.setSize(slime.getSize(), true);
+            this.level().addFreshEntity(goldSlime);
+        }
+
+        slime.discard();
+    }
+
+    protected void growthSlime(Player pPlayer, InteractionHand pHand){
+        this.setSize(this.getSize() + 1, false);
+        this.setHealth(this.getMaxHealth());
+        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
     }
 
     @Override
