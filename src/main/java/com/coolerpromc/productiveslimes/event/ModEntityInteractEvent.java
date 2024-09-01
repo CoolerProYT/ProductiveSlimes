@@ -1,0 +1,57 @@
+package com.coolerpromc.productiveslimes.event;
+
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
+import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+
+@EventBusSubscriber(modid = ProductiveSlimes.MODID)
+public class ModEntityInteractEvent {
+    @SubscribeEvent
+    public static void onPlayerInteractEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.getTarget() instanceof Slime && !(event.getTarget() instanceof BaseSlime)) {
+            Player player = event.getEntity();
+            ItemStack itemStack = player.getItemInHand(event.getHand());
+
+            if (itemStack.getItem() == Items.IRON_BLOCK){
+                Level level = event.getLevel();
+                if (!level.isClientSide) {
+                    Slime vanillaSlime = (Slime) event.getTarget();
+
+                    if (player.getItemInHand(event.getHand()).getCount() > vanillaSlime.getSize()){
+                        if (!player.getAbilities().instabuild){
+                            itemStack.shrink(vanillaSlime.getSize() + 1);
+                        }
+
+                        IronSlime ironSlime = ModEntities.IRON_SLIME.get().create(level);
+                        if (ironSlime != null) {
+                            ironSlime.moveTo(vanillaSlime.getX(), vanillaSlime.getY(), vanillaSlime.getZ(), vanillaSlime.getYRot(), vanillaSlime.getXRot());
+                            ironSlime.setSize(vanillaSlime.getSize(), true);
+                            level.addFreshEntity(ironSlime);
+                        }
+
+                        vanillaSlime.discard();
+
+                        level.playSound(null, vanillaSlime.getX(), vanillaSlime.getY(), vanillaSlime.getZ(), SoundEvents.IRON_GOLEM_REPAIR, SoundSource.NEUTRAL, 1.0F, 1.0F);
+
+                        event.setCancellationResult(InteractionResult.SUCCESS);
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+}

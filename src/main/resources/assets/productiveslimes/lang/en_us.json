@@ -1,0 +1,12 @@
+{
+  "creativetab.productiveslimes": "Productive Slimes",
+
+  "item.productiveslimes.iron_slime_spawn_egg": "Iron Slime Spawn Egg",
+  "item.productiveslimes.gold_slime_spawn_egg": "Gold Slime Spawn Egg",
+
+  "item.productiveslimes.iron_slimeball": "Iron Slimeball",
+  "item.productiveslimes.gold_slimeball": "Gold Slimeball",
+
+  "entity.productiveslimes.iron_slime": "Iron Slime",
+  "entity.productiveslimes.gold_slime": "Gold Slime"
+}
