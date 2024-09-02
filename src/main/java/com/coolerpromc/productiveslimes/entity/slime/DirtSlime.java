@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
+import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -40,9 +41,9 @@ public class DirtSlime extends BaseSlime{
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
-                    /*if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         transformSlime(pPlayer, pHand);
-                    }*/
+                    }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand);
@@ -55,21 +56,21 @@ public class DirtSlime extends BaseSlime{
     }
 
     protected void transformSlime(Player pPlayer, InteractionHand pHand){
-        /*GoldSlime slime = this;
+        DirtSlime slime = this;
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
         if (!pPlayer.getAbilities().instabuild){
             itemStack.shrink(slime.getSize() + 1);
         }
 
-        GoldSlime goldSlime = ModEntities.GOLD_SLIME.get().create(this.level());
-        if (goldSlime != null) {
-            goldSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-            goldSlime.setSize(slime.getSize(), true);
-            this.level().addFreshEntity(goldSlime);
+        StoneSlime stoneSlime = ModEntities.STONE_SLIME.get().create(this.level());
+        if (stoneSlime != null) {
+            stoneSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
+            stoneSlime.setSize(slime.getSize(), true);
+            this.level().addFreshEntity(stoneSlime);
         }
 
-        slime.discard();*/
+        slime.discard();
     }
 
     protected void growthSlime(Player pPlayer, InteractionHand pHand){
