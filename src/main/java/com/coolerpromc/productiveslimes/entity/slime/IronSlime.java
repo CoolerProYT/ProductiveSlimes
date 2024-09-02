@@ -44,6 +44,9 @@ public class IronSlime extends BaseSlime{
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         super.transformSlime(pPlayer, pHand, this, ModEntities.GOLD_SLIME.get().create(this.level()));
                     }
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.REDSTONE_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.REDSTONE_SLIME.get().create(this.level()));
+                    }
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.IRON_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }

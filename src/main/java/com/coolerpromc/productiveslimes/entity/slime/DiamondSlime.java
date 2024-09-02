@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
+import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -40,9 +41,9 @@ public class DiamondSlime extends BaseSlime{
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
-                    /*if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        transformSlime(pPlayer, pHand);
-                    }*/
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.NETHERITE_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        transformSlime(pPlayer, pHand, this, ModEntities.NETHERITE_SLIME.get().create(this.level()));
+                    }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.DIAMOND_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);

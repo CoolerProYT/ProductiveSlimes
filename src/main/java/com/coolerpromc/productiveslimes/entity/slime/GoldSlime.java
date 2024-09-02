@@ -46,7 +46,9 @@ public class GoldSlime extends BaseSlime{
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.DIAMOND_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         super.transformSlime(pPlayer, pHand, this, ModEntities.DIAMOND_SLIME.get().create(this.level()));
                     }
-
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.LAPIS_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.LAPIS_SLIME.get().create(this.level()));
+                    }
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }
