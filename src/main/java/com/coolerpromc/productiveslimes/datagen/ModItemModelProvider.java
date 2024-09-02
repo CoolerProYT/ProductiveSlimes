@@ -19,12 +19,24 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleItem(ModItems.DIRT_SLIME_BALL);
+        simpleItem(ModItems.STONE_SLIME_BALL);
         simpleItem(ModItems.IRON_SLIME_BALL);
+        simpleItem(ModItems.COPPER_SLIME_BALL);
         simpleItem(ModItems.GOLD_SLIME_BALL);
+        simpleItem(ModItems.DIAMOND_SLIME_BALL);
+        simpleItem(ModItems.NETHERITE_SLIME_SPAWN_EGG);
+        simpleItem(ModItems.LAPIS_SLIME_SPAWN_EGG);
+        simpleItem(ModItems.REDSTONE_SLIME_BALL);
 
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.COPPER_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GOLD_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.DIAMOND_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.NETHERITE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.LAPIS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.REDSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder simpleItem(DeferredItem<Item> item){

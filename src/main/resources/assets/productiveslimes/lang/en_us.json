@@ -1,15 +1,34 @@
 {
   "creativetab.productiveslimes": "Productive Slimes",
+  "config.jade.plugin_productiveslimes.slime_info": "Slime Info",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",
+  "item.productiveslimes.stone_slime_spawn_egg": "Stone Slime Spawn Egg",
   "item.productiveslimes.iron_slime_spawn_egg": "Iron Slime Spawn Egg",
+  "item.productiveslimes.copper_slime_spawn_egg": "Copper Slime Spawn Egg",
   "item.productiveslimes.gold_slime_spawn_egg": "Gold Slime Spawn Egg",
+  "item.productiveslimes.diamond_slime_spawn_egg": "Diamond Slime Spawn Egg",
+  "item.productiveslimes.netherite_slime_spawn_egg": "Netherite Slime Spawn Egg",
+  "item.productiveslimes.lapis_slime_spawn_egg": "Lapis Slime Spawn Egg",
+  "item.productiveslimes.redstone_slime_spawn_egg": "Redstone Slime Spawn Egg",
 
   "item.productiveslimes.dirt_slimeball": "Dirt Slimeball",
+  "item.productiveslimes.stone_slimeball": "Stone Slimeball",
   "item.productiveslimes.iron_slimeball": "Iron Slimeball",
+  "item.productiveslimes.copper_slimeball": "Copper Slimeball",
   "item.productiveslimes.gold_slimeball": "Gold Slimeball",
+  "item.productiveslimes.diamond_slimeball": "Diamond Slimeball",
+  "item.productiveslimes.netherite_slimeball": "Netherite Slimeball",
+  "item.productiveslimes.lapis_slimeball": "Lapis Slimeball",
+  "item.productiveslimes.redstone_slimeball": "Redstone Slimeball",
 
   "entity.productiveslimes.dirt_slime": "Dirt Slime",
+  "entity.productiveslimes.stone_slime": "Stone Slime",
   "entity.productiveslimes.iron_slime": "Iron Slime",
-  "entity.productiveslimes.gold_slime": "Gold Slime"
+  "entity.productiveslimes.copper_slime": "Copper Slime",
+  "entity.productiveslimes.gold_slime": "Gold Slime",
+  "entity.productiveslimes.diamond_slime": "Diamond Slime",
+  "entity.productiveslimes.netherite_slime": "Netherite Slime",
+  "entity.productiveslimes.lapis_slime": "Lapis Slime",
+  "entity.productiveslimes.redstone_slime": "Redstone Slime"
 }

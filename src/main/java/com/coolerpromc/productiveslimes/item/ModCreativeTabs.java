@@ -18,11 +18,24 @@ public class ModCreativeTabs {
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems(((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.DIRT_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.STONE_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.IRON_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.COPPER_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.GOLD_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.DIAMOND_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.NETHERITE_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.LAPIS_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.REDSTONE_SLIME_SPAWN_EGG.get());
+
                         pOutput.accept(ModItems.DIRT_SLIME_BALL.get());
+                        pOutput.accept(ModItems.STONE_SLIME_BALL.get());
                         pOutput.accept(ModItems.IRON_SLIME_BALL.get());
+                        pOutput.accept(ModItems.COPPER_SLIME_BALL.get());
                         pOutput.accept(ModItems.GOLD_SLIME_BALL.get());
+                        pOutput.accept(ModItems.DIAMOND_SLIME_BALL.get());
+                        pOutput.accept(ModItems.NETHERITE_SLIME_BALL.get());
+                        pOutput.accept(ModItems.LAPIS_SLIME_BALL.get());
+                        pOutput.accept(ModItems.REDSTONE_SLIME_BALL.get());
                     })).build());
 
     public static void register(IEventBus eventBus) {

@@ -1,17 +1,10 @@
 package com.coolerpromc.productiveslimes;
 
 import com.coolerpromc.productiveslimes.entity.ModEntities;
-import com.coolerpromc.productiveslimes.entity.renderer.DirtSlimeRenderer;
-import com.coolerpromc.productiveslimes.entity.renderer.GoldSlimeRenderer;
-import com.coolerpromc.productiveslimes.entity.renderer.IronSlimeRenderer;
-import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
-import com.coolerpromc.productiveslimes.event.ModEntitiesEvent;
-import com.coolerpromc.productiveslimes.event.ModEntityInteractEvent;
+import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.SlimeRenderer;
-import net.minecraft.world.entity.monster.Slime;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -22,8 +15,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(ProductiveSlimes.MODID)
@@ -60,8 +51,14 @@ public class ProductiveSlimes
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             EntityRenderers.register(ModEntities.DIRT_SLIME.get(), DirtSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.STONE_SLIME.get(), StoneSlimeRenderer::new);
             EntityRenderers.register(ModEntities.IRON_SLIME.get(), IronSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.COPPER_SLIME.get(), CopperSlimeRenderer::new);
             EntityRenderers.register(ModEntities.GOLD_SLIME.get(), GoldSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.DIAMOND_SLIME.get(), DiamondSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.NETHERITE_SLIME.get(), NetheriteSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.LAPIS_SLIME.get(), LapisSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.REDSTONE_SLIME.get(), RedstoneSlimeRenderer::new);
         }
     }
 }
