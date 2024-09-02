@@ -45,37 +45,13 @@ public class NetheriteSlime extends BaseSlime{
                     }*/
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.NETHERITE_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        growthSlime(pPlayer, pHand);
+                        growthSlime(pPlayer, pHand, this);
                     }
                 }
             }
         }
 
         return super.mobInteract(pPlayer, pHand);
-    }
-
-    protected void transformSlime(Player pPlayer, InteractionHand pHand){
-        /*GoldSlime slime = this;
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(slime.getSize() + 1);
-        }
-
-        GoldSlime goldSlime = ModEntities.GOLD_SLIME.get().create(this.level());
-        if (goldSlime != null) {
-            goldSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-            goldSlime.setSize(slime.getSize(), true);
-            this.level().addFreshEntity(goldSlime);
-        }
-
-        slime.discard();*/
-    }
-
-    protected void growthSlime(Player pPlayer, InteractionHand pHand){
-        this.setSize(this.getSize() + 1, false);
-        this.setHealth(this.getMaxHealth());
-        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
     }
 
     @Override

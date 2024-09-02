@@ -44,41 +44,17 @@ public class GoldSlime extends BaseSlime{
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.DIAMOND_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        transformSlime(pPlayer, pHand);
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DIAMOND_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        growthSlime(pPlayer, pHand);
+                        growthSlime(pPlayer, pHand, this);
                     }
                 }
             }
         }
 
         return super.mobInteract(pPlayer, pHand);
-    }
-
-    protected void transformSlime(Player pPlayer, InteractionHand pHand){
-        GoldSlime slime = this;
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(slime.getSize() + 1);
-        }
-
-        DiamondSlime diamondSlime = ModEntities.DIAMOND_SLIME.get().create(this.level());
-        if (diamondSlime != null) {
-            diamondSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-            diamondSlime.setSize(slime.getSize(), true);
-            this.level().addFreshEntity(diamondSlime);
-        }
-
-        slime.discard();
-    }
-
-    protected void growthSlime(Player pPlayer, InteractionHand pHand){
-        this.setSize(this.getSize() + 1, false);
-        this.setHealth(this.getMaxHealth());
-        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
     }
 
     @Override

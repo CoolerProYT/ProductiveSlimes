@@ -47,19 +47,13 @@ public class CopperSlime extends BaseSlime{
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.COPPER_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        growthSlime(pPlayer, pHand);
+                        growthSlime(pPlayer, pHand, this);
                     }
                 }
             }
         }
 
         return super.mobInteract(pPlayer, pHand);
-    }
-
-    protected void growthSlime(Player pPlayer, InteractionHand pHand){
-        this.setSize(this.getSize() + 1, false);
-        this.setHealth(this.getMaxHealth());
-        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
     }
 
     @Override

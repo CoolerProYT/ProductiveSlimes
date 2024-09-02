@@ -42,41 +42,17 @@ public class DirtSlime extends BaseSlime{
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        transformSlime(pPlayer, pHand);
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.STONE_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        growthSlime(pPlayer, pHand);
+                        growthSlime(pPlayer, pHand, this);
                     }
                 }
             }
         }
 
         return super.mobInteract(pPlayer, pHand);
-    }
-
-    protected void transformSlime(Player pPlayer, InteractionHand pHand){
-        DirtSlime slime = this;
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(slime.getSize() + 1);
-        }
-
-        StoneSlime stoneSlime = ModEntities.STONE_SLIME.get().create(this.level());
-        if (stoneSlime != null) {
-            stoneSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-            stoneSlime.setSize(slime.getSize(), true);
-            this.level().addFreshEntity(stoneSlime);
-        }
-
-        slime.discard();
-    }
-
-    protected void growthSlime(Player pPlayer, InteractionHand pHand){
-        this.setSize(this.getSize() + 1, false);
-        this.setHealth(this.getMaxHealth());
-        pPlayer.getItemInHand(pHand).shrink(this.getSize() + 1);
     }
 
     @Override

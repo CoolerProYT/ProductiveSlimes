@@ -203,6 +203,10 @@ public abstract class BaseSlime extends Slime {
         originalSlime.discard();
     }
 
+    public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
+
+    }
+
     static class SlimeFloatGoal extends Goal {
         private final BaseSlime slime;
 
