@@ -30,6 +30,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.REDSTONE_SLIME_BALL);
 
         basicItem(ModFluids.MOLTEN_DIRT_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_STONE_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_IRON_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_COPPER_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_GOLD_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_DIAMOND_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_NETHERITE_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_LAPIS_BUCKET.get());
+        basicItem(ModFluids.MOLTEN_REDSTONE_BUCKET.get());
 
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));

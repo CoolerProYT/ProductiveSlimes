@@ -39,6 +39,14 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.REDSTONE_SLIME_BALL.get());
 
                         pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_STONE_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_IRON_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_COPPER_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_GOLD_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_DIAMOND_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_NETHERITE_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_LAPIS_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_REDSTONE_BUCKET.get());
                     })).build());
 
     public static void register(IEventBus eventBus) {

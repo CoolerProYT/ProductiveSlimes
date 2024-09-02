@@ -73,6 +73,22 @@ public class ProductiveSlimes
             event.enqueueWork(() -> {
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIRT.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DIRT.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_STONE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_STONE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_IRON.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_IRON.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_COPPER.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_COPPER.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_GOLD.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_GOLD.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIAMOND.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DIAMOND.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_NETHERITE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_NETHERITE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_LAPIS.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_LAPIS.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_REDSTONE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_REDSTONE.get(), RenderType.translucent());
             });
         }
 
@@ -80,6 +96,22 @@ public class ProductiveSlimes
         public static void onClientExtensions(RegisterClientExtensionsEvent event) {
             event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_DIRT_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
                     ModFluidTypes.MOLTEN_DIRT_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_STONE_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_STONE_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_IRON_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_IRON_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_COPPER_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_COPPER_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_GOLD_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_GOLD_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_DIAMOND_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_DIAMOND_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_NETHERITE_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_NETHERITE_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_LAPIS_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_LAPIS_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get());
         }
     }
 }
