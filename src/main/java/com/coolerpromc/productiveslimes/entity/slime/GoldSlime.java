@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 
 public class GoldSlime extends BaseSlime{
     public GoldSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 6500);
+        super(pEntityType, pLevel, 8000);
     }
 
     @Override

@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class DiamondSlime extends BaseSlime{
     public DiamondSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1500);
+        super(pEntityType, pLevel, 10000);
     }
 
     @Override

@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class LapisSlime extends BaseSlime{
     public LapisSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1500);
+        super(pEntityType, pLevel, 6000);
     }
 
     @Override

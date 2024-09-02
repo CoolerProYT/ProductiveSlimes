@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class RedstoneSlime extends BaseSlime{
     public RedstoneSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1500);
+        super(pEntityType, pLevel, 7000);
     }
 
     @Override

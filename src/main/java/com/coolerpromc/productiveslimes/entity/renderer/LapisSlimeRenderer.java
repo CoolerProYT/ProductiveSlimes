@@ -7,7 +7,7 @@ import net.minecraft.world.entity.monster.Slime;
 
 public class LapisSlimeRenderer extends BaseSlimeRenderer {
     private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/netherite_slime.png");
+            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/lapis_slime.png");
 
     public LapisSlimeRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);

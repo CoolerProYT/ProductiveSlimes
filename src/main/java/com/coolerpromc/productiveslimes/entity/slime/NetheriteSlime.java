@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class NetheriteSlime extends BaseSlime{
     public NetheriteSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1500);
+        super(pEntityType, pLevel, 15000);
     }
 
     @Override

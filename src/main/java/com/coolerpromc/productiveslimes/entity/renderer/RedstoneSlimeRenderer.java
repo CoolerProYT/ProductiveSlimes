@@ -7,7 +7,7 @@ import net.minecraft.world.entity.monster.Slime;
 
 public class RedstoneSlimeRenderer extends BaseSlimeRenderer {
     private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/netherite_slime.png");
+            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/redstone_slime.png");
 
     public RedstoneSlimeRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
