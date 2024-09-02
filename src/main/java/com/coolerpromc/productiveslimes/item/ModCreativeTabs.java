@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -36,6 +37,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.NETHERITE_SLIME_BALL.get());
                         pOutput.accept(ModItems.LAPIS_SLIME_BALL.get());
                         pOutput.accept(ModItems.REDSTONE_SLIME_BALL.get());
+
+                        pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
                     })).build());
 
     public static void register(IEventBus eventBus) {

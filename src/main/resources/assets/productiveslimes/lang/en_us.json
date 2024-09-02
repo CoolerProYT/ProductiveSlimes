@@ -1,5 +1,6 @@
 {
   "creativetab.productiveslimes": "Productive Slimes",
+
   "config.jade.plugin_productiveslimes.slime_info": "Slime Info",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",
@@ -30,5 +31,24 @@
   "entity.productiveslimes.diamond_slime": "Diamond Slime",
   "entity.productiveslimes.netherite_slime": "Netherite Slime",
   "entity.productiveslimes.lapis_slime": "Lapis Slime",
-  "entity.productiveslimes.redstone_slime": "Redstone Slime"
+  "entity.productiveslimes.redstone_slime": "Redstone Slime",
+
+  "item.productiveslimes.molten_dirt_bucket": "Molten Dirt Bucket",
+  "item.productiveslimes.molten_dirt_block": "Molten Dirt",
+  "item.productiveslimes.molten_stone_bucket": "Molten Stone Bucket",
+  "item.productiveslimes.molten_stone_block": "Molten Stone",
+  "item.productiveslimes.molten_iron_bucket": "Molten Iron Bucket",
+  "item.productiveslimes.molten_iron_block": "Molten Iron",
+  "item.productiveslimes.molten_copper_bucket": "Molten Copper Bucket",
+  "item.productiveslimes.molten_copper_block": "Molten Copper",
+  "item.productiveslimes.molten_gold_bucket": "Molten Gold Bucket",
+  "item.productiveslimes.molten_gold_block": "Molten Gold",
+  "item.productiveslimes.molten_diamond_bucket": "Molten Diamond Bucket",
+  "item.productiveslimes.molten_diamond_block": "Molten Diamond",
+  "item.productiveslimes.molten_netherite_bucket": "Molten Netherite Bucket",
+  "item.productiveslimes.molten_netherite_block": "Molten Netherite",
+  "item.productiveslimes.molten_lapis_bucket": "Molten Lapis Bucket",
+  "item.productiveslimes.molten_lapis_block": "Molten Lapis",
+  "item.productiveslimes.molten_redstone_bucket": "Molten Redstone Bucket",
+  "item.productiveslimes.molten_redstone_block": "Molten Redstone"
 }
