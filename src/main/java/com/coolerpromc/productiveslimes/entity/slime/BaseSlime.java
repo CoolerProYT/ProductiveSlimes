@@ -1,11 +1,13 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
+import com.coolerpromc.productiveslimes.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -182,6 +185,22 @@ public abstract class BaseSlime extends Slime {
         double width = 0.6F * (float)this.getSize();
         double height = 0.8F * (float)this.getSize();
         this.setBoundingBox(new AABB(-width / 2.0D, 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
+    }
+
+    public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){
+        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+
+        if (!pPlayer.getAbilities().instabuild){
+            itemStack.shrink(originalSlime.getSize() + 1);
+        }
+
+        if (newSlime != null) {
+            newSlime.moveTo(originalSlime.getX(), originalSlime.getY(), originalSlime.getZ(), originalSlime.getYRot(), originalSlime.getXRot());
+            newSlime.setSize(originalSlime.getSize(), true);
+            this.level().addFreshEntity(newSlime);
+        }
+
+        originalSlime.discard();
     }
 
     static class SlimeFloatGoal extends Goal {

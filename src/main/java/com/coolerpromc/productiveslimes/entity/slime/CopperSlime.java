@@ -43,7 +43,7 @@ public class CopperSlime extends BaseSlime{
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.IRON_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        transformSlime(pPlayer, pHand);
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.IRON_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.COPPER_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
@@ -54,24 +54,6 @@ public class CopperSlime extends BaseSlime{
         }
 
         return super.mobInteract(pPlayer, pHand);
-    }
-
-    protected void transformSlime(Player pPlayer, InteractionHand pHand){
-        CopperSlime slime = this;
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(slime.getSize() + 1);
-        }
-
-        IronSlime ironSlime = ModEntities.IRON_SLIME.get().create(this.level());
-        if (ironSlime != null) {
-            ironSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-            ironSlime.setSize(slime.getSize(), true);
-            this.level().addFreshEntity(ironSlime);
-        }
-
-        slime.discard();
     }
 
     protected void growthSlime(Player pPlayer, InteractionHand pHand){
