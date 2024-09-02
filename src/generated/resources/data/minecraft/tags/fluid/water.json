@@ -1,6 +1,22 @@
 {
   "values": [
     "productiveslimes:source_molten_dirt",
-    "productiveslimes:flowing_molten_dirt"
+    "productiveslimes:flowing_molten_dirt",
+    "productiveslimes:source_molten_stone",
+    "productiveslimes:flowing_molten_stone",
+    "productiveslimes:source_molten_iron",
+    "productiveslimes:flowing_molten_iron",
+    "productiveslimes:source_molten_gold",
+    "productiveslimes:flowing_molten_gold",
+    "productiveslimes:source_molten_copper",
+    "productiveslimes:flowing_molten_copper",
+    "productiveslimes:source_molten_diamond",
+    "productiveslimes:flowing_molten_diamond",
+    "productiveslimes:source_molten_netherite",
+    "productiveslimes:flowing_molten_netherite",
+    "productiveslimes:source_molten_lapis",
+    "productiveslimes:flowing_molten_lapis",
+    "productiveslimes:source_molten_redstone",
+    "productiveslimes:flowing_molten_redstone"
   ]
 }
