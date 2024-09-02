@@ -24,8 +24,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.COPPER_SLIME_BALL);
         simpleItem(ModItems.GOLD_SLIME_BALL);
         simpleItem(ModItems.DIAMOND_SLIME_BALL);
-        simpleItem(ModItems.NETHERITE_SLIME_SPAWN_EGG);
-        simpleItem(ModItems.LAPIS_SLIME_SPAWN_EGG);
+        simpleItem(ModItems.NETHERITE_SLIME_BALL);
+        simpleItem(ModItems.LAPIS_SLIME_BALL);
         simpleItem(ModItems.REDSTONE_SLIME_BALL);
 
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
