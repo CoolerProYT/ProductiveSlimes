@@ -24,8 +24,8 @@ public class ModEntityInteractEvent {
             Player player = event.getEntity();
             ItemStack itemStack = player.getItemInHand(event.getHand());
 
-            if (itemStack.getItem() == Items.IRON_BLOCK){
-                transformSlime(event, player, itemStack, ModEntities.IRON_SLIME.get().create(event.getLevel()));
+            if (itemStack.getItem() == Items.COPPER_BLOCK){
+                transformSlime(event, player, itemStack, ModEntities.COPPER_SLIME.get().create(event.getLevel()));
             }
 
             if(itemStack.getItem() == Items.DIRT){
