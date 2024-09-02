@@ -87,7 +87,6 @@ public abstract class BaseSlime extends Slime {
     public void setResource(ItemStack stack) {
         this.entityData.set(RESOURCE, stack);
         resetGrowthCount();
-        recalculateSize();
     }
 
     public ItemStack getResourceItem() {
@@ -116,7 +115,6 @@ public abstract class BaseSlime extends Slime {
             countGrowth();
 
             if(readyForNewResource()) {
-                addResource();
                 dropResource();
                 resetGrowthCount();
             }
@@ -125,15 +123,6 @@ public abstract class BaseSlime extends Slime {
 
     private void resetGrowthCount() {
         this.entityData.set(GROWTH_COUNTER, 0);
-    }
-
-    private void addResource() {
-        ItemStack stack = this.entityData.get(RESOURCE).copy();
-        if(stack.getCount() < 64) {
-            this.entityData.set(RESOURCE, new ItemStack(stack.getItem(), stack.getCount() + 1));
-        }
-
-        recalculateSize();
     }
 
     private void recalculateSize() {
