@@ -1,8 +1,7 @@
-package com.coolerpromc.productiveslimes.compat;
+package com.coolerpromc.productiveslimes.compat.jade;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import com.coolerpromc.productiveslimes.entity.slime.GoldSlime;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.*;
