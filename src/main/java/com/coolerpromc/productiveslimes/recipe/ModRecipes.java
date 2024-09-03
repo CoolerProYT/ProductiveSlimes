@@ -22,7 +22,7 @@ public class ModRecipes{
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> SOLIDING_SERIALIZER =
             SERIALIZERS.register("soliding", () -> MeltingRecipe.Serializer.INSTANCE);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<MeltingRecipe>> SOLIDING_TYPE =
+    public static final DeferredHolder<RecipeType<?>, RecipeType<SolidingRecipe>> SOLIDING_TYPE =
             TYPES.register("soliding", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding")));
 
     public static void register(IEventBus eventBus){
