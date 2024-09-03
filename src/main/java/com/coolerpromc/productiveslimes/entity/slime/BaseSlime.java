@@ -204,7 +204,9 @@ public abstract class BaseSlime extends Slime {
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
-
+        slime.setSize(slime.getSize() + 1, false);
+        slime.setHealth(slime.getMaxHealth());
+        pPlayer.getItemInHand(pHand).shrink(slime.getSize() + 1);
     }
 
     static class SlimeFloatGoal extends Goal {

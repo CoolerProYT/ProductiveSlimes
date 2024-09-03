@@ -47,7 +47,7 @@ public class CopperSlime extends BaseSlime{
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.COPPER_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        growthSlime(pPlayer, pHand, this);
+                        super.growthSlime(pPlayer, pHand, this);
                     }
                 }
             }
