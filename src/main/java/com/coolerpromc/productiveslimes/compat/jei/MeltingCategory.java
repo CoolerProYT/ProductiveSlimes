@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"air_cooling");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"melting");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/melting_station_gui.png");
     public static final RecipeType<MeltingRecipe> MELTING_TYPE = new RecipeType<>(UID, MeltingRecipe.class);
     private int tickCount = 0;
