@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
@@ -9,6 +10,7 @@ import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
+import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -40,6 +42,8 @@ public class ProductiveSlimes
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

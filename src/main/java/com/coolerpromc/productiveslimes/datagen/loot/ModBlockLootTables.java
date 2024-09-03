@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.datagen.loot;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -29,7 +30,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-
+        dropSelf(ModBlocks.MELTING_STATION.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -18,6 +19,8 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems(((pParameters, pOutput) -> {
+                        pOutput.accept(ModBlocks.MELTING_STATION.get());
+
                         pOutput.accept(ModItems.DIRT_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.STONE_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.IRON_SLIME_SPAWN_EGG.get());

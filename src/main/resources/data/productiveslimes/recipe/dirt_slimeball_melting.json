@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:dirt_slimeball"
+    }
+  ],
+  "inputCount": 4,
+  "output": [
+    {
+      "id": "productiveslimes:molten_dirt_bucket",
+      "count": 1
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-
+        simpleBlockWithVariants(ModBlocks.MELTING_STATION.get(), "melting_station");
     }
 
     private void blockWithItem(DeferredBlock<Block> blockRegistryObject){
