@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
+import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.MeltingStationScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -34,10 +35,14 @@ public class JEPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
 
-        List<RecipeHolder<MeltingRecipe>> fluidSeparatingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
-        List<MeltingRecipe> fluidSeparatingRecipeList = fluidSeparatingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
+        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        registration.addRecipes(MeltingCategory.MELTING_TYPE, fluidSeparatingRecipeList);
+        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
+        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+
+        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
+        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
     }
 
     @Override

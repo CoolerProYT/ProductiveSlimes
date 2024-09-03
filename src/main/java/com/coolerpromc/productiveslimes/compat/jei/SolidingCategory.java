@@ -1,0 +1,72 @@
+package com.coolerpromc.productiveslimes.compat.jei;
+
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"soliding");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/liquid_soliding_station_gui.png");
+    public static final RecipeType<SolidingRecipe> SOLIDING_TYPE = new RecipeType<>(UID, SolidingRecipe.class);
+    private int tickCount = 0;
+
+    private final IDrawable background;
+    private final IDrawable icon;
+
+    public SolidingCategory(IGuiHelper helper) {
+        this.background = helper.createDrawable(TEXTURE,5,5,168,77);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.LIQUID_SOLIDING_STATION.get()));
+    }
+
+    @Override
+    public RecipeType<SolidingRecipe> getRecipeType() {
+        return SOLIDING_TYPE;
+    }
+
+    @Override
+    public Component getTitle() {
+        return Component.translatable("block.productiveslimes.liquid_soliding_station");
+    }
+
+    @Override
+    public IDrawable getBackground() {
+        return this.background;
+    }
+
+    @Override
+    public IDrawable getIcon() {
+        return this.icon;
+    }
+
+    @Override
+    public void draw(SolidingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+
+        tickCount++;
+        int arrowWidth = (tickCount % 600) * 26 / 600;
+
+        guiGraphics.blit(TEXTURE, 71, 33, 176, 0, arrowWidth, 8);
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, SolidingRecipe solidingRecipe, IFocusGroup iFocusGroup) {
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, 1));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(solidingRecipe.getIngredients().get(0).getItems()[0].getItem(), solidingRecipe.getInputCount()));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).addItemStack(solidingRecipe.getOutputs().get(0));
+    }
+}
