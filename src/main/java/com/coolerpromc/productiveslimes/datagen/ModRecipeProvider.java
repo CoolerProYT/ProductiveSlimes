@@ -41,6 +41,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', Items.WATER_BUCKET)
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
                 .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
+                .requires(Items.BOOK)
+                .requires(Items.SLIME_BALL)
+                .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
+                .save(recipeOutput);
     }
 
     protected static void oreSmelting(RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
