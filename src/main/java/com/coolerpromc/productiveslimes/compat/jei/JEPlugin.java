@@ -1,17 +1,22 @@
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.MeltingStationScreen;
+import com.coolerpromc.productiveslimes.screen.SolidingStationScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
@@ -29,6 +34,7 @@ public class JEPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -43,10 +49,21 @@ public class JEPlugin implements IModPlugin {
 
         registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
         registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
+
+        /*registration.addItemStackInfo(
+                new ItemStack(ModItems.DIRT_SLIME_BALL.get()),
+                Component.literal("""
+                        §nDirt Slimeball§r
+
+                        This slimeball is dropped from Dirt Slime.
+
+                        Dirt Slime is obtainable by using dirt on a slime.""")
+        );*/
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
+        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
     }
 }

@@ -17,11 +17,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
     public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"soliding");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/liquid_soliding_station_gui.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
     public static final RecipeType<SolidingRecipe> SOLIDING_TYPE = new RecipeType<>(UID, SolidingRecipe.class);
     private int tickCount = 0;
 
@@ -65,8 +64,8 @@ public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, SolidingRecipe solidingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, 1));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(solidingRecipe.getIngredients().get(0).getItems()[0].getItem(), solidingRecipe.getInputCount()));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).addItemStack(solidingRecipe.getOutputs().get(0));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,29,29).addIngredients(solidingRecipe.getIngredients().get(0));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,110,29).addItemStack(solidingRecipe.getOutputs().get(0));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).addItemStack(solidingRecipe.getOutputs().get(1));
     }
 }

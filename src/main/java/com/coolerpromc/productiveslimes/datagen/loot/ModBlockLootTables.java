@@ -31,6 +31,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.MELTING_STATION.get());
+        dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

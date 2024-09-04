@@ -4,6 +4,9 @@
   "config.jade.plugin_productiveslimes.slime_info": "Slime Info",
 
   "block.productiveslimes.melting_station": "Melting Station",
+  "block.productiveslimes.soliding_station": "Soliding Station",
+
+  "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",
   "item.productiveslimes.stone_slime_spawn_egg": "Stone Slime Spawn Egg",

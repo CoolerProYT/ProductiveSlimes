@@ -15,6 +15,9 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<MeltingStationBlockEntity>> MELTING_STATION_BE = BLOCK_ENTITIES.register("melting_station_be",
             () -> BlockEntityType.Builder.of(MeltingStationBlockEntity::new, ModBlocks.MELTING_STATION.get()).build(null));
 
+    public static final Supplier<BlockEntityType<SolidingStationBlockEntity>> SOLIDING_STATION_BE = BLOCK_ENTITIES.register("soliding_station_be",
+            () -> BlockEntityType.Builder.of(SolidingStationBlockEntity::new, ModBlocks.LIQUID_SOLIDING_STATION.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

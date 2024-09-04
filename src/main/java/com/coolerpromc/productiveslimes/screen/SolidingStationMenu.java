@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
+import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,33 +12,31 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-public class MeltingStationMenu extends AbstractContainerMenu {
-    public final MeltingStationBlockEntity blockEntity;
+public class SolidingStationMenu extends AbstractContainerMenu {
+    public final SolidingStationBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public MeltingStationMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
+    public SolidingStationMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
         this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public MeltingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.MELTING_STATION_MENU.get(), pContainerId);
+    public SolidingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.SOLIDING_STATION_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
-        blockEntity = (MeltingStationBlockEntity) entity;
+        blockEntity = (SolidingStationBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler bucketHandler = blockEntity.getBucketHandler();
-        this.addSlot(new SlotItemHandler(bucketHandler, 0, 25, 34));
-
         IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 45, 34));
+        this.addSlot(new SlotItemHandler(inputHandler, 0, 34, 34));
 
         IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 134, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 0, 115, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 1, 135, 34));
 
         addDataSlots(data);
     }
@@ -101,7 +99,7 @@ public class MeltingStationMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.MELTING_STATION.get());
+                pPlayer, ModBlocks.LIQUID_SOLIDING_STATION.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

@@ -21,6 +21,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         simpleBlockWithVariants(ModBlocks.MELTING_STATION.get(), "melting_station");
+        simpleBlockWithVariants(ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
     }
 
     private void blockWithItem(DeferredBlock<Block> blockRegistryObject){

@@ -19,6 +19,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        simpleItem(ModItems.GUIDEBOOK);
+
         simpleItem(ModItems.DIRT_SLIME_BALL);
         simpleItem(ModItems.STONE_SLIME_BALL);
         simpleItem(ModItems.IRON_SLIME_BALL);

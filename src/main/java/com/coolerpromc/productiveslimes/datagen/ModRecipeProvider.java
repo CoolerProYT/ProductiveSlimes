@@ -32,6 +32,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', Items.LAVA_BUCKET)
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
                 .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LIQUID_SOLIDING_STATION.get(),1)
+                .pattern("AAA")
+                .pattern("ABA")
+                .pattern("AAA")
+                .define('A', Blocks.DEEPSLATE)
+                .define('B', Items.WATER_BUCKET)
+                .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
+                .save(recipeOutput);
     }
 
     protected static void oreSmelting(RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {

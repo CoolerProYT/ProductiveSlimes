@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.block;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.MeltingStationBlock;
+import com.coolerpromc.productiveslimes.block.custom.SolidingStationBlock;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> MELTING_STATION = registerBlock("melting_station",
             () -> new MeltingStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station",
+            () -> new SolidingStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block){
         DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
