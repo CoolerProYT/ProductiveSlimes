@@ -25,5 +25,16 @@ public class ModCapabilities {
                         return be.getInputHandler();
                     }
                 });
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.SOLIDING_STATION_BE.get(),
+                (be, side) -> {
+                    if (side == Direction.DOWN) {
+                        return be.getOutputHandler();
+                    }
+                    else {
+                        return be.getInputHandler();
+                    }
+                });
     }
 }

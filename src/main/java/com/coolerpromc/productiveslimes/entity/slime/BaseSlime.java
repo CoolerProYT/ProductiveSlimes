@@ -55,6 +55,11 @@ public abstract class BaseSlime extends Slime {
     }
 
     @Override
+    public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BaseSlime.SlimeFloatGoal(this));
         this.goalSelector.addGoal(3, new BaseSlime.SlimeRandomDirectionGoal(this));
