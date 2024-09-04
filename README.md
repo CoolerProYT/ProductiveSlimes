@@ -13,5 +13,10 @@ Progress Tracking: [Trello](https://trello.com/b/Xtij0qyG/productive-slimes)
 
 ## Version
 ### Neoforge
+- 1.0.1
+  - Bug Fix
+    - Liquid Soliding Station translation
+    - Soliding Station capabilities
+    - Prevented slime despawn when player is far away
 - 1.0.0
-  - Initial release
+  - Initial Release
