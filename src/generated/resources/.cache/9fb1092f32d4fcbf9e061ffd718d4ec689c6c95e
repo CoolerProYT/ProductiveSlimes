@@ -1,5 +1,7 @@
-// 1.21.1	2024-09-04T00:48:58.8720901	Recipes
+// 1.21.1	2024-09-04T17:59:18.1183892	Recipes
 341025e539624df4455690d89a245fa1f31dad6a data/productiveslimes/advancement/recipes/building_blocks/melting_station.json
 62b7b8403b4cb18b9aa7abedf017f64223cf8a23 data/productiveslimes/advancement/recipes/building_blocks/soliding_station.json
+230bb540fd6213889b2301a301cc298a8adbd1ec data/productiveslimes/advancement/recipes/misc/guidebook.json
+ab3f242718ef105ee96e76c661496211906520db data/productiveslimes/recipe/guidebook.json
 51665316c418f7ff63110d5075890dc5c9d7ae14 data/productiveslimes/recipe/melting_station.json
 379be3ae3c03b705836a75fe0d6018ae43438505 data/productiveslimes/recipe/soliding_station.json
