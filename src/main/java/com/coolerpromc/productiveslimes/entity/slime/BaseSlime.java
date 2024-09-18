@@ -170,7 +170,7 @@ public abstract class BaseSlime extends Slime {
         this.xpReward = i;
     }
 
-    @Override
+    /*@Override
     public void remove(Entity.RemovalReason pReason) {
         this.setRemoved(pReason);
         if (pReason == Entity.RemovalReason.KILLED) {
@@ -178,7 +178,7 @@ public abstract class BaseSlime extends Slime {
 
             this.spawnAtLocation(this.entityData.get(RESOURCE));
         }
-    }
+    }*/
 
     float getSoundPitch() {
         float f = this.isTiny() ? 1.4F : 0.8F;
@@ -211,6 +211,7 @@ public abstract class BaseSlime extends Slime {
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
         slime.setSize(slime.getSize() + 1, false);
         slime.setHealth(slime.getMaxHealth());
+        slime.setPos(slime.getX(), slime.getY() + 1, slime.getZ());
         pPlayer.getItemInHand(pHand).shrink(slime.getSize() + 1);
     }
 
