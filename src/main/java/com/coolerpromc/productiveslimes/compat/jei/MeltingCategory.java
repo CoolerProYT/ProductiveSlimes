@@ -68,7 +68,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MeltingRecipe meltingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, 1));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, meltingRecipe.getOutputs().get(0).getCount()));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(meltingRecipe.getIngredients().get(0).getItems()[0].getItem(), meltingRecipe.getInputCount()));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).addItemStack(meltingRecipe.getOutputs().get(0));
     }
