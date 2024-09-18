@@ -10,6 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 
 import java.util.Iterator;
@@ -24,11 +25,35 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
+        //Override vanilla recipes
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICKY_PISTON, 1)
+                .requires(Tags.Items.SLIME_BALLS)
+                .requires(Items.PISTON)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.PISTON))
+                .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.MAGMA_CREAM, 1)
+                .requires(Tags.Items.SLIME_BALLS)
+                .requires(Items.BLAZE_POWDER)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.BLAZE_POWDER))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEAD,2)
+                .pattern("AA ")
+                .pattern("AB ")
+                .pattern("  A")
+                .define('A', Items.STRING)
+                .define('B', Tags.Items.SLIME_BALLS)
+                .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
+                .save(recipeOutput);
+
+        //Mod Recipe
+
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MELTING_STATION.get(),1)
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
-                .define('A', Blocks.DEEPSLATE)
+                .define('A', Items.DEEPSLATE)
                 .define('B', Items.LAVA_BUCKET)
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
                 .save(recipeOutput);
@@ -37,14 +62,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
-                .define('A', Blocks.DEEPSLATE)
+                .define('A', Items.DEEPSLATE)
                 .define('B', Items.WATER_BUCKET)
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
                 .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
                 .requires(Items.BOOK)
-                .requires(Items.SLIME_BALL)
+                .requires(Tags.Items.SLIME_BALLS)
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(recipeOutput);
 

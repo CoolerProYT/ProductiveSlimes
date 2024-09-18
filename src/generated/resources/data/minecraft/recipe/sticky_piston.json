@@ -3,14 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:book"
+      "tag": "c:slime_balls"
     },
     {
-      "tag": "c:slime_balls"
+      "item": "minecraft:piston"
     }
   ],
   "result": {
     "count": 1,
-    "id": "productiveslimes:guidebook"
+    "id": "minecraft:sticky_piston"
   }
 }
