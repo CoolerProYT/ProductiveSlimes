@@ -7,6 +7,16 @@
   "block.productiveslimes.soliding_station": "Soliding Station",
   "block.productiveslimes.liquid_soliding_station": "Soliding Station",
 
+  "block.productiveslimes.dirt_slime_block": "Dirt Slime Block",
+  "block.productiveslimes.stone_slime_block": "Stone Slime Block",
+  "block.productiveslimes.iron_slime_block": "Iron Slime Block",
+  "block.productiveslimes.copper_slime_block": "Copper Slime Block",
+  "block.productiveslimes.gold_slime_block": "Gold Slime Block",
+  "block.productiveslimes.diamond_slime_block": "Diamond Slime Block",
+  "block.productiveslimes.netherite_slime_block": "Netherite Slime Block",
+  "block.productiveslimes.lapis_slime_block": "Lapis Slime Block",
+  "block.productiveslimes.redstone_slime_block": "Redstone Slime Block",
+
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",

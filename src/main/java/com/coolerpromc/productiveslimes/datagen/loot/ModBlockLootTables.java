@@ -32,6 +32,16 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.MELTING_STATION.get());
         dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
+
+        dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.COPPER_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.IRON_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.GOLD_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.DIAMOND_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.NETHERITE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.LAPIS_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.REDSTONE_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

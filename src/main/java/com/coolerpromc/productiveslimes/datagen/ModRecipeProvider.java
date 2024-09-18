@@ -47,6 +47,50 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(Items.SLIME_BALL)
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(recipeOutput);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModItems.DIRT_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.DIRT_SLIME_BALL, ModBlocks.DIRT_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.STONE_SLIME_BLOCK, ModItems.STONE_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.STONE_SLIME_BALL, ModBlocks.STONE_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.COPPER_SLIME_BLOCK, ModItems.COPPER_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.COPPER_SLIME_BALL, ModBlocks.COPPER_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.IRON_SLIME_BLOCK, ModItems.IRON_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.IRON_SLIME_BALL, ModBlocks.IRON_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.GOLD_SLIME_BLOCK, ModItems.GOLD_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.GOLD_SLIME_BALL, ModBlocks.GOLD_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.DIAMOND_SLIME_BLOCK, ModItems.DIAMOND_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.DIAMOND_SLIME_BALL, ModBlocks.DIAMOND_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.NETHERITE_SLIME_BLOCK, ModItems.NETHERITE_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.NETHERITE_SLIME_BALL, ModBlocks.NETHERITE_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.LAPIS_SLIME_BLOCK, ModItems.LAPIS_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.LAPIS_SLIME_BALL, ModBlocks.LAPIS_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.REDSTONE_SLIME_BLOCK, ModItems.REDSTONE_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.REDSTONE_SLIME_BALL, ModBlocks.REDSTONE_SLIME_BLOCK);
+    }
+
+    protected static void slimeBlockToSlimeBall(RecipeOutput pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, pSlimeBall, 9)
+                .requires(pSlimeBlock)
+                .unlockedBy(getHasName(pSlimeBlock), has(pSlimeBlock))
+                .save(pRecipeOutput, getItemName(pSlimeBall) + "_from_" + getItemName(pSlimeBlock));
+    }
+
+    protected static void slimeBallToSlimeBlock(RecipeOutput pRecipeOutput, ItemLike pSlimeBall, ItemLike pSlimeBlock) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, pSlimeBlock, 1)
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("AAA")
+                .define('A', pSlimeBall)
+                .unlockedBy(getHasName(pSlimeBall), has(pSlimeBall))
+                .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
     }
 
     protected static void oreSmelting(RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
@@ -64,6 +108,5 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             ItemLike itemlike = (ItemLike)var10.next();
             SimpleCookingRecipeBuilder.generic(Ingredient.of(new ItemLike[]{itemlike}), pCategory, pResult, pExperience, pCookingTime, pSerializer, pRecipeFactory).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike)).save(pRecipeOutput, getItemName(pResult) + pSuffix + "_" + getItemName(itemlike));
         }
-
     }
 }

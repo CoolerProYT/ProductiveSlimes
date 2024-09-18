@@ -156,7 +156,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() > 0) {
+        Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
+        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
@@ -180,7 +181,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
             // Extract the input item from the input slot
             this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
-            this.bucketHandler.extractItem(0, 1, false);
+            this.bucketHandler.extractItem(0, recipe.get().value().getOutputs().get(0).getCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {

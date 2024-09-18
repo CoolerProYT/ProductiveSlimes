@@ -22,6 +22,43 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         simpleBlockWithVariants(ModBlocks.MELTING_STATION.get(), "melting_station");
         simpleBlockWithVariants(ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
+
+        registerSlimeBlock(ModBlocks.DIRT_SLIME_BLOCK.get(), "dirt_slime_block");
+        registerSlimeBlock(ModBlocks.STONE_SLIME_BLOCK.get(), "stone_slime_block");
+        registerSlimeBlock(ModBlocks.COPPER_SLIME_BLOCK.get(), "copper_slime_block");
+        registerSlimeBlock(ModBlocks.IRON_SLIME_BLOCK.get(), "iron_slime_block");
+        registerSlimeBlock(ModBlocks.GOLD_SLIME_BLOCK.get(), "gold_slime_block");
+        registerSlimeBlock(ModBlocks.DIAMOND_SLIME_BLOCK.get(), "diamond_slime_block");
+        registerSlimeBlock(ModBlocks.NETHERITE_SLIME_BLOCK.get(), "netherite_slime_block");
+        registerSlimeBlock(ModBlocks.LAPIS_SLIME_BLOCK.get(), "lapis_slime_block");
+        registerSlimeBlock(ModBlocks.REDSTONE_SLIME_BLOCK.get(), "redstone_slime_block");
+    }
+
+    private void registerSlimeBlock(Block block, String textureName){
+        ModelFile customModel = models().withExistingParent("block/" + textureName, mcLoc("block/block"))
+                .texture("particle", modLoc("block/" + textureName))
+                .texture("texture", modLoc("block/" + textureName))
+                .element().from(0, 0, 0).to(16, 16, 16)
+                .face(Direction.DOWN).texture("#texture").cullface(Direction.DOWN).end()
+                .face(Direction.UP).texture("#texture").cullface(Direction.UP).end()
+                .face(Direction.NORTH).texture("#texture").cullface(Direction.NORTH).end()
+                .face(Direction.SOUTH).texture("#texture").cullface(Direction.SOUTH).end()
+                .face(Direction.WEST).texture("#texture").cullface(Direction.WEST).end()
+                .face(Direction.EAST).texture("#texture").cullface(Direction.EAST).end()
+                .end()
+                .element().from(3, 3, 3).to(13, 13, 13)
+                .face(Direction.DOWN).texture("#texture").end()
+                .face(Direction.UP).texture("#texture").end()
+                .face(Direction.NORTH).texture("#texture").end()
+                .face(Direction.SOUTH).texture("#texture").end()
+                .face(Direction.WEST).texture("#texture").end()
+                .face(Direction.EAST).texture("#texture").end()
+                .end();
+
+        getVariantBuilder(block)
+                .partialState().setModels(new ConfiguredModel(customModel));
+
+        simpleBlockItem(block, customModel);
     }
 
     private void blockWithItem(DeferredBlock<Block> blockRegistryObject){
