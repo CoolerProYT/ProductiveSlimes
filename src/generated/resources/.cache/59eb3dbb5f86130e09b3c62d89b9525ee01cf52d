@@ -1,4 +1,12 @@
-// 1.21.1	2024-09-18T11:18:08.8821008	Loot Tables
+// 1.21.1	2024-09-18T19:03:48.7788608	Loot Tables
+01e364f47024460930caabfc2e77500b949ebdf5 data/productiveslimes/loot_table/blocks/copper_slime_block.json
+6e299cd8c41c53956a454873451260087e379f1c data/productiveslimes/loot_table/blocks/diamond_slime_block.json
 769ecc6851af1fa0f2b0591f1a20666783aa7e2e data/productiveslimes/loot_table/blocks/dirt_slime_block.json
+eb949b816d89ba3df86aebf5cd136a02028e14ff data/productiveslimes/loot_table/blocks/gold_slime_block.json
+d98eac6237e7e31594e8e07858d97f701ef8b1bc data/productiveslimes/loot_table/blocks/iron_slime_block.json
+41e412bf98a659aae30dd88ced3b0833cd6a20c5 data/productiveslimes/loot_table/blocks/lapis_slime_block.json
 3e5f6226e198e935130eec7e4958fe94b3a1c3d0 data/productiveslimes/loot_table/blocks/melting_station.json
+b91cf551f6cef6111c0bc09edb70b4594bb23de9 data/productiveslimes/loot_table/blocks/netherite_slime_block.json
+83c526a79a47e6d9fd2004931ff240498680c848 data/productiveslimes/loot_table/blocks/redstone_slime_block.json
 2148b7e5ab2805890f5b106d3ac40767ffd5416d data/productiveslimes/loot_table/blocks/soliding_station.json
+9b698eff440ff7494a4b22a053428c87d4c7b128 data/productiveslimes/loot_table/blocks/stone_slime_block.json

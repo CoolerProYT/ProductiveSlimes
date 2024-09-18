@@ -44,6 +44,16 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.LAPIS_SLIME_BALL.get());
                         pOutput.accept(ModItems.REDSTONE_SLIME_BALL.get());
 
+                        pOutput.accept(ModBlocks.DIRT_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.STONE_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.IRON_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.COPPER_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.GOLD_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.DIAMOND_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.NETHERITE_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.LAPIS_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.REDSTONE_SLIME_BLOCK.get());
+
                         pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_STONE_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_IRON_BUCKET.get());

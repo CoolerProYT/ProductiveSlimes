@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:copper_slime_block"
+    }
+  ],
+  "inputCount": 2,
+  "output": [
+    {
+      "id": "productiveslimes:molten_copper_bucket",
+      "count": 5
+    }
+  ]
+}

@@ -24,6 +24,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithVariants(ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
 
         registerSlimeBlock(ModBlocks.DIRT_SLIME_BLOCK.get(), "dirt_slime_block");
+        registerSlimeBlock(ModBlocks.STONE_SLIME_BLOCK.get(), "stone_slime_block");
+        registerSlimeBlock(ModBlocks.COPPER_SLIME_BLOCK.get(), "copper_slime_block");
+        registerSlimeBlock(ModBlocks.IRON_SLIME_BLOCK.get(), "iron_slime_block");
+        registerSlimeBlock(ModBlocks.GOLD_SLIME_BLOCK.get(), "gold_slime_block");
+        registerSlimeBlock(ModBlocks.DIAMOND_SLIME_BLOCK.get(), "diamond_slime_block");
+        registerSlimeBlock(ModBlocks.NETHERITE_SLIME_BLOCK.get(), "netherite_slime_block");
+        registerSlimeBlock(ModBlocks.LAPIS_SLIME_BLOCK.get(), "lapis_slime_block");
+        registerSlimeBlock(ModBlocks.REDSTONE_SLIME_BLOCK.get(), "redstone_slime_block");
     }
 
     private void registerSlimeBlock(Block block, String textureName){
