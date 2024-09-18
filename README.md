@@ -13,6 +13,13 @@ Progress Tracking: [Trello](https://trello.com/b/Xtij0qyG/productive-slimes)
 
 ## Version
 ### Neoforge
+- 1.0.2
+  - New
+    - Added Slime Block for all tier of slime
+    - Added Melting Recipe for All Slime Block Tier
+    - Slime able to split on death
+  - Bug Fix
+    - Fixed slime go underground when growth
 - 1.0.1
   - Bug Fix
     - Liquid Soliding Station translation
