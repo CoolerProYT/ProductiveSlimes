@@ -1,3 +1,6 @@
-// 1.21.1	2024-09-04T00:39:00.9293048	Block States: productiveslimes
+// 1.21.1	2024-09-18T11:38:51.9633604	Block States: productiveslimes
+c90c81baaf324c03a8e239946ebb57914b119fc2 assets/productiveslimes/blockstates/dirt_slime_block.json
 d343d11b8527b02e065b3ecdceff5e2269eab938 assets/productiveslimes/blockstates/melting_station.json
 1c6500be280d732e4dc868952d480a2ddc9c4088 assets/productiveslimes/blockstates/soliding_station.json
+1281ccbbcf259fe2f49afd3157fbe99a7d2573d6 assets/productiveslimes/models/block/dirt_slime_block.json
+14432c19b516a895e221a6b7a306b5f873f50af8 assets/productiveslimes/models/item/dirt_slime_block.json
