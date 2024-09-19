@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -10,11 +11,15 @@ import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,6 +32,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -141,6 +147,85 @@ public class ProductiveSlimes
                     ModFluidTypes.MOLTEN_LAPIS_FLUID_TYPE.get());
             event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
                     ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get());
+        }
+
+        @SubscribeEvent
+        public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Block event) {
+            registerSlimeBlockColorHandlers(event,
+                    ModBlocks.DIRT_SLIME_BLOCK.value(),
+                    ModBlocks.STONE_SLIME_BLOCK.value(),
+                    ModBlocks.IRON_SLIME_BLOCK.value(),
+                    ModBlocks.COPPER_SLIME_BLOCK.value(),
+                    ModBlocks.GOLD_SLIME_BLOCK.value(),
+                    ModBlocks.DIAMOND_SLIME_BLOCK.value(),
+                    ModBlocks.NETHERITE_SLIME_BLOCK.value(),
+                    ModBlocks.LAPIS_SLIME_BLOCK.value(),
+                    ModBlocks.REDSTONE_SLIME_BLOCK.value()
+            );
+        }
+
+        @SubscribeEvent
+        public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event) {
+            registerSlimeBlockColorHandlers(event,
+                    ModBlocks.DIRT_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.STONE_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.IRON_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.COPPER_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.GOLD_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.DIAMOND_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.NETHERITE_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.LAPIS_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.REDSTONE_SLIME_BLOCK.value().asItem()
+            );
+
+            registerSlimeballColorHandlers(event,
+                    ModItems.DIRT_SLIME_BALL.value().asItem(),
+                    ModItems.STONE_SLIME_BALL.value().asItem(),
+                    ModItems.IRON_SLIME_BALL.value().asItem(),
+                    ModItems.COPPER_SLIME_BALL.value().asItem(),
+                    ModItems.GOLD_SLIME_BALL.value().asItem(),
+                    ModItems.DIAMOND_SLIME_BALL.value().asItem(),
+                    ModItems.NETHERITE_SLIME_BALL.value().asItem(),
+                    ModItems.LAPIS_SLIME_BALL.value().asItem(),
+                    ModItems.REDSTONE_SLIME_BALL.value().asItem()
+                    );
+        }
+
+        private static void registerSlimeBlockColorHandlers(RegisterColorHandlersEvent.Block event, Block... blocks) {
+            for (Block block : blocks) {
+                event.register((pState, pLevel, pPos, pTintIndex) -> {
+                    if (pState.getBlock() instanceof SlimeBlock slimeBlock) {
+                        return slimeBlock.getColor();
+                    }
+                    return -1; // Default no color
+                }, block);
+            }
+        }
+
+
+        private static void registerSlimeBlockColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
+            for (Item item : items) {
+                event.register((itemStack, pTintIndex) -> {
+                    if (itemStack.getItem() instanceof BlockItem blockItem) {
+                        if (blockItem.getBlock() instanceof SlimeBlock slimeBlock) {
+                            return slimeBlock.getColor();
+                        }
+                    }
+                    return -1; // Default no color
+                }, item);
+            }
+        }
+
+        private static void registerSlimeballColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
+            for (Item item : items) {
+                event.register((itemStack, pTintIndex) -> {
+                    if (itemStack.getItem() instanceof SlimeballItem slimeballItem) {
+                        return slimeballItem.getColor();
+                    }
+
+                    return -1; // Default no color
+                }, item);
+            }
         }
     }
 }
