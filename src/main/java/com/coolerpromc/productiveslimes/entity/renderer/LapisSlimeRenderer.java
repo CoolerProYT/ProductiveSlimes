@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
 public class LapisSlimeRenderer extends BaseSlimeRenderer {
-    public LapisSlimeRenderer (EntityRendererProvider.Context pContext) {
+    public LapisSlimeRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, 0xF01c41ba);
     }
 }

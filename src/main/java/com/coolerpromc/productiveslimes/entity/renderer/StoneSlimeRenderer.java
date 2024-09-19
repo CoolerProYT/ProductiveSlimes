@@ -7,6 +7,6 @@ import net.minecraft.world.entity.monster.Slime;
 
 public class StoneSlimeRenderer extends BaseSlimeRenderer {
     public StoneSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, 0xF04a4545);
+        super(pContext,0xF04a4545);
     }
 }

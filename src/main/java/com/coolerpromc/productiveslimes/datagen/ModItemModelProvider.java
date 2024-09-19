@@ -32,15 +32,15 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.LAPIS_SLIME_BALL);
         slimeballItem(ModItems.REDSTONE_SLIME_BALL);
 
-        basicItem(ModFluids.MOLTEN_DIRT_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_STONE_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_IRON_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_COPPER_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_GOLD_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_DIAMOND_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_NETHERITE_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_LAPIS_BUCKET.get());
-        basicItem(ModFluids.MOLTEN_REDSTONE_BUCKET.get());
+        bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
+        bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
+        bucketItem(ModFluids.MOLTEN_IRON_BUCKET);
+        bucketItem(ModFluids.MOLTEN_COPPER_BUCKET);
+        bucketItem(ModFluids.MOLTEN_GOLD_BUCKET);
+        bucketItem(ModFluids.MOLTEN_DIAMOND_BUCKET);
+        bucketItem(ModFluids.MOLTEN_NETHERITE_BUCKET);
+        bucketItem(ModFluids.MOLTEN_LAPIS_BUCKET);
+        bucketItem(ModFluids.MOLTEN_REDSTONE_BUCKET);
 
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -64,6 +64,21 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .face(Direction.SOUTH).texture("#layer0").tintindex(0).end()
                 .face(Direction.WEST).texture("#layer0").tintindex(0).end()
                 .face(Direction.EAST).texture("#layer0").tintindex(0).end()
+                .end();
+    }
+
+    private ItemModelBuilder bucketItem(DeferredItem<Item> item){
+        return getBuilder(item.getId().getPath())
+                .parent(getExistingFile(mcLoc("item/generated")))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket"))
+                .texture("layer1", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket_fluid"))
+                .element()
+                .face(Direction.DOWN).texture("#layer1").tintindex(1).end()
+                .face(Direction.UP).texture("#layer1").tintindex(1).end()
+                .face(Direction.NORTH).texture("#layer1").tintindex(1).end()
+                .face(Direction.SOUTH).texture("#layer1").tintindex(1).end()
+                .face(Direction.WEST).texture("#layer1").tintindex(1).end()
+                .face(Direction.EAST).texture("#layer1").tintindex(1).end()
                 .end();
     }
 
