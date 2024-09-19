@@ -5,27 +5,33 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "east": {
           "cullface": "east",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "north": {
           "cullface": "north",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "south": {
           "cullface": "south",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "up": {
           "cullface": "up",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "west": {
           "cullface": "west",
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         }
       },
       "from": [
@@ -42,22 +48,28 @@
     {
       "faces": {
         "down": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "east": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "north": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "south": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "up": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         },
         "west": {
-          "texture": "#texture"
+          "texture": "#texture",
+          "tintindex": 0
         }
       },
       "from": [
@@ -73,7 +85,7 @@
     }
   ],
   "textures": {
-    "particle": "productiveslimes:block/redstone_slime_block",
-    "texture": "productiveslimes:block/redstone_slime_block"
+    "particle": "productiveslimes:block/template_slime_block",
+    "texture": "productiveslimes:block/template_slime_block"
   }
 }
