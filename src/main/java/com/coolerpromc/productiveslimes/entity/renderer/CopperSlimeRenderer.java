@@ -6,15 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
 public class CopperSlimeRenderer extends BaseSlimeRenderer {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/copper_slime.png");
-
     public CopperSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Slime pEntity) {
-        return TEXTURE;
+        super(pContext, 0xF06a3e15);
     }
 }
