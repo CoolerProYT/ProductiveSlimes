@@ -8,14 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
 public class GoldSlimeRenderer extends BaseSlimeRenderer {
-    private static final ResourceLocation GOLD_SLIME_LOCATION = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/gold_slime.png");
-
     public GoldSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Slime pEntity) {
-        return GOLD_SLIME_LOCATION;
+        super(pContext, 0xF0a5953f);
     }
 }
