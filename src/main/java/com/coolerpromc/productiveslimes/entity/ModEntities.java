@@ -30,6 +30,8 @@ public class ModEntities {
             ENTITY_TYPES.register("lapis_slime", () -> EntityType.Builder.of(LapisSlime::new, MobCategory.CREATURE).build("lapis_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<RedstoneSlime>> REDSTONE_SLIME =
             ENTITY_TYPES.register("redstone_slime", () -> EntityType.Builder.of(RedstoneSlime::new, MobCategory.CREATURE).build("redstone_slime"));
+    public static final DeferredHolder<EntityType<?>, EntityType<OakSlime>> OAK_SLIME =
+            ENTITY_TYPES.register("oak_slime", () -> EntityType.Builder.of(OakSlime::new, MobCategory.CREATURE).build("oak_slime"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

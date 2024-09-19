@@ -1,6 +1,8 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -36,6 +38,7 @@ public abstract class BaseSlime extends Slime {
     public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
+        RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 1.0f);
         growthTime = cooldown;
     }
 

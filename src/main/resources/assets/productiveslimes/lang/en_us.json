@@ -16,6 +16,7 @@
   "block.productiveslimes.netherite_slime_block": "Netherite Slime Block",
   "block.productiveslimes.lapis_slime_block": "Lapis Slime Block",
   "block.productiveslimes.redstone_slime_block": "Redstone Slime Block",
+  "block.productiveslimes.oak_slime_block": "Oak Slime Block",
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
 
@@ -28,6 +29,7 @@
   "item.productiveslimes.netherite_slime_spawn_egg": "Netherite Slime Spawn Egg",
   "item.productiveslimes.lapis_slime_spawn_egg": "Lapis Slime Spawn Egg",
   "item.productiveslimes.redstone_slime_spawn_egg": "Redstone Slime Spawn Egg",
+  "item.productiveslimes.oak_slime_spawn_egg": "Oak Slime Spawn Egg",
 
   "item.productiveslimes.dirt_slimeball": "Dirt Slimeball",
   "item.productiveslimes.stone_slimeball": "Stone Slimeball",
@@ -38,6 +40,7 @@
   "item.productiveslimes.netherite_slimeball": "Netherite Slimeball",
   "item.productiveslimes.lapis_slimeball": "Lapis Slimeball",
   "item.productiveslimes.redstone_slimeball": "Redstone Slimeball",
+  "item.productiveslimes.oak_slimeball": "Oak Slimeball",
 
   "entity.productiveslimes.dirt_slime": "Dirt Slime",
   "entity.productiveslimes.stone_slime": "Stone Slime",
@@ -48,6 +51,7 @@
   "entity.productiveslimes.netherite_slime": "Netherite Slime",
   "entity.productiveslimes.lapis_slime": "Lapis Slime",
   "entity.productiveslimes.redstone_slime": "Redstone Slime",
+  "entity.productiveslimes.oak_slime": "Oak Slime",
 
   "item.productiveslimes.molten_dirt_bucket": "Molten Dirt Bucket",
   "block.productiveslimes.molten_dirt_block": "Molten Dirt",
@@ -66,5 +70,7 @@
   "item.productiveslimes.molten_lapis_bucket": "Molten Lapis Bucket",
   "block.productiveslimes.molten_lapis_block": "Molten Lapis",
   "item.productiveslimes.molten_redstone_bucket": "Molten Redstone Bucket",
-  "block.productiveslimes.molten_redstone_block": "Molten Redstone"
+  "block.productiveslimes.molten_redstone_block": "Molten Redstone",
+  "item.productiveslimes.molten_oak_bucket": "Molten Oak Bucket",
+  "block.productiveslimes.molten_oak_block": "Molten Oak"
 }

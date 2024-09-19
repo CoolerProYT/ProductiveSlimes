@@ -5,16 +5,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
-public class RedstoneSlimeRenderer extends BaseSlimeRenderer {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/redstone_slime.png");
-
-    public RedstoneSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Slime pEntity) {
-        return TEXTURE;
+public class RedstoneSlimeRenderer  extends BaseSlimeRenderer {
+    public RedstoneSlimeRenderer (EntityRendererProvider.Context pContext) {
+        super(pContext, 0xF0a10505);
     }
 }
