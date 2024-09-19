@@ -12,6 +12,7 @@ import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
@@ -196,6 +197,18 @@ public class ProductiveSlimes
                     ModItems.LAPIS_SLIME_BALL.value().asItem(),
                     ModItems.REDSTONE_SLIME_BALL.value().asItem()
                     );
+
+            registerBucketColorHandlers(event,
+                    ModFluids.MOLTEN_DIRT_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_STONE_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_IRON_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_COPPER_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_GOLD_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_DIAMOND_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_NETHERITE_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_LAPIS_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_REDSTONE_BUCKET.value().asItem()
+            );
         }
 
         private static void registerSlimeBlockColorHandlers(RegisterColorHandlersEvent.Block event, Block... blocks) {
@@ -204,7 +217,7 @@ public class ProductiveSlimes
                     if (pState.getBlock() instanceof SlimeBlock slimeBlock) {
                         return slimeBlock.getColor();
                     }
-                    return -1; // Default no color
+                    return 0xFFFFFFFF; // Default no color
                 }, block);
             }
         }
@@ -218,7 +231,7 @@ public class ProductiveSlimes
                             return slimeBlock.getColor();
                         }
                     }
-                    return -1; // Default no color
+                    return 0xFFFFFFFF; // Default no color
                 }, item);
             }
         }
@@ -230,7 +243,21 @@ public class ProductiveSlimes
                         return slimeballItem.getColor();
                     }
 
-                    return -1; // Default no color
+                    return 0xFFFFFFFF; // Default no color
+                }, item);
+            }
+        }
+
+        private static void registerBucketColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
+            for (Item item : items) {
+                event.register((itemStack, pTintIndex) -> {
+                    if (itemStack.getItem() instanceof BucketItem bucketItem) {
+                        if (pTintIndex == 1) {
+                            return bucketItem.getColor();
+                        }
+                    }
+
+                    return 0xFFFFFFFF; // Default no color
                 }, item);
             }
         }
