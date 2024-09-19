@@ -1,6 +1,47 @@
 {
   "parent": "minecraft:item/generated",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "east": {
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "north": {
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "south": {
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "up": {
+          "texture": "#layer1",
+          "tintindex": 1
+        },
+        "west": {
+          "texture": "#layer1",
+          "tintindex": 1
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "textures": {
-    "layer0": "productiveslimes:item/molten_dirt_bucket"
+    "layer0": "productiveslimes:item/bucket",
+    "layer1": "productiveslimes:item/bucket_fluid"
   }
 }
