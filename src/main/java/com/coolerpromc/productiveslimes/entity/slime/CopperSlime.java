@@ -58,6 +58,6 @@ public class CopperSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.COPPER_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.COPPER_INGOT));
     }
 }

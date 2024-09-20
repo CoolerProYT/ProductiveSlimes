@@ -60,6 +60,6 @@ public class DirtSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.DIRT_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.DIRT));
     }
 }
