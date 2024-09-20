@@ -172,7 +172,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_SAND_BLOCK = ModBlocks.BLOCKS.register("molten_sand_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_SAND.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_SAND_BUCKET = ModItems.ITEMS.registerItem("molten_sand_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFa69d6f));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
     public static final BaseFlowingFluid.Properties MOLTEN_SAND_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_SAND_FLUID_TYPE, SOURCE_MOLTEN_SAND, FLOWING_MOLTEN_SAND)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
