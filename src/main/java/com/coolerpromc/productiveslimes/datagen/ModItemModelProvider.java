@@ -54,7 +54,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.LAPIS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.REDSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.OAK_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        //spawnEggItem(ModItems.OAK_SLIME_SPAWN_EGG.getId().getPath());
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
@@ -85,11 +84,6 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .face(Direction.EAST).texture("#layer1").tintindex(1).end()
                 .end();
     }
-
-    private void spawnEggItem(String name) {
-        withExistingParent(name, mcLoc("item/template_spawn_egg"));
-    }
-
 
     private ItemModelBuilder simpleItem(DeferredItem<Item> item){
         return withExistingParent(item.getId().getPath(),
