@@ -111,6 +111,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.OAK_SLIME_BLOCK, ModItems.OAK_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.OAK_SLIME_BALL, ModBlocks.OAK_SLIME_BLOCK);
 
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.SAND_SLIME_BLOCK, ModItems.SAND_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.SAND_SLIME_BALL, ModBlocks.SAND_SLIME_BLOCK);
+
         //Melting Recipe
         meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModFluids.MOLTEN_DIRT_BUCKET, 4, 1);
@@ -142,6 +145,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         meltingRecipe(recipeOutput, ModBlocks.OAK_SLIME_BLOCK, ModFluids.MOLTEN_OAK_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.OAK_SLIME_BALL, ModFluids.MOLTEN_OAK_BUCKET, 4, 1);
 
+        meltingRecipe(recipeOutput, ModBlocks.SAND_SLIME_BLOCK, ModFluids.MOLTEN_SAND_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.SAND_SLIME_BALL, ModFluids.MOLTEN_SAND_BUCKET, 4, 1);
+
         //Soliding Recipe
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_DIRT_BUCKET, Items.DIRT, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_STONE_BUCKET, Items.STONE, 1, 2);
@@ -153,6 +159,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_LAPIS_BUCKET, Items.LAPIS_LAZULI, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_REDSTONE_BUCKET, Items.REDSTONE, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_OAK_BUCKET, Items.OAK_PLANKS, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_SAND_BUCKET, Items.SAND, 1, 2);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
