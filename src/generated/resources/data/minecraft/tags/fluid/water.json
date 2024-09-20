@@ -17,6 +17,8 @@
     "productiveslimes:source_molten_lapis",
     "productiveslimes:flowing_molten_lapis",
     "productiveslimes:source_molten_redstone",
-    "productiveslimes:flowing_molten_redstone"
+    "productiveslimes:flowing_molten_redstone",
+    "productiveslimes:source_molten_oak",
+    "productiveslimes:flowing_molten_oak"
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "type": "productiveslimes:soliding",
+  "ingredients": [
+    {
+      "item": "productiveslimes:molten_oak_bucket"
+    }
+  ],
+  "inputCount": 1,
+  "output": [
+    {
+      "count": 2,
+      "id": "minecraft:oak_planks"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:bucket"
+    }
+  ]
+}
