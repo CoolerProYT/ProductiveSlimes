@@ -38,6 +38,7 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
                 .add(ModFluids.SOURCE_MOLTEN_REDSTONE.get())
                 .add(ModFluids.FLOWING_MOLTEN_REDSTONE.get())
                 .add(ModFluids.SOURCE_MOLTEN_OAK.get())
-                .add(ModFluids.FLOWING_MOLTEN_OAK.get());
+                .add(ModFluids.FLOWING_MOLTEN_COAL.get()).add(ModFluids.SOURCE_MOLTEN_COAL.get())
+                .add(ModFluids.FLOWING_MOLTEN_COAL.get());
     }
 }
