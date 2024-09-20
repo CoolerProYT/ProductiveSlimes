@@ -18,7 +18,7 @@ public class ModItems {
     public static final DeferredItem<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));
     public static final DeferredItem<Item> STONE_SLIME_BALL = ITEMS.register("stone_slimeball", () -> new SlimeballItem(0xFF6F6969));
     public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF8B5D2D));
-    public static final DeferredItem<Item> COPPER_SLIME_BALL = ITEMS.register("copper_slimeball", () -> new SlimeballItem(0xFFAEAEAC));
+    public static final DeferredItem<Item> COPPER_SLIME_BALL = ITEMS.register("copper_slimeball", () -> new SlimeballItem(0xFF6a3e15));
     public static final DeferredItem<Item> GOLD_SLIME_BALL = ITEMS.register("gold_slimeball", () -> new SlimeballItem(0xFFCCC16A));
     public static final DeferredItem<Item> DIAMOND_SLIME_BALL = ITEMS.register("diamond_slimeball", () -> new SlimeballItem(0xFF2BB7C7));
     public static final DeferredItem<Item> NETHERITE_SLIME_BALL = ITEMS.register("netherite_slimeball", () -> new SlimeballItem(0xFF704545));

@@ -1,11 +1,19 @@
 package com.coolerpromc.productiveslimes.datagen;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
+import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
+import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
@@ -48,7 +56,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         //Mod Recipe
-
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MELTING_STATION.get(),1)
                 .pattern("AAA")
                 .pattern("ABA")
@@ -73,6 +80,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(recipeOutput);
 
+        //Slime Ball Recipe
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModItems.DIRT_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.DIRT_SLIME_BALL, ModBlocks.DIRT_SLIME_BLOCK);
 
@@ -102,6 +110,68 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.OAK_SLIME_BLOCK, ModItems.OAK_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.OAK_SLIME_BALL, ModBlocks.OAK_SLIME_BLOCK);
+
+        //Melting Recipe
+        meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModFluids.MOLTEN_DIRT_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.STONE_SLIME_BLOCK, ModFluids.MOLTEN_STONE_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.STONE_SLIME_BALL, ModFluids.MOLTEN_STONE_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.COPPER_SLIME_BLOCK, ModFluids.MOLTEN_COPPER_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.COPPER_SLIME_BALL, ModFluids.MOLTEN_COPPER_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.IRON_SLIME_BLOCK, ModFluids.MOLTEN_IRON_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.IRON_SLIME_BALL, ModFluids.MOLTEN_IRON_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.GOLD_SLIME_BLOCK, ModFluids.MOLTEN_GOLD_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.GOLD_SLIME_BALL, ModFluids.MOLTEN_GOLD_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.DIAMOND_SLIME_BLOCK, ModFluids.MOLTEN_DIAMOND_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.DIAMOND_SLIME_BALL, ModFluids.MOLTEN_DIAMOND_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.NETHERITE_SLIME_BLOCK, ModFluids.MOLTEN_NETHERITE_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.NETHERITE_SLIME_BALL, ModFluids.MOLTEN_NETHERITE_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.LAPIS_SLIME_BLOCK, ModFluids.MOLTEN_LAPIS_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.LAPIS_SLIME_BALL, ModFluids.MOLTEN_LAPIS_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.REDSTONE_SLIME_BLOCK, ModFluids.MOLTEN_REDSTONE_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.REDSTONE_SLIME_BALL, ModFluids.MOLTEN_REDSTONE_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, ModBlocks.OAK_SLIME_BLOCK, ModFluids.MOLTEN_OAK_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.OAK_SLIME_BALL, ModFluids.MOLTEN_OAK_BUCKET, 4, 1);
+
+        //Soliding Recipe
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_DIRT_BUCKET, Items.DIRT, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_STONE_BUCKET, Items.STONE, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_COPPER_BUCKET, Items.COPPER_INGOT, 1, 1);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_IRON_BUCKET, Items.IRON_INGOT, 1, 1);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_GOLD_BUCKET, Items.GOLD_INGOT, 1, 1);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_DIAMOND_BUCKET, Items.DIAMOND, 1, 1);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_NETHERITE_BUCKET, Items.NETHERITE_INGOT, 1, 1);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_LAPIS_BUCKET, Items.LAPIS_LAZULI, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_REDSTONE_BUCKET, Items.REDSTONE, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_OAK_BUCKET, Items.OAK_PLANKS, 1, 2);
+    }
+
+    protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+        MeltingRecipeBuilder.meltingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .setInputCount(pInputCount)
+                .addOutput(new ItemStack(pResult, outputCount))
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting"));
+    }
+
+    protected static void solidingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+        SolidingRecipeBuilder.solidingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .setInputCount(pInputCount)
+                .addOutput(new ItemStack(pResult, outputCount))
+                .addOutput(new ItemStack(Items.BUCKET, pInputCount))
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
     }
 
     protected static void slimeBlockToSlimeBall(RecipeOutput pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
@@ -119,22 +189,5 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', pSlimeBall)
                 .unlockedBy(getHasName(pSlimeBall), has(pSlimeBall))
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
-    }
-
-    protected static void oreSmelting(RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
-        oreCooking(pRecipeOutput, RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_smelting");
-    }
-
-    protected static void oreBlasting(RecipeOutput pRecipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
-        oreCooking(pRecipeOutput, RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_blasting");
-    }
-
-    protected static <T extends AbstractCookingRecipe> void oreCooking(RecipeOutput pRecipeOutput, RecipeSerializer<T> pSerializer, AbstractCookingRecipe.Factory<T> pRecipeFactory, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pSuffix) {
-        Iterator var10 = pIngredients.iterator();
-
-        while(var10.hasNext()) {
-            ItemLike itemlike = (ItemLike)var10.next();
-            SimpleCookingRecipeBuilder.generic(Ingredient.of(new ItemLike[]{itemlike}), pCategory, pResult, pExperience, pCookingTime, pSerializer, pRecipeFactory).group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike)).save(pRecipeOutput, getItemName(pResult) + pSuffix + "_" + getItemName(itemlike));
-        }
     }
 }
