@@ -158,7 +158,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_OAK_BLOCK = ModBlocks.BLOCKS.register("molten_oak_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_OAK.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_OAK_BUCKET = ModItems.ITEMS.registerItem("molten_oak_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_OAK.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64)));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_OAK.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFa69d6f));
     public static final BaseFlowingFluid.Properties MOLTEN_OAK_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_OAK_FLUID_TYPE, SOURCE_MOLTEN_OAK, FLOWING_MOLTEN_OAK)
             .slopeFindDistance(2).levelDecreasePerBlock(1)

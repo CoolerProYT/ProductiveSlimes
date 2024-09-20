@@ -28,6 +28,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.DIAMOND_SLIME_BALL.get())
                 .add(ModItems.LAPIS_SLIME_BALL.get())
                 .add(ModItems.REDSTONE_SLIME_BALL.get())
-                .add(ModItems.NETHERITE_SLIME_BALL.get());
+                .add(ModItems.NETHERITE_SLIME_BALL.get())
+                .add(ModItems.OAK_SLIME_BALL.get());
     }
 }
