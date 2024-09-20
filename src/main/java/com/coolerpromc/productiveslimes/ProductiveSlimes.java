@@ -208,7 +208,7 @@ public class ProductiveSlimes
                     ModItems.LAPIS_SLIME_BALL.value().asItem(),
                     ModItems.REDSTONE_SLIME_BALL.value().asItem(),
                     ModItems.OAK_SLIME_BALL.value().asItem()
-                    );
+            );
 
             registerBucketColorHandlers(event,
                     ModFluids.MOLTEN_DIRT_BUCKET.value().asItem(),
