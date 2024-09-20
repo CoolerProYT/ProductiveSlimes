@@ -7,6 +7,7 @@ import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
+import com.coolerpromc.productiveslimes.entity.slime.OakSlime;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
@@ -39,6 +40,8 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import javax.swing.text.html.parser.Entity;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -102,6 +105,7 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.NETHERITE_SLIME.get(), NetheriteSlimeRenderer::new);
             EntityRenderers.register(ModEntities.LAPIS_SLIME.get(), LapisSlimeRenderer::new);
             EntityRenderers.register(ModEntities.REDSTONE_SLIME.get(), RedstoneSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.OAK_SLIME.get(), OakSlimeRenderer::new);
 
             event.enqueueWork(() -> {
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIRT.get(), RenderType.translucent());
@@ -122,6 +126,8 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_LAPIS.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_REDSTONE.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_REDSTONE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_OAK.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_OAK.get(), RenderType.translucent());
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIRT_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.STONE_SLIME_BLOCK.get(), RenderType.translucent());
@@ -132,6 +138,7 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.NETHERITE_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.LAPIS_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.REDSTONE_SLIME_BLOCK.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.OAK_SLIME_BLOCK.get(), RenderType.translucent());
             });
         }
 
@@ -155,6 +162,8 @@ public class ProductiveSlimes
                     ModFluidTypes.MOLTEN_LAPIS_FLUID_TYPE.get());
             event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
                     ModFluidTypes.MOLTEN_REDSTONE_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_OAK_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_OAK_FLUID_TYPE.get());
         }
 
         @SubscribeEvent
@@ -168,7 +177,8 @@ public class ProductiveSlimes
                     ModBlocks.DIAMOND_SLIME_BLOCK.value(),
                     ModBlocks.NETHERITE_SLIME_BLOCK.value(),
                     ModBlocks.LAPIS_SLIME_BLOCK.value(),
-                    ModBlocks.REDSTONE_SLIME_BLOCK.value()
+                    ModBlocks.REDSTONE_SLIME_BLOCK.value(),
+                    ModBlocks.OAK_SLIME_BLOCK.value()
             );
         }
 
@@ -183,7 +193,8 @@ public class ProductiveSlimes
                     ModBlocks.DIAMOND_SLIME_BLOCK.value().asItem(),
                     ModBlocks.NETHERITE_SLIME_BLOCK.value().asItem(),
                     ModBlocks.LAPIS_SLIME_BLOCK.value().asItem(),
-                    ModBlocks.REDSTONE_SLIME_BLOCK.value().asItem()
+                    ModBlocks.REDSTONE_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.OAK_SLIME_BLOCK.value().asItem()
             );
 
             registerSlimeballColorHandlers(event,
@@ -195,7 +206,8 @@ public class ProductiveSlimes
                     ModItems.DIAMOND_SLIME_BALL.value().asItem(),
                     ModItems.NETHERITE_SLIME_BALL.value().asItem(),
                     ModItems.LAPIS_SLIME_BALL.value().asItem(),
-                    ModItems.REDSTONE_SLIME_BALL.value().asItem()
+                    ModItems.REDSTONE_SLIME_BALL.value().asItem(),
+                    ModItems.OAK_SLIME_BALL.value().asItem()
                     );
 
             registerBucketColorHandlers(event,
@@ -207,7 +219,8 @@ public class ProductiveSlimes
                     ModFluids.MOLTEN_DIAMOND_BUCKET.value().asItem(),
                     ModFluids.MOLTEN_NETHERITE_BUCKET.value().asItem(),
                     ModFluids.MOLTEN_LAPIS_BUCKET.value().asItem(),
-                    ModFluids.MOLTEN_REDSTONE_BUCKET.value().asItem()
+                    ModFluids.MOLTEN_REDSTONE_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_OAK_BUCKET.value().asItem()
             );
         }
 

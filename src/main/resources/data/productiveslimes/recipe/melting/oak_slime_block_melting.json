@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:oak_slime_block"
+    }
+  ],
+  "inputCount": 2,
+  "output": [
+    {
+      "id": "productiveslimes:oak_stone_bucket",
+      "count": 5
+    }
+  ]
+}

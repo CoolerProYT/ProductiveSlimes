@@ -44,7 +44,7 @@ public class OakSlime extends BaseSlime{
                         transformSlime(pPlayer, pHand);
                     }*/
 
-                    if (pPlayer.getItemInHand(pHand).getItem() == Items.STONE && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                    if (pPlayer.getItemInHand(pHand).getItem() == Items.OAK_PLANKS && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }
                 }
