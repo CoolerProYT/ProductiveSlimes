@@ -164,6 +164,20 @@ public class ModFluids {
             .slopeFindDistance(2).levelDecreasePerBlock(1)
             .block(ModFluids.MOLTEN_OAK_BLOCK).bucket(ModFluids.MOLTEN_OAK_BUCKET);
 
+    // Sand
+    public static final Supplier<FlowingFluid> SOURCE_MOLTEN_SAND = FLUIDS.register("source_molten_sand",
+            () -> new BaseFlowingFluid.Source(ModFluids.MOLTEN_SAND_PROPERTIES));
+    public static final Supplier<FlowingFluid> FLOWING_MOLTEN_SAND = FLUIDS.register("flowing_molten_sand",
+            () -> new BaseFlowingFluid.Flowing(ModFluids.MOLTEN_SAND_PROPERTIES));
+    public static final DeferredBlock<LiquidBlock> MOLTEN_SAND_BLOCK = ModBlocks.BLOCKS.register("molten_sand_block",
+            () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_SAND.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static final DeferredItem<Item> MOLTEN_SAND_BUCKET = ModItems.ITEMS.registerItem("molten_sand_bucket",
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFa69d6f));
+    public static final BaseFlowingFluid.Properties MOLTEN_SAND_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.MOLTEN_SAND_FLUID_TYPE, SOURCE_MOLTEN_SAND, FLOWING_MOLTEN_SAND)
+            .slopeFindDistance(2).levelDecreasePerBlock(1)
+            .block(ModFluids.MOLTEN_SAND_BLOCK).bucket(ModFluids.MOLTEN_SAND_BUCKET);
+
     public static void register(IEventBus eventBus) {
         FLUIDS.register(eventBus);
     }

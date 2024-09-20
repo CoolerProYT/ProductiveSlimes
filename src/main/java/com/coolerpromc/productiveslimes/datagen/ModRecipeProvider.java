@@ -102,6 +102,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.OAK_SLIME_BLOCK, ModItems.OAK_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.OAK_SLIME_BALL, ModBlocks.OAK_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.SAND_SLIME_BLOCK, ModItems.SAND_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.SAND_SLIME_BALL, ModBlocks.SAND_SLIME_BLOCK);
     }
 
     protected static void slimeBlockToSlimeBall(RecipeOutput pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
