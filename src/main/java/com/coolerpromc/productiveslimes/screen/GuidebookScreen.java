@@ -101,6 +101,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             this.description = "Drop from Oak Slime. Oak Slime is obtainable by using an Oak Planks on a Stone Slime.";
         }, new ItemStack(ModItems.OAK_SLIME_BALL.get()));
 
+        Button coalSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
+            this.displayItem = new ItemStack(ModItems.COAL_SLIME_BALL.get());
+            this.description = "Drop from Coal Slime. Coal Slime is obtainable by using a Coal Block on a Stone Slime.";
+        }, new ItemStack(ModItems.COAL_SLIME_BALL.get()));
+
 //        this.addRenderableWidget(dirtSlimeballButton);
 //        this.addRenderableWidget(stoneSlimeballButton);
 //        this.addRenderableWidget(copperSlimeballButton);
@@ -122,6 +127,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         scrollableButtonList.addButton(lapisSlimeballButton);
         scrollableButtonList.addButton(redstoneSlimeballButton);
         scrollableButtonList.addButton(oakSlimeballButton);
+        scrollableButtonList.addButton(coalSlimeballButton);
 
         this.addRenderableWidget(scrollableButtonList);
     }

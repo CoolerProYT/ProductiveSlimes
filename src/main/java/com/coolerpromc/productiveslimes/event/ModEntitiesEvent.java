@@ -24,5 +24,6 @@ public class ModEntitiesEvent {
         event.put(ModEntities.LAPIS_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.REDSTONE_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.OAK_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.COAL_SLIME.get(), GoldSlime.createAttributes().build());
     }
 }

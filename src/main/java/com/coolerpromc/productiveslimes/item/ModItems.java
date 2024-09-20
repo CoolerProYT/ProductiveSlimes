@@ -25,6 +25,7 @@ public class ModItems {
     public static final DeferredItem<Item> LAPIS_SLIME_BALL = ITEMS.register("lapis_slimeball", () -> new SlimeballItem(0xFF4165E6));
     public static final DeferredItem<Item> REDSTONE_SLIME_BALL = ITEMS.register("redstone_slimeball", () -> new SlimeballItem(0xFFD43030));
     public static final DeferredItem<Item> OAK_SLIME_BALL = ITEMS.register("oak_slimeball", () -> new SlimeballItem(0xFFa69d6f));
+    public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.register("coal_slimeball", () -> new SlimeballItem(0xFF3b3d3b));
 
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.register("dirt_slime_spawn_egg",
@@ -47,6 +48,9 @@ public class ModItems {
             () -> new SpawnEggItem(ModEntities.REDSTONE_SLIME.get(), 0xa10505, 0xc92020, new Item.Properties()));
     public static final DeferredItem<Item> OAK_SLIME_SPAWN_EGG = ITEMS.register("oak_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.OAK_SLIME.get(), 0xa69d6f, 0xded4a4, new Item.Properties()));
+
+    public static final DeferredItem<Item> COAL_SLIME_SPAWN_EGG = ITEMS.register("coal_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.COAL_SLIME.get(), 0x3b3d3b, 0x222222, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

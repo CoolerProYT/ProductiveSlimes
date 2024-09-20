@@ -1,4 +1,6 @@
-// 1.21.1	2024-09-20T11:53:46.1467004	Item Models: productiveslimes
+// 1.21.1	2024-09-20T15:25:20.2103973	Item Models: productiveslimes
+58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/coal_slimeball.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/coal_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/copper_slimeball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/copper_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/diamond_slimeball.json
@@ -12,6 +14,7 @@
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/iron_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/lapis_slimeball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/lapis_slime_spawn_egg.json
+8a7e1246eb1e1622159894b29713bd8ad89578ac assets/productiveslimes/models/item/molten_coal_bucket.json
 8a7e1246eb1e1622159894b29713bd8ad89578ac assets/productiveslimes/models/item/molten_copper_bucket.json
 8a7e1246eb1e1622159894b29713bd8ad89578ac assets/productiveslimes/models/item/molten_diamond_bucket.json
 8a7e1246eb1e1622159894b29713bd8ad89578ac assets/productiveslimes/models/item/molten_dirt_bucket.json

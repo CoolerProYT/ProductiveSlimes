@@ -164,6 +164,20 @@ public class ModFluids {
             .slopeFindDistance(2).levelDecreasePerBlock(1)
             .block(ModFluids.MOLTEN_OAK_BLOCK).bucket(ModFluids.MOLTEN_OAK_BUCKET);
 
+    // Coal
+    public static final Supplier<FlowingFluid> SOURCE_MOLTEN_COAL = FLUIDS.register("source_molten_coal",
+            () -> new BaseFlowingFluid.Source(ModFluids.MOLTEN_COAL_PROPERTIES));
+    public static final Supplier<FlowingFluid> FLOWING_MOLTEN_COAL = FLUIDS.register("flowing_molten_coal",
+            () -> new BaseFlowingFluid.Flowing(ModFluids.MOLTEN_COAL_PROPERTIES));
+    public static final DeferredBlock<LiquidBlock> MOLTEN_COAL_BLOCK = ModBlocks.BLOCKS.register("molten_coal_block",
+            () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_COAL.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+    public static final DeferredItem<Item> MOLTEN_COAL_BUCKET = ModItems.ITEMS.registerItem("molten_coal_bucket",
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_COAL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF2b2b2b));
+    public static final BaseFlowingFluid.Properties MOLTEN_COAL_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.MOLTEN_COAL_FLUID_TYPE, SOURCE_MOLTEN_COAL, FLOWING_MOLTEN_COAL)
+            .slopeFindDistance(2).levelDecreasePerBlock(1)
+            .block(ModFluids.MOLTEN_COAL_BLOCK).bucket(ModFluids.MOLTEN_COAL_BUCKET);
+
     public static void register(IEventBus eventBus) {
         FLUIDS.register(eventBus);
     }

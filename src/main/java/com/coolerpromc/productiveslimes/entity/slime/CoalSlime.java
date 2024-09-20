@@ -18,14 +18,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-public class StoneSlime extends BaseSlime{
-    public StoneSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1500);
+public class CoalSlime extends BaseSlime{
+    public CoalSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel, 2000);
     }
 
     @Override
     public void dropResource() {
-        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.STONE_SLIME_BALL.get(), this.getSize()));
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.COAL_SLIME_BALL.get(), this.getSize()));
         this.level().addFreshEntity(itemEntity);
     }
 
@@ -45,11 +45,7 @@ public class StoneSlime extends BaseSlime{
                         super.transformSlime(pPlayer, pHand, this, ModEntities.OAK_SLIME.get().create(this.level()));
                     }
 
-                    if(pPlayer.getItemInHand(pHand).getItem() == Items.COAL_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.COAL_SLIME.get().create(this.level()));
-                    }
-
-                    if (pPlayer.getItemInHand(pHand).getItem() == Items.STONE && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                    if (pPlayer.getItemInHand(pHand).getItem() == Items.COAL_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }
                 }
@@ -61,6 +57,6 @@ public class StoneSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.STONE));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.COAL));
     }
 }
