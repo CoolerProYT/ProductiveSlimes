@@ -96,6 +96,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             this.description = "Drop from Redstone Slime. Redstone Slime is obtainable by using a Redstone Block on a Iron Slime.";
         }, new ItemStack(ModItems.REDSTONE_SLIME_BALL.get()));
 
+        Button oakSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
+            this.displayItem = new ItemStack(ModItems.OAK_SLIME_BALL.get());
+            this.description = "Drop from Oak Slime. Oak Slime is obtainable by using an Oak Planks on a Stone Slime.";
+        }, new ItemStack(ModItems.OAK_SLIME_BALL.get()));
+
 //        this.addRenderableWidget(dirtSlimeballButton);
 //        this.addRenderableWidget(stoneSlimeballButton);
 //        this.addRenderableWidget(copperSlimeballButton);
@@ -116,6 +121,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         scrollableButtonList.addButton(netheriteSlimeballButton);
         scrollableButtonList.addButton(lapisSlimeballButton);
         scrollableButtonList.addButton(redstoneSlimeballButton);
+        scrollableButtonList.addButton(oakSlimeballButton);
 
         this.addRenderableWidget(scrollableButtonList);
     }

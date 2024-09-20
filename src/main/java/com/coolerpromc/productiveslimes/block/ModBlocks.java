@@ -55,6 +55,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> REDSTONE_SLIME_BLOCK = registerBlock("redstone_slime_block",
             () -> new SlimeBlock(MapColor.COLOR_RED, 0xF0a10505));
 
+    public static final DeferredBlock<Block> OAK_SLIME_BLOCK = registerBlock("oak_slime_block",
+            () -> new SlimeBlock(MapColor.COLOR_BROWN, 0xF0a69d6f));
+
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block){
         DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name,toReturn);

@@ -33,6 +33,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.NETHERITE_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.LAPIS_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.REDSTONE_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.OAK_SLIME_SPAWN_EGG.get());
 
                         pOutput.accept(ModItems.DIRT_SLIME_BALL.get());
                         pOutput.accept(ModItems.STONE_SLIME_BALL.get());
@@ -43,6 +44,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.NETHERITE_SLIME_BALL.get());
                         pOutput.accept(ModItems.LAPIS_SLIME_BALL.get());
                         pOutput.accept(ModItems.REDSTONE_SLIME_BALL.get());
+                        pOutput.accept(ModItems.OAK_SLIME_BALL.get());
 
                         pOutput.accept(ModBlocks.DIRT_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.STONE_SLIME_BLOCK.get());
@@ -53,6 +55,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModBlocks.NETHERITE_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.LAPIS_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.REDSTONE_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.OAK_SLIME_BLOCK.get());
 
                         pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_STONE_BUCKET.get());
@@ -63,6 +66,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModFluids.MOLTEN_NETHERITE_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_LAPIS_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_REDSTONE_BUCKET.get());
+                        pOutput.accept(ModFluids.MOLTEN_OAK_BUCKET.get());
                     })).build());
 
     public static void register(IEventBus eventBus) {
