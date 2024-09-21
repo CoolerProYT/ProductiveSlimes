@@ -48,8 +48,20 @@ public class DirtSlime extends BaseSlime{
                         super.transformSlime(pPlayer, pHand, this, ModEntities.STONE_SLIME.get().create(this.level()));
                     }
 
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.MUD && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.MUD_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.MOSS_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.MOSS_SLIME.get().create(this.level()));
+                    }
+
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.SAND && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         super.transformSlime(pPlayer, pHand, this, ModEntities.SAND_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GRAVEL && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.GRAVEL_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {

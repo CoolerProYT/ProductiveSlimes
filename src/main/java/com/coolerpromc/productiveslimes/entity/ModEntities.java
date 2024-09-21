@@ -76,8 +76,8 @@ public class ModEntities {
             ENTITY_TYPES.register("blackstone_slime", () -> EntityType.Builder.of(BlackstoneSlime::new, MobCategory.CREATURE).build("blackstone_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<BasaltSlime>> BASALT_SLIME =
             ENTITY_TYPES.register("basalt_slime", () -> EntityType.Builder.of(BasaltSlime::new, MobCategory.CREATURE).build("basalt_slime"));
-    public static final DeferredHolder<EntityType<?>, EntityType<EndstoneSlime>> ENDSTONE_SLIME =
-            ENTITY_TYPES.register("endstone_slime", () -> EntityType.Builder.of(EndstoneSlime::new, MobCategory.CREATURE).build("endstone_slime"));
+    public static final DeferredHolder<EntityType<?>, EntityType<EndStoneSlime>> ENDSTONE_SLIME =
+            ENTITY_TYPES.register("endstone_slime", () -> EntityType.Builder.of(EndStoneSlime::new, MobCategory.CREATURE).build("endstone_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<QuartzSlime>> QUARTZ_SLIME =
             ENTITY_TYPES.register("quartz_slime", () -> EntityType.Builder.of(QuartzSlime::new, MobCategory.CREATURE).build("quartz_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<GlowstoneSlime>> GLOWSTONE_SLIME =
@@ -90,10 +90,10 @@ public class ModEntities {
             ENTITY_TYPES.register("red_mushroom_slime", () -> EntityType.Builder.of(RedMushroomSlime::new, MobCategory.CREATURE).build("red_mushroom_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<CactusSlime>> CACTUS_SLIME =
             ENTITY_TYPES.register("cactus_slime", () -> EntityType.Builder.of(CactusSlime::new, MobCategory.CREATURE).build("cactus_slime"));
-
-
     public static final DeferredHolder<EntityType<?>, EntityType<CoalSlime>> COAL_SLIME =
             ENTITY_TYPES.register("coal_slime", () -> EntityType.Builder.of(CoalSlime::new, MobCategory.CREATURE).build("coal_slime"));
+    public static final DeferredHolder<EntityType<?>, EntityType<GravelSlime>> GRAVEL_SLIME =
+            ENTITY_TYPES.register("gravel_slime", () -> EntityType.Builder.of(GravelSlime::new, MobCategory.CREATURE).build("gravel_slime"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

@@ -62,6 +62,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.RED_MUSHROOM_SLIME_BALL);
         slimeballItem(ModItems.CACTUS_SLIME_BALL);
         slimeballItem(ModItems.COAL_SLIME_BALL);
+        slimeballItem(ModItems.GRAVEL_SLIME_BALL);
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
@@ -103,7 +104,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         bucketItem(ModFluids.MOLTEN_RED_MUSHROOM_BUCKET);
         bucketItem(ModFluids.MOLTEN_CACTUS_BUCKET);
         bucketItem(ModFluids.MOLTEN_COAL_BUCKET);
-      
+        bucketItem(ModFluids.MOLTEN_GRAVEL_BUCKET);
+
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -137,13 +139,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.BLACKSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.BASALT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.ENDSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.QUARTZ_SLIME_BALL.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.QUARTZ_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GLOWSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.AMETHYST_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.CACTUS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.COAL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.GRAVEL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){

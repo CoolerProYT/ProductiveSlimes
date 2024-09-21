@@ -170,11 +170,15 @@ public class ModFluidTypes {
                     new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
                     FluidType.Properties.create()));
     public static final Supplier<FluidType> MOLTEN_CACTUS_FLUID_TYPE = registerFluidType("molten_cactus_fluid",
-            new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x78f7f7c6,
+            new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x78476d21,
                     new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
                     FluidType.Properties.create()));
     public static final Supplier<FluidType> MOLTEN_COAL_FLUID_TYPE = registerFluidType("molten_coal_fluid",
             new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x783b3d3b,
+                    new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
+                    FluidType.Properties.create()));
+    public static final Supplier<FluidType> MOLTEN_GRAVEL_FLUID_TYPE = registerFluidType("molten_gravel_fluid",
+            new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x784a444b,
                     new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
                     FluidType.Properties.create()));
 
