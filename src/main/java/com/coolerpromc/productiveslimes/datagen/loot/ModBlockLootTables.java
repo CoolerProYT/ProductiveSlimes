@@ -73,6 +73,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get());
         dropSelf(ModBlocks.CACTUS_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COAL_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.GRAVEL_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

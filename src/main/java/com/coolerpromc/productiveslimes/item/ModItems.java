@@ -55,6 +55,7 @@ public class ModItems {
     public static final DeferredItem<Item> RED_MUSHROOM_SLIME_BALL = ITEMS.register("red_mushroom_slimeball", () -> new SlimeballItem(0xFFc02624));
     public static final DeferredItem<Item> CACTUS_SLIME_BALL = ITEMS.register("cactus_slimeball", () -> new SlimeballItem(0xFF476d21));
     public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.register("coal_slimeball", () -> new SlimeballItem(0xFF3b3d3b));
+    public static final DeferredItem<Item> GRAVEL_SLIME_BALL = ITEMS.register("gravel_slimeball", () -> new SlimeballItem(0xFF4a444b));
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.register("dirt_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.DIRT_SLIME.get(), 0x5e3a1c, 0x885022, new Item.Properties()));
@@ -76,6 +77,7 @@ public class ModItems {
             () -> new SpawnEggItem(ModEntities.REDSTONE_SLIME.get(), 0xa10505, 0xc92020, new Item.Properties()));
     public static final DeferredItem<Item> OAK_SLIME_SPAWN_EGG = ITEMS.register("oak_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.OAK_SLIME.get(), 0xa69d6f, 0xded4a4, new Item.Properties()));
+  
     public static final DeferredItem<Item> SAND_SLIME_SPAWN_EGG = ITEMS.register("sand_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.SAND_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
     public static final DeferredItem<Item> ANDESITE_SLIME_SPAWN_EGG = ITEMS.register("andesite_slime_spawn_egg",
@@ -136,6 +138,8 @@ public class ModItems {
             () -> new SpawnEggItem(ModEntities.CACTUS_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
     public static final DeferredItem<Item> COAL_SLIME_SPAWN_EGG = ITEMS.register("coal_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.COAL_SLIME.get(), 0x3b3d3b, 0x222222, new Item.Properties()));
+    public static final DeferredItem<Item> GRAVEL_SLIME_SPAWN_EGG = ITEMS.register("gravel_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.GRAVEL_SLIME.get(), 0x4a444b, 0x2f2f2f, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

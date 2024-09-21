@@ -177,6 +177,10 @@ public class ModFluidTypes {
             new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x783b3d3b,
                     new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
                     FluidType.Properties.create()));
+    public static final Supplier<FluidType> MOLTEN_GRAVEL_FLUID_TYPE = registerFluidType("molten_gravel_fluid",
+            new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, 0x784a444b,
+                    new Vector3f(108f / 255f, 168f / 255f, 212f / 255f),
+                    FluidType.Properties.create()));
 
     private static Supplier<FluidType> registerFluidType(String name, FluidType fluidType) {
         return FLUID_TYPES.register(name, () -> fluidType);
