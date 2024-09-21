@@ -32,6 +32,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.MELTING_STATION.get());
         dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
+        dropSelf(ModBlocks.ENERGY_GENERATOR.get());
+        dropSelf(ModBlocks.CABLE.get());
+        dropSelf(ModBlocks.DNA_EXTRACTOR.get());
 
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
@@ -74,6 +77,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.CACTUS_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COAL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.GRAVEL_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

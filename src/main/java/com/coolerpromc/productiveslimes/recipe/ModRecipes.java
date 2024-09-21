@@ -25,6 +25,12 @@ public class ModRecipes{
     public static final DeferredHolder<RecipeType<?>, RecipeType<SolidingRecipe>> SOLIDING_TYPE =
             TYPES.register("soliding", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding")));
 
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> DNA_EXTRACTING_SERIALIZER =
+            SERIALIZERS.register("dna_extracting", () -> DnaExtractingRecipe.Serializer.INSTANCE);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<DnaExtractingRecipe>> DNA_EXTRACTING_TYPE =
+            TYPES.register("dna_extracting", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting")));
+
     public static void register(IEventBus eventBus){
         SERIALIZERS.register(eventBus);
         TYPES.register(eventBus);

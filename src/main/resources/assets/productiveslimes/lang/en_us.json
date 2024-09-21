@@ -6,6 +6,9 @@
   "block.productiveslimes.melting_station": "Melting Station",
   "block.productiveslimes.soliding_station": "Soliding Station",
   "block.productiveslimes.liquid_soliding_station": "Soliding Station",
+  "block.productiveslimes.energy_generator": "Energy Generator",
+  "block.productiveslimes.dna_extractor": "DNA Extractor",
+  "block.productiveslimes.cable": "Cable",
 
   "block.productiveslimes.dirt_slime_block": "Dirt Slime Block",
   "block.productiveslimes.stone_slime_block": "Stone Slime Block",
@@ -48,8 +51,10 @@
   "block.productiveslimes.cactus_slime_block": "Cactus Slime Block",
   "block.productiveslimes.coal_slime_block": "Coal Slime Block",
   "block.productiveslimes.gravel_slime_block": "Gravel Slime Block",
+  "block.productiveslimes.energy_slime_block": "Energy Slime Block",
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
+  "item.productiveslimes.energy_multiplier_upgrade": "Energy Multiplier Upgrade",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",
   "item.productiveslimes.stone_slime_spawn_egg": "Stone Slime Spawn Egg",
@@ -92,6 +97,7 @@
   "item.productiveslimes.cactus_slime_spawn_egg": "Cactus Slime Spawn Egg",
   "item.productiveslimes.coal_slime_spawn_egg": "Coal Slime Spawn Egg",
   "item.productiveslimes.gravel_slime_spawn_egg": "Gravel Slime Spawn Egg",
+  "item.productiveslimes.energy_slime_spawn_egg": "Energy Slime Spawn Egg",
 
   "item.productiveslimes.dirt_slimeball": "Dirt Slimeball",
   "item.productiveslimes.stone_slimeball": "Stone Slimeball",
@@ -134,6 +140,7 @@
   "item.productiveslimes.brown_mushroom_slimeball": "Brown Mushroom Slimeball",
   "item.productiveslimes.red_mushroom_slimeball": "Red Mushroom Slimeball",
   "item.productiveslimes.cactus_slimeball": "Cactus Slimeball",
+  "item.productiveslimes.energy_slimeball": "Energy Slimeball",
 
   "entity.productiveslimes.dirt_slime": "Dirt Slime",
   "entity.productiveslimes.stone_slime": "Stone Slime",
@@ -176,6 +183,7 @@
   "entity.productiveslimes.brown_mushroom_slime": "Brown Mushroom Slime",
   "entity.productiveslimes.red_mushroom_slime": "Red Mushroom Slime",
   "entity.productiveslimes.cactus_slime": "Cactus Slime",
+  "entity.productiveslimes.energy_slime": "Energy Slime",
 
   "item.productiveslimes.dirt_slime_dna": "Dirt Slime DNA",
 

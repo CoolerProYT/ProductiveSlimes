@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,16 +73,16 @@ public class MeltingStationBlock extends BaseEntityBlock {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
-    /*@Override
+    @Override
     protected List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         List<ItemStack> drops = super.getDrops(pState, pParams);
         BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 
         if (blockEntity instanceof MeltingStationBlockEntity) {
             ItemStack stack = new ItemStack(this);
-            MeltingStationBlockEntity airCoolerBlockEntity = (MeltingStationBlockEntity) blockEntity;
+            MeltingStationBlockEntity meltingStationBlockEntity = (MeltingStationBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), airCoolerBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.set(ModDataComponents.ENERGY.get(), meltingStationBlockEntity.getEnergyHandler().getEnergyStored());
 
             drops.clear();
             drops.add(stack);
@@ -89,7 +90,6 @@ public class MeltingStationBlock extends BaseEntityBlock {
 
         return drops;
     }
-*/
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
@@ -145,19 +145,19 @@ public class MeltingStationBlock extends BaseEntityBlock {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
-    /*@Override
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if (be instanceof MeltingStationBlockEntity airCoolerBlockEntity) {
+        if (be instanceof MeltingStationBlockEntity meltingStationBlockEntity) {
             int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
 
-            airCoolerBlockEntity.getEnergyHandler().setEnergy(energy);
+            meltingStationBlockEntity.getEnergyHandler().setEnergy(energy);
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-    }*/
+    }
 
-    /*@Override
+    @Override
     public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
         super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
 
@@ -168,5 +168,5 @@ public class MeltingStationBlock extends BaseEntityBlock {
                     .append(Component.literal(energy + " / 10000 FE")
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
-    }*/
+    }
 }

@@ -1,5 +1,6 @@
 {
   "type": "productiveslimes:melting",
+  "energy": 200,
   "ingredients": [
     {
       "item": "productiveslimes:snow_slime_block"

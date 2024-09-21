@@ -1,5 +1,6 @@
 {
   "type": "productiveslimes:soliding",
+  "energy": 200,
   "ingredients": [
     {
       "item": "productiveslimes:molten_gold_bucket"

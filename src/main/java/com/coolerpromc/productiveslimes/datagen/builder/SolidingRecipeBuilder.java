@@ -23,6 +23,7 @@ import java.util.Map;
 public class SolidingRecipeBuilder implements RecipeBuilder {
     private final List<Ingredient> ingredients = new ArrayList<>();
     private int inputCount;
+    private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
@@ -48,6 +49,11 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
 
     public SolidingRecipeBuilder addOutput(ItemStack output) {
         this.outputs.add(output);
+        return this;
+    }
+
+    public SolidingRecipeBuilder setEnergy(int energy) {
+        this.energy = energy;
         return this;
     }
 
@@ -82,7 +88,8 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
         SolidingRecipe recipe = new SolidingRecipe(
                 this.ingredients,
                 this.outputs,
-                this.inputCount
+                this.inputCount,
+                this.energy
         );
 
         // Pass the recipe and advancement to the output

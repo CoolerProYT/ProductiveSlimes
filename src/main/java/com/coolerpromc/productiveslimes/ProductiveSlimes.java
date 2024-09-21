@@ -3,11 +3,12 @@ package com.coolerpromc.productiveslimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
+import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
-import com.coolerpromc.productiveslimes.entity.slime.OakSlime;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -71,6 +73,7 @@ public class ProductiveSlimes
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModDataComponents.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -100,8 +103,13 @@ public class ProductiveSlimes
             event.registerLayerDefinition(SlimeModel.SLIME_TEXTURE, SlimeModel::createOuterBodyLayer);
         }
 
+        public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
+        }
+
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) throws IllegalAccessException {
+        public static void onClientSetup(FMLClientSetupEvent event)
+        {
             EntityRenderers.register(ModEntities.DIRT_SLIME.get(), DirtSlimeRenderer::new);
             EntityRenderers.register(ModEntities.STONE_SLIME.get(), StoneSlimeRenderer::new);
             EntityRenderers.register(ModEntities.IRON_SLIME.get(), IronSlimeRenderer::new);
@@ -143,160 +151,141 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.CACTUS_SLIME.get(), CactusSlimeRenderer::new);
             EntityRenderers.register(ModEntities.COAL_SLIME.get(), CoalSlimeRenderer::new);
             EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), GravelSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.ANDESITE_SLIME.get(), AndesiteSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.SNOW_SLIME.get(), SnowSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.ICE_SLIME.get(), IceSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.MUD_SLIME.get(), MudSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.CLAY_SLIME.get(), ClaySlimeRenderer::new);
-            EntityRenderers.register(ModEntities.RED_SAND_SLIME.get(), RedSandSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.MOSS_SLIME.get(), MossSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.DEEPSLATE_SLIME.get(), DeepslateSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.GRANITE_SLIME.get(), GraniteSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.DIORITE_SLIME.get(), DioriteSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.CALCITE_SLIME.get(), CalciteSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.TUFF_SLIME.get(), TuffSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.DRIPSTONE_SLIME.get(), DripstoneSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.NETHERRACK_SLIME.get(), NetherrackSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.PRISMARINE_SLIME.get(), PrismarineSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.MAGMA_SLIME.get(), MagmaSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.OBSIDIAN_SLIME.get(), ObsidianSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.SOUL_SAND_SLIME.get(), SoulSandSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.BLACKSTONE_SLIME.get(), BlackstoneSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.BASALT_SLIME.get(), BasaltSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.QUARTZ_SLIME.get(), QuartzSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.GLOWSTONE_SLIME.get(), GlowstoneSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.ENDSTONE_SLIME.get(), EndStoneSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.AMETHYST_SLIME.get(), AmethystSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.BROWN_MUSHROOM_SLIME.get(), BrownMushroomSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.RED_MUSHROOM_SLIME.get(), RedMushroomSlimeRenderer::new);
-            EntityRenderers.register(ModEntities.CACTUS_SLIME.get(), CactusSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), EnergySlimeRenderer::new);
 
             event.enqueueWork(() -> {
+                registerFluidRenderLayer(
+                        ModFluids.SOURCE_MOLTEN_DIRT.get(),
+                        ModFluids.FLOWING_MOLTEN_DIRT.get(),
+                        ModFluids.SOURCE_MOLTEN_STONE.get(),
+                        ModFluids.FLOWING_MOLTEN_STONE.get(),
+                        ModFluids.SOURCE_MOLTEN_IRON.get(),
+                        ModFluids.FLOWING_MOLTEN_IRON.get(),
+                        ModFluids.SOURCE_MOLTEN_COPPER.get(),
+                        ModFluids.FLOWING_MOLTEN_COPPER.get(),
+                        ModFluids.SOURCE_MOLTEN_GOLD.get(),
+                        ModFluids.FLOWING_MOLTEN_GOLD.get(),
+                        ModFluids.SOURCE_MOLTEN_DIAMOND.get(),
+                        ModFluids.FLOWING_MOLTEN_DIAMOND.get(),
+                        ModFluids.SOURCE_MOLTEN_NETHERITE.get(),
+                        ModFluids.FLOWING_MOLTEN_NETHERITE.get(),
+                        ModFluids.SOURCE_MOLTEN_LAPIS.get(),
+                        ModFluids.FLOWING_MOLTEN_LAPIS.get(),
+                        ModFluids.SOURCE_MOLTEN_REDSTONE.get(),
+                        ModFluids.FLOWING_MOLTEN_REDSTONE.get(),
+                        ModFluids.SOURCE_MOLTEN_OAK.get(),
+                        ModFluids.FLOWING_MOLTEN_OAK.get(),
+                        ModFluids.SOURCE_MOLTEN_SAND.get(),
+                        ModFluids.FLOWING_MOLTEN_SAND.get(),
+                        ModFluids.SOURCE_MOLTEN_ANDESITE.get(),
+                        ModFluids.FLOWING_MOLTEN_ANDESITE.get(),
+                        ModFluids.SOURCE_MOLTEN_SNOW.get(),
+                        ModFluids.FLOWING_MOLTEN_SNOW.get(),
+                        ModFluids.SOURCE_MOLTEN_ICE.get(),
+                        ModFluids.FLOWING_MOLTEN_ICE.get(),
+                        ModFluids.SOURCE_MOLTEN_MUD.get(),
+                        ModFluids.FLOWING_MOLTEN_MUD.get(),
+                        ModFluids.SOURCE_MOLTEN_CLAY.get(),
+                        ModFluids.FLOWING_MOLTEN_CLAY.get(),
+                        ModFluids.SOURCE_MOLTEN_RED_SAND.get(),
+                        ModFluids.FLOWING_MOLTEN_RED_SAND.get(),
+                        ModFluids.SOURCE_MOLTEN_MOSS.get(),
+                        ModFluids.FLOWING_MOLTEN_MOSS.get(),
+                        ModFluids.SOURCE_MOLTEN_DEEPSLATE.get(),
+                        ModFluids.FLOWING_MOLTEN_DEEPSLATE.get(),
+                        ModFluids.SOURCE_MOLTEN_GRANITE.get(),
+                        ModFluids.FLOWING_MOLTEN_GRANITE.get(),
+                        ModFluids.SOURCE_MOLTEN_DIORITE.get(),
+                        ModFluids.FLOWING_MOLTEN_DIORITE.get(),
+                        ModFluids.SOURCE_MOLTEN_CALCITE.get(),
+                        ModFluids.FLOWING_MOLTEN_CALCITE.get(),
+                        ModFluids.SOURCE_MOLTEN_TUFF.get(),
+                        ModFluids.FLOWING_MOLTEN_TUFF.get(),
+                        ModFluids.SOURCE_MOLTEN_DRIPSTONE.get(),
+                        ModFluids.FLOWING_MOLTEN_DRIPSTONE.get(),
+                        ModFluids.SOURCE_MOLTEN_NETHERRACK.get(),
+                        ModFluids.FLOWING_MOLTEN_NETHERRACK.get(),
+                        ModFluids.SOURCE_MOLTEN_PRISMARINE.get(),
+                        ModFluids.FLOWING_MOLTEN_PRISMARINE.get(),
+                        ModFluids.SOURCE_MOLTEN_MAGMA.get(),
+                        ModFluids.FLOWING_MOLTEN_MAGMA.get(),
+                        ModFluids.SOURCE_MOLTEN_OBSIDIAN.get(),
+                        ModFluids.FLOWING_MOLTEN_OBSIDIAN.get(),
+                        ModFluids.SOURCE_MOLTEN_SOUL_SAND.get(),
+                        ModFluids.FLOWING_MOLTEN_SOUL_SAND.get(),
+                        ModFluids.SOURCE_MOLTEN_SOUL_SOIL.get(),
+                        ModFluids.FLOWING_MOLTEN_SOUL_SOIL.get(),
+                        ModFluids.SOURCE_MOLTEN_BLACKSTONE.get(),
+                        ModFluids.FLOWING_MOLTEN_BLACKSTONE.get(),
+                        ModFluids.SOURCE_MOLTEN_BASALT.get(),
+                        ModFluids.FLOWING_MOLTEN_BASALT.get(),
+                        ModFluids.SOURCE_MOLTEN_QUARTZ.get(),
+                        ModFluids.FLOWING_MOLTEN_QUARTZ.get(),
+                        ModFluids.SOURCE_MOLTEN_GLOWSTONE.get(),
+                        ModFluids.FLOWING_MOLTEN_GLOWSTONE.get(),
+                        ModFluids.SOURCE_MOLTEN_ENDSTONE.get(),
+                        ModFluids.FLOWING_MOLTEN_ENDSTONE.get(),
+                        ModFluids.SOURCE_MOLTEN_AMETHYST.get(),
+                        ModFluids.FLOWING_MOLTEN_AMETHYST.get(),
+                        ModFluids.SOURCE_MOLTEN_BROWN_MUSHROOM.get(),
+                        ModFluids.FLOWING_MOLTEN_BROWN_MUSHROOM.get(),
+                        ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get(),
+                        ModFluids.FLOWING_MOLTEN_RED_MUSHROOM.get(),
+                        ModFluids.SOURCE_MOLTEN_CACTUS.get(),
+                        ModFluids.FLOWING_MOLTEN_CACTUS.get(),
+                        ModFluids.SOURCE_MOLTEN_COAL.get(),
+                        ModFluids.FLOWING_MOLTEN_COAL.get(),
+                        ModFluids.SOURCE_MOLTEN_GRAVEL.get(),
+                        ModFluids.FLOWING_MOLTEN_GRAVEL.get()
+                );
 
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIRT.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DIRT.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_STONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_STONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_IRON.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_IRON.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_COPPER.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_COPPER.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_GOLD.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_GOLD.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIAMOND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DIAMOND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_NETHERITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_NETHERITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_LAPIS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_LAPIS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_REDSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_REDSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_OAK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_OAK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_ANDESITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_ANDESITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_SNOW.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_SNOW.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_ICE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_ICE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_MUD.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_MUD.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_CLAY.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_CLAY.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_RED_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_RED_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_MOSS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_MOSS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DEEPSLATE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DEEPSLATE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_GRANITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_GRANITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DIORITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DIORITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_CALCITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_CALCITE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_TUFF.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_TUFF.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_DRIPSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_DRIPSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_NETHERRACK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_NETHERRACK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_PRISMARINE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_PRISMARINE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_MAGMA.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_MAGMA.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_OBSIDIAN.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_OBSIDIAN.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_SOUL_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_SOUL_SAND.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_SOUL_SOIL.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_SOUL_SOIL.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_BLACKSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_BLACKSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_BASALT.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_BASALT.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_QUARTZ.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_QUARTZ.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_GLOWSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_GLOWSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_ENDSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_ENDSTONE.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_AMETHYST.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_AMETHYST.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_BROWN_MUSHROOM.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_BROWN_MUSHROOM.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_RED_MUSHROOM.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_CACTUS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_CACTUS.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_COAL.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_COAL.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_GRAVEL.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_GRAVEL.get(), RenderType.translucent());
+                registerBlockRenderLayer(
+                        ModBlocks.DIRT_SLIME_BLOCK.get(),
+                        ModBlocks.STONE_SLIME_BLOCK.get(),
+                        ModBlocks.IRON_SLIME_BLOCK.get(),
+                        ModBlocks.COPPER_SLIME_BLOCK.get(),
+                        ModBlocks.GOLD_SLIME_BLOCK.get(),
+                        ModBlocks.DIAMOND_SLIME_BLOCK.get(),
+                        ModBlocks.NETHERITE_SLIME_BLOCK.get(),
+                        ModBlocks.LAPIS_SLIME_BLOCK.get(),
+                        ModBlocks.REDSTONE_SLIME_BLOCK.get(),
+                        ModBlocks.OAK_SLIME_BLOCK.get(),
+                        ModBlocks.COAL_SLIME_BLOCK.get(),
+                        ModBlocks.GRAVEL_SLIME_BLOCK.get(),
+                        ModBlocks.SAND_SLIME_BLOCK.get(),
+                        ModBlocks.ANDESITE_SLIME_BLOCK.get(),
+                        ModBlocks.SNOW_SLIME_BLOCK.get(),
+                        ModBlocks.ICE_SLIME_BLOCK.get(),
+                        ModBlocks.MUD_SLIME_BLOCK.get(),
+                        ModBlocks.CLAY_SLIME_BLOCK.get(),
+                        ModBlocks.RED_SAND_SLIME_BLOCK.get(),
+                        ModBlocks.MOSS_SLIME_BLOCK.get(),
+                        ModBlocks.DEEPSLATE_SLIME_BLOCK.get(),
+                        ModBlocks.GRANITE_SLIME_BLOCK.get(),
+                        ModBlocks.DIORITE_SLIME_BLOCK.get(),
+                        ModBlocks.CALCITE_SLIME_BLOCK.get(),
+                        ModBlocks.TUFF_SLIME_BLOCK.get(),
+                        ModBlocks.DRIPSTONE_SLIME_BLOCK.get(),
+                        ModBlocks.NETHERRACK_SLIME_BLOCK.get(),
+                        ModBlocks.PRISMARINE_SLIME_BLOCK.get(),
+                        ModBlocks.MAGMA_SLIME_BLOCK.get(),
+                        ModBlocks.OBSIDIAN_SLIME_BLOCK.get(),
+                        ModBlocks.SOUL_SAND_SLIME_BLOCK.get(),
+                        ModBlocks.SOUL_SOIL_SLIME_BLOCK.get(),
+                        ModBlocks.BLACKSTONE_SLIME_BLOCK.get(),
+                        ModBlocks.BASALT_SLIME_BLOCK.get(),
+                        ModBlocks.QUARTZ_SLIME_BLOCK.get(),
+                        ModBlocks.GLOWSTONE_SLIME_BLOCK.get(),
+                        ModBlocks.ENDSTONE_SLIME_BLOCK.get(),
+                        ModBlocks.AMETHYST_SLIME_BLOCK.get(),
+                        ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get(),
+                        ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(),
+                        ModBlocks.CACTUS_SLIME_BLOCK.get(),
+                        ModBlocks.ENERGY_SLIME_BLOCK.get(),
+                        ModBlocks.DNA_EXTRACTOR.get()
+                );
 
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIRT_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.STONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.IRON_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.COPPER_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.GOLD_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIAMOND_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.NETHERITE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.LAPIS_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.REDSTONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.OAK_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.SAND_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.ANDESITE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.SNOW_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.ICE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.MUD_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CLAY_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.RED_SAND_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.MOSS_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DEEPSLATE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.GRANITE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIORITE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CALCITE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.TUFF_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.DRIPSTONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.NETHERRACK_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.PRISMARINE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.MAGMA_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBSIDIAN_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.SOUL_SAND_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.SOUL_SOIL_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLACKSTONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.BASALT_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.QUARTZ_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENDSTONE_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.AMETHYST_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CACTUS_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.COAL_SLIME_BLOCK.get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.GRAVEL_SLIME_BLOCK.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
         }
 
@@ -429,7 +418,8 @@ public class ProductiveSlimes
                     ModBlocks.AMETHYST_SLIME_BLOCK.value(),
                     ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.value(),
                     ModBlocks.RED_MUSHROOM_SLIME_BLOCK.value(),
-                    ModBlocks.CACTUS_SLIME_BLOCK.value()
+                    ModBlocks.CACTUS_SLIME_BLOCK.value(),
+                    ModBlocks.ENERGY_SLIME_BLOCK.value()
             );
         }
 
@@ -476,7 +466,8 @@ public class ProductiveSlimes
                     ModBlocks.AMETHYST_SLIME_BLOCK.value().asItem(),
                     ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.value().asItem(),
                     ModBlocks.RED_MUSHROOM_SLIME_BLOCK.value().asItem(),
-                    ModBlocks.CACTUS_SLIME_BLOCK.value().asItem()
+                    ModBlocks.CACTUS_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.ENERGY_SLIME_BLOCK.value().asItem()
             );
 
             registerSlimeballColorHandlers(event,
@@ -520,7 +511,8 @@ public class ProductiveSlimes
                     ModItems.AMETHYST_SLIME_BALL.value().asItem(),
                     ModItems.BROWN_MUSHROOM_SLIME_BALL.value().asItem(),
                     ModItems.RED_MUSHROOM_SLIME_BALL.value().asItem(),
-                    ModItems.CACTUS_SLIME_BALL.value().asItem()
+                    ModItems.CACTUS_SLIME_BALL.value().asItem(),
+                    ModItems.ENERGY_SLIME_BALL.value().asItem()
             );
 
             registerDnaColorHandlers(event,
@@ -632,6 +624,18 @@ public class ProductiveSlimes
 
                     return 0xFFFFFFFF; // Default no color
                 }, item);
+            }
+        }
+
+        private static void registerFluidRenderLayer(Fluid... fluids) {
+            for (Fluid f : fluids) {
+                ItemBlockRenderTypes.setRenderLayer(f, RenderType.translucent());
+            }
+        }
+
+        private static void registerBlockRenderLayer(Block... blocks) {
+            for (Block b : blocks) {
+                ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
             }
         }
     }

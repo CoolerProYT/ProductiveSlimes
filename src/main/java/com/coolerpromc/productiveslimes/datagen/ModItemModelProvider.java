@@ -21,6 +21,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleItem(ModItems.GUIDEBOOK);
+        simpleItem(ModItems.ENERGY_MULTIPLIER_UPGRADE);
 
         slimeballItem(ModItems.DIRT_SLIME_BALL);
         slimeballItem(ModItems.STONE_SLIME_BALL);
@@ -63,6 +64,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.CACTUS_SLIME_BALL);
         slimeballItem(ModItems.COAL_SLIME_BALL);
         slimeballItem(ModItems.GRAVEL_SLIME_BALL);
+        slimeballItem(ModItems.ENERGY_SLIME_BALL);
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
@@ -149,6 +151,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.CACTUS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.COAL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GRAVEL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.ENERGY_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
