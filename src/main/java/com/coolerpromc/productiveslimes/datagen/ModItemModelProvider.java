@@ -106,6 +106,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         bucketItem(ModFluids.MOLTEN_COAL_BUCKET);
         bucketItem(ModFluids.MOLTEN_GRAVEL_BUCKET);
 
+        dnaItem(ModItems.DIRT_SLIME_DNA);
+
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -153,6 +155,20 @@ public class ModItemModelProvider extends ItemModelProvider {
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"))
+                .element()
+                .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
+                .face(Direction.UP).texture("#layer0").tintindex(0).end()
+                .face(Direction.NORTH).texture("#layer0").tintindex(0).end()
+                .face(Direction.SOUTH).texture("#layer0").tintindex(0).end()
+                .face(Direction.WEST).texture("#layer0").tintindex(0).end()
+                .face(Direction.EAST).texture("#layer0").tintindex(0).end()
+                .end();
+    }
+
+    private ItemModelBuilder dnaItem(DeferredItem<Item> item){
+        return getBuilder(item.getId().getPath())
+                .parent(getExistingFile(mcLoc("item/generated")))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"))
                 .element()
                 .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
                 .face(Direction.UP).texture("#layer0").tintindex(0).end()

@@ -150,6 +150,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModBlocks.COAL_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.GRAVEL_SLIME_BLOCK.get());
 
+                        pOutput.accept(ModItems.DIRT_SLIME_DNA.get());
+
                         pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_STONE_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_IRON_BUCKET.get());
