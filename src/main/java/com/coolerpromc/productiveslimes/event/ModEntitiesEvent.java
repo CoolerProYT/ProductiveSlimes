@@ -42,6 +42,7 @@ public class ModEntitiesEvent {
         event.put(ModEntities.MAGMA_SLIME.get(), MagmaSlime.createAttributes().build());
         event.put(ModEntities.OBSIDIAN_SLIME.get(), ObsidianSlime.createAttributes().build());
         event.put(ModEntities.SOUL_SAND_SLIME.get(), SoulSandSlime.createAttributes().build());
+        event.put(ModEntities.SOUL_SOIL_SLIME.get(), SoulSandSlime.createAttributes().build());
         event.put(ModEntities.BLACKSTONE_SLIME.get(), BlackstoneSlime.createAttributes().build());
         event.put(ModEntities.BASALT_SLIME.get(), BasaltSlime.createAttributes().build());
         event.put(ModEntities.QUARTZ_SLIME.get(), QuartzSlime.createAttributes().build());
@@ -51,5 +52,6 @@ public class ModEntitiesEvent {
         event.put(ModEntities.BROWN_MUSHROOM_SLIME.get(), BrownMushroomSlime.createAttributes().build());
         event.put(ModEntities.RED_MUSHROOM_SLIME.get(), RedMushroomSlime.createAttributes().build());
         event.put(ModEntities.CACTUS_SLIME.get(), CactusSlime.createAttributes().build());
+        event.put(ModEntities.SAND_SLIME.get(), CactusSlime.createAttributes().build());
     }
 }
