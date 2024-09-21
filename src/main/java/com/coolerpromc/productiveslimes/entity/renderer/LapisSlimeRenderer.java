@@ -6,15 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
 public class LapisSlimeRenderer extends BaseSlimeRenderer {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/lapis_slime.png");
-
     public LapisSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Slime pEntity) {
-        return TEXTURE;
+        super(pContext, 0xF01c41ba);
     }
 }

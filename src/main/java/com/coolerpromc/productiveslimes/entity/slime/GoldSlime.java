@@ -61,6 +61,6 @@ public class GoldSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.GOLD_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GOLD_INGOT));
     }
 }

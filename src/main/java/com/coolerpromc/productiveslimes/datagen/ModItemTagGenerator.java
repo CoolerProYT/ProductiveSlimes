@@ -1,10 +1,12 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +19,45 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-
+        tag(Tags.Items.SLIME_BALLS)
+                .add(ModItems.DIRT_SLIME_BALL.get())
+                .add(ModItems.STONE_SLIME_BALL.get())
+                .add(ModItems.COPPER_SLIME_BALL.get())
+                .add(ModItems.IRON_SLIME_BALL.get())
+                .add(ModItems.GOLD_SLIME_BALL.get())
+                .add(ModItems.DIAMOND_SLIME_BALL.get())
+                .add(ModItems.LAPIS_SLIME_BALL.get())
+                .add(ModItems.REDSTONE_SLIME_BALL.get())
+                .add(ModItems.NETHERITE_SLIME_BALL.get())
+                .add(ModItems.OAK_SLIME_BALL.get())
+                .add(ModItems.SAND_SLIME_BALL.get())
+                .add(ModItems.ANDESITE_SLIME_BALL.get())
+                .add(ModItems.SNOW_SLIME_BALL.get())
+                .add(ModItems.ICE_SLIME_BALL.get())
+                .add(ModItems.MUD_SLIME_BALL.get())
+                .add(ModItems.CLAY_SLIME_BALL.get())
+                .add(ModItems.RED_SAND_SLIME_BALL.get())
+                .add(ModItems.MOSS_SLIME_BALL.get())
+                .add(ModItems.DEEPSLATE_SLIME_BALL.get())
+                .add(ModItems.GRANITE_SLIME_BALL.get())
+                .add(ModItems.DIORITE_SLIME_BALL.get())
+                .add(ModItems.CALCITE_SLIME_BALL.get())
+                .add(ModItems.TUFF_SLIME_BALL.get())
+                .add(ModItems.DRIPSTONE_SLIME_BALL.get())
+                .add(ModItems.PRISMARINE_SLIME_BALL.get())
+                .add(ModItems.MAGMA_SLIME_BALL.get())
+                .add(ModItems.OBSIDIAN_SLIME_BALL.get())
+                .add(ModItems.NETHERRACK_SLIME_BALL.get())
+                .add(ModItems.SOUL_SAND_SLIME_BALL.get())
+                .add(ModItems.SOUL_SOIL_SLIME_BALL.get())
+                .add(ModItems.BLACKSTONE_SLIME_BALL.get())
+                .add(ModItems.BASALT_SLIME_BALL.get())
+                .add(ModItems.ENDSTONE_SLIME_BALL.get())
+                .add(ModItems.QUARTZ_SLIME_BALL.get())
+                .add(ModItems.GLOWSTONE_SLIME_BALL.get())
+                .add(ModItems.AMETHYST_SLIME_BALL.get())
+                .add(ModItems.BROWN_MUSHROOM_SLIME_BALL.get())
+                .add(ModItems.RED_MUSHROOM_SLIME_BALL.get())
+                .add(ModItems.CACTUS_SLIME_BALL.get());
     }
 }

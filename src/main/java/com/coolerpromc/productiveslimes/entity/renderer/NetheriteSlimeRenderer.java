@@ -6,15 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.monster.Slime;
 
 public class NetheriteSlimeRenderer extends BaseSlimeRenderer {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/netherite_slime.png");
-
     public NetheriteSlimeRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(Slime pEntity) {
-        return TEXTURE;
+        super(pContext, 0xF04c2b2b);
     }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "productiveslimes:soliding",
+  "ingredients": [
+    {
+      "item": "productiveslimes:molten_dripstone_bucket"
+    }
+  ],
+  "inputCount": 1,
+  "output": [
+    {
+      "count": 2,
+      "id": "minecraft:pointed_dripstone"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:bucket"
+    }
+  ]
+}

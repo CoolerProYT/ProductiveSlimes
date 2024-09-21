@@ -56,6 +56,6 @@ public class NetheriteSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.NETHERITE_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.NETHERITE_INGOT));
     }
 }

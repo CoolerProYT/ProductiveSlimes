@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:magma_slimeball"
+    }
+  ],
+  "inputCount": 4,
+  "output": [
+    {
+      "count": 1,
+      "id": "productiveslimes:molten_magma_bucket"
+    }
+  ]
+}

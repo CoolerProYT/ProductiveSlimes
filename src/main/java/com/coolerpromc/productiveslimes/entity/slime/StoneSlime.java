@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
+import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -40,9 +41,49 @@ public class StoneSlime extends BaseSlime{
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
-                    /*if(pPlayer.getItemInHand(pHand).getItem() == Items.GOLD_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        transformSlime(pPlayer, pHand);
-                    }*/
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.OAK_PLANKS && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.OAK_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.SNOW_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.SNOW_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.COAL_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.COAL_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DEEPSLATE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DEEPSLATE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GRANITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.GRANITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DIORITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DIORITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.CALCITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.CALCITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.TUFF && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.TUFF_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DRIPSTONE_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DRIPSTONE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.NETHERRACK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.NETHERRACK_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.END_STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.ENDSTONE_SLIME.get().create(this.level()));
+                    }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.STONE && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
@@ -56,6 +97,6 @@ public class StoneSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.STONE_SLIME_BALL.get()));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.STONE));
     }
 }
