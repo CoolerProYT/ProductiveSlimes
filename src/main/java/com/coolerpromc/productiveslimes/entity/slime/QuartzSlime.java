@@ -1,8 +1,6 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,17 +16,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
-public class DirtSlime extends BaseSlime{
-    public DirtSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel, 1000);
+public class QuartzSlime extends BaseSlime{
+    public QuartzSlime(EntityType<? extends Slime> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel, 1500);
     }
 
     @Override
     public void dropResource() {
-        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.DIRT_SLIME_BALL.get(), this.getSize()));
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.QUARTZ_SLIME_BALL.get(), this.getSize()));
         this.level().addFreshEntity(itemEntity);
     }
 
@@ -44,19 +40,11 @@ public class DirtSlime extends BaseSlime{
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level().isClientSide){
-                    if(pPlayer.getItemInHand(pHand).getItem() == Items.STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.STONE_SLIME.get().create(this.level()));
-                    }
+                    /*if(pPlayer.getItemInHand(pHand).getItem() == Items.OAK_PLANKS && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.OAK_SLIME.get().create(this.level()));
+                    }*/
 
-                    if(pPlayer.getItemInHand(pHand).getItem() == Items.MUD && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.MUD_SLIME.get().create(this.level()));
-                    }
-
-                    if(pPlayer.getItemInHand(pHand).getItem() == Items.MOSS_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.MOSS_SLIME.get().create(this.level()));
-                    }
-
-                    if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                    if (pPlayer.getItemInHand(pHand).getItem() == Items.QUARTZ_BLOCK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }
                 }
@@ -68,6 +56,6 @@ public class DirtSlime extends BaseSlime{
 
     @Override
     protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.DIRT));
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.QUARTZ_BLOCK));
     }
 }

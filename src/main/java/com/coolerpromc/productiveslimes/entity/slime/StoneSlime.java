@@ -45,8 +45,44 @@ public class StoneSlime extends BaseSlime{
                         super.transformSlime(pPlayer, pHand, this, ModEntities.OAK_SLIME.get().create(this.level()));
                     }
 
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.SNOW_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.SNOW_SLIME.get().create(this.level()));
+                    }
+
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.COAL_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         super.transformSlime(pPlayer, pHand, this, ModEntities.COAL_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DEEPSLATE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DEEPSLATE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GRANITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.GRANITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DIORITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DIORITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.CALCITE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.CALCITE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.TUFF && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.TUFF_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.DRIPSTONE_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.DRIPSTONE_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.NETHERRACK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.NETHERRACK_SLIME.get().create(this.level()));
+                    }
+
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.END_STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.END_STONE_SOIL_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.STONE && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
