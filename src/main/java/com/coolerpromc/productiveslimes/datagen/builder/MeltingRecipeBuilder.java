@@ -23,6 +23,7 @@ import java.util.Map;
 public class MeltingRecipeBuilder implements RecipeBuilder {
     private final List<Ingredient> ingredients = new ArrayList<>();
     private int inputCount;
+    private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
@@ -51,6 +52,10 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
+    public MeltingRecipeBuilder setEnergy(int energy) {
+        this.energy = energy;
+        return this;
+    }
 
     @Override
     public MeltingRecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
@@ -82,7 +87,8 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         MeltingRecipe recipe = new MeltingRecipe(
                 this.ingredients,
                 this.outputs,
-                this.inputCount
+                this.inputCount,
+                this.energy
         );
 
         // Pass the recipe and advancement to the output

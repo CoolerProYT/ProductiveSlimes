@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-21T14:00:05.7488709	Item Models: productiveslimes
+// 1.21.1	2024-09-21T18:27:49.758454	Item Models: productiveslimes
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/amethyst_slimeball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/amethyst_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/andesite_slimeball.json
@@ -31,6 +31,9 @@
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/dripstone_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/endstone_slimeball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/endstone_slime_spawn_egg.json
+6613a12cb06ad3e9006f97c2c7f3b0e96d56840b assets/productiveslimes/models/item/energy_multiplier_upgrade.json
+58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/energy_slimeball.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/energy_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/glowstone_slimeball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/glowstone_slime_spawn_egg.json
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/gold_slimeball.json

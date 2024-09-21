@@ -23,6 +23,12 @@ public class ModMenuTypes {
     public static final Supplier<MenuType<GuidebookMenu>> GUIDEBOOK_MENU =
             registerMenuType("guidebook_menu", GuidebookMenu::new);
 
+    public static final Supplier<MenuType<EnergyGeneratorMenu>> ENERGY_GENERATOR_MENU =
+            registerMenuType("energy_generator_menu", EnergyGeneratorMenu::new);
+
+    public static final Supplier<MenuType<DnaExtractorMenu>> DNA_EXTRACTOR_MENU =
+            registerMenuType("dna_extractor_menu", DnaExtractorMenu::new);
+
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

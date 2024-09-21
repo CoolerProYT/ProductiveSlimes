@@ -1,10 +1,7 @@
 package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.screen.GuidebookScreen;
-import com.coolerpromc.productiveslimes.screen.MeltingStationScreen;
-import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
-import com.coolerpromc.productiveslimes.screen.SolidingStationScreen;
+import com.coolerpromc.productiveslimes.screen.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -17,5 +14,7 @@ public class ModScreens {
         event.register(ModMenuTypes.MELTING_STATION_MENU.get(), MeltingStationScreen::new);
         event.register(ModMenuTypes.SOLIDING_STATION_MENU.get(), SolidingStationScreen::new);
         event.register(ModMenuTypes.GUIDEBOOK_MENU.get(), GuidebookScreen::new);
+        event.register(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), EnergyGeneratorScreen::new);
+        event.register(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), DnaExtractorScreen::new);
     }
 }

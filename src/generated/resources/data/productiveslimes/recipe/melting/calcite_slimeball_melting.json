@@ -1,5 +1,6 @@
 {
   "type": "productiveslimes:melting",
+  "energy": 200,
   "ingredients": [
     {
       "item": "productiveslimes:calcite_slimeball"

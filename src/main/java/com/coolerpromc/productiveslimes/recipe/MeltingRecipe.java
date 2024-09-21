@@ -20,11 +20,13 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int inputCount;
+    private final int energy;
 
-    public MeltingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount) {
+    public MeltingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
         this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
         this.output = output;
         this.inputCount = inputCount;
+        this.energy = energy;
     }
 
     @Override
@@ -74,13 +76,18 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
         return inputCount;
     }
 
+    public int getEnergy() {
+        return energy;
+    }
+
     public static class Serializer implements RecipeSerializer<MeltingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting");
         private final MapCodec<MeltingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount)
+                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),
+                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, MeltingRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, MeltingRecipe> STREAM_CODEC = StreamCodec.of(
@@ -102,7 +109,9 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
 
             int inputCount = buffer.readInt();
 
-            return new MeltingRecipe(inputItems, result, inputCount);
+            int energy = buffer.readInt();
+
+            return new MeltingRecipe(inputItems, result, inputCount, energy);
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, MeltingRecipe recipe) {
@@ -117,6 +126,7 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
             }
 
             buffer.writeInt(recipe.inputCount);
+            buffer.writeInt(recipe.energy);
         }
 
         @Override

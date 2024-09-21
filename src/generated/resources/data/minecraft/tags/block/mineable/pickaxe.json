@@ -1,3 +1,9 @@
 {
-  "values": []
+  "values": [
+    "productiveslimes:melting_station",
+    "productiveslimes:soliding_station",
+    "productiveslimes:energy_generator",
+    "productiveslimes:dna_extractor",
+    "productiveslimes:cable"
+  ]
 }

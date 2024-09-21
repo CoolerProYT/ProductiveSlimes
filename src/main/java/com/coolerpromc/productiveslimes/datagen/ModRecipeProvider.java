@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
@@ -72,6 +73,35 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', Items.DEEPSLATE)
                 .define('B', Items.WATER_BUCKET)
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENERGY_SLIME_SPAWN_EGG.get(),1)
+                .pattern("CAC")
+                .pattern("ABA")
+                .pattern("CAC")
+                .define('A', Items.SLIME_BALL)
+                .define('B', Items.EGG)
+                .define('C', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ENERGY_GENERATOR.get(),1)
+                .pattern("CAC")
+                .pattern("ABA")
+                .pattern("CAC")
+                .define('A', ModItems.ENERGY_SLIME_BALL)
+                .define('B', Items.COPPER_BLOCK)
+                .define('C', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CABLE.get(),8)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .define('A', Items.REDSTONE)
+                .define('B', Items.COPPER_INGOT)
+                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
                 .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
@@ -203,6 +233,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.GRAVEL_SLIME_BLOCK, ModItems.GRAVEL_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModBlocks.GRAVEL_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
         //Melting Recipe
         meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
@@ -370,6 +403,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_CACTUS_BUCKET, Items.CACTUS, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
+
+        dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, Items.DIRT, 1, 0.5f);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -377,6 +412,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(pInputCount)
                 .addOutput(new ItemStack(pResult, outputCount))
+                .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting"));
     }
@@ -387,6 +423,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .setInputCount(pInputCount)
                 .addOutput(new ItemStack(pResult, outputCount))
                 .addOutput(new ItemStack(Items.BUCKET, pInputCount))
+                .setEnergy(200)
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
+    }
+
+    protected static void dnaExtractingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
+        DnaExtractingRecipeBuilder.dnaExtractingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .setInputCount(1)
+                .addOutput(new ItemStack(pResult, outputCount))
+                .addOutput(new ItemStack(Items.SLIME_BALL, 1))
+                .setEnergy(400)
+                .setOutputChance(outputChance)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
     }
