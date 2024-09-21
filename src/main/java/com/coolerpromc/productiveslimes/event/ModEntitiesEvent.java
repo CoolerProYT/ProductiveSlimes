@@ -23,6 +23,7 @@ public class ModEntitiesEvent {
         event.put(ModEntities.OAK_SLIME.get(), OakSlime.createAttributes().build());
         event.put(ModEntities.COAL_SLIME.get(), CoalSlime.createAttributes().build());
         event.put(ModEntities.GRAVEL_SLIME.get(), GravelSlime.createAttributes().build());
+        event.put(ModEntities.SAND_SLIME.get(), SandSlime.createAttributes().build());
         event.put(ModEntities.ANDESITE_SLIME.get(), AndesiteSlime.createAttributes().build());
         event.put(ModEntities.SNOW_SLIME.get(), SnowSlime.createAttributes().build());
         event.put(ModEntities.ICE_SLIME.get(), IceSlime.createAttributes().build());

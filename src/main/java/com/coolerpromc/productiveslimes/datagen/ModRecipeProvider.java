@@ -363,7 +363,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_BASALT_BUCKET, Items.BASALT, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_ENDSTONE_BUCKET, Items.END_STONE, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_QUARTZ_BUCKET, Items.QUARTZ, 1, 2);
-        solidingRecipe(recipeOutput, ModFluids.MOLTEN_GLOWSTONE_BUCKET, Items.GLOWSTONE, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_GLOWSTONE_BUCKET, Items.GLOWSTONE_DUST, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_AMETHYST_BUCKET, Items.AMETHYST_SHARD, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_BROWN_MUSHROOM_BUCKET, Items.BROWN_MUSHROOM, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_RED_MUSHROOM_BUCKET, Items.RED_MUSHROOM, 1, 2);
