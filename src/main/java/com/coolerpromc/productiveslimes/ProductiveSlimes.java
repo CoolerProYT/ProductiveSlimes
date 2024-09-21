@@ -15,6 +15,7 @@ import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
+import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
@@ -24,6 +25,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -42,6 +44,13 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+import javax.swing.text.html.parser.Entity;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -94,7 +103,6 @@ public class ProductiveSlimes
             event.registerLayerDefinition(SlimeModel.SLIME_TEXTURE, SlimeModel::createOuterBodyLayer);
         }
 
-        @SubscribeEvent
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
         }
@@ -507,6 +515,10 @@ public class ProductiveSlimes
                     ModItems.ENERGY_SLIME_BALL.value().asItem()
             );
 
+            registerDnaColorHandlers(event,
+                    ModItems.DIRT_SLIME_DNA.value().asItem()
+            );
+
             registerBucketColorHandlers(event,
                     ModFluids.MOLTEN_DIRT_BUCKET.value().asItem(),
                     ModFluids.MOLTEN_STONE_BUCKET.value().asItem(),
@@ -582,6 +594,18 @@ public class ProductiveSlimes
                 event.register((itemStack, pTintIndex) -> {
                     if (itemStack.getItem() instanceof SlimeballItem slimeballItem) {
                         return slimeballItem.getColor();
+                    }
+
+                    return 0xFFFFFFFF; // Default no color
+                }, item);
+            }
+        }
+
+        private static void registerDnaColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
+            for (Item item : items) {
+                event.register((itemStack, pTintIndex) -> {
+                    if (itemStack.getItem() instanceof DnaItem dnaItem) {
+                        return dnaItem.getColor();
                     }
 
                     return 0xFFFFFFFF; // Default no color

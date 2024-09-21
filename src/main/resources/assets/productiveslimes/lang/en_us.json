@@ -185,6 +185,8 @@
   "entity.productiveslimes.cactus_slime": "Cactus Slime",
   "entity.productiveslimes.energy_slime": "Energy Slime",
 
+  "item.productiveslimes.dirt_slime_dna": "Dirt Slime DNA",
+
   "item.productiveslimes.molten_dirt_bucket": "Molten Dirt Bucket",
   "block.productiveslimes.molten_dirt_block": "Molten Dirt",
   "item.productiveslimes.molten_stone_bucket": "Molten Stone Bucket",

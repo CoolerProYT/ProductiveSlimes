@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.EnergyMultiplierUpgrade;
 import com.coolerpromc.productiveslimes.item.custom.GuidebookItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
@@ -60,6 +61,8 @@ public class ModItems {
     public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.register("coal_slimeball", () -> new SlimeballItem(0xFF3b3d3b));
     public static final DeferredItem<Item> GRAVEL_SLIME_BALL = ITEMS.register("gravel_slimeball", () -> new SlimeballItem(0xFF4a444b));
     public static final DeferredItem<Item> ENERGY_SLIME_BALL = ITEMS.register("energy_slimeball", () -> new SlimeballItem(0xFFFFFF70));
+
+    public static final DeferredItem<Item> DIRT_SLIME_DNA = ITEMS.register("dirt_slime_dna", () -> new DnaItem(0xFF866043));
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.register("dirt_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.DIRT_SLIME.get(), 0x5e3a1c, 0x885022, new Item.Properties()));
