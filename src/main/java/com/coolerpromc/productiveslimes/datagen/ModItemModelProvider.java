@@ -139,7 +139,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.BLACKSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.BASALT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.ENDSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.QUARTZ_SLIME_BALL.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.QUARTZ_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GLOWSTONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.AMETHYST_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));

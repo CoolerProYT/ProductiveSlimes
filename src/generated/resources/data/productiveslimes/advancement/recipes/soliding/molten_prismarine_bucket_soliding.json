@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_molten_prismarine_bucket": {
+      "conditions": {
+        "items": [
+          {
+            "items": "productiveslimes:molten_prismarine_bucket"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "productiveslimes:soliding/molten_prismarine_bucket_soliding"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_molten_prismarine_bucket"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "productiveslimes:soliding/molten_prismarine_bucket_soliding"
+    ]
+  }
+}

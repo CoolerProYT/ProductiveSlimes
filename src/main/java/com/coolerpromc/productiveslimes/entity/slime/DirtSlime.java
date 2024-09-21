@@ -60,6 +60,10 @@ public class DirtSlime extends BaseSlime{
                         super.transformSlime(pPlayer, pHand, this, ModEntities.SAND_SLIME.get().create(this.level()));
                     }
 
+                    if(pPlayer.getItemInHand(pHand).getItem() == Items.GRAVEL && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.GRAVEL_SLIME.get().create(this.level()));
+                    }
+
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.DIRT && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         growthSlime(pPlayer, pHand, this);
                     }

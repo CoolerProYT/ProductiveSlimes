@@ -186,7 +186,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_ANDESITE_BLOCK = ModBlocks.BLOCKS.register("molten_andesite_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_ANDESITE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_ANDESITE_BUCKET = ModItems.ITEMS.registerItem("molten_andesite_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ANDESITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ANDESITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF9d9e9a));
     public static final BaseFlowingFluid.Properties MOLTEN_ANDESITE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_ANDESITE_FLUID_TYPE, SOURCE_MOLTEN_ANDESITE, FLOWING_MOLTEN_ANDESITE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -200,7 +200,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_SNOW_BLOCK = ModBlocks.BLOCKS.register("molten_snow_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_SNOW.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_SNOW_BUCKET = ModItems.ITEMS.registerItem("molten_snow_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SNOW.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SNOW.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf2fcfc));
     public static final BaseFlowingFluid.Properties MOLTEN_SNOW_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_SNOW_FLUID_TYPE, SOURCE_MOLTEN_SNOW, FLOWING_MOLTEN_SNOW)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -214,7 +214,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_ICE_BLOCK = ModBlocks.BLOCKS.register("molten_ice_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_ICE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_ICE_BUCKET = ModItems.ITEMS.registerItem("molten_ice_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ICE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ICE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF89b1fc));
     public static final BaseFlowingFluid.Properties MOLTEN_ICE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_ICE_FLUID_TYPE, SOURCE_MOLTEN_ICE, FLOWING_MOLTEN_ICE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -228,7 +228,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_MUD_BLOCK = ModBlocks.BLOCKS.register("molten_mud_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_MUD.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_MUD_BUCKET = ModItems.ITEMS.registerItem("molten_mud_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MUD.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MUD.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF363339));
     public static final BaseFlowingFluid.Properties MOLTEN_MUD_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_MUD_FLUID_TYPE, SOURCE_MOLTEN_MUD, FLOWING_MOLTEN_MUD)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -242,7 +242,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_CLAY_BLOCK = ModBlocks.BLOCKS.register("molten_clay_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_CLAY.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_CLAY_BUCKET = ModItems.ITEMS.registerItem("molten_clay_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CLAY.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CLAY.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF9ca2ac));
     public static final BaseFlowingFluid.Properties MOLTEN_CLAY_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_CLAY_FLUID_TYPE, SOURCE_MOLTEN_CLAY, FLOWING_MOLTEN_CLAY)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -256,7 +256,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_RED_SAND_BLOCK = ModBlocks.BLOCKS.register("molten_red_sand_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_RED_SAND.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_RED_SAND_BUCKET = ModItems.ITEMS.registerItem("molten_red_sand_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_RED_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_RED_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFbb6520));
     public static final BaseFlowingFluid.Properties MOLTEN_RED_SAND_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_RED_SAND_FLUID_TYPE, SOURCE_MOLTEN_RED_SAND, FLOWING_MOLTEN_RED_SAND)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -270,7 +270,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_MOSS_BLOCK = ModBlocks.BLOCKS.register("molten_moss_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_MOSS.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_MOSS_BUCKET = ModItems.ITEMS.registerItem("molten_moss_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MOSS.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MOSS.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF4a6029));
     public static final BaseFlowingFluid.Properties MOLTEN_MOSS_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_MOSS_FLUID_TYPE, SOURCE_MOLTEN_MOSS, FLOWING_MOLTEN_MOSS)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -284,7 +284,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_DEEPSLATE_BLOCK = ModBlocks.BLOCKS.register("molten_deepslate_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_DEEPSLATE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_DEEPSLATE_BUCKET = ModItems.ITEMS.registerItem("molten_deepslate_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DEEPSLATE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DEEPSLATE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF3c3c42));
     public static final BaseFlowingFluid.Properties MOLTEN_DEEPSLATE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_DEEPSLATE_FLUID_TYPE, SOURCE_MOLTEN_DEEPSLATE, FLOWING_MOLTEN_DEEPSLATE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -298,7 +298,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_GRANITE_BLOCK = ModBlocks.BLOCKS.register("molten_granite_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_GRANITE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_GRANITE_BUCKET = ModItems.ITEMS.registerItem("molten_granite_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GRANITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GRANITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF835949));
     public static final BaseFlowingFluid.Properties MOLTEN_GRANITE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_GRANITE_FLUID_TYPE, SOURCE_MOLTEN_GRANITE, FLOWING_MOLTEN_GRANITE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -312,7 +312,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_DIORITE_BLOCK = ModBlocks.BLOCKS.register("molten_diorite_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_DIORITE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_DIORITE_BUCKET = ModItems.ITEMS.registerItem("molten_diorite_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DIORITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DIORITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFadacad));
     public static final BaseFlowingFluid.Properties MOLTEN_DIORITE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_DIORITE_FLUID_TYPE, SOURCE_MOLTEN_DIORITE, FLOWING_MOLTEN_DIORITE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -326,7 +326,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_CALCITE_BLOCK = ModBlocks.BLOCKS.register("molten_calcite_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_CALCITE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_CALCITE_BUCKET = ModItems.ITEMS.registerItem("molten_calcite_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CALCITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CALCITE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFe9e9e3));
     public static final BaseFlowingFluid.Properties MOLTEN_CALCITE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_CALCITE_FLUID_TYPE, SOURCE_MOLTEN_CALCITE, FLOWING_MOLTEN_CALCITE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -340,7 +340,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_TUFF_BLOCK = ModBlocks.BLOCKS.register("molten_tuff_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_TUFF.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_TUFF_BUCKET = ModItems.ITEMS.registerItem("molten_tuff_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_TUFF.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_TUFF.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF55564c));
     public static final BaseFlowingFluid.Properties MOLTEN_TUFF_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_TUFF_FLUID_TYPE, SOURCE_MOLTEN_TUFF, FLOWING_MOLTEN_TUFF)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -354,7 +354,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_DRIPSTONE_BLOCK = ModBlocks.BLOCKS.register("molten_dripstone_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_DRIPSTONE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_DRIPSTONE_BUCKET = ModItems.ITEMS.registerItem("molten_dripstone_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DRIPSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_DRIPSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF806155));
     public static final BaseFlowingFluid.Properties MOLTEN_DRIPSTONE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_DRIPSTONE_FLUID_TYPE, SOURCE_MOLTEN_DRIPSTONE, FLOWING_MOLTEN_DRIPSTONE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -368,7 +368,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_PRISMARINE_BLOCK = ModBlocks.BLOCKS.register("molten_prismarine_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_PRISMARINE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_PRISMARINE_BUCKET = ModItems.ITEMS.registerItem("molten_prismarine_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_PRISMARINE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_PRISMARINE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF529584));
     public static final BaseFlowingFluid.Properties MOLTEN_PRISMARINE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_PRISMARINE_FLUID_TYPE, SOURCE_MOLTEN_PRISMARINE, FLOWING_MOLTEN_PRISMARINE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -382,7 +382,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_MAGMA_BLOCK = ModBlocks.BLOCKS.register("molten_magma_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_MAGMA.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_MAGMA_BUCKET = ModItems.ITEMS.registerItem("molten_magma_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MAGMA.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_MAGMA.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF561f1f));
     public static final BaseFlowingFluid.Properties MOLTEN_MAGMA_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_MAGMA_FLUID_TYPE, SOURCE_MOLTEN_MAGMA, FLOWING_MOLTEN_MAGMA)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -396,7 +396,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_OBSIDIAN_BLOCK = ModBlocks.BLOCKS.register("molten_obsidian_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_OBSIDIAN.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_OBSIDIAN_BUCKET = ModItems.ITEMS.registerItem("molten_obsidian_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_OBSIDIAN.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_OBSIDIAN.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF030106));
     public static final BaseFlowingFluid.Properties MOLTEN_OBSIDIAN_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_OBSIDIAN_FLUID_TYPE, SOURCE_MOLTEN_OBSIDIAN, FLOWING_MOLTEN_OBSIDIAN)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -410,7 +410,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_NETHERRACK_BLOCK = ModBlocks.BLOCKS.register("molten_netherrack_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_NETHERRACK.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_NETHERRACK_BUCKET = ModItems.ITEMS.registerItem("molten_netherrack_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_NETHERRACK.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_NETHERRACK.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF763535));
     public static final BaseFlowingFluid.Properties MOLTEN_NETHERRACK_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_NETHERRACK_FLUID_TYPE, SOURCE_MOLTEN_NETHERRACK, FLOWING_MOLTEN_NETHERRACK)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -424,7 +424,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_SOUL_SAND_BLOCK = ModBlocks.BLOCKS.register("molten_soul_sand_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_SOUL_SAND.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_SOUL_SAND_BUCKET = ModItems.ITEMS.registerItem("molten_soul_sand_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SOUL_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SOUL_SAND.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF413127));
     public static final BaseFlowingFluid.Properties MOLTEN_SOUL_SAND_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_SOUL_SAND_FLUID_TYPE, SOURCE_MOLTEN_SOUL_SAND, FLOWING_MOLTEN_SOUL_SAND)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -438,7 +438,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_SOUL_SOIL_BLOCK = ModBlocks.BLOCKS.register("molten_soul_soil_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_SOUL_SOIL.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_SOUL_SOIL_BUCKET = ModItems.ITEMS.registerItem("molten_soul_soil_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SOUL_SOIL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_SOUL_SOIL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF392b23));
     public static final BaseFlowingFluid.Properties MOLTEN_SOUL_SOIL_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_SOUL_SOIL_FLUID_TYPE, SOURCE_MOLTEN_SOUL_SOIL, FLOWING_MOLTEN_SOUL_SOIL)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -452,7 +452,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_BLACKSTONE_BLOCK = ModBlocks.BLOCKS.register("molten_blackstone_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_BLACKSTONE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_BLACKSTONE_BUCKET = ModItems.ITEMS.registerItem("molten_blackstone_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BLACKSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BLACKSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF201819));
     public static final BaseFlowingFluid.Properties MOLTEN_BLACKSTONE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_BLACKSTONE_FLUID_TYPE, SOURCE_MOLTEN_BLACKSTONE, FLOWING_MOLTEN_BLACKSTONE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -466,7 +466,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_BASALT_BLOCK = ModBlocks.BLOCKS.register("molten_basalt_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_BASALT.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_BASALT_BUCKET = ModItems.ITEMS.registerItem("molten_basalt_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BASALT.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BASALT.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF565456));
     public static final BaseFlowingFluid.Properties MOLTEN_BASALT_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_BASALT_FLUID_TYPE, SOURCE_MOLTEN_BASALT, FLOWING_MOLTEN_BASALT)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -480,7 +480,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_ENDSTONE_BLOCK = ModBlocks.BLOCKS.register("molten_endstone_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_ENDSTONE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_ENDSTONE_BUCKET = ModItems.ITEMS.registerItem("molten_endstone_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ENDSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_ENDSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFcece8e));
     public static final BaseFlowingFluid.Properties MOLTEN_ENDSTONE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_ENDSTONE_FLUID_TYPE, SOURCE_MOLTEN_ENDSTONE, FLOWING_MOLTEN_ENDSTONE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -494,7 +494,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_QUARTZ_BLOCK = ModBlocks.BLOCKS.register("molten_quartz_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_QUARTZ.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_QUARTZ_BUCKET = ModItems.ITEMS.registerItem("molten_quartz_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_QUARTZ.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_QUARTZ.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFe4ddd3));
     public static final BaseFlowingFluid.Properties MOLTEN_QUARTZ_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_QUARTZ_FLUID_TYPE, SOURCE_MOLTEN_QUARTZ, FLOWING_MOLTEN_QUARTZ)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -508,7 +508,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_GLOWSTONE_BLOCK = ModBlocks.BLOCKS.register("molten_glowstone_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_GLOWSTONE.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_GLOWSTONE_BUCKET = ModItems.ITEMS.registerItem("molten_glowstone_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GLOWSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GLOWSTONE.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF784e27));
     public static final BaseFlowingFluid.Properties MOLTEN_GLOWSTONE_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_GLOWSTONE_FLUID_TYPE, SOURCE_MOLTEN_GLOWSTONE, FLOWING_MOLTEN_GLOWSTONE)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -522,7 +522,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_AMETHYST_BLOCK = ModBlocks.BLOCKS.register("molten_amethyst_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_AMETHYST.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_AMETHYST_BUCKET = ModItems.ITEMS.registerItem("molten_amethyst_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_AMETHYST.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_AMETHYST.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF6b4da5));
     public static final BaseFlowingFluid.Properties MOLTEN_AMETHYST_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_AMETHYST_FLUID_TYPE, SOURCE_MOLTEN_AMETHYST, FLOWING_MOLTEN_AMETHYST)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -536,7 +536,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_BROWN_MUSHROOM_BLOCK = ModBlocks.BLOCKS.register("molten_brown_mushroom_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_BROWN_MUSHROOM.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_BROWN_MUSHROOM_BUCKET = ModItems.ITEMS.registerItem("molten_brown_mushroom_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BROWN_MUSHROOM.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_BROWN_MUSHROOM.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF967251));
     public static final BaseFlowingFluid.Properties MOLTEN_BROWN_MUSHROOM_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_BROWN_MUSHROOM_FLUID_TYPE, SOURCE_MOLTEN_BROWN_MUSHROOM, FLOWING_MOLTEN_BROWN_MUSHROOM)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -550,7 +550,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_RED_MUSHROOM_BLOCK = ModBlocks.BLOCKS.register("molten_red_mushroom_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_RED_MUSHROOM_BUCKET = ModItems.ITEMS.registerItem("molten_red_mushroom_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFc02624));
     public static final BaseFlowingFluid.Properties MOLTEN_RED_MUSHROOM_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_RED_MUSHROOM_FLUID_TYPE, SOURCE_MOLTEN_RED_MUSHROOM, FLOWING_MOLTEN_RED_MUSHROOM)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -564,7 +564,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_CACTUS_BLOCK = ModBlocks.BLOCKS.register("molten_cactus_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_CACTUS.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_CACTUS_BUCKET = ModItems.ITEMS.registerItem("molten_cactus_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CACTUS.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFFf7f7c6));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_CACTUS.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF476d21));
     public static final BaseFlowingFluid.Properties MOLTEN_CACTUS_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_CACTUS_FLUID_TYPE, SOURCE_MOLTEN_CACTUS, FLOWING_MOLTEN_CACTUS)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -578,7 +578,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_COAL_BLOCK = ModBlocks.BLOCKS.register("molten_coal_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_COAL.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_COAL_BUCKET = ModItems.ITEMS.registerItem("molten_coal_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_COAL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF2b2b2b));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_COAL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF3b3d3b));
     public static final BaseFlowingFluid.Properties MOLTEN_COAL_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_COAL_FLUID_TYPE, SOURCE_MOLTEN_COAL, FLOWING_MOLTEN_COAL)
             .slopeFindDistance(2).levelDecreasePerBlock(1)
@@ -592,7 +592,7 @@ public class ModFluids {
     public static final DeferredBlock<LiquidBlock> MOLTEN_GRAVEL_BLOCK = ModBlocks.BLOCKS.register("molten_gravel_block",
             () -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_GRAVEL.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
     public static final DeferredItem<Item> MOLTEN_GRAVEL_BUCKET = ModItems.ITEMS.registerItem("molten_gravel_bucket",
-            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GRAVEL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF8c8c8c));
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_GRAVEL.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF4a444b));
     public static final BaseFlowingFluid.Properties MOLTEN_GRAVEL_PROPERTIES = new BaseFlowingFluid.Properties(
             ModFluidTypes.MOLTEN_GRAVEL_FLUID_TYPE, SOURCE_MOLTEN_GRAVEL, FLOWING_MOLTEN_GRAVEL)
             .slopeFindDistance(2).levelDecreasePerBlock(1)

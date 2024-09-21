@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:amethyst_slime_block"
+    }
+  ],
+  "inputCount": 2,
+  "output": [
+    {
+      "count": 5,
+      "id": "productiveslimes:molten_amethyst_bucket"
+    }
+  ]
+}

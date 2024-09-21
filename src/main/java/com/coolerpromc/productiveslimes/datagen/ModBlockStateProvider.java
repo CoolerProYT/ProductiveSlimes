@@ -63,6 +63,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registerSlimeBlock(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(), "red_mushroom_slime_block");
         registerSlimeBlock(ModBlocks.CACTUS_SLIME_BLOCK.get(), "cactus_slime_block");
         registerSlimeBlock(ModBlocks.COAL_SLIME_BLOCK.get(), "coal_slime_block");
+        registerSlimeBlock(ModBlocks.GRAVEL_SLIME_BLOCK.get(), "gravel_slime_block");
     }
 
     private void registerSlimeBlock(Block block, String textureName){

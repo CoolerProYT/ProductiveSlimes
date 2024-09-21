@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_endstone_slimeball": {
+      "conditions": {
+        "items": [
+          {
+            "items": "productiveslimes:endstone_slimeball"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:endstone_slime_block_from_endstone_slimeball"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_endstone_slimeball"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:endstone_slime_block_from_endstone_slimeball"
+    ]
+  }
+}

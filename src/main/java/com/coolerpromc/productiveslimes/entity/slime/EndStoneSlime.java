@@ -24,7 +24,7 @@ public class EndStoneSlime extends BaseSlime{
 
     @Override
     public void dropResource() {
-        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.END_STONE_SLIME_BALL.get(), this.getSize()));
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(ModItems.ENDSTONE_SLIME_BALL.get(), this.getSize()));
         this.level().addFreshEntity(itemEntity);
     }
 
