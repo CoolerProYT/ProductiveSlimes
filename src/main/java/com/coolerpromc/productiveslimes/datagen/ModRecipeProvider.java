@@ -404,7 +404,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
 
-        dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, Items.DIRT, 1, 0.5f);
+        dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModItems.DIRT_SLIME_DNA, 1, 0.75f);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {

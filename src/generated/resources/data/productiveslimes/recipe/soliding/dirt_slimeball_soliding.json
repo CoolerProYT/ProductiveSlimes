@@ -10,12 +10,12 @@
   "output": [
     {
       "count": 1,
-      "id": "minecraft:dirt"
+      "id": "productiveslimes:dirt_slime_dna"
     },
     {
       "count": 1,
       "id": "minecraft:slime_ball"
     }
   ],
-  "outputChance": 0.5
+  "outputChance": 0.75
 }
