@@ -321,11 +321,12 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
                 return outputHandler.getStackInSlot(0);
             }
             else {
-                if (!outputHandler.getStackInSlot(1).isEmpty()) {
-                    return outputHandler.getStackInSlot(1);
+                if (outputHandler.getStackInSlot(1).isEmpty()){
+                    return outputHandler.getStackInSlot(0);
                 }
                 else {
-                    return inputHandler.getStackInSlot(0);
+                    return outputHandler.getStackInSlot(1);
+
                 }
             }
         }
