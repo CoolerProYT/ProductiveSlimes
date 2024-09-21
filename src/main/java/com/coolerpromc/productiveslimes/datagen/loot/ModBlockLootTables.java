@@ -34,6 +34,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
         dropSelf(ModBlocks.ENERGY_GENERATOR.get());
         dropSelf(ModBlocks.CABLE.get());
+        dropSelf(ModBlocks.DNA_EXTRACTOR.get());
 
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());

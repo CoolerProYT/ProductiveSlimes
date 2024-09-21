@@ -32,6 +32,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CABLE = registerBlock("cable",
             () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
+    public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlock("dna_extractor",
+            () -> new DnaExtractorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
     public static final DeferredBlock<Block> DIRT_SLIME_BLOCK = registerBlock("dirt_slime_block",
             () -> new SlimeBlock(MapColor.DIRT, 0xF0866043));
 

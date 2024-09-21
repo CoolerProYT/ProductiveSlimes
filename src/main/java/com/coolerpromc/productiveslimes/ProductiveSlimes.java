@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
+import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -91,6 +92,11 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
             event.registerLayerDefinition(SlimeModel.SLIME_TEXTURE, SlimeModel::createOuterBodyLayer);
+        }
+
+        @SubscribeEvent
+        public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -267,7 +273,8 @@ public class ProductiveSlimes
                         ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get(),
                         ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(),
                         ModBlocks.CACTUS_SLIME_BLOCK.get(),
-                        ModBlocks.ENERGY_SLIME_BLOCK.get()
+                        ModBlocks.ENERGY_SLIME_BLOCK.get(),
+                        ModBlocks.DNA_EXTRACTOR.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);

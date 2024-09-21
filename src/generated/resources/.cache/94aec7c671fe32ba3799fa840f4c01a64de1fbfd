@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-21T18:27:49.7623499	Block States: productiveslimes
+// 1.21.1	2024-09-21T22:14:49.583045	Block States: productiveslimes
 8993c12d6530268c0ea7648f869851d7ba9bd50b assets/productiveslimes/blockstates/amethyst_slime_block.json
 9e8897a64bf96b8119f904b2349ca79f9ecd5fcc assets/productiveslimes/blockstates/andesite_slime_block.json
 cd4b1e6632618084de91fcef11c7a597571ec5c6 assets/productiveslimes/blockstates/basalt_slime_block.json
@@ -13,6 +13,7 @@ a02b5af165ddeb9b25f33e0b8ad174269ceaa537 assets/productiveslimes/blockstates/cop
 e3060f7b875c94c17abce6a14adfe0fad5913da6 assets/productiveslimes/blockstates/diamond_slime_block.json
 bddb81f6bc21717b8f9859a41a3d7a649105ec14 assets/productiveslimes/blockstates/diorite_slime_block.json
 c90c81baaf324c03a8e239946ebb57914b119fc2 assets/productiveslimes/blockstates/dirt_slime_block.json
+38d2640184837275bb14c325d99043bc5f9625c0 assets/productiveslimes/blockstates/dna_extractor.json
 5426b27ad81d6f1dc7699215636fe7bc9672c72e assets/productiveslimes/blockstates/dripstone_slime_block.json
 688183822f949efb4fc6b08c62df0380885c814f assets/productiveslimes/blockstates/endstone_slime_block.json
 cf42215870ff3be250cfa549f79743e01d298498 assets/productiveslimes/blockstates/energy_generator.json

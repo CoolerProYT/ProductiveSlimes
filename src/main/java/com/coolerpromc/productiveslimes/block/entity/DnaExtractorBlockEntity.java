@@ -1,13 +1,17 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
-import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
+import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -28,12 +32,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
-public class SolidingStationBlockEntity extends BlockEntity implements MenuProvider {
+public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider {
+    private float rotation;
     private final ItemStackHandler inputHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -46,6 +55,9 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -60,16 +72,16 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     private int progress = 0;
     private int maxProgress = 78;
 
-    public SolidingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.SOLIDING_STATION_BE.get(), pPos, pBlockState);
+    public DnaExtractorBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.DNA_EXTRACTOR_BE.get(), pPos, pBlockState);
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
                 return switch (pIndex) {
-                    case 0 -> SolidingStationBlockEntity.this.progress;
-                    case 1 -> SolidingStationBlockEntity.this.maxProgress;
-                    case 2 -> SolidingStationBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 -> SolidingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    case 0 -> DnaExtractorBlockEntity.this.progress;
+                    case 1 -> DnaExtractorBlockEntity.this.maxProgress;
+                    case 2 -> DnaExtractorBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3 -> DnaExtractorBlockEntity.this.energyHandler.getMaxEnergyStored();
                     default -> 0;
                 };
             }
@@ -77,9 +89,9 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 -> SolidingStationBlockEntity.this.progress = pValue;
-                    case 1 -> SolidingStationBlockEntity.this.maxProgress = pValue;
-                    case 2 -> SolidingStationBlockEntity.this.energyHandler.setEnergy(pValue);
+                    case 0 -> DnaExtractorBlockEntity.this.progress = pValue;
+                    case 1 -> DnaExtractorBlockEntity.this.maxProgress = pValue;
+                    case 2 -> DnaExtractorBlockEntity.this.energyHandler.setEnergy(pValue);
                 }
             }
 
@@ -118,13 +130,13 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.productiveslimes.soliding_station");
+        return Component.translatable("block.productiveslimes.dna_extractor");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new SolidingStationMenu(pContainerId, pPlayerInventory, this, this.data);
+        return new DnaExtractorMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
     @Override
@@ -133,7 +145,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
-        pTag.putInt("soliding_station.progress", progress);
+        pTag.putInt("dna_extractor.progress", progress);
 
         super.saveAdditional(pTag, pRegistries);
     }
@@ -146,12 +158,12 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
         energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
-        progress = pTag.getInt("soliding_station.progress");
+        progress = pTag.getInt("dna_extractor.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()) {
+        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
@@ -170,7 +182,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().getOutputs();
 
@@ -181,8 +193,19 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
             for (ItemStack result : results) {
                 int outputSlot = findSuitableOutputSlot(result);
                 if (outputSlot != -1) {
-                    this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
-                            this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                    if (result.getItem() == Items.SLIME_BALL){
+                        this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
+                                this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                    }
+                    else{
+                        Random random = new Random();
+                        float chance = recipe.get().value().getOutputChance();
+                        if (random.nextFloat() < chance){
+                            this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
+                                    this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                        }
+                    }
+
                 } else {
                     // Handle the case where no suitable output slot is found
                     // This can be logging an error, throwing an exception, or any other handling logic
@@ -205,7 +228,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
@@ -252,8 +275,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+    private Optional<RecipeHolder<DnaExtractingRecipe>> getCurrentRecipe(){
+        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -287,5 +310,44 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     public ContainerData getData() {
         return data;
+    }
+
+    public ItemStack getRenderStack() {
+        if (outputHandler.getStackInSlot(0).isEmpty() && outputHandler.getStackInSlot(1).isEmpty()) {
+            return inputHandler.getStackInSlot(0);
+        }
+        else {
+            if (!outputHandler.getStackInSlot(0).isEmpty() && outputHandler.getStackInSlot(0).getItem() != Items.SLIME_BALL) {
+                return outputHandler.getStackInSlot(0);
+            }
+            else {
+                if (!outputHandler.getStackInSlot(1).isEmpty()) {
+                    return outputHandler.getStackInSlot(1);
+                }
+                else {
+                    return inputHandler.getStackInSlot(0);
+                }
+            }
+        }
+    }
+
+    public float getRenderingRotation() {
+        rotation += 1f;
+        if(rotation >= 360) {
+            rotation = 0;
+        }
+        return rotation;
+    }
+
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+        return saveWithoutMetadata(pRegistries);
     }
 }

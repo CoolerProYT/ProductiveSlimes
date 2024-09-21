@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
@@ -402,6 +403,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_CACTUS_BUCKET, Items.CACTUS, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
+
+        dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, Items.DIRT, 1, 0.5f);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -421,6 +424,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .addOutput(new ItemStack(pResult, outputCount))
                 .addOutput(new ItemStack(Items.BUCKET, pInputCount))
                 .setEnergy(200)
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
+    }
+
+    protected static void dnaExtractingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
+        DnaExtractingRecipeBuilder.dnaExtractingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .setInputCount(1)
+                .addOutput(new ItemStack(pResult, outputCount))
+                .addOutput(new ItemStack(Items.SLIME_BALL, 1))
+                .setEnergy(400)
+                .setOutputChance(outputChance)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
     }

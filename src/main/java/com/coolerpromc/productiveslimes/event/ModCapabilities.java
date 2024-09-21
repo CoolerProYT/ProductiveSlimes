@@ -49,8 +49,29 @@ public class ModCapabilities {
                 ModBlockEntities.ENERGY_GENERATOR_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.ENERGY_GENERATOR_BE.get(),
+                (be, side) -> {
+                    return be.getItemHandler();
+                });
+
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.CABLE_BE.get(),
                 (be, side) -> be);
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.DNA_EXTRACTOR_BE.get(),
+                (be, side) -> be.getEnergyHandler());
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.DNA_EXTRACTOR_BE.get(),
+                (be, side) -> {
+                    if (side == Direction.DOWN) {
+                        return be.getOutputHandler();
+                    }
+                    else {
+                        return be.getInputHandler();
+                    }
+                });
     }
 }

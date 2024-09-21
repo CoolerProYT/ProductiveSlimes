@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-21T20:56:38.9146229	Tags for minecraft:block mod id productiveslimes
-02287c42be770c5227acaef9d98442c3a92872f3 data/minecraft/tags/block/mineable/pickaxe.json
-af7e5daadc896749cd8cadf42ba20d39b3b3c451 data/minecraft/tags/block/needs_iron_tool.json
+// 1.21.1	2024-09-21T22:14:49.5795659	Tags for minecraft:block mod id productiveslimes
+5f1c8acd2c0038198d754a81260b2c86fca0c9df data/minecraft/tags/block/mineable/pickaxe.json
+e367bca911461dc85f0340d7ee4128c0eea0b8c7 data/minecraft/tags/block/needs_iron_tool.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/neoforge/tags/block/needs_netherite_tool.json
