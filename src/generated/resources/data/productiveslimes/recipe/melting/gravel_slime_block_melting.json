@@ -1,5 +1,6 @@
 {
   "type": "productiveslimes:melting",
+  "energy": 200,
   "ingredients": [
     {
       "item": "productiveslimes:gravel_slime_block"

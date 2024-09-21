@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
+import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
@@ -65,6 +66,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         }
     };
 
+    private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0, 0);
+
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 78;
@@ -77,6 +80,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
                 return switch (pIndex) {
                     case 0 -> MeltingStationBlockEntity.this.progress;
                     case 1 -> MeltingStationBlockEntity.this.maxProgress;
+                    case 2 -> MeltingStationBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3 -> MeltingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
                     default -> 0;
                 };
             }
@@ -86,12 +91,13 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
                 switch (pIndex) {
                     case 0 -> MeltingStationBlockEntity.this.progress = pValue;
                     case 1 -> MeltingStationBlockEntity.this.maxProgress = pValue;
+                    case 2 -> MeltingStationBlockEntity.this.energyHandler.setEnergy(pValue);
                 }
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 4;
             }
         };
     }
@@ -106,6 +112,10 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
     public ItemStackHandler getOutputHandler() {
         return outputHandler;
+    }
+
+    public CustomEnergyStorage getEnergyHandler() {
+        return energyHandler;
     }
 
     @Override
@@ -138,6 +148,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         pTag.put("BucketInventory", bucketHandler.serializeNBT(pRegistries));
         pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
         pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
+        pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
         pTag.putInt("melting_station.progress", progress);
 
@@ -151,17 +162,19 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         bucketHandler.deserializeNBT(pRegistries, pTag.getCompound("BucketInventory"));
         inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
         outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
+        energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
         progress = pTag.getInt("melting_station.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount()) {
+        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
+                energyHandler.removeEnergy(recipe.get().value().getEnergy());
                 craftItem();
                 resetProgress();
             }

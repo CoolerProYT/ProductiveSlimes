@@ -74,6 +74,35 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
                 .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENERGY_SLIME_SPAWN_EGG.get(),1)
+                .pattern("CAC")
+                .pattern("ABA")
+                .pattern("CAC")
+                .define('A', Items.SLIME_BALL)
+                .define('B', Items.EGG)
+                .define('C', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ENERGY_GENERATOR.get(),1)
+                .pattern("CAC")
+                .pattern("ABA")
+                .pattern("CAC")
+                .define('A', ModItems.ENERGY_SLIME_BALL)
+                .define('B', Items.COPPER_BLOCK)
+                .define('C', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CABLE.get(),8)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .define('A', Items.REDSTONE)
+                .define('B', Items.COPPER_INGOT)
+                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
+                .save(recipeOutput);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
                 .requires(Items.BOOK)
                 .requires(Tags.Items.SLIME_BALLS)
@@ -203,6 +232,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.GRAVEL_SLIME_BLOCK, ModItems.GRAVEL_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModBlocks.GRAVEL_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
         //Melting Recipe
         meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
@@ -377,6 +409,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(pInputCount)
                 .addOutput(new ItemStack(pResult, outputCount))
+                .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting"));
     }
@@ -387,6 +420,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .setInputCount(pInputCount)
                 .addOutput(new ItemStack(pResult, outputCount))
                 .addOutput(new ItemStack(Items.BUCKET, pInputCount))
+                .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
     }

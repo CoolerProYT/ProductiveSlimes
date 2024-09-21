@@ -94,6 +94,8 @@ public class ModEntities {
             ENTITY_TYPES.register("coal_slime", () -> EntityType.Builder.of(CoalSlime::new, MobCategory.CREATURE).build("coal_slime"));
     public static final DeferredHolder<EntityType<?>, EntityType<GravelSlime>> GRAVEL_SLIME =
             ENTITY_TYPES.register("gravel_slime", () -> EntityType.Builder.of(GravelSlime::new, MobCategory.CREATURE).build("gravel_slime"));
+    public static final DeferredHolder<EntityType<?>, EntityType<EnergySlime>> ENERGY_SLIME =
+            ENTITY_TYPES.register("energy_slime", () -> EntityType.Builder.of(EnergySlime::new, MobCategory.CREATURE).build("energy_slime"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

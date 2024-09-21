@@ -1,9 +1,7 @@
 package com.coolerpromc.productiveslimes.block;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.block.custom.MeltingStationBlock;
-import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
-import com.coolerpromc.productiveslimes.block.custom.SolidingStationBlock;
+import com.coolerpromc.productiveslimes.block.custom.*;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -27,6 +25,12 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station",
             () -> new SolidingStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final DeferredBlock<Block> ENERGY_GENERATOR = registerBlock("energy_generator",
+            () -> new EnergyGeneratorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final DeferredBlock<Block> CABLE = registerBlock("cable",
+            () -> new CableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final DeferredBlock<Block> DIRT_SLIME_BLOCK = registerBlock("dirt_slime_block",
             () -> new SlimeBlock(MapColor.DIRT, 0xF0866043));
@@ -150,6 +154,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> GRAVEL_SLIME_BLOCK = registerBlock("gravel_slime_block",
             () -> new SlimeBlock(MapColor.COLOR_GRAY, 0xF04a444b));
+
+    public static final DeferredBlock<Block> ENERGY_SLIME_BLOCK = registerBlock("energy_slime_block",
+            () -> new SlimeBlock(MapColor.COLOR_YELLOW, 0xF0ffff70));
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block){
         DeferredBlock<Block> toReturn = BLOCKS.register(name, block);

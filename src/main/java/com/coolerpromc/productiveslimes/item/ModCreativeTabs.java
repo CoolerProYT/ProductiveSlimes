@@ -20,9 +20,12 @@ public class ModCreativeTabs {
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems(((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.GUIDEBOOK.get());
+                        pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
 
                         pOutput.accept(ModBlocks.MELTING_STATION.get());
                         pOutput.accept(ModBlocks.LIQUID_SOLIDING_STATION.get());
+                        pOutput.accept(ModBlocks.ENERGY_GENERATOR.get());
+                        pOutput.accept(ModBlocks.CABLE.get());
 
                         pOutput.accept(ModItems.DIRT_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.STONE_SLIME_SPAWN_EGG.get());
@@ -65,6 +68,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.CACTUS_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.COAL_SLIME_SPAWN_EGG.get());
                         pOutput.accept(ModItems.GRAVEL_SLIME_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG.get());
 
                         pOutput.accept(ModItems.DIRT_SLIME_BALL.get());
                         pOutput.accept(ModItems.STONE_SLIME_BALL.get());
@@ -107,6 +111,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.CACTUS_SLIME_BALL.get());
                         pOutput.accept(ModItems.COAL_SLIME_BALL.get());
                         pOutput.accept(ModItems.GRAVEL_SLIME_BALL.get());
+                        pOutput.accept(ModItems.ENERGY_SLIME_BALL.get());
 
                         pOutput.accept(ModBlocks.DIRT_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.STONE_SLIME_BLOCK.get());
@@ -149,6 +154,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModBlocks.CACTUS_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.COAL_SLIME_BLOCK.get());
                         pOutput.accept(ModBlocks.GRAVEL_SLIME_BLOCK.get());
+                        pOutput.accept(ModBlocks.ENERGY_SLIME_BLOCK.get());
 
                         pOutput.accept(ModFluids.MOLTEN_DIRT_BUCKET.get());
                         pOutput.accept(ModFluids.MOLTEN_STONE_BUCKET.get());

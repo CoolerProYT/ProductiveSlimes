@@ -12,6 +12,10 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 public class ModCapabilities {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.MELTING_STATION_BE.get(),
+                (be, side) -> be.getEnergyHandler());
+
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.MELTING_STATION_BE.get(),
                 (be, side) -> {
@@ -26,6 +30,10 @@ public class ModCapabilities {
                     }
                 });
 
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.SOLIDING_STATION_BE.get(),
+                (be, side) -> be.getEnergyHandler());
+
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.SOLIDING_STATION_BE.get(),
                 (be, side) -> {
@@ -36,5 +44,13 @@ public class ModCapabilities {
                         return be.getInputHandler();
                     }
                 });
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.ENERGY_GENERATOR_BE.get(),
+                (be, side) -> be.getEnergyHandler());
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.CABLE_BE.get(),
+                (be, side) -> be);
     }
 }

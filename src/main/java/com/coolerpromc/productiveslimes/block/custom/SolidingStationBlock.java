@@ -2,14 +2,21 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,10 +29,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class SolidingStationBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -62,16 +73,16 @@ public class SolidingStationBlock extends BaseEntityBlock {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
-    /*@Override
+    @Override
     protected List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         List<ItemStack> drops = super.getDrops(pState, pParams);
         BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 
         if (blockEntity instanceof SolidingStationBlockEntity) {
             ItemStack stack = new ItemStack(this);
-            SolidingStationBlockEntity airCoolerBlockEntity = (SolidingStationBlockEntity) blockEntity;
+            SolidingStationBlockEntity solidingStationBlockEntity = (SolidingStationBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), airCoolerBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.set(ModDataComponents.ENERGY.get(), solidingStationBlockEntity.getEnergyHandler().getEnergyStored());
 
             drops.clear();
             drops.add(stack);
@@ -79,7 +90,6 @@ public class SolidingStationBlock extends BaseEntityBlock {
 
         return drops;
     }
-*/
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
@@ -135,19 +145,19 @@ public class SolidingStationBlock extends BaseEntityBlock {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
-    /*@Override
+    @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if (be instanceof SolidingStationBlockEntity airCoolerBlockEntity) {
+        if (be instanceof SolidingStationBlockEntity solidingStationBlockEntity) {
             int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
 
-            airCoolerBlockEntity.getEnergyHandler().setEnergy(energy);
+            solidingStationBlockEntity.getEnergyHandler().setEnergy(energy);
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-    }*/
+    }
 
-    /*@Override
+    @Override
     public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
         super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
 
@@ -158,5 +168,5 @@ public class SolidingStationBlock extends BaseEntityBlock {
                     .append(Component.literal(energy + " / 10000 FE")
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
-    }*/
+    }
 }

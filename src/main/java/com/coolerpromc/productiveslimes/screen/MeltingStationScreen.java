@@ -34,6 +34,9 @@ public class MeltingStationScreen extends AbstractContainerScreen<MeltingStation
         int y = (height - imageHeight) / 2;
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        int energyScaled = this.menu.getEnergyStoredScaled();
+
+        pGuiGraphics.blit(TEXTURE, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
 
         renderProgressArrow(pGuiGraphics, x, y);
     }
@@ -49,5 +52,13 @@ public class MeltingStationScreen extends AbstractContainerScreen<MeltingStation
         renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+
+        int energyStored = this.menu.getEnergy();
+        int maxEnergy = this.menu.getMaxEnergy();
+
+        Component text = Component.literal("Energy: " + energyStored + " / " + maxEnergy + " FE");
+        if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
+            pGuiGraphics.renderTooltip(this.font, text, pMouseX, pMouseY);
+        }
     }
 }
