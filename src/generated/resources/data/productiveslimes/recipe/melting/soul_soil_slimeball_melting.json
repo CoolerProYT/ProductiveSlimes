@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:melting",
+  "ingredients": [
+    {
+      "item": "productiveslimes:soul_soil_slimeball"
+    }
+  ],
+  "inputCount": 4,
+  "output": [
+    {
+      "count": 1,
+      "id": "productiveslimes:molten_soul_soil_bucket"
+    }
+  ]
+}

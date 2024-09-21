@@ -54,19 +54,19 @@ public class NetherrackSlime extends BaseSlime{
                     }
 
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.BLACKSTONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.BLACKSTONE_SOIL_SLIME.get().create(this.level()));
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.BLACKSTONE_SLIME.get().create(this.level()));
                     }
 
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.BASALT && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.BASALT_SOIL_SLIME.get().create(this.level()));
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.BASALT_SLIME.get().create(this.level()));
                     }
 
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.QUARTZ_BLOCK && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.QUARTZ_SOIL_SLIME.get().create(this.level()));
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.QUARTZ_SLIME.get().create(this.level()));
                     }
 
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.GLOWSTONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.GLOWSTONE_SOIL_SLIME.get().create(this.level()));
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.GLOWSTONE_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.NETHERRACK && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {

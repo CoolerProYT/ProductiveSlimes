@@ -82,7 +82,7 @@ public class StoneSlime extends BaseSlime{
                     }
 
                     if(pPlayer.getItemInHand(pHand).getItem() == Items.END_STONE && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
-                        super.transformSlime(pPlayer, pHand, this, ModEntities.END_STONE_SOIL_SLIME.get().create(this.level()));
+                        super.transformSlime(pPlayer, pHand, this, ModEntities.ENDSTONE_SLIME.get().create(this.level()));
                     }
 
                     if (pPlayer.getItemInHand(pHand).getItem() == Items.STONE && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {

@@ -45,7 +45,7 @@ public class ModEntitiesEvent {
         event.put(ModEntities.BASALT_SLIME.get(), BasaltSlime.createAttributes().build());
         event.put(ModEntities.QUARTZ_SLIME.get(), QuartzSlime.createAttributes().build());
         event.put(ModEntities.GLOWSTONE_SLIME.get(), GlowstoneSlime.createAttributes().build());
-        event.put(ModEntities.END_STONE_SLIME.get(), EndStoneSlime.createAttributes().build());
+        event.put(ModEntities.ENDSTONE_SLIME.get(), EndStoneSlime.createAttributes().build());
         event.put(ModEntities.AMETHYST_SLIME.get(), AmethystSlime.createAttributes().build());
         event.put(ModEntities.BROWN_MUSHROOM_SLIME.get(), BrownMushroomSlime.createAttributes().build());
         event.put(ModEntities.RED_MUSHROOM_SLIME.get(), RedMushroomSlime.createAttributes().build());
