@@ -19,7 +19,9 @@
     "productiveslimes:source_molten_redstone",
     "productiveslimes:flowing_molten_redstone",
     "productiveslimes:source_molten_oak",
-    "productiveslimes:flowing_molten_coal",
+    "productiveslimes:flowing_molten_oak",
+    "productiveslimes:source_molten_sand",
+    "productiveslimes:flowing_molten_sand"
     "productiveslimes:source_molten_coal",
     "productiveslimes:flowing_molten_coal"
   ]

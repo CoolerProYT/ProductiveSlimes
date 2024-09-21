@@ -25,9 +25,37 @@ public class ModItems {
     public static final DeferredItem<Item> LAPIS_SLIME_BALL = ITEMS.register("lapis_slimeball", () -> new SlimeballItem(0xFF4165E6));
     public static final DeferredItem<Item> REDSTONE_SLIME_BALL = ITEMS.register("redstone_slimeball", () -> new SlimeballItem(0xFFD43030));
     public static final DeferredItem<Item> OAK_SLIME_BALL = ITEMS.register("oak_slimeball", () -> new SlimeballItem(0xFFa69d6f));
+    public static final DeferredItem<Item> SAND_SLIME_BALL = ITEMS.register("sand_slimeball", () -> new SlimeballItem(0xFFf7f7c6));
+    public static final DeferredItem<Item> ANDESITE_SLIME_BALL = ITEMS.register("andesite_slimeball", () -> new SlimeballItem(0xFF9d9e9a));
+    public static final DeferredItem<Item> SNOW_SLIME_BALL = ITEMS.register("snow_slimeball", () -> new SlimeballItem(0xFFf2fcfc));
+    public static final DeferredItem<Item> ICE_SLIME_BALL = ITEMS.register("ice_slimeball", () -> new SlimeballItem(0xFF89b1fc));
+    public static final DeferredItem<Item> MUD_SLIME_BALL = ITEMS.register("mud_slimeball", () -> new SlimeballItem(0xFF363339));
+    public static final DeferredItem<Item> CLAY_SLIME_BALL = ITEMS.register("clay_slimeball", () -> new SlimeballItem(0xFF9ca2ac));
+    public static final DeferredItem<Item> RED_SAND_SLIME_BALL = ITEMS.register("red_sand_slimeball", () -> new SlimeballItem(0xFFbb6520));
+    public static final DeferredItem<Item> MOSS_SLIME_BALL = ITEMS.register("moss_slimeball", () -> new SlimeballItem(0xFF4a6029));
+    public static final DeferredItem<Item> DEEPSLATE_SLIME_BALL = ITEMS.register("deepslate_slimeball", () -> new SlimeballItem(0xFF3c3c42));
+    public static final DeferredItem<Item> GRANITE_SLIME_BALL = ITEMS.register("granite_slimeball", () -> new SlimeballItem(0xFF835949));
+    public static final DeferredItem<Item> DIORITE_SLIME_BALL = ITEMS.register("diorite_slimeball", () -> new SlimeballItem(0xFFadacad));
+    public static final DeferredItem<Item> CALCITE_SLIME_BALL = ITEMS.register("calcite_slimeball", () -> new SlimeballItem(0xFFe9e9e3));
+    public static final DeferredItem<Item> TUFF_SLIME_BALL = ITEMS.register("tuff_slimeball", () -> new SlimeballItem(0xFF55564c));
+    public static final DeferredItem<Item> DRIPSTONE_SLIME_BALL = ITEMS.register("dripstone_slimeball", () -> new SlimeballItem(0xFF806155));
+    public static final DeferredItem<Item> PRISMARINE_SLIME_BALL = ITEMS.register("prismarine_slimeball", () -> new SlimeballItem(0xFF529584));
+    public static final DeferredItem<Item> MAGMA_SLIME_BALL = ITEMS.register("magma_slimeball", () -> new SlimeballItem(0xFF561f1f));
+    public static final DeferredItem<Item> OBSIDIAN_SLIME_BALL = ITEMS.register("obsidian_slimeball", () -> new SlimeballItem(0xFF030106));
+    public static final DeferredItem<Item> NETHERRACK_SLIME_BALL = ITEMS.register("netherrack_slimeball", () -> new SlimeballItem(0xFF763535));
+    public static final DeferredItem<Item> SOUL_SAND_SLIME_BALL = ITEMS.register("soul_sand_slimeball", () -> new SlimeballItem(0xFF413127));
+    public static final DeferredItem<Item> SOUL_SOIL_SLIME_BALL = ITEMS.register("soul_soil_slimeball", () -> new SlimeballItem(0xFF392b23));
+    public static final DeferredItem<Item> BLACKSTONE_SLIME_BALL = ITEMS.register("blackstone_slimeball", () -> new SlimeballItem(0xFF201819));
+    public static final DeferredItem<Item> BASALT_SLIME_BALL = ITEMS.register("basalt_slimeball", () -> new SlimeballItem(0xFF565456));
+    public static final DeferredItem<Item> ENDSTONE_SLIME_BALL = ITEMS.register("endstone_slimeball", () -> new SlimeballItem(0xFFcece8e));
+    public static final DeferredItem<Item> QUARTZ_SLIME_BALL = ITEMS.register("quartz_slimeball", () -> new SlimeballItem(0xFFe4ddd3));
+    public static final DeferredItem<Item> GLOWSTONE_SLIME_BALL = ITEMS.register("glowstone_slimeball", () -> new SlimeballItem(0xFF784e27));
+    public static final DeferredItem<Item> AMETHYST_SLIME_BALL = ITEMS.register("amethyst_slimeball", () -> new SlimeballItem(0xFF6b4da5));
+    public static final DeferredItem<Item> BROWN_MUSHROOM_SLIME_BALL = ITEMS.register("brown_mushroom_slimeball", () -> new SlimeballItem(0xFF967251));
+    public static final DeferredItem<Item> RED_MUSHROOM_SLIME_BALL = ITEMS.register("red_mushroom_slimeball", () -> new SlimeballItem(0xFFc02624));
+    public static final DeferredItem<Item> CACTUS_SLIME_BALL = ITEMS.register("cactus_slimeball", () -> new SlimeballItem(0xFF476d21));
     public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.register("coal_slimeball", () -> new SlimeballItem(0xFF3b3d3b));
     public static final DeferredItem<Item> GRAVEL_SLIME_BALL = ITEMS.register("gravel_slimeball", () -> new SlimeballItem(0xFF4a444b));
-
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.register("dirt_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.DIRT_SLIME.get(), 0x5e3a1c, 0x885022, new Item.Properties()));
@@ -49,6 +77,65 @@ public class ModItems {
             () -> new SpawnEggItem(ModEntities.REDSTONE_SLIME.get(), 0xa10505, 0xc92020, new Item.Properties()));
     public static final DeferredItem<Item> OAK_SLIME_SPAWN_EGG = ITEMS.register("oak_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.OAK_SLIME.get(), 0xa69d6f, 0xded4a4, new Item.Properties()));
+  
+    public static final DeferredItem<Item> SAND_SLIME_SPAWN_EGG = ITEMS.register("sand_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.SAND_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> ANDESITE_SLIME_SPAWN_EGG = ITEMS.register("andesite_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.ANDESITE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> SNOW_SLIME_SPAWN_EGG = ITEMS.register("snow_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.SNOW_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> ICE_SLIME_SPAWN_EGG = ITEMS.register("ice_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.ICE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> MUD_SLIME_SPAWN_EGG = ITEMS.register("mud_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.MUD_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> CLAY_SLIME_SPAWN_EGG = ITEMS.register("clay_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.CLAY_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> RED_SAND_SLIME_SPAWN_EGG = ITEMS.register("red_sand_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.RED_SAND_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> MOSS_SLIME_SPAWN_EGG = ITEMS.register("moss_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.MOSS_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> DEEPSLATE_SLIME_SPAWN_EGG = ITEMS.register("deepslate_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.DEEPSLATE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> GRANITE_SLIME_SPAWN_EGG = ITEMS.register("granite_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.GRANITE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> DIORITE_SLIME_SPAWN_EGG = ITEMS.register("diorite_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.DIORITE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> CALCITE_SLIME_SPAWN_EGG = ITEMS.register("calcite_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.CALCITE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> TUFF_SLIME_SPAWN_EGG = ITEMS.register("tuff_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.TUFF_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> DRIPSTONE_SLIME_SPAWN_EGG = ITEMS.register("dripstone_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.DRIPSTONE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> PRISMARINE_SLIME_SPAWN_EGG = ITEMS.register("prismarine_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.PRISMARINE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> MAGMA_SLIME_SPAWN_EGG = ITEMS.register("magma_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.MAGMA_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> OBSIDIAN_SLIME_SPAWN_EGG = ITEMS.register("obsidian_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.OBSIDIAN_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> NETHERRACK_SLIME_SPAWN_EGG = ITEMS.register("netherrack_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.NETHERRACK_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> SOUL_SAND_SLIME_SPAWN_EGG = ITEMS.register("soul_sand_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.SOUL_SAND_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> SOUL_SOIL_SLIME_SPAWN_EGG = ITEMS.register("soul_soil_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.SOUL_SOIL_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> BLACKSTONE_SLIME_SPAWN_EGG = ITEMS.register("blackstone_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.BLACKSTONE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> BASALT_SLIME_SPAWN_EGG = ITEMS.register("basalt_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.BASALT_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> ENDSTONE_SLIME_SPAWN_EGG = ITEMS.register("endstone_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.ENDSTONE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> QUARTZ_SLIME_SPAWN_EGG = ITEMS.register("quartz_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.QUARTZ_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> GLOWSTONE_SLIME_SPAWN_EGG = ITEMS.register("glowstone_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.GLOWSTONE_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> AMETHYST_SLIME_SPAWN_EGG = ITEMS.register("amethyst_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.AMETHYST_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> BROWN_MUSHROOM_SLIME_SPAWN_EGG = ITEMS.register("brown_mushroom_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.BROWN_MUSHROOM_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> RED_MUSHROOM_SLIME_SPAWN_EGG = ITEMS.register("red_mushroom_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.RED_MUSHROOM_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
+    public static final DeferredItem<Item> CACTUS_SLIME_SPAWN_EGG = ITEMS.register("cactus_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.CACTUS_SLIME.get(), 0xf7f7c6, 0xfcfcd9, new Item.Properties()));
     public static final DeferredItem<Item> COAL_SLIME_SPAWN_EGG = ITEMS.register("coal_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.COAL_SLIME.get(), 0x3b3d3b, 0x222222, new Item.Properties()));
     public static final DeferredItem<Item> GRAVEL_SLIME_SPAWN_EGG = ITEMS.register("gravel_slime_spawn_egg",
