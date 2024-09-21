@@ -24,6 +24,35 @@ public class ModEntitiesEvent {
         event.put(ModEntities.LAPIS_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.REDSTONE_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.OAK_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.SAND_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.ANDESITE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.SNOW_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.ICE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.MUD_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.CLAY_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.RED_SAND_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.MOSS_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.DEEPSLATE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.GRANITE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.DIORITE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.CALCITE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.TUFF_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.DRIPSTONE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.PRISMARINE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.MAGMA_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.OBSIDIAN_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.NETHERRACK_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.SOUL_SAND_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.SOUL_SOIL_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.BLACKSTONE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.BASALT_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.ENDSTONE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.QUARTZ_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.GLOWSTONE_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.AMETHYST_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.BROWN_MUSHROOM_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.RED_MUSHROOM_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.CACTUS_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.COAL_SLIME.get(), GoldSlime.createAttributes().build());
     }
 }
