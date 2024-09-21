@@ -53,5 +53,6 @@ public class ModEntitiesEvent {
         event.put(ModEntities.BROWN_MUSHROOM_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.RED_MUSHROOM_SLIME.get(), GoldSlime.createAttributes().build());
         event.put(ModEntities.CACTUS_SLIME.get(), GoldSlime.createAttributes().build());
+        event.put(ModEntities.COAL_SLIME.get(), GoldSlime.createAttributes().build());
     }
 }

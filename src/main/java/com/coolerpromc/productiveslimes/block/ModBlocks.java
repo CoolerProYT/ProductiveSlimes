@@ -144,6 +144,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> CACTUS_SLIME_BLOCK = registerBlock("cactus_slime_block",
             () -> new SlimeBlock(MapColor.COLOR_GREEN, 0xF0476d21));
+  
+    public static final DeferredBlock<Block> COAL_SLIME_BLOCK = registerBlock("coal_slime_block",
+            () -> new SlimeBlock(MapColor.COLOR_BLACK, 0xF03b3d3b));
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block){
         DeferredBlock<Block> toReturn = BLOCKS.register(name, block);

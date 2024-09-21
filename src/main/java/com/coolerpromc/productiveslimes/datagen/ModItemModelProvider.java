@@ -61,6 +61,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.BROWN_MUSHROOM_SLIME_BALL);
         slimeballItem(ModItems.RED_MUSHROOM_SLIME_BALL);
         slimeballItem(ModItems.CACTUS_SLIME_BALL);
+        slimeballItem(ModItems.COAL_SLIME_BALL);
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
@@ -101,7 +102,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         bucketItem(ModFluids.MOLTEN_BROWN_MUSHROOM_BUCKET);
         bucketItem(ModFluids.MOLTEN_RED_MUSHROOM_BUCKET);
         bucketItem(ModFluids.MOLTEN_CACTUS_BUCKET);
-
+        bucketItem(ModFluids.MOLTEN_COAL_BUCKET);
+      
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -141,6 +143,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.CACTUS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.COAL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){

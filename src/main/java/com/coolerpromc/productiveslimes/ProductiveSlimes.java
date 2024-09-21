@@ -136,6 +136,7 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.BROWN_MUSHROOM_SLIME.get(), BrownMushroomSlimeRenderer::new);
             EntityRenderers.register(ModEntities.RED_MUSHROOM_SLIME.get(), RedMushroomSlimeRenderer::new);
             EntityRenderers.register(ModEntities.CACTUS_SLIME.get(), CactusSlimeRenderer::new);
+            EntityRenderers.register(ModEntities.COAL_SLIME.get(), CoalSlimeRenderer::new);
 
             event.enqueueWork(() -> {
 
@@ -217,6 +218,8 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_RED_MUSHROOM.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_CACTUS.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_CACTUS.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_MOLTEN_COAL.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_MOLTEN_COAL.get(), RenderType.translucent());
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIRT_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.STONE_SLIME_BLOCK.get(), RenderType.translucent());
@@ -257,6 +260,7 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CACTUS_SLIME_BLOCK.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.COAL_SLIME_BLOCK.get(), RenderType.translucent());
             });
         }
 
@@ -340,6 +344,8 @@ public class ProductiveSlimes
                     ModFluidTypes.MOLTEN_RED_MUSHROOM_FLUID_TYPE.get());
             event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_CACTUS_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
                     ModFluidTypes.MOLTEN_CACTUS_FLUID_TYPE.get());
+            event.registerFluidType(((BaseFluidType) ModFluidTypes.MOLTEN_COAL_FLUID_TYPE.get()).getClientFluidTypeExtensions(),
+                    ModFluidTypes.MOLTEN_COAL_FLUID_TYPE.get());
         }
 
         @SubscribeEvent
@@ -383,7 +389,8 @@ public class ProductiveSlimes
                     ModBlocks.AMETHYST_SLIME_BLOCK.value(),
                     ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.value(),
                     ModBlocks.RED_MUSHROOM_SLIME_BLOCK.value(),
-                    ModBlocks.CACTUS_SLIME_BLOCK.value()
+                    ModBlocks.CACTUS_SLIME_BLOCK.value(),
+                    ModBlocks.COAL_SLIME_BLOCK.value()
             );
         }
 
@@ -428,7 +435,8 @@ public class ProductiveSlimes
                     ModBlocks.AMETHYST_SLIME_BLOCK.value().asItem(),
                     ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.value().asItem(),
                     ModBlocks.RED_MUSHROOM_SLIME_BLOCK.value().asItem(),
-                    ModBlocks.CACTUS_SLIME_BLOCK.value().asItem()
+                    ModBlocks.CACTUS_SLIME_BLOCK.value().asItem(),
+                    ModBlocks.COAL_SLIME_BLOCK.value().asItem()
             );
 
             registerSlimeballColorHandlers(event,
@@ -470,7 +478,8 @@ public class ProductiveSlimes
                     ModItems.AMETHYST_SLIME_BALL.value().asItem(),
                     ModItems.BROWN_MUSHROOM_SLIME_BALL.value().asItem(),
                     ModItems.RED_MUSHROOM_SLIME_BALL.value().asItem(),
-                    ModItems.CACTUS_SLIME_BALL.value().asItem()
+                    ModItems.CACTUS_SLIME_BALL.value().asItem(),
+                    ModItems.COAL_SLIME_BALL.value().asItem()
             );
 
             registerBucketColorHandlers(event,
@@ -512,7 +521,8 @@ public class ProductiveSlimes
                     ModFluids.MOLTEN_AMETHYST_BUCKET.value().asItem(),
                     ModFluids.MOLTEN_BROWN_MUSHROOM_BUCKET.value().asItem(),
                     ModFluids.MOLTEN_RED_MUSHROOM_BUCKET.value().asItem(),
-                    ModFluids.MOLTEN_CACTUS_BUCKET.value().asItem()
+                    ModFluids.MOLTEN_CACTUS_BUCKET.value().asItem(),
+                    ModFluids.MOLTEN_COAL_BUCKET.value().asItem()
             );
         }
 

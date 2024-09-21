@@ -1,4 +1,5 @@
-// 1.21.1	2024-09-20T13:44:25.7477579	Loot Tables
+// 1.21.1	2024-09-20T15:25:20.2133896	Loot Tables
+f65177198dae8a59f8cf58fe79bafafcc643b70d data/productiveslimes/loot_table/blocks/coal_slime_block.json
 01e364f47024460930caabfc2e77500b949ebdf5 data/productiveslimes/loot_table/blocks/copper_slime_block.json
 6e299cd8c41c53956a454873451260087e379f1c data/productiveslimes/loot_table/blocks/diamond_slime_block.json
 769ecc6851af1fa0f2b0591f1a20666783aa7e2e data/productiveslimes/loot_table/blocks/dirt_slime_block.json

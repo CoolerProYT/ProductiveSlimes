@@ -92,6 +92,9 @@ public class ModEntities {
             ENTITY_TYPES.register("cactus_slime", () -> EntityType.Builder.of(CactusSlime::new, MobCategory.CREATURE).build("cactus_slime"));
 
 
+    public static final DeferredHolder<EntityType<?>, EntityType<CoalSlime>> COAL_SLIME =
+            ENTITY_TYPES.register("coal_slime", () -> EntityType.Builder.of(CoalSlime::new, MobCategory.CREATURE).build("coal_slime"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

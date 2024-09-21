@@ -246,6 +246,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             this.description = "Drop from Cactus Slime. Cactus Slime is obtainable by using a Cactus on a Dirt Slime.";
         }, new ItemStack(ModItems.CACTUS_SLIME_BALL.get()));
 
+        Button coalSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
+            this.displayItem = new ItemStack(ModItems.COAL_SLIME_BALL.get());
+            this.description = "Drop from Coal Slime. Coal Slime is obtainable by using a Coal Block on a Stone Slime.";
+        }, new ItemStack(ModItems.COAL_SLIME_BALL.get()));
+
 //        this.addRenderableWidget(dirtSlimeballButton);
 //        this.addRenderableWidget(stoneSlimeballButton);
 //        this.addRenderableWidget(copperSlimeballButton);
@@ -296,6 +301,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         scrollableButtonList.addButton(brownMushroomSlimeballButton);
         scrollableButtonList.addButton(redMushroomSlimeballButton);
         scrollableButtonList.addButton(cactusSlimeballButton);
+        scrollableButtonList.addButton(coalSlimeballButton);
 
         this.addRenderableWidget(scrollableButtonList);
     }

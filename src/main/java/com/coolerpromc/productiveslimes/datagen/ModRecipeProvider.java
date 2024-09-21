@@ -198,6 +198,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.CACTUS_SLIME_BLOCK, ModItems.CACTUS_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.CACTUS_SLIME_BALL, ModBlocks.CACTUS_SLIME_BLOCK);
 
+        slimeBlockToSlimeBall(recipeOutput, ModBlocks.COAL_SLIME_BLOCK, ModItems.COAL_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, ModItems.COAL_SLIME_BALL, ModBlocks.COAL_SLIME_BLOCK);
+
         //Melting Recipe
         meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModFluids.MOLTEN_DIRT_BUCKET, 4, 1);
@@ -316,6 +319,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         meltingRecipe(recipeOutput, ModBlocks.CACTUS_SLIME_BLOCK, ModFluids.MOLTEN_CACTUS_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.CACTUS_SLIME_BALL, ModFluids.MOLTEN_CACTUS_BUCKET, 4, 1);
 
+        meltingRecipe(recipeOutput, ModBlocks.COAL_SLIME_BLOCK, ModFluids.MOLTEN_COAL_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, ModItems.COAL_SLIME_BALL, ModFluids.MOLTEN_COAL_BUCKET, 4, 1);
 
         //Soliding Recipe
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_DIRT_BUCKET, Items.DIRT, 1, 2);
@@ -357,6 +362,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_BROWN_MUSHROOM_BUCKET, Items.BROWN_MUSHROOM, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_RED_MUSHROOM_BUCKET, Items.RED_MUSHROOM, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_CACTUS_BUCKET, Items.CACTUS, 1, 2);
+        solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {

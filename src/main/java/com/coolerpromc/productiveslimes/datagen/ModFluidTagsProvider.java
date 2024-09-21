@@ -96,6 +96,8 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
                 .add(ModFluids.SOURCE_MOLTEN_RED_MUSHROOM.get())
                 .add(ModFluids.FLOWING_MOLTEN_RED_MUSHROOM.get())
                 .add(ModFluids.SOURCE_MOLTEN_CACTUS.get())
-                .add(ModFluids.FLOWING_MOLTEN_CACTUS.get());
+                .add(ModFluids.FLOWING_MOLTEN_CACTUS.get())
+                .add(ModFluids.SOURCE_MOLTEN_COAL.get())
+                .add(ModFluids.FLOWING_MOLTEN_COAL.get());
     }
 }
