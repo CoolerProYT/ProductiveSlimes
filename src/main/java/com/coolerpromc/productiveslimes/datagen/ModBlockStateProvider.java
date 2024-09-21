@@ -34,6 +34,34 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registerSlimeBlock(ModBlocks.REDSTONE_SLIME_BLOCK.get(), "redstone_slime_block");
         registerSlimeBlock(ModBlocks.OAK_SLIME_BLOCK.get(), "oak_slime_block");
         registerSlimeBlock(ModBlocks.SAND_SLIME_BLOCK.get(), "sand_slime_block");
+        registerSlimeBlock(ModBlocks.ANDESITE_SLIME_BLOCK.get(), "andesite_slime_block");
+        registerSlimeBlock(ModBlocks.SNOW_SLIME_BLOCK.get(), "snow_slime_block");
+        registerSlimeBlock(ModBlocks.ICE_SLIME_BLOCK.get(), "ice_slime_block");
+        registerSlimeBlock(ModBlocks.MUD_SLIME_BLOCK.get(), "mud_slime_block");
+        registerSlimeBlock(ModBlocks.CLAY_SLIME_BLOCK.get(), "clay_slime_block");
+        registerSlimeBlock(ModBlocks.RED_SAND_SLIME_BLOCK.get(), "red_sand_slime_block");
+        registerSlimeBlock(ModBlocks.MOSS_SLIME_BLOCK.get(), "moss_slime_block");
+        registerSlimeBlock(ModBlocks.DEEPSLATE_SLIME_BLOCK.get(), "deepslate_slime_block");
+        registerSlimeBlock(ModBlocks.GRANITE_SLIME_BLOCK.get(), "granite_slime_block");
+        registerSlimeBlock(ModBlocks.DIORITE_SLIME_BLOCK.get(), "diorite_slime_block");
+        registerSlimeBlock(ModBlocks.CALCITE_SLIME_BLOCK.get(), "calcite_slime_block");
+        registerSlimeBlock(ModBlocks.TUFF_SLIME_BLOCK.get(), "tuff_slime_block");
+        registerSlimeBlock(ModBlocks.DRIPSTONE_SLIME_BLOCK.get(), "dripstone_slime_block");
+        registerSlimeBlock(ModBlocks.PRISMARINE_SLIME_BLOCK.get(), "prismarine_slime_block");
+        registerSlimeBlock(ModBlocks.MAGMA_SLIME_BLOCK.get(), "magma_slime_block");
+        registerSlimeBlock(ModBlocks.OBSIDIAN_SLIME_BLOCK.get(), "obsidian_slime_block");
+        registerSlimeBlock(ModBlocks.NETHERRACK_SLIME_BLOCK.get(), "netherrack_slime_block");
+        registerSlimeBlock(ModBlocks.SOUL_SAND_SLIME_BLOCK.get(), "soul_sand_slime_block");
+        registerSlimeBlock(ModBlocks.SOUL_SOIL_SLIME_BLOCK.get(), "soul_soil_slime_block");
+        registerSlimeBlock(ModBlocks.BLACKSTONE_SLIME_BLOCK.get(), "blackstone_slime_block");
+        registerSlimeBlock(ModBlocks.BASALT_SLIME_BLOCK.get(), "basalt_slime_block");
+        registerSlimeBlock(ModBlocks.ENDSTONE_SLIME_BLOCK.get(), "endstone_slime_block");
+        registerSlimeBlock(ModBlocks.QUARTZ_SLIME_BLOCK.get(), "quartz_slime_block");
+        registerSlimeBlock(ModBlocks.GLOWSTONE_SLIME_BLOCK.get(), "glowstone_slime_block");
+        registerSlimeBlock(ModBlocks.AMETHYST_SLIME_BLOCK.get(), "amethyst_slime_block");
+        registerSlimeBlock(ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get(), "brown_mushroom_slime_block");
+        registerSlimeBlock(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(), "red_mushroom_slime_block");
+        registerSlimeBlock(ModBlocks.CACTUS_SLIME_BLOCK.get(), "cactus_slime_block");
     }
 
     private void registerSlimeBlock(Block block, String textureName){

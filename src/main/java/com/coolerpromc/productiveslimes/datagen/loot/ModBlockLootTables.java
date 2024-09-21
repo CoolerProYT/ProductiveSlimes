@@ -44,6 +44,34 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.REDSTONE_SLIME_BLOCK.get());
         dropSelf(ModBlocks.OAK_SLIME_BLOCK.get());
         dropSelf(ModBlocks.SAND_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.ANDESITE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.SNOW_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.ICE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.MUD_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.CLAY_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.RED_SAND_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.MOSS_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.DEEPSLATE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.GRANITE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.DIORITE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.CALCITE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.TUFF_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.DRIPSTONE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.PRISMARINE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.MAGMA_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.OBSIDIAN_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.NETHERRACK_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.SOUL_SAND_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.SOUL_SOIL_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.BLACKSTONE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.BASALT_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.ENDSTONE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.QUARTZ_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.GLOWSTONE_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.AMETHYST_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.BROWN_MUSHROOM_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.CACTUS_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){
