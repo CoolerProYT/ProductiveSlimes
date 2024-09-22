@@ -1,16 +1,11 @@
 package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
