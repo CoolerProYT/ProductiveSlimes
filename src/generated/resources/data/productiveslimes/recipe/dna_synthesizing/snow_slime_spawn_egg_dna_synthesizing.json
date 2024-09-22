@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:snow_slime_dna"
+      "item": "productiveslimes:slime_dna"
     },
     {
-      "item": "productiveslimes:snow_slime_dna"
+      "item": "productiveslimes:slime_dna"
     },
     {
       "item": "minecraft:snow"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

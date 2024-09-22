@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:glowstone_slime_dna"
+      "item": "productiveslimes:gold_slime_dna"
     },
     {
-      "item": "productiveslimes:glowstone_slime_dna"
+      "item": "productiveslimes:netherrack_slime_dna"
     },
     {
-      "item": "minecraft:glowstone_dust"
+      "item": "minecraft:glowstone"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

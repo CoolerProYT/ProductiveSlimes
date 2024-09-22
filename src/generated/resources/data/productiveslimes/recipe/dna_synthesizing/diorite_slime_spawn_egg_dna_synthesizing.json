@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:diorite_slime_dna"
+      "item": "productiveslimes:stone_slime_dna"
     },
     {
-      "item": "productiveslimes:diorite_slime_dna"
+      "item": "productiveslimes:stone_slime_dna"
     },
     {
       "item": "minecraft:diorite"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

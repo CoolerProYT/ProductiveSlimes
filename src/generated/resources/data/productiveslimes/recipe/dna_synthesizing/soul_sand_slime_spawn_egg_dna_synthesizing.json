@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:soul_sand_slime_dna"
+      "item": "productiveslimes:sand_slime_dna"
     },
     {
-      "item": "productiveslimes:soul_sand_slime_dna"
+      "item": "productiveslimes:netherrack_slime_dna"
     },
     {
       "item": "minecraft:soul_sand"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

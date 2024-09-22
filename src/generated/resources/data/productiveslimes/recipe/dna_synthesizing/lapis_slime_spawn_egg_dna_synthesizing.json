@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:lapis_slime_dna"
+      "item": "productiveslimes:iron_slime_dna"
     },
     {
-      "item": "productiveslimes:lapis_slime_dna"
+      "item": "productiveslimes:iron_slime_dna"
     },
     {
       "item": "minecraft:lapis_block"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:diamond_slime_dna"
+      "item": "productiveslimes:gold_slime_dna"
     },
     {
-      "item": "productiveslimes:diamond_slime_dna"
+      "item": "productiveslimes:gold_slime_dna"
     },
     {
       "item": "minecraft:diamond_block"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

@@ -470,49 +470,90 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaExtractingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModItems.GRAVEL_SLIME_DNA, 1, 0.6f);
 
         //DNA Synthesizing Recipe For Getting Self
-        dnaSynthesizingRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 2, ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.DIRT);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.STONE_SLIME_SPAWN_EGG, 2, ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.STONE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.COPPER_SLIME_SPAWN_EGG, 2, ModItems.COPPER_SLIME_DNA, ModItems.COPPER_SLIME_DNA, Items.COPPER_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.IRON_SLIME_SPAWN_EGG, 2, ModItems.IRON_SLIME_DNA, ModItems.IRON_SLIME_DNA, Items.IRON_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.GOLD_SLIME_SPAWN_EGG, 2, ModItems.GOLD_SLIME_DNA, ModItems.GOLD_SLIME_DNA, Items.GOLD_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.DIAMOND_SLIME_SPAWN_EGG, 2, ModItems.DIAMOND_SLIME_DNA, ModItems.DIAMOND_SLIME_DNA, Items.DIAMOND_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.NETHERITE_SLIME_SPAWN_EGG, 2, ModItems.NETHERITE_SLIME_DNA, ModItems.NETHERITE_SLIME_DNA, Items.NETHERITE_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.LAPIS_SLIME_SPAWN_EGG, 2, ModItems.LAPIS_SLIME_DNA, ModItems.LAPIS_SLIME_DNA, Items.LAPIS_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.REDSTONE_SLIME_SPAWN_EGG, 2, ModItems.REDSTONE_SLIME_DNA, ModItems.REDSTONE_SLIME_DNA, Items.REDSTONE_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.OAK_SLIME_SPAWN_EGG, 2, ModItems.OAK_SLIME_DNA, ModItems.OAK_SLIME_DNA, Items.OAK_PLANKS);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.SAND_SLIME_SPAWN_EGG, 2, ModItems.SAND_SLIME_DNA, ModItems.SAND_SLIME_DNA, Items.SAND);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.ANDESITE_SLIME_SPAWN_EGG, 2, ModItems.ANDESITE_SLIME_DNA, ModItems.ANDESITE_SLIME_DNA, Items.ANDESITE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.SNOW_SLIME_SPAWN_EGG, 2, ModItems.SNOW_SLIME_DNA, ModItems.SNOW_SLIME_DNA, Items.SNOW);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.ICE_SLIME_SPAWN_EGG, 2, ModItems.ICE_SLIME_DNA, ModItems.ICE_SLIME_DNA, Items.ICE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.MUD_SLIME_SPAWN_EGG, 2, ModItems.MUD_SLIME_DNA, ModItems.MUD_SLIME_DNA, Items.MUD);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.CLAY_SLIME_SPAWN_EGG, 2, ModItems.CLAY_SLIME_DNA, ModItems.CLAY_SLIME_DNA, Items.CLAY);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.RED_SAND_SLIME_SPAWN_EGG, 2, ModItems.RED_SAND_SLIME_DNA, ModItems.RED_SAND_SLIME_DNA, Items.RED_SAND);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.MOSS_SLIME_SPAWN_EGG, 2, ModItems.MOSS_SLIME_DNA, ModItems.MOSS_SLIME_DNA, Items.MOSS_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.DEEPSLATE_SLIME_SPAWN_EGG, 2, ModItems.DEEPSLATE_SLIME_DNA, ModItems.DEEPSLATE_SLIME_DNA, Items.DEEPSLATE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.GRANITE_SLIME_SPAWN_EGG, 2, ModItems.GRANITE_SLIME_DNA, ModItems.GRANITE_SLIME_DNA, Items.GRANITE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.DIORITE_SLIME_SPAWN_EGG, 2, ModItems.DIORITE_SLIME_DNA, ModItems.DIORITE_SLIME_DNA, Items.DIORITE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.CALCITE_SLIME_SPAWN_EGG, 2, ModItems.CALCITE_SLIME_DNA, ModItems.CALCITE_SLIME_DNA, Items.CALCITE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.TUFF_SLIME_SPAWN_EGG, 2, ModItems.TUFF_SLIME_DNA, ModItems.TUFF_SLIME_DNA, Items.TUFF);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.DRIPSTONE_SLIME_SPAWN_EGG, 2, ModItems.DRIPSTONE_SLIME_DNA, ModItems.DRIPSTONE_SLIME_DNA, Items.DRIPSTONE_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.PRISMARINE_SLIME_SPAWN_EGG, 2, ModItems.PRISMARINE_SLIME_DNA, ModItems.PRISMARINE_SLIME_DNA, Items.PRISMARINE_SHARD);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.MAGMA_SLIME_SPAWN_EGG, 2, ModItems.MAGMA_SLIME_DNA, ModItems.MAGMA_SLIME_DNA, Items.MAGMA_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.OBSIDIAN_SLIME_SPAWN_EGG, 2, ModItems.OBSIDIAN_SLIME_DNA, ModItems.OBSIDIAN_SLIME_DNA, Items.OBSIDIAN);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.NETHERRACK_SLIME_SPAWN_EGG, 2, ModItems.NETHERRACK_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.NETHERRACK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.SOUL_SAND_SLIME_SPAWN_EGG, 2, ModItems.SOUL_SAND_SLIME_DNA, ModItems.SOUL_SAND_SLIME_DNA, Items.SOUL_SAND);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.SOUL_SOIL_SLIME_SPAWN_EGG, 2, ModItems.SOUL_SOIL_SLIME_DNA, ModItems.SOUL_SOIL_SLIME_DNA, Items.SOUL_SOIL);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.BLACKSTONE_SLIME_SPAWN_EGG, 2, ModItems.BLACKSTONE_SLIME_DNA, ModItems.BLACKSTONE_SLIME_DNA, Items.BLACKSTONE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.BASALT_SLIME_SPAWN_EGG, 2, ModItems.BASALT_SLIME_DNA, ModItems.BASALT_SLIME_DNA, Items.BASALT);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.ENDSTONE_SLIME_SPAWN_EGG, 2, ModItems.ENDSTONE_SLIME_DNA, ModItems.ENDSTONE_SLIME_DNA, Items.END_STONE);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.QUARTZ_SLIME_SPAWN_EGG, 2, ModItems.QUARTZ_SLIME_DNA, ModItems.QUARTZ_SLIME_DNA, Items.QUARTZ);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.GLOWSTONE_SLIME_SPAWN_EGG, 2, ModItems.GLOWSTONE_SLIME_DNA, ModItems.GLOWSTONE_SLIME_DNA, Items.GLOWSTONE_DUST);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.AMETHYST_SLIME_SPAWN_EGG, 2, ModItems.AMETHYST_SLIME_DNA, ModItems.AMETHYST_SLIME_DNA, Items.AMETHYST_SHARD);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG, 2, ModItems.BROWN_MUSHROOM_SLIME_DNA, ModItems.BROWN_MUSHROOM_SLIME_DNA, Items.BROWN_MUSHROOM);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 2, ModItems.RED_MUSHROOM_SLIME_DNA, ModItems.RED_MUSHROOM_SLIME_DNA, Items.RED_MUSHROOM);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.CACTUS_SLIME_SPAWN_EGG, 2, ModItems.CACTUS_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.CACTUS);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.COAL_SLIME_SPAWN_EGG, 2, ModItems.COAL_SLIME_DNA, ModItems.COAL_SLIME_DNA, Items.COAL_BLOCK);
-        dnaSynthesizingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_SPAWN_EGG, 2, ModItems.GRAVEL_SLIME_DNA, ModItems.GRAVEL_SLIME_DNA, Items.GRAVEL);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 2, ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.DIRT);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.STONE_SLIME_SPAWN_EGG, 2, ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.STONE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.COPPER_SLIME_SPAWN_EGG, 2, ModItems.COPPER_SLIME_DNA, ModItems.COPPER_SLIME_DNA, Items.COPPER_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.IRON_SLIME_SPAWN_EGG, 2, ModItems.IRON_SLIME_DNA, ModItems.IRON_SLIME_DNA, Items.IRON_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.GOLD_SLIME_SPAWN_EGG, 2, ModItems.GOLD_SLIME_DNA, ModItems.GOLD_SLIME_DNA, Items.GOLD_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DIAMOND_SLIME_SPAWN_EGG, 2, ModItems.DIAMOND_SLIME_DNA, ModItems.DIAMOND_SLIME_DNA, Items.DIAMOND_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.NETHERITE_SLIME_SPAWN_EGG, 2, ModItems.NETHERITE_SLIME_DNA, ModItems.NETHERITE_SLIME_DNA, Items.NETHERITE_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.LAPIS_SLIME_SPAWN_EGG, 2, ModItems.LAPIS_SLIME_DNA, ModItems.LAPIS_SLIME_DNA, Items.LAPIS_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.REDSTONE_SLIME_SPAWN_EGG, 2, ModItems.REDSTONE_SLIME_DNA, ModItems.REDSTONE_SLIME_DNA, Items.REDSTONE_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.OAK_SLIME_SPAWN_EGG, 2, ModItems.OAK_SLIME_DNA, ModItems.OAK_SLIME_DNA, Items.OAK_PLANKS);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.SAND_SLIME_SPAWN_EGG, 2, ModItems.SAND_SLIME_DNA, ModItems.SAND_SLIME_DNA, Items.SAND);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.ANDESITE_SLIME_SPAWN_EGG, 2, ModItems.ANDESITE_SLIME_DNA, ModItems.ANDESITE_SLIME_DNA, Items.ANDESITE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.SNOW_SLIME_SPAWN_EGG, 2, ModItems.SNOW_SLIME_DNA, ModItems.SNOW_SLIME_DNA, Items.SNOW);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.ICE_SLIME_SPAWN_EGG, 2, ModItems.ICE_SLIME_DNA, ModItems.ICE_SLIME_DNA, Items.ICE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.MUD_SLIME_SPAWN_EGG, 2, ModItems.MUD_SLIME_DNA, ModItems.MUD_SLIME_DNA, Items.MUD);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.CLAY_SLIME_SPAWN_EGG, 2, ModItems.CLAY_SLIME_DNA, ModItems.CLAY_SLIME_DNA, Items.CLAY);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.RED_SAND_SLIME_SPAWN_EGG, 2, ModItems.RED_SAND_SLIME_DNA, ModItems.RED_SAND_SLIME_DNA, Items.RED_SAND);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.MOSS_SLIME_SPAWN_EGG, 2, ModItems.MOSS_SLIME_DNA, ModItems.MOSS_SLIME_DNA, Items.MOSS_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DEEPSLATE_SLIME_SPAWN_EGG, 2, ModItems.DEEPSLATE_SLIME_DNA, ModItems.DEEPSLATE_SLIME_DNA, Items.DEEPSLATE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.GRANITE_SLIME_SPAWN_EGG, 2, ModItems.GRANITE_SLIME_DNA, ModItems.GRANITE_SLIME_DNA, Items.GRANITE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DIORITE_SLIME_SPAWN_EGG, 2, ModItems.DIORITE_SLIME_DNA, ModItems.DIORITE_SLIME_DNA, Items.DIORITE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.CALCITE_SLIME_SPAWN_EGG, 2, ModItems.CALCITE_SLIME_DNA, ModItems.CALCITE_SLIME_DNA, Items.CALCITE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.TUFF_SLIME_SPAWN_EGG, 2, ModItems.TUFF_SLIME_DNA, ModItems.TUFF_SLIME_DNA, Items.TUFF);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DRIPSTONE_SLIME_SPAWN_EGG, 2, ModItems.DRIPSTONE_SLIME_DNA, ModItems.DRIPSTONE_SLIME_DNA, Items.DRIPSTONE_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.PRISMARINE_SLIME_SPAWN_EGG, 2, ModItems.PRISMARINE_SLIME_DNA, ModItems.PRISMARINE_SLIME_DNA, Items.PRISMARINE_SHARD);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.MAGMA_SLIME_SPAWN_EGG, 2, ModItems.MAGMA_SLIME_DNA, ModItems.MAGMA_SLIME_DNA, Items.MAGMA_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.OBSIDIAN_SLIME_SPAWN_EGG, 2, ModItems.OBSIDIAN_SLIME_DNA, ModItems.OBSIDIAN_SLIME_DNA, Items.OBSIDIAN);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.NETHERRACK_SLIME_SPAWN_EGG, 2, ModItems.NETHERRACK_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.NETHERRACK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.SOUL_SAND_SLIME_SPAWN_EGG, 2, ModItems.SOUL_SAND_SLIME_DNA, ModItems.SOUL_SAND_SLIME_DNA, Items.SOUL_SAND);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.SOUL_SOIL_SLIME_SPAWN_EGG, 2, ModItems.SOUL_SOIL_SLIME_DNA, ModItems.SOUL_SOIL_SLIME_DNA, Items.SOUL_SOIL);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.BLACKSTONE_SLIME_SPAWN_EGG, 2, ModItems.BLACKSTONE_SLIME_DNA, ModItems.BLACKSTONE_SLIME_DNA, Items.BLACKSTONE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.BASALT_SLIME_SPAWN_EGG, 2, ModItems.BASALT_SLIME_DNA, ModItems.BASALT_SLIME_DNA, Items.BASALT);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.ENDSTONE_SLIME_SPAWN_EGG, 2, ModItems.ENDSTONE_SLIME_DNA, ModItems.ENDSTONE_SLIME_DNA, Items.END_STONE);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.QUARTZ_SLIME_SPAWN_EGG, 2, ModItems.QUARTZ_SLIME_DNA, ModItems.QUARTZ_SLIME_DNA, Items.QUARTZ);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.GLOWSTONE_SLIME_SPAWN_EGG, 2, ModItems.GLOWSTONE_SLIME_DNA, ModItems.GLOWSTONE_SLIME_DNA, Items.GLOWSTONE_DUST);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.AMETHYST_SLIME_SPAWN_EGG, 2, ModItems.AMETHYST_SLIME_DNA, ModItems.AMETHYST_SLIME_DNA, Items.AMETHYST_SHARD);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG, 2, ModItems.BROWN_MUSHROOM_SLIME_DNA, ModItems.BROWN_MUSHROOM_SLIME_DNA, Items.BROWN_MUSHROOM);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 2, ModItems.RED_MUSHROOM_SLIME_DNA, ModItems.RED_MUSHROOM_SLIME_DNA, Items.RED_MUSHROOM);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.CACTUS_SLIME_SPAWN_EGG, 2, ModItems.CACTUS_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.CACTUS);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.COAL_SLIME_SPAWN_EGG, 2, ModItems.COAL_SLIME_DNA, ModItems.COAL_SLIME_DNA, Items.COAL_BLOCK);
+        dnaSynthesizingSelfRecipe(recipeOutput, ModItems.GRAVEL_SLIME_SPAWN_EGG, 2, ModItems.GRAVEL_SLIME_DNA, ModItems.GRAVEL_SLIME_DNA, Items.GRAVEL);
 
-//        dnaSynthesizingRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 4,ModItems.SLIME_DNA, ModItems.SLIME_DNA, Items.DIRT);
+        //DNA Synthesizing Recipe For Getting New Egg
+        dnaSynthesizingRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 4,ModItems.SLIME_DNA, ModItems.SLIME_DNA, Items.DIRT);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.STONE_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.STONE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.COAL_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.COAL_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.COPPER_SLIME_SPAWN_EGG, 4,ModItems.COAL_SLIME_DNA, ModItems.COAL_SLIME_DNA, Items.COPPER_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.IRON_SLIME_SPAWN_EGG, 4,ModItems.COPPER_SLIME_DNA, ModItems.COPPER_SLIME_DNA, Items.IRON_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.GOLD_SLIME_SPAWN_EGG, 4,ModItems.IRON_SLIME_DNA, ModItems.IRON_SLIME_DNA, Items.GOLD_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.DIAMOND_SLIME_SPAWN_EGG, 4,ModItems.GOLD_SLIME_DNA, ModItems.GOLD_SLIME_DNA, Items.DIAMOND_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.NETHERITE_SLIME_SPAWN_EGG, 4,ModItems.DIAMOND_SLIME_DNA, ModItems.DIAMOND_SLIME_DNA, Items.NETHERITE_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.LAPIS_SLIME_SPAWN_EGG, 4,ModItems.IRON_SLIME_DNA, ModItems.IRON_SLIME_DNA, Items.LAPIS_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.REDSTONE_SLIME_SPAWN_EGG, 4,ModItems.GOLD_SLIME_DNA, ModItems.GOLD_SLIME_DNA, Items.REDSTONE_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.OAK_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.OAK_PLANKS);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.SAND_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.SAND);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SAND_SLIME_DNA, Items.GRAVEL);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.ANDESITE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.ANDESITE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.SNOW_SLIME_SPAWN_EGG, 4,ModItems.SLIME_DNA, ModItems.SLIME_DNA, Items.SNOW);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.ICE_SLIME_SPAWN_EGG, 4,ModItems.SNOW_SLIME_DNA, ModItems.SNOW_SLIME_DNA, Items.ICE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.MUD_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.MUD);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.CLAY_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.MUD_SLIME_DNA, Items.CLAY);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.RED_SAND_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SAND_SLIME_DNA, Items.RED_SAND);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.MOSS_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.MOSS_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.DEEPSLATE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.DEEPSLATE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.GRANITE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.GRANITE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.DIORITE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.DIORITE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.CALCITE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.CALCITE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.TUFF_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.TUFF);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.DRIPSTONE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.DRIPSTONE_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.PRISMARINE_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SAND_SLIME_DNA, Items.PRISMARINE_SHARD);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.MAGMA_SLIME_SPAWN_EGG, 4,ModItems.NETHERITE_SLIME_DNA, ModItems.NETHERITE_SLIME_DNA, Items.MAGMA_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.OBSIDIAN_SLIME_SPAWN_EGG, 4,ModItems.DEEPSLATE_SLIME_DNA, ModItems.DEEPSLATE_SLIME_DNA, Items.OBSIDIAN);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.NETHERRACK_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.NETHERRACK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.SOUL_SAND_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.SOUL_SAND);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.SOUL_SOIL_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.SOUL_SOIL);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.BLACKSTONE_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.BLACKSTONE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.BASALT_SLIME_SPAWN_EGG, 4,ModItems.STONE_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.BASALT);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.ENDSTONE_SLIME_SPAWN_EGG, 4,ModItems.DEEPSLATE_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.END_STONE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.QUARTZ_SLIME_SPAWN_EGG, 4,ModItems.IRON_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.QUARTZ_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.GLOWSTONE_SLIME_SPAWN_EGG, 4,ModItems.GOLD_SLIME_DNA, ModItems.NETHERRACK_SLIME_DNA, Items.GLOWSTONE);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.AMETHYST_SLIME_SPAWN_EGG, 4,ModItems.CALCITE_SLIME_DNA, ModItems.GLOWSTONE_SLIME_DNA, Items.AMETHYST_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.BROWN_MUSHROOM_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.RED_MUSHROOM_BLOCK);
+        dnaSynthesizingRecipe(recipeOutput, ModItems.CACTUS_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SLIME_DNA, Items.CACTUS);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -550,6 +591,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .setOutputChance(outputChance)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting/" + getItemName(pIngredient) + "_dna_extracting"));
+
+    }
+
+    protected static void dnaSynthesizingSelfRecipe(RecipeOutput pRecipeOutput, ItemLike pResult, int inputCount, ItemLike... pIngredient) {
+        var recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
+
+        if (pIngredient.length != 3) {
+            throw new IllegalArgumentException("Only accepts 3 ingredients.");
+        }
+
+        for (var ingredient : pIngredient) {
+            recipeBuilder.addIngredient(Ingredient.of(ingredient));
+        }
+
+        recipeBuilder
+                .addOutput(new ItemStack(pResult, 1))
+                .setInputCount(inputCount)
+                .setEnergy(600)
+                .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing_self"));
 
     }
 
