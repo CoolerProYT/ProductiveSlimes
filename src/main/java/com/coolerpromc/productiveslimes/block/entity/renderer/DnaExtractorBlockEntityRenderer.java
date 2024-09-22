@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
+import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,12 @@ public class DnaExtractorBlockEntityRenderer implements BlockEntityRenderer<DnaE
         ItemStack itemStack = pBlockEntity.getRenderStack();
 
         pPoseStack.pushPose();
-        pPoseStack.translate(0.5, 0.4, 0.5);
+        if (itemStack.getItem() instanceof SlimeballItem){
+            pPoseStack.translate(0.5, 0.4, 0.5);
+        }
+        else{
+            pPoseStack.translate(0.5, 0.5, 0.5);
+        }
         pPoseStack.scale(0.35f, 0.35f, 0.35f);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.getRenderingRotation()));
 
