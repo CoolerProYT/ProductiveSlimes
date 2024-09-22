@@ -63,7 +63,20 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        guiGraphics.blit(TEXTURE, 71, 33, 176, 0, arrowWidth, 8);
+        guiGraphics.blit(TEXTURE, 72, 33, 176, 0, arrowWidth, 8);
+
+        int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
+        energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
+
+        guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
+
+        Component text = Component.literal("Energy: " + recipe.getEnergy() + " / " + 10000 + " FE");
+
+        if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
+            List<Component> tooltip = new ArrayList<>();
+            tooltip.add(Component.literal("Tooltip Text Here"));
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
+        }
     }
 
     @Override

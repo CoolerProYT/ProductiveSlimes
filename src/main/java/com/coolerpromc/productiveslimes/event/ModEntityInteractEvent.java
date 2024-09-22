@@ -20,7 +20,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 public class ModEntityInteractEvent {
     @SubscribeEvent
     public static void onPlayerInteractEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof Slime && !(event.getTarget() instanceof BaseSlime)) {
+        /*if (event.getTarget() instanceof Slime && !(event.getTarget() instanceof BaseSlime)) {
             Player player = event.getEntity();
             ItemStack itemStack = player.getItemInHand(event.getHand());
 
@@ -31,7 +31,7 @@ public class ModEntityInteractEvent {
             if(itemStack.getItem() == Items.DIRT){
                 transformSlime(event, player, itemStack, ModEntities.DIRT_SLIME.get().create(event.getLevel()));
             }
-        }
+        }*/
     }
 
     protected static void transformSlime(PlayerInteractEvent.EntityInteract event, Player player, ItemStack itemStack, BaseSlime entity){

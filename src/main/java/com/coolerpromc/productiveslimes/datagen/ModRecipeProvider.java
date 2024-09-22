@@ -404,7 +404,48 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
 
+        dnaExtractingRecipe(recipeOutput, Items.SLIME_BALL, ModItems.SLIME_DNA, 1, 0.9f);
         dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModItems.DIRT_SLIME_DNA, 1, 0.75f);
+        dnaExtractingRecipe(recipeOutput, ModItems.STONE_SLIME_BALL, ModItems.STONE_SLIME_DNA, 1, 0.70f);
+        dnaExtractingRecipe(recipeOutput, ModItems.COPPER_SLIME_BALL, ModItems.COPPER_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.IRON_SLIME_BALL, ModItems.IRON_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.GOLD_SLIME_BALL, ModItems.GOLD_SLIME_DNA, 1, 0.5f);
+        dnaExtractingRecipe(recipeOutput, ModItems.DIAMOND_SLIME_BALL, ModItems.DIAMOND_SLIME_DNA, 1, 0.4f);
+        dnaExtractingRecipe(recipeOutput, ModItems.NETHERITE_SLIME_BALL, ModItems.NETHERITE_SLIME_DNA, 1, 0.3f);
+        dnaExtractingRecipe(recipeOutput, ModItems.LAPIS_SLIME_BALL, ModItems.LAPIS_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.REDSTONE_SLIME_BALL, ModItems.REDSTONE_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.OAK_SLIME_BALL, ModItems.OAK_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.SAND_SLIME_BALL, ModItems.SAND_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.ANDESITE_SLIME_BALL, ModItems.ANDESITE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.SNOW_SLIME_BALL, ModItems.SNOW_SLIME_DNA, 1, 0.65f);
+        dnaExtractingRecipe(recipeOutput, ModItems.ICE_SLIME_BALL, ModItems.ICE_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.MUD_SLIME_BALL, ModItems.MUD_SLIME_DNA, 1, 0.8f);
+        dnaExtractingRecipe(recipeOutput, ModItems.CLAY_SLIME_BALL, ModItems.CLAY_SLIME_DNA, 1, 0.75f);
+        dnaExtractingRecipe(recipeOutput, ModItems.RED_SAND_SLIME_BALL, ModItems.RED_SAND_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.MOSS_SLIME_BALL, ModItems.MOSS_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.DEEPSLATE_SLIME_BALL, ModItems.DEEPSLATE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.GRANITE_SLIME_BALL, ModItems.GRANITE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.DIORITE_SLIME_BALL, ModItems.DIORITE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.CALCITE_SLIME_BALL, ModItems.CALCITE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.TUFF_SLIME_BALL, ModItems.TUFF_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.DRIPSTONE_SLIME_BALL, ModItems.DRIPSTONE_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.PRISMARINE_SLIME_BALL, ModItems.PRISMARINE_SLIME_DNA, 1, 0.5f);
+        dnaExtractingRecipe(recipeOutput, ModItems.MAGMA_SLIME_BALL, ModItems.MAGMA_SLIME_DNA, 1, 0.5f);
+        dnaExtractingRecipe(recipeOutput, ModItems.OBSIDIAN_SLIME_BALL, ModItems.OBSIDIAN_SLIME_DNA, 1, 0.45f);
+        dnaExtractingRecipe(recipeOutput, ModItems.NETHERRACK_SLIME_BALL, ModItems.NETHERRACK_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.SOUL_SAND_SLIME_BALL, ModItems.SOUL_SAND_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.SOUL_SOIL_SLIME_BALL, ModItems.SOUL_SOIL_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.BLACKSTONE_SLIME_BALL, ModItems.BLACKSTONE_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.BASALT_SLIME_BALL, ModItems.BASALT_SLIME_DNA, 1, 0.7f);
+        dnaExtractingRecipe(recipeOutput, ModItems.ENDSTONE_SLIME_BALL, ModItems.ENDSTONE_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.QUARTZ_SLIME_BALL, ModItems.QUARTZ_SLIME_DNA, 1, 0.55f);
+        dnaExtractingRecipe(recipeOutput, ModItems.GLOWSTONE_SLIME_BALL, ModItems.GLOWSTONE_SLIME_DNA, 1, 0.5f);
+        dnaExtractingRecipe(recipeOutput, ModItems.AMETHYST_SLIME_BALL, ModItems.AMETHYST_SLIME_DNA, 1, 0.4f);
+        dnaExtractingRecipe(recipeOutput, ModItems.BROWN_MUSHROOM_SLIME_BALL, ModItems.BROWN_MUSHROOM_SLIME_DNA, 1, 0.3f);
+        dnaExtractingRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_BALL, ModItems.RED_MUSHROOM_SLIME_DNA, 1, 0.3f);
+        dnaExtractingRecipe(recipeOutput, ModItems.CACTUS_SLIME_BALL, ModItems.CACTUS_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(recipeOutput, ModItems.COAL_SLIME_BALL, ModItems.COAL_SLIME_DNA, 1, 0.65f);
+        dnaExtractingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModItems.GRAVEL_SLIME_DNA, 1, 0.6f);
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -429,15 +470,20 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     protected static void dnaExtractingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
-        DnaExtractingRecipeBuilder.dnaExtractingRecipe()
+        var recipeBuilder = DnaExtractingRecipeBuilder.dnaExtractingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(1)
-                .addOutput(new ItemStack(pResult, outputCount))
-                .addOutput(new ItemStack(Items.SLIME_BALL, 1))
-                .setEnergy(400)
+                .addOutput(new ItemStack(pResult, outputCount));
+
+        if (pIngredient != Items.SLIME_BALL) {
+            recipeBuilder.addOutput(new ItemStack(Items.SLIME_BALL, 1));
+        }
+
+        recipeBuilder.setEnergy(400)
                 .setOutputChance(outputChance)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
+
     }
 
     protected static void slimeBlockToSlimeBall(RecipeOutput pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
