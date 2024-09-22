@@ -24,13 +24,16 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())
                 .add(ModBlocks.ENERGY_GENERATOR.get())
                 .add(ModBlocks.DNA_EXTRACTOR.get())
+                .add(ModBlocks.DNA_SYNTHESIZER.get())
                 .add(ModBlocks.CABLE.get());
 
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.MELTING_STATION.get())
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())
                 .add(ModBlocks.DNA_EXTRACTOR.get())
-                .add(ModBlocks.ENERGY_GENERATOR.get());
+                .add(ModBlocks.DNA_SYNTHESIZER.get())
+                .add(ModBlocks.ENERGY_GENERATOR.get())
+                .add(ModBlocks.CABLE.get());
 
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL);
 //                .add(ModBlocks.ALUMINUM_BLOCK.get());

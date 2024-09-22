@@ -16,5 +16,6 @@ public class ModScreens {
         event.register(ModMenuTypes.GUIDEBOOK_MENU.get(), GuidebookScreen::new);
         event.register(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), EnergyGeneratorScreen::new);
         event.register(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), DnaExtractorScreen::new);
+        event.register(ModMenuTypes.DNA_SYNTHESIZER_MENU.get(), DnaSynthesizerScreen::new);
     }
 }

@@ -26,6 +26,7 @@ public class ModCreativeTabs {
                         pOutput.accept(ModBlocks.LIQUID_SOLIDING_STATION.get());
                         pOutput.accept(ModBlocks.ENERGY_GENERATOR.get());
                         pOutput.accept(ModBlocks.DNA_EXTRACTOR.get());
+                        pOutput.accept(ModBlocks.DNA_SYNTHESIZER.get());
                         pOutput.accept(ModBlocks.CABLE.get());
 
                         pOutput.accept(ModItems.DIRT_SLIME_SPAWN_EGG.get());

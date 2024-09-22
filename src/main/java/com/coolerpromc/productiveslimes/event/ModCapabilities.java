@@ -73,5 +73,20 @@ public class ModCapabilities {
                         return be.getInputHandler();
                     }
                 });
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.DNA_SYNTHESIZER_BE.get(),
+                (be, side) -> be.getEnergyHandler());
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.DNA_EXTRACTOR_BE.get(),
+                (be, side) -> {
+                    if (side == Direction.DOWN) {
+                        return be.getOutputHandler();
+                    }
+                    else {
+                        return be.getInputHandler();
+                    }
+                });
     }
 }

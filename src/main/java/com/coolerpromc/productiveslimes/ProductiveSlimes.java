@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -19,16 +20,12 @@ import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -47,14 +44,8 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
-import javax.swing.text.html.parser.Entity;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
 
 @Mod(ProductiveSlimes.MODID)
@@ -111,6 +102,7 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.SOLIDING_STATION_BE.get(), SolidingStationBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -289,7 +281,8 @@ public class ProductiveSlimes
                         ModBlocks.CACTUS_SLIME_BLOCK.get(),
                         ModBlocks.ENERGY_SLIME_BLOCK.get(),
                         ModBlocks.DNA_EXTRACTOR.get(),
-                        ModBlocks.LIQUID_SOLIDING_STATION.get()
+                        ModBlocks.LIQUID_SOLIDING_STATION.get(),
+                        ModBlocks.DNA_SYNTHESIZER.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
