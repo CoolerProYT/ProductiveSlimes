@@ -1,8 +1,9 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import com.coolerpromc.productiveslimes.entity.ModEntities;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,23 +11,31 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public abstract class BaseSlime extends Slime {
+public class BaseSlime extends Slime {
+    private final int color;
+    private final ItemLike resource;
+    private final Item growthItem;
     private static final EntityDataAccessor<ItemStack> RESOURCE =
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Integer> ID_SIZE =
@@ -35,11 +44,27 @@ public abstract class BaseSlime extends Slime {
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
 
     public static int growthTime = 6000;
-    public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown) {
+
+    /**
+     * @param entityType The entity type
+     * @param level The level
+     * @param cooldown The cooldown for the growth
+     * @param color The color of the slime
+     * @param resource The resource that the slime drops
+     * @param growthItem The item that the player uses to grow the slime
+     */
+    public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown, int color, ItemLike resource, Item growthItem) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
         RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 1.0f);
         growthTime = cooldown;
+        this.color = color;
+        this.resource = resource;
+        this.growthItem = growthItem;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     @Override
@@ -117,7 +142,10 @@ public abstract class BaseSlime extends Slime {
         pBuilder.define(GROWTH_COUNTER, 0);
     }
 
-    public abstract void dropResource();
+    public void dropResource(){
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(resource, this.getSize()));
+        this.level().addFreshEntity(itemEntity);
+    };
 
     @Override
     public void tick() {
@@ -173,6 +201,11 @@ public abstract class BaseSlime extends Slime {
         this.xpReward = i;
     }
 
+    @Override
+    protected ParticleOptions getParticleType() {
+        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(growthItem));
+    }
+
     /*@Override
     public void remove(Entity.RemovalReason pReason) {
         this.setRemoved(pReason);
@@ -195,8 +228,11 @@ public abstract class BaseSlime extends Slime {
         this.setBoundingBox(new AABB(-width / 2.0D, 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
     }
 
-    public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){
-
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.2D)
+                .add(Attributes.ATTACK_DAMAGE, 0)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
@@ -204,6 +240,21 @@ public abstract class BaseSlime extends Slime {
         slime.setHealth(slime.getMaxHealth());
         slime.setPos(slime.getX(), slime.getY() + 1, slime.getZ());
         pPlayer.getItemInHand(pHand).shrink(slime.getSize() + 1);
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if(pHand == InteractionHand.MAIN_HAND) {
+            if(pPlayer.isCrouching()) {
+                if(!level().isClientSide){
+                    if (pPlayer.getItemInHand(pHand).getItem() == growthItem && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
+                        growthSlime(pPlayer, pHand, this);
+                    }
+                }
+            }
+        }
+
+        return super.mobInteract(pPlayer, pHand);
     }
 
     static class SlimeFloatGoal extends Goal {
