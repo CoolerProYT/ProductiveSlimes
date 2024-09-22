@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:quartz_slime_dna"
+      "item": "productiveslimes:iron_slime_dna"
     },
     {
-      "item": "productiveslimes:quartz_slime_dna"
+      "item": "productiveslimes:netherrack_slime_dna"
     },
     {
-      "item": "minecraft:quartz"
+      "item": "minecraft:quartz_block"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

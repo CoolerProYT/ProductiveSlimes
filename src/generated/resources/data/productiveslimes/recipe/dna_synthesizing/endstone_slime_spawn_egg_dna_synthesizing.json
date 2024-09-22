@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:endstone_slime_dna"
+      "item": "productiveslimes:deepslate_slime_dna"
     },
     {
-      "item": "productiveslimes:endstone_slime_dna"
+      "item": "productiveslimes:netherrack_slime_dna"
     },
     {
       "item": "minecraft:end_stone"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

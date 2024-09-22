@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:netherite_slime_dna"
+      "item": "productiveslimes:diamond_slime_dna"
     },
     {
-      "item": "productiveslimes:netherite_slime_dna"
+      "item": "productiveslimes:diamond_slime_dna"
     },
     {
       "item": "minecraft:netherite_block"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:brown_mushroom_slime_dna"
+      "item": "productiveslimes:mud_slime_dna"
     },
     {
-      "item": "productiveslimes:brown_mushroom_slime_dna"
+      "item": "productiveslimes:cactus_slime_dna"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:brown_mushroom_block"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,

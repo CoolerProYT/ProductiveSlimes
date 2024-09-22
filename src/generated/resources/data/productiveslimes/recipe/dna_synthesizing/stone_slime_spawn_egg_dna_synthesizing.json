@@ -3,16 +3,16 @@
   "energy": 600,
   "ingredients": [
     {
-      "item": "productiveslimes:stone_slime_dna"
+      "item": "productiveslimes:dirt_slime_dna"
     },
     {
-      "item": "productiveslimes:stone_slime_dna"
+      "item": "productiveslimes:dirt_slime_dna"
     },
     {
       "item": "minecraft:stone"
     }
   ],
-  "inputCount": 2,
+  "inputCount": 4,
   "output": [
     {
       "count": 1,
