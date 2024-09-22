@@ -3,6 +3,8 @@
     "productiveslimes:melting_station",
     "productiveslimes:soliding_station",
     "productiveslimes:dna_extractor",
-    "productiveslimes:energy_generator"
+    "productiveslimes:dna_synthesizer",
+    "productiveslimes:energy_generator",
+    "productiveslimes:cable"
   ]
 }

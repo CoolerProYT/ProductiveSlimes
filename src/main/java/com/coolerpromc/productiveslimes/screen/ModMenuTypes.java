@@ -29,6 +29,9 @@ public class ModMenuTypes {
     public static final Supplier<MenuType<DnaExtractorMenu>> DNA_EXTRACTOR_MENU =
             registerMenuType("dna_extractor_menu", DnaExtractorMenu::new);
 
+    public static final Supplier<MenuType<DnaSynthesizerMenu>> DNA_SYNTHESIZER_MENU =
+            registerMenuType("dna_synthesizer_menu", DnaSynthesizerMenu::new);
+
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

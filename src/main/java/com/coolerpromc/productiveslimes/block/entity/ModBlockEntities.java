@@ -27,6 +27,9 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<DnaExtractorBlockEntity>> DNA_EXTRACTOR_BE = BLOCK_ENTITIES.register("dna_extractor_be",
             () -> BlockEntityType.Builder.of(DnaExtractorBlockEntity::new, ModBlocks.DNA_EXTRACTOR.get()).build(null));
 
+    public static final Supplier<BlockEntityType<DnaSynthesizerBlockEntity>> DNA_SYNTHESIZER_BE = BLOCK_ENTITIES.register("dna_synthesizer_be",
+            () -> BlockEntityType.Builder.of(DnaSynthesizerBlockEntity::new, ModBlocks.DNA_SYNTHESIZER.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

@@ -43,7 +43,7 @@ public class MeltingStationScreen extends AbstractContainerScreen<MeltingStation
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 76, y + 38, 176, 0, menu.getScaledProgress(), 8);
+            guiGraphics.blit(TEXTURE, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8);
         }
     }
 
