@@ -50,6 +50,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
@@ -189,27 +190,24 @@ public class ProductiveSlimes
             registerAllSlimeBlockColor(event);
         }
 
-        public static void registerAllSlimeEntity(){
+        /*public static void registerAllSlimeEntityRenderer(){
             Field[] fields = ModEntities.class.getFields();
 
             for (Field field : fields) {
                 try {
                     Object value = field.get(null);
 
-                    if (value instanceof EntityType<?> entityType) {
-                        if (BaseSlime.class.isAssignableFrom(entityType.getBaseClass())) {
-                            BaseSlime slimeInstance = (BaseSlime) entityType.create(null);
-
-                            if (slimeInstance instanceof BaseSlime slime){
-                                EntityRenderers.register((EntityType) entityType, pContext -> new BaseSlimeRenderer(pContext, slime.getColor()));
-                            }
+                    if (value instanceof DeferredHolder<?, ?> holder && holder.get() instanceof EntityType<?> entityType) {
+                        Integer color = ModEntities.SLIME_COLORS.get(entityType);
+                        if (color != null) {
+                            EntityRenderers.register((EntityType<? extends BaseSlime>) entityType, pContext -> new BaseSlimeRenderer(pContext, color.intValue()));
                         }
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
             Field[] fields = ModFluidTypes.class.getFields();
