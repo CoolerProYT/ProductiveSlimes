@@ -53,6 +53,21 @@ public class ModCreativeTabs {
                                 e.printStackTrace();
                             }
                         }
+
+                        // Use reflection to get all the fields from ModFluids
+                        for (Field field : ModFluids.class.getFields()) {
+                            try {
+                                // Ensure the field is a Supplier of Item (for items)
+                                if (Supplier.class.isAssignableFrom(field.getType())) {
+                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
+                                    if (supplier.get() instanceof Item) {
+                                        pOutput.accept((Item) supplier.get()); // Add items to the output
+                                    }
+                                }
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }).build());
 
     public static void register(IEventBus eventBus) {
