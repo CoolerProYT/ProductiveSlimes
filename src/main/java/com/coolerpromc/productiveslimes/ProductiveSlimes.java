@@ -288,7 +288,8 @@ public class ProductiveSlimes
                         ModBlocks.RED_MUSHROOM_SLIME_BLOCK.get(),
                         ModBlocks.CACTUS_SLIME_BLOCK.get(),
                         ModBlocks.ENERGY_SLIME_BLOCK.get(),
-                        ModBlocks.DNA_EXTRACTOR.get()
+                        ModBlocks.DNA_EXTRACTOR.get(),
+                        ModBlocks.LIQUID_SOLIDING_STATION.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
