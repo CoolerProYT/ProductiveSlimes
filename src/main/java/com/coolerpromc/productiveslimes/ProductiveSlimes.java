@@ -19,11 +19,14 @@ import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
+import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -44,6 +47,8 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import javax.swing.text.html.parser.Entity;
 import java.lang.reflect.Field;
@@ -471,54 +476,9 @@ public class ProductiveSlimes
                     ModBlocks.ENERGY_SLIME_BLOCK.value().asItem()
             );
 
-            registerSlimeballColorHandlers(event,
-                    ModItems.DIRT_SLIME_BALL.value().asItem(),
-                    ModItems.STONE_SLIME_BALL.value().asItem(),
-                    ModItems.IRON_SLIME_BALL.value().asItem(),
-                    ModItems.COPPER_SLIME_BALL.value().asItem(),
-                    ModItems.GOLD_SLIME_BALL.value().asItem(),
-                    ModItems.DIAMOND_SLIME_BALL.value().asItem(),
-                    ModItems.NETHERITE_SLIME_BALL.value().asItem(),
-                    ModItems.LAPIS_SLIME_BALL.value().asItem(),
-                    ModItems.REDSTONE_SLIME_BALL.value().asItem(),
-                    ModItems.OAK_SLIME_BALL.value().asItem(),
-                    ModItems.COAL_SLIME_BALL.value().asItem(),
-                    ModItems.GRAVEL_SLIME_BALL.value().asItem(),
-                    ModItems.SAND_SLIME_BALL.value().asItem(),
-                    ModItems.ANDESITE_SLIME_BALL.value().asItem(),
-                    ModItems.SNOW_SLIME_BALL.value().asItem(),
-                    ModItems.ICE_SLIME_BALL.value().asItem(),
-                    ModItems.MUD_SLIME_BALL.value().asItem(),
-                    ModItems.CLAY_SLIME_BALL.value().asItem(),
-                    ModItems.RED_SAND_SLIME_BALL.value().asItem(),
-                    ModItems.MOSS_SLIME_BALL.value().asItem(),
-                    ModItems.DEEPSLATE_SLIME_BALL.value().asItem(),
-                    ModItems.GRANITE_SLIME_BALL.value().asItem(),
-                    ModItems.DIORITE_SLIME_BALL.value().asItem(),
-                    ModItems.CALCITE_SLIME_BALL.value().asItem(),
-                    ModItems.TUFF_SLIME_BALL.value().asItem(),
-                    ModItems.DRIPSTONE_SLIME_BALL.value().asItem(),
-                    ModItems.NETHERRACK_SLIME_BALL.value().asItem(),
-                    ModItems.PRISMARINE_SLIME_BALL.value().asItem(),
-                    ModItems.MAGMA_SLIME_BALL.value().asItem(),
-                    ModItems.OBSIDIAN_SLIME_BALL.value().asItem(),
-                    ModItems.SOUL_SAND_SLIME_BALL.value().asItem(),
-                    ModItems.SOUL_SOIL_SLIME_BALL.value().asItem(),
-                    ModItems.BLACKSTONE_SLIME_BALL.value().asItem(),
-                    ModItems.BASALT_SLIME_BALL.value().asItem(),
-                    ModItems.QUARTZ_SLIME_BALL.value().asItem(),
-                    ModItems.GLOWSTONE_SLIME_BALL.value().asItem(),
-                    ModItems.ENDSTONE_SLIME_BALL.value().asItem(),
-                    ModItems.AMETHYST_SLIME_BALL.value().asItem(),
-                    ModItems.BROWN_MUSHROOM_SLIME_BALL.value().asItem(),
-                    ModItems.RED_MUSHROOM_SLIME_BALL.value().asItem(),
-                    ModItems.CACTUS_SLIME_BALL.value().asItem(),
-                    ModItems.ENERGY_SLIME_BALL.value().asItem()
-            );
+            registerAllSlimeballColor(event);
 
-            registerDnaColorHandlers(event,
-                    ModItems.DIRT_SLIME_DNA.value().asItem()
-            );
+            registerAllSlimeDnaColor(event);
 
             registerBucketColorHandlers(event,
                     ModFluids.MOLTEN_DIRT_BUCKET.value().asItem(),
@@ -590,27 +550,41 @@ public class ProductiveSlimes
             }
         }
 
-        private static void registerSlimeballColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
-            for (Item item : items) {
-                event.register((itemStack, pTintIndex) -> {
-                    if (itemStack.getItem() instanceof SlimeballItem slimeballItem) {
-                        return slimeballItem.getColor();
-                    }
+        public static void registerAllSlimeballColor(RegisterColorHandlersEvent.Item event) {
+            Field[] fields = ModItems.class.getFields();
 
-                    return 0xFFFFFFFF; // Default no color
-                }, item);
+            for (Field field : fields) {
+                try {
+                    Object value = field.get(null);
+
+                    if (value instanceof Supplier<?> supplier) {
+                        Item item = (Item) supplier.get();
+                        if (item instanceof SlimeballItem) {
+                            event.register((stack, tintIndex) -> ((SlimeballItem) item).getColor(), item);
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-        private static void registerDnaColorHandlers(RegisterColorHandlersEvent.Item event, Item... items) {
-            for (Item item : items) {
-                event.register((itemStack, pTintIndex) -> {
-                    if (itemStack.getItem() instanceof DnaItem dnaItem) {
-                        return dnaItem.getColor();
-                    }
+        public static void registerAllSlimeDnaColor(RegisterColorHandlersEvent.Item event) {
+            Field[] fields = ModItems.class.getFields();
 
-                    return 0xFFFFFFFF; // Default no color
-                }, item);
+            for (Field field : fields) {
+                try {
+                    Object value = field.get(null);
+
+                    if (value instanceof Supplier<?> supplier) {
+                        Item item = (Item) supplier.get();
+                        if (item instanceof DnaItem) {
+                            event.register((stack, tintIndex) -> ((DnaItem) item).getColor(), item);
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
