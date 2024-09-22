@@ -196,19 +196,7 @@ public abstract class BaseSlime extends Slime {
     }
 
     public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(originalSlime.getSize() + 1);
-        }
-
-        if (newSlime != null) {
-            newSlime.moveTo(originalSlime.getX(), originalSlime.getY(), originalSlime.getZ(), originalSlime.getYRot(), originalSlime.getXRot());
-            newSlime.setSize(originalSlime.getSize(), true);
-            this.level().addFreshEntity(newSlime);
-        }
-
-        originalSlime.discard();
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){

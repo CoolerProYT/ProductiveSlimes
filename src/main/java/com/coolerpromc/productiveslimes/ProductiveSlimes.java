@@ -477,7 +477,6 @@ public class ProductiveSlimes
             );
 
             registerAllSlimeballColor(event);
-
             registerAllSlimeDnaColor(event);
 
             registerBucketColorHandlers(event,
