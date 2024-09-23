@@ -34,7 +34,8 @@ public abstract class BaseSlime extends Slime {
     private static final EntityDataAccessor<Integer> GROWTH_COUNTER =
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
 
-    public static int growthTime = 6000;
+    public final int growthTime;
+
     public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
@@ -92,6 +93,7 @@ public abstract class BaseSlime extends Slime {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.entityData.set(ID_SIZE, pCompound.getInt("size"));
+        this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
     }
 
     public void setResource(ItemStack stack) {
