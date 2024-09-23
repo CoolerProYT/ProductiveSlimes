@@ -21,7 +21,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));
     public static final DeferredItem<Item> STONE_SLIME_BALL = ITEMS.register("stone_slimeball", () -> new SlimeballItem(0xFF6F6969));
-    public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF8B5D2D));
+    public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF898c8a));
     public static final DeferredItem<Item> COPPER_SLIME_BALL = ITEMS.register("copper_slimeball", () -> new SlimeballItem(0xFF6a3e15));
     public static final DeferredItem<Item> GOLD_SLIME_BALL = ITEMS.register("gold_slimeball", () -> new SlimeballItem(0xFFCCC16A));
     public static final DeferredItem<Item> DIAMOND_SLIME_BALL = ITEMS.register("diamond_slimeball", () -> new SlimeballItem(0xFF2BB7C7));
@@ -65,7 +65,7 @@ public class ModItems {
     public static final DeferredItem<Item> SLIME_DNA = ITEMS.register("slime_dna", () -> new DnaItem(0xFF7BC35C));
     public static final DeferredItem<Item> DIRT_SLIME_DNA = ITEMS.register("dirt_slime_dna", () -> new DnaItem(0xFF866043));
     public static final DeferredItem<Item> STONE_SLIME_DNA = ITEMS.register("stone_slime_dna", () -> new DnaItem(0xFF6F6969));
-    public static final DeferredItem<Item> IRON_SLIME_DNA = ITEMS.register("iron_slime_dna", () -> new DnaItem(0xFF8B5D2D));
+    public static final DeferredItem<Item> IRON_SLIME_DNA = ITEMS.register("iron_slime_dna", () -> new DnaItem(0xFF898c8a));
     public static final DeferredItem<Item> COPPER_SLIME_DNA = ITEMS.register("copper_slime_dna", () -> new DnaItem(0xFF6a3e15));
     public static final DeferredItem<Item> GOLD_SLIME_DNA = ITEMS.register("gold_slime_dna", () -> new DnaItem(0xFFCCC16A));
     public static final DeferredItem<Item> DIAMOND_SLIME_DNA = ITEMS.register("diamond_slime_dna", () -> new DnaItem(0xFF2BB7C7));
