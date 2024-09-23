@@ -1,8 +1,6 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
 import com.coolerpromc.productiveslimes.entity.ModEntities;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,9 +11,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,11 +34,11 @@ public abstract class BaseSlime extends Slime {
     private static final EntityDataAccessor<Integer> GROWTH_COUNTER =
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
 
-    public static int growthTime = 6000;
+    public final int growthTime;
+
     public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
-        RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 1.0f);
         growthTime = cooldown;
     }
 
@@ -93,6 +93,7 @@ public abstract class BaseSlime extends Slime {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.entityData.set(ID_SIZE, pCompound.getInt("size"));
+        this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
     }
 
     public void setResource(ItemStack stack) {
@@ -182,6 +183,13 @@ public abstract class BaseSlime extends Slime {
             this.spawnAtLocation(this.entityData.get(RESOURCE));
         }
     }*/
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.2D)
+                .add(Attributes.ATTACK_DAMAGE, 0)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
+    }
 
     float getSoundPitch() {
         float f = this.isTiny() ? 1.4F : 0.8F;

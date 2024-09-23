@@ -1,16 +1,11 @@
 package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import com.coolerpromc.productiveslimes.entity.slime.IronSlime;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,7 +15,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 public class ModEntityInteractEvent {
     @SubscribeEvent
     public static void onPlayerInteractEntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof Slime && !(event.getTarget() instanceof BaseSlime)) {
+        /*if (event.getTarget() instanceof Slime && !(event.getTarget() instanceof BaseSlime)) {
             Player player = event.getEntity();
             ItemStack itemStack = player.getItemInHand(event.getHand());
 
@@ -31,7 +26,7 @@ public class ModEntityInteractEvent {
             if(itemStack.getItem() == Items.DIRT){
                 transformSlime(event, player, itemStack, ModEntities.DIRT_SLIME.get().create(event.getLevel()));
             }
-        }
+        }*/
     }
 
     protected static void transformSlime(PlayerInteractEvent.EntityInteract event, Player player, ItemStack itemStack, BaseSlime entity){

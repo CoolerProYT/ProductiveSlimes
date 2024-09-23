@@ -2,6 +2,8 @@ package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.item.custom.DnaItem;
+import com.coolerpromc.productiveslimes.item.custom.EnergyMultiplierUpgrade;
 import com.coolerpromc.productiveslimes.item.custom.GuidebookItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import net.minecraft.world.item.Item;
@@ -15,9 +17,11 @@ public class ModItems {
 
     public static final DeferredItem<Item> GUIDEBOOK = ITEMS.register("guidebook", GuidebookItem::new);
 
+    public static final DeferredItem<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
+
     public static final DeferredItem<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));
     public static final DeferredItem<Item> STONE_SLIME_BALL = ITEMS.register("stone_slimeball", () -> new SlimeballItem(0xFF6F6969));
-    public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF8B5D2D));
+    public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF898c8a));
     public static final DeferredItem<Item> COPPER_SLIME_BALL = ITEMS.register("copper_slimeball", () -> new SlimeballItem(0xFF6a3e15));
     public static final DeferredItem<Item> GOLD_SLIME_BALL = ITEMS.register("gold_slimeball", () -> new SlimeballItem(0xFFCCC16A));
     public static final DeferredItem<Item> DIAMOND_SLIME_BALL = ITEMS.register("diamond_slimeball", () -> new SlimeballItem(0xFF2BB7C7));
@@ -56,6 +60,50 @@ public class ModItems {
     public static final DeferredItem<Item> CACTUS_SLIME_BALL = ITEMS.register("cactus_slimeball", () -> new SlimeballItem(0xFF476d21));
     public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.register("coal_slimeball", () -> new SlimeballItem(0xFF3b3d3b));
     public static final DeferredItem<Item> GRAVEL_SLIME_BALL = ITEMS.register("gravel_slimeball", () -> new SlimeballItem(0xFF4a444b));
+    public static final DeferredItem<Item> ENERGY_SLIME_BALL = ITEMS.register("energy_slimeball", () -> new SlimeballItem(0xFFFFFF70));
+
+    public static final DeferredItem<Item> SLIME_DNA = ITEMS.register("slime_dna", () -> new DnaItem(0xFF7BC35C));
+    public static final DeferredItem<Item> DIRT_SLIME_DNA = ITEMS.register("dirt_slime_dna", () -> new DnaItem(0xFF866043));
+    public static final DeferredItem<Item> STONE_SLIME_DNA = ITEMS.register("stone_slime_dna", () -> new DnaItem(0xFF6F6969));
+    public static final DeferredItem<Item> IRON_SLIME_DNA = ITEMS.register("iron_slime_dna", () -> new DnaItem(0xFF898c8a));
+    public static final DeferredItem<Item> COPPER_SLIME_DNA = ITEMS.register("copper_slime_dna", () -> new DnaItem(0xFF6a3e15));
+    public static final DeferredItem<Item> GOLD_SLIME_DNA = ITEMS.register("gold_slime_dna", () -> new DnaItem(0xFFCCC16A));
+    public static final DeferredItem<Item> DIAMOND_SLIME_DNA = ITEMS.register("diamond_slime_dna", () -> new DnaItem(0xFF2BB7C7));
+    public static final DeferredItem<Item> NETHERITE_SLIME_DNA = ITEMS.register("netherite_slime_dna", () -> new DnaItem(0xFF704545));
+    public static final DeferredItem<Item> LAPIS_SLIME_DNA = ITEMS.register("lapis_slime_dna", () -> new DnaItem(0xFF4165E6));
+    public static final DeferredItem<Item> REDSTONE_SLIME_DNA = ITEMS.register("redstone_slime_dna", () -> new DnaItem(0xFFD43030));
+    public static final DeferredItem<Item> OAK_SLIME_DNA = ITEMS.register("oak_slime_dna", () -> new DnaItem(0xFFa69d6f));
+    public static final DeferredItem<Item> SAND_SLIME_DNA = ITEMS.register("sand_slime_dna", () -> new DnaItem(0xFFf7f7c6));
+    public static final DeferredItem<Item> ANDESITE_SLIME_DNA = ITEMS.register("andesite_slime_dna", () -> new DnaItem(0xFF9d9e9a));
+    public static final DeferredItem<Item> SNOW_SLIME_DNA = ITEMS.register("snow_slime_dna", () -> new DnaItem(0xFFf2fcfc));
+    public static final DeferredItem<Item> ICE_SLIME_DNA = ITEMS.register("ice_slime_dna", () -> new DnaItem(0xFF89b1fc));
+    public static final DeferredItem<Item> MUD_SLIME_DNA = ITEMS.register("mud_slime_dna", () -> new DnaItem(0xFF363339));
+    public static final DeferredItem<Item> CLAY_SLIME_DNA = ITEMS.register("clay_slime_dna", () -> new DnaItem(0xFF9ca2ac));
+    public static final DeferredItem<Item> RED_SAND_SLIME_DNA = ITEMS.register("red_sand_slime_dna", () -> new DnaItem(0xFFbb6520));
+    public static final DeferredItem<Item> MOSS_SLIME_DNA = ITEMS.register("moss_slime_dna", () -> new DnaItem(0xFF4a6029));
+    public static final DeferredItem<Item> DEEPSLATE_SLIME_DNA = ITEMS.register("deepslate_slime_dna", () -> new DnaItem(0xFF3c3c42));
+    public static final DeferredItem<Item> GRANITE_SLIME_DNA = ITEMS.register("granite_slime_dna", () -> new DnaItem(0xFF835949));
+    public static final DeferredItem<Item> DIORITE_SLIME_DNA = ITEMS.register("diorite_slime_dna", () -> new DnaItem(0xFFadacad));
+    public static final DeferredItem<Item> CALCITE_SLIME_DNA = ITEMS.register("calcite_slime_dna", () -> new DnaItem(0xFFe9e9e3));
+    public static final DeferredItem<Item> TUFF_SLIME_DNA = ITEMS.register("tuff_slime_dna", () -> new DnaItem(0xFF55564c));
+    public static final DeferredItem<Item> DRIPSTONE_SLIME_DNA = ITEMS.register("dripstone_slime_dna", () -> new DnaItem(0xFF806155));
+    public static final DeferredItem<Item> PRISMARINE_SLIME_DNA = ITEMS.register("prismarine_slime_dna", () -> new DnaItem(0xFF529584));
+    public static final DeferredItem<Item> MAGMA_SLIME_DNA = ITEMS.register("magma_slime_dna", () -> new DnaItem(0xFF561f1f));
+    public static final DeferredItem<Item> OBSIDIAN_SLIME_DNA = ITEMS.register("obsidian_slime_dna", () -> new DnaItem(0xFF030106));
+    public static final DeferredItem<Item> NETHERRACK_SLIME_DNA = ITEMS.register("netherrack_slime_dna", () -> new DnaItem(0xFF763535));
+    public static final DeferredItem<Item> SOUL_SAND_SLIME_DNA = ITEMS.register("soul_sand_slime_dna", () -> new DnaItem(0xFF413127));
+    public static final DeferredItem<Item> SOUL_SOIL_SLIME_DNA = ITEMS.register("soul_soil_slime_dna", () -> new DnaItem(0xFF392b23));
+    public static final DeferredItem<Item> BLACKSTONE_SLIME_DNA = ITEMS.register("blackstone_slime_dna", () -> new DnaItem(0xFF201819));
+    public static final DeferredItem<Item> BASALT_SLIME_DNA = ITEMS.register("basalt_slime_dna", () -> new DnaItem(0xFF565456));
+    public static final DeferredItem<Item> ENDSTONE_SLIME_DNA = ITEMS.register("endstone_slime_dna", () -> new DnaItem(0xFFcece8e));
+    public static final DeferredItem<Item> QUARTZ_SLIME_DNA = ITEMS.register("quartz_slime_dna", () -> new DnaItem(0xFFe4ddd3));
+    public static final DeferredItem<Item> GLOWSTONE_SLIME_DNA = ITEMS.register("glowstone_slime_dna", () -> new DnaItem(0xFF784e27));
+    public static final DeferredItem<Item> AMETHYST_SLIME_DNA = ITEMS.register("amethyst_slime_dna", () -> new DnaItem(0xFF6b4da5));
+    public static final DeferredItem<Item> BROWN_MUSHROOM_SLIME_DNA = ITEMS.register("brown_mushroom_slime_dna", () -> new DnaItem(0xFF967251));
+    public static final DeferredItem<Item> RED_MUSHROOM_SLIME_DNA = ITEMS.register("red_mushroom_slime_dna", () -> new DnaItem(0xFFc02624));
+    public static final DeferredItem<Item> CACTUS_SLIME_DNA = ITEMS.register("cactus_slime_dna", () -> new DnaItem(0xFF476d21));
+    public static final DeferredItem<Item> COAL_SLIME_DNA = ITEMS.register("coal_slime_dna", () -> new DnaItem(0xFF3b3d3b));
+    public static final DeferredItem<Item> GRAVEL_SLIME_DNA = ITEMS.register("gravel_slime_dna", () -> new DnaItem(0xFF4a444b));
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.register("dirt_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.DIRT_SLIME.get(), 0x5e3a1c, 0x885022, new Item.Properties()));
@@ -139,6 +187,8 @@ public class ModItems {
             () -> new SpawnEggItem(ModEntities.COAL_SLIME.get(), 0x3b3d3b, 0x222222, new Item.Properties()));
     public static final DeferredItem<Item> GRAVEL_SLIME_SPAWN_EGG = ITEMS.register("gravel_slime_spawn_egg",
             () -> new SpawnEggItem(ModEntities.GRAVEL_SLIME.get(), 0x4a444b, 0x2f2f2f, new Item.Properties()));
+    public static final DeferredItem<Item> ENERGY_SLIME_SPAWN_EGG = ITEMS.register("energy_slime_spawn_egg",
+            () -> new SpawnEggItem(ModEntities.ENERGY_SLIME.get(), 0xffff70, 0xFFFF00, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

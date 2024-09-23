@@ -20,11 +20,13 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int inputCount;
+    private final int energy;
 
-    public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount) {
+    public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
         this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
         this.output = output;
         this.inputCount = inputCount;
+        this.energy = energy;
     }
 
     @Override
@@ -74,13 +76,18 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
         return inputCount;
     }
 
+    public int getEnergy() {
+        return energy;
+    }
+
     public static class Serializer implements RecipeSerializer<SolidingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding");
         private final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount)
+                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),
+                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, SolidingRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, SolidingRecipe> STREAM_CODEC = StreamCodec.of(
@@ -102,7 +109,9 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
 
             int inputCount = buffer.readInt();
 
-            return new SolidingRecipe(inputItems, result, inputCount);
+            int energy = buffer.readInt();
+
+            return new SolidingRecipe(inputItems, result, inputCount, energy);
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, SolidingRecipe recipe) {
@@ -117,6 +126,7 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
             }
 
             buffer.writeInt(recipe.inputCount);
+            buffer.writeInt(recipe.energy);
         }
 
         @Override

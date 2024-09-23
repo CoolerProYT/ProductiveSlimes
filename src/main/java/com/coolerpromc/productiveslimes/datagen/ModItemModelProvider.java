@@ -21,6 +21,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleItem(ModItems.GUIDEBOOK);
+        simpleItem(ModItems.ENERGY_MULTIPLIER_UPGRADE);
 
         slimeballItem(ModItems.DIRT_SLIME_BALL);
         slimeballItem(ModItems.STONE_SLIME_BALL);
@@ -63,6 +64,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.CACTUS_SLIME_BALL);
         slimeballItem(ModItems.COAL_SLIME_BALL);
         slimeballItem(ModItems.GRAVEL_SLIME_BALL);
+        slimeballItem(ModItems.ENERGY_SLIME_BALL);
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
@@ -106,6 +108,49 @@ public class ModItemModelProvider extends ItemModelProvider {
         bucketItem(ModFluids.MOLTEN_COAL_BUCKET);
         bucketItem(ModFluids.MOLTEN_GRAVEL_BUCKET);
 
+        dnaItem(ModItems.SLIME_DNA);
+        dnaItem(ModItems.DIRT_SLIME_DNA);
+        dnaItem(ModItems.STONE_SLIME_DNA);
+        dnaItem(ModItems.IRON_SLIME_DNA);
+        dnaItem(ModItems.COPPER_SLIME_DNA);
+        dnaItem(ModItems.GOLD_SLIME_DNA);
+        dnaItem(ModItems.DIAMOND_SLIME_DNA);
+        dnaItem(ModItems.NETHERITE_SLIME_DNA);
+        dnaItem(ModItems.LAPIS_SLIME_DNA);
+        dnaItem(ModItems.REDSTONE_SLIME_DNA);
+        dnaItem(ModItems.OAK_SLIME_DNA);
+        dnaItem(ModItems.SAND_SLIME_DNA);
+        dnaItem(ModItems.ANDESITE_SLIME_DNA);
+        dnaItem(ModItems.SNOW_SLIME_DNA);
+        dnaItem(ModItems.ICE_SLIME_DNA);
+        dnaItem(ModItems.MUD_SLIME_DNA);
+        dnaItem(ModItems.CLAY_SLIME_DNA);
+        dnaItem(ModItems.RED_SAND_SLIME_DNA);
+        dnaItem(ModItems.MOSS_SLIME_DNA);
+        dnaItem(ModItems.DEEPSLATE_SLIME_DNA);
+        dnaItem(ModItems.GRANITE_SLIME_DNA);
+        dnaItem(ModItems.DIORITE_SLIME_DNA);
+        dnaItem(ModItems.CALCITE_SLIME_DNA);
+        dnaItem(ModItems.TUFF_SLIME_DNA);
+        dnaItem(ModItems.DRIPSTONE_SLIME_DNA);
+        dnaItem(ModItems.PRISMARINE_SLIME_DNA);
+        dnaItem(ModItems.MAGMA_SLIME_DNA);
+        dnaItem(ModItems.OBSIDIAN_SLIME_DNA);
+        dnaItem(ModItems.NETHERRACK_SLIME_DNA);
+        dnaItem(ModItems.SOUL_SAND_SLIME_DNA);
+        dnaItem(ModItems.SOUL_SOIL_SLIME_DNA);
+        dnaItem(ModItems.BLACKSTONE_SLIME_DNA);
+        dnaItem(ModItems.BASALT_SLIME_DNA);
+        dnaItem(ModItems.ENDSTONE_SLIME_DNA);
+        dnaItem(ModItems.QUARTZ_SLIME_DNA);
+        dnaItem(ModItems.GLOWSTONE_SLIME_DNA);
+        dnaItem(ModItems.AMETHYST_SLIME_DNA);
+        dnaItem(ModItems.BROWN_MUSHROOM_SLIME_DNA);
+        dnaItem(ModItems.RED_MUSHROOM_SLIME_DNA);
+        dnaItem(ModItems.CACTUS_SLIME_DNA);
+        dnaItem(ModItems.COAL_SLIME_DNA);
+        dnaItem(ModItems.GRAVEL_SLIME_DNA);
+
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -147,12 +192,27 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.CACTUS_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.COAL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GRAVEL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.ENERGY_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"))
+                .element()
+                .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
+                .face(Direction.UP).texture("#layer0").tintindex(0).end()
+                .face(Direction.NORTH).texture("#layer0").tintindex(0).end()
+                .face(Direction.SOUTH).texture("#layer0").tintindex(0).end()
+                .face(Direction.WEST).texture("#layer0").tintindex(0).end()
+                .face(Direction.EAST).texture("#layer0").tintindex(0).end()
+                .end();
+    }
+
+    private ItemModelBuilder dnaItem(DeferredItem<Item> item){
+        return getBuilder(item.getId().getPath())
+                .parent(getExistingFile(mcLoc("item/generated")))
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"))
                 .element()
                 .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
                 .face(Direction.UP).texture("#layer0").tintindex(0).end()

@@ -18,7 +18,7 @@ public class MeltingStationMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public MeltingStationMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public MeltingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -116,5 +116,17 @@ public class MeltingStationMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
+    }
+
+    public int getEnergy() {
+        return this.data.get(2);
+    }
+
+    public int getMaxEnergy() {
+        return this.data.get(3);
+    }
+
+    public int getEnergyStoredScaled() {
+        return (int) (((float) getEnergy() / (float) getMaxEnergy()) * 57);
     }
 }
