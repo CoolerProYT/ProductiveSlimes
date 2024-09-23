@@ -24,21 +24,6 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
-                        // Use reflection to get all the fields from ModItems
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Item) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
                         // Use reflection to get all the fields from ModBlocks
                         for (Field field : ModBlocks.class.getFields()) {
                             try {
@@ -47,6 +32,21 @@ public class ModCreativeTabs {
                                     Supplier<?> supplier = (Supplier<?>) field.get(null);
                                     if (supplier.get() instanceof Block) {
                                         pOutput.accept((Block) supplier.get()); // Add block to the output
+                                    }
+                                }
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Use reflection to get all the fields from ModItems
+                        for (Field field : ModItems.class.getFields()) {
+                            try {
+                                // Ensure the field is a Supplier of Item (for items)
+                                if (Supplier.class.isAssignableFrom(field.getType())) {
+                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
+                                    if (supplier.get() instanceof Item) {
+                                        pOutput.accept((Item) supplier.get()); // Add item to the output
                                     }
                                 }
                             } catch (IllegalAccessException e) {

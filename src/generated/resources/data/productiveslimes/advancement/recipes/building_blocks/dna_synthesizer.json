@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:dna_extractor"
+        "recipe": "productiveslimes:dna_synthesizer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:dna_extractor"
+      "productiveslimes:dna_synthesizer"
     ]
   }
 }

@@ -113,7 +113,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', Items.IRON_INGOT)
                 .define('B', ModItems.ENERGY_SLIME_BALL)
                 .define('C', Items.GLASS)
-                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DNA_SYNTHESIZER.get(),1)
+                .pattern("AAA")
+                .pattern("CCC")
+                .pattern("ABA")
+                .define('A', Items.IRON_INGOT)
+                .define('B', ModItems.ENERGY_SLIME_BALL)
+                .define('C', Items.GLASS)
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENERGY_MULTIPLIER_UPGRADE,1)

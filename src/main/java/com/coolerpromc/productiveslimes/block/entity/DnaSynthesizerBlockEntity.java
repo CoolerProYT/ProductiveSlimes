@@ -12,6 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -37,11 +40,15 @@ import java.util.Optional;
 import java.util.Random;
 
 public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvider {
+    private float rotation;
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0,0);
     private final ItemStackHandler inputHandler = new ItemStackHandler(3){
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -59,6 +66,9 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -319,5 +329,25 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
 
     public ContainerData getData() {
         return data;
+    }
+
+    public float getRenderingRotation() {
+        rotation += 0.5f;
+        if(rotation >= 360) {
+            rotation = 0;
+        }
+        return rotation;
+    }
+
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+        return saveWithoutMetadata(pRegistries);
     }
 }
