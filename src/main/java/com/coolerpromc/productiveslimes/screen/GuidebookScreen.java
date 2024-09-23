@@ -53,207 +53,207 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         Button dirtSlimeballButton = new CustomButton(x + 5, y + 9, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.DIRT_SLIME_BALL.get());
-            this.description = "Drop from Dirt Slime. Dirt Slime is obtainable by using a Dirt on a Slime.";
+            this.description = "Drop from Dirt Slime.";
         }, new ItemStack(ModItems.DIRT_SLIME_BALL.get()));
 
         Button stoneSlimeballButton = new CustomButton(x + 5, y + 27, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.STONE_SLIME_BALL.get());
-            this.description = "Drop from Stone Slime. Stone Slime is obtainable by using a Stone on a Dirt Slime.";
+            this.description = "Drop from Stone Slime.";
         }, new ItemStack(ModItems.STONE_SLIME_BALL.get()));
 
         Button copperSlimeballButton = new CustomButton(x + 5, y + 45, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.COPPER_SLIME_BALL.get());
-            this.description = "Drop from Copper Slime. Copper Slime is obtainable by using a Copper Block on a Slime.";
+            this.description = "Drop from Copper Slime.";
         }, new ItemStack(ModItems.COPPER_SLIME_BALL.get()));
 
         Button ironSlimeballButton = new CustomButton(x + 5, y + 63, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.IRON_SLIME_BALL.get());
-            this.description = "Drop from Iron Slime. Iron Slime is obtainable by using a Iron Block on a Copper Slime.";
+            this.description = "Drop from Iron Slime.";
         }, new ItemStack(ModItems.IRON_SLIME_BALL.get()));
 
         Button goldSlimeballButton = new CustomButton(x + 5, y + 81, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.GOLD_SLIME_BALL.get());
-            this.description = "Drop from Gold Slime. Gold Slime is obtainable by using a Gold Block on a Iron Slime.";
+            this.description = "Drop from Gold Slime.";
         }, new ItemStack(ModItems.GOLD_SLIME_BALL.get()));
 
         Button diamondSlimeballButton = new CustomButton(x + 5, y + 99, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.DIAMOND_SLIME_BALL.get());
-            this.description = "Drop from Diamond Slime. Diamond Slime is obtainable by using a Diamond Block on a Gold Slime.";
+            this.description = "Drop from Diamond Slime.";
         }, new ItemStack(ModItems.DIAMOND_SLIME_BALL.get()));
 
         Button netheriteSlimeballButton = new CustomButton(x + 5, y + 117, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.NETHERITE_SLIME_BALL.get());
-            this.description = "Drop from Netherite Slime. Netherite Slime is obtainable by using a Netherite Block on a Diamond Slime.";
+            this.description = "Drop from Netherite Slime.";
         }, new ItemStack(ModItems.NETHERITE_SLIME_BALL.get()));
 
         Button lapisSlimeballButton = new CustomButton(x + 5, y + 135, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.LAPIS_SLIME_BALL.get());
-            this.description = "Drop from Lapis Slime. Lapis Slime is obtainable by using a Lapis Block on a Gold Slime.";
+            this.description = "Drop from Lapis Slime.";
         }, new ItemStack(ModItems.LAPIS_SLIME_BALL.get()));
 
         Button redstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.REDSTONE_SLIME_BALL.get());
-            this.description = "Drop from Redstone Slime. Redstone Slime is obtainable by using a Redstone Block on a Iron Slime.";
+            this.description = "Drop from Redstone Slime.";
         }, new ItemStack(ModItems.REDSTONE_SLIME_BALL.get()));
 
         Button oakSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.OAK_SLIME_BALL.get());
-            this.description = "Drop from Oak Slime. Oak Slime is obtainable by using an Oak Planks on a Stone Slime.";
+            this.description = "Drop from Oak Slime.";
         }, new ItemStack(ModItems.OAK_SLIME_BALL.get()));
 
         Button sandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.SAND_SLIME_BALL.get());
-            this.description = "Drop from Sand Slime. Sand Slime is obtainable by using a Sand on a Dirt Slime.";
+            this.description = "Drop from Sand Slime.";
         }, new ItemStack(ModItems.SAND_SLIME_BALL.get()));
 
         Button andesiteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.ANDESITE_SLIME_BALL.get());
-            this.description = "Drop from Andesite Slime. Andesite Slime is obtainable by using a Andesite on a Stone Slime.";
+            this.description = "Drop from Andesite Slime.";
         }, new ItemStack(ModItems.ANDESITE_SLIME_BALL.get()));
 
         Button snowSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.SNOW_SLIME_BALL.get());
-            this.description = "Drop from Snow Slime. Snow Slime is obtainable by using a Snow on a Stone Slime.";
+            this.description = "Drop from Snow Slime.";
         }, new ItemStack(ModItems.SNOW_SLIME_BALL.get()));
 
         Button iceSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.ICE_SLIME_BALL.get());
-            this.description = "Drop from Ice Slime. Ice Slime is obtainable by using a Ice on a Snow Slime.";
+            this.description = "Drop from Ice Slime.";
         }, new ItemStack(ModItems.ICE_SLIME_BALL.get()));
 
         Button mudSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.MUD_SLIME_BALL.get());
-            this.description = "Drop from Mud Slime. Mud Slime is obtainable by using a Mud on a Dirt Slime.";
+            this.description = "Drop from Mud Slime.";
         }, new ItemStack(ModItems.MUD_SLIME_BALL.get()));
 
         Button claySlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.CLAY_SLIME_BALL.get());
-            this.description = "Drop from Clay Slime. Clay Slime is obtainable by using a Clay on a Gravel Slime.";
+            this.description = "Drop from Clay Slime.";
         }, new ItemStack(ModItems.CLAY_SLIME_BALL.get()));
 
         Button redSandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.RED_SAND_SLIME_BALL.get());
-            this.description = "Drop from Red Sand Slime. Red Sand Slime is obtainable by using a Red Sand on a Sand Slime.";
+            this.description = "Drop from Red Sand Slime.";
         }, new ItemStack(ModItems.RED_SAND_SLIME_BALL.get()));
 
         Button mossSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.MOSS_SLIME_BALL.get());
-            this.description = "Drop from Moss Slime. Moss Slime is obtainable by using a Moss on a Dirt Slime.";
+            this.description = "Drop from Moss Slime.";
         }, new ItemStack(ModItems.MOSS_SLIME_BALL.get()));
 
         Button deepslateSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.DEEPSLATE_SLIME_BALL.get());
-            this.description = "Drop from Deepslate Slime. Deepslate Slime is obtainable by using a Deepslate on a Stone Slime.";
+            this.description = "Drop from Deepslate Slime.";
         }, new ItemStack(ModItems.DEEPSLATE_SLIME_BALL.get()));
 
         Button graniteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.GRANITE_SLIME_BALL.get());
-            this.description = "Drop from Granite Slime. Granite Slime is obtainable by using a Granite on a Stone Slime.";
+            this.description = "Drop from Granite Slime.";
         }, new ItemStack(ModItems.GRANITE_SLIME_BALL.get()));
 
         Button dioriteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.DIORITE_SLIME_BALL.get());
-            this.description = "Drop from Diorite Slime. Diorite Slime is obtainable by using a Diorite on a Stone Slime.";
+            this.description = "Drop from Diorite Slime.";
         }, new ItemStack(ModItems.DIORITE_SLIME_BALL.get()));
 
         Button calciteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.CALCITE_SLIME_BALL.get());
-            this.description = "Drop from Calcite Slime. Calcite Slime is obtainable by using a Calcite on a Stone Slime.";
+            this.description = "Drop from Calcite Slime.";
         }, new ItemStack(ModItems.CALCITE_SLIME_BALL.get()));
 
         Button tuffSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.TUFF_SLIME_BALL.get());
-            this.description = "Drop from Tuff Slime. Tuff Slime is obtainable by using a Tuff on a Stone Slime.";
+            this.description = "Drop from Tuff Slime.";
         }, new ItemStack(ModItems.TUFF_SLIME_BALL.get()));
 
         Button dripstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.DRIPSTONE_SLIME_BALL.get());
-            this.description = "Drop from Dripstone Slime. Dripstone Slime is obtainable by using a Pointed Dripstone on a Stone Slime.";
+            this.description = "Drop from Dripstone Slime.";
         }, new ItemStack(ModItems.DRIPSTONE_SLIME_BALL.get()));
 
         Button netherrackSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.NETHERITE_SLIME_BALL.get());
-            this.description = "Drop from Netherrack Slime. Netherrack Slime is obtainable by using a Netherrack on a Stone Slime.";
+            this.description = "Drop from Netherrack Slime.";
         }, new ItemStack(ModItems.NETHERITE_SLIME_BALL.get()));
 
         Button prismarineSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.PRISMARINE_SLIME_BALL.get());
-            this.description = "Drop from Prismarine Slime. Prismarine Slime is obtainable by using a Prismarine Shard on a Sand Slime.";
+            this.description = "Drop from Prismarine Slime.";
         }, new ItemStack(ModItems.PRISMARINE_SLIME_BALL.get()));
 
         Button magmaSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.MAGMA_SLIME_BALL.get());
-            this.description = "Drop from Magma Slime. Magma Slime is obtainable by using a Magma Block on a Netherrack Slime.";
+            this.description = "Drop from Magma Slime.";
         }, new ItemStack(ModItems.MAGMA_SLIME_BALL.get()));
 
         Button obsidianSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.OBSIDIAN_SLIME_BALL.get());
-            this.description = "Drop from Obsidian Slime. Obsidian Slime is obtainable by using a Obsidian on a Magma Slime.";
+            this.description = "Drop from Obsidian Slime.";
         }, new ItemStack(ModItems.OBSIDIAN_SLIME_BALL.get()));
 
         Button soulSandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.SOUL_SAND_SLIME_BALL.get());
-            this.description = "Drop from Soul Sand Slime. Soul Sand Slime is obtainable by using a Soul Sand on a Netherrack Slime.";
+            this.description = "Drop from Soul Sand Slime.";
         }, new ItemStack(ModItems.SOUL_SAND_SLIME_BALL.get()));
 
         Button soulSoilSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.SOUL_SOIL_SLIME_BALL.get());
-            this.description = "Drop from Soul Soil Slime. Soul Soil Slime is obtainable by using a Soul Soil on a Netherrack Slime.";
+            this.description = "Drop from Soul Soil Slime.";
         }, new ItemStack(ModItems.SOUL_SOIL_SLIME_BALL.get()));
 
         Button blackstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.BLACKSTONE_SLIME_BALL.get());
-            this.description = "Drop from Blackstone Slime. Blackstone Slime is obtainable by using a Blackstone on a Netherrack Slime.";
+            this.description = "Drop from Blackstone Slime.";
         }, new ItemStack(ModItems.BLACKSTONE_SLIME_BALL.get()));
 
         Button basaltSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.BASALT_SLIME_BALL.get());
-            this.description = "Drop from Basalt Slime. Basalt Slime is obtainable by using a Basalt on a Netherrack Slime.";
+            this.description = "Drop from Basalt Slime.";
         }, new ItemStack(ModItems.BASALT_SLIME_BALL.get()));
 
         Button endstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.ENDSTONE_SLIME_BALL.get());
-            this.description = "Drop from Endstone Slime. Endstone Slime is obtainable by using a Endstone on a Stone Slime.";
+            this.description = "Drop from Endstone Slime.";
         }, new ItemStack(ModItems.ENDSTONE_SLIME_BALL.get()));
 
         Button quartzSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.QUARTZ_SLIME_BALL.get());
-            this.description = "Drop from Quartz Slime. Quartz Slime is obtainable by using a Quartz on a Netherrack Slime.";
+            this.description = "Drop from Quartz Slime.";
         }, new ItemStack(ModItems.QUARTZ_SLIME_BALL.get()));
 
         Button glowstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.GLOWSTONE_SLIME_BALL.get());
-            this.description = "Drop from Glowstone Slime. Glowstone Slime is obtainable by using a Glowstone on a Netherrack Slime.";
+            this.description = "Drop from Glowstone Slime.";
         }, new ItemStack(ModItems.GLOWSTONE_SLIME_BALL.get()));
 
         Button amethystSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.AMETHYST_SLIME_BALL.get());
-            this.description = "Drop from Amethyst Slime. Amethyst Slime is obtainable by using a Amethyst Block on a Calcite Slime.";
+            this.description = "Drop from Amethyst Slime.";
         }, new ItemStack(ModItems.AMETHYST_SLIME_BALL.get()));
 
         Button brownMushroomSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.BROWN_MUSHROOM_SLIME_BALL.get());
-            this.description = "Drop from Brown Mushroom Slime. Brown Mushroom Slime is obtainable by using a Brown Mushroom on a Mud Slime.";
+            this.description = "Drop from Brown Mushroom Slime.";
         }, new ItemStack(ModItems.BROWN_MUSHROOM_SLIME_BALL.get()));
 
         Button redMushroomSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.RED_MUSHROOM_SLIME_BALL.get());
-            this.description = "Drop from Red Mushroom Slime. Red Mushroom Slime is obtainable by using a Red Mushroom on a Mud Slime.";
+            this.description = "Drop from Red Mushroom Slime.";
         }, new ItemStack(ModItems.RED_MUSHROOM_SLIME_BALL.get()));
 
         Button cactusSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.CACTUS_SLIME_BALL.get());
-            this.description = "Drop from Cactus Slime. Cactus Slime is obtainable by using a Cactus on a Sand Slime.";
+            this.description = "Drop from Cactus Slime.";
         }, new ItemStack(ModItems.CACTUS_SLIME_BALL.get()));
 
         Button coalSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.COAL_SLIME_BALL.get());
-            this.description = "Drop from Coal Slime. Coal Slime is obtainable by using a Coal Block on a Stone Slime.";
+            this.description = "Drop from Coal Slime.";
         }, new ItemStack(ModItems.COAL_SLIME_BALL.get()));
 
         Button gravelSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
             this.displayItem = new ItemStack(ModItems.GRAVEL_SLIME_BALL.get());
-            this.description = "Drop from Gravel Slime. Gravel Slime is obtainable by using a Gravel Block on a Dirt Slime.";
+            this.description = "Drop from Gravel Slime.";
         }, new ItemStack(ModItems.GRAVEL_SLIME_BALL.get()));
 
 //        this.addRenderableWidget(dirtSlimeballButton);
