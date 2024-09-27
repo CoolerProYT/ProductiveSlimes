@@ -8,6 +8,7 @@ import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.custom.MultipleRecipeInput;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -54,10 +55,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             if (slot != 2){
-                return stack.getItem() instanceof DnaItem;
+                return stack.getItem().getDefaultInstance().is(ModTags.Items.DNA_ITEM);
             }
             else {
-                return !(stack.getItem() instanceof DnaItem);
+                return !(stack.getItem().getDefaultInstance().is(ModTags.Items.DNA_ITEM));
             }
         }
     };

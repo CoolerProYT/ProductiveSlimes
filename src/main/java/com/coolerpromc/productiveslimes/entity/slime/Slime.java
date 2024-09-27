@@ -5,12 +5,14 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class Slime extends BaseSlime {
     private final ItemLike item;
@@ -41,6 +43,19 @@ public class Slime extends BaseSlime {
         }
 
         return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
+    public void remove(Entity.RemovalReason pReason) {
+        super.remove(pReason);
+        this.setRemoved(pReason);
+        if (pReason == Entity.RemovalReason.KILLED) {
+            this.gameEvent(GameEvent.ENTITY_DIE);
+
+            if(this.getSize() == 1){
+                this.dropResource();
+            }
+        }
     }
 
     @Override

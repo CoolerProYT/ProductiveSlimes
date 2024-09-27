@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -58,6 +59,53 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.AMETHYST_SLIME_BALL.get())
                 .add(ModItems.BROWN_MUSHROOM_SLIME_BALL.get())
                 .add(ModItems.RED_MUSHROOM_SLIME_BALL.get())
-                .add(ModItems.CACTUS_SLIME_BALL.get());
+                .add(ModItems.CACTUS_SLIME_BALL.get())
+                .add(ModItems.COAL_SLIME_BALL.get())
+                .add(ModItems.GRAVEL_SLIME_BALL.get())
+                .add(ModItems.ENERGY_SLIME_BALL.get());
+
+        tag(ModTags.Items.DNA_ITEM)
+                .add(ModItems.DIRT_SLIME_DNA.get())
+                .add(ModItems.STONE_SLIME_DNA.get())
+                .add(ModItems.COPPER_SLIME_DNA.get())
+                .add(ModItems.IRON_SLIME_DNA.get())
+                .add(ModItems.GOLD_SLIME_DNA.get())
+                .add(ModItems.DIAMOND_SLIME_DNA.get())
+                .add(ModItems.LAPIS_SLIME_DNA.get())
+                .add(ModItems.REDSTONE_SLIME_DNA.get())
+                .add(ModItems.NETHERITE_SLIME_DNA.get())
+                .add(ModItems.OAK_SLIME_DNA.get())
+                .add(ModItems.SAND_SLIME_DNA.get())
+                .add(ModItems.ANDESITE_SLIME_DNA.get())
+                .add(ModItems.SNOW_SLIME_DNA.get())
+                .add(ModItems.ICE_SLIME_DNA.get())
+                .add(ModItems.MUD_SLIME_DNA.get())
+                .add(ModItems.CLAY_SLIME_DNA.get())
+                .add(ModItems.RED_SAND_SLIME_DNA.get())
+                .add(ModItems.MOSS_SLIME_DNA.get())
+                .add(ModItems.DEEPSLATE_SLIME_DNA.get())
+                .add(ModItems.GRANITE_SLIME_DNA.get())
+                .add(ModItems.DIORITE_SLIME_DNA.get())
+                .add(ModItems.CALCITE_SLIME_DNA.get())
+                .add(ModItems.TUFF_SLIME_DNA.get())
+                .add(ModItems.DRIPSTONE_SLIME_DNA.get())
+                .add(ModItems.PRISMARINE_SLIME_DNA.get())
+                .add(ModItems.MAGMA_SLIME_DNA.get())
+                .add(ModItems.OBSIDIAN_SLIME_DNA.get())
+                .add(ModItems.NETHERRACK_SLIME_DNA.get())
+                .add(ModItems.SOUL_SAND_SLIME_DNA.get())
+                .add(ModItems.SOUL_SOIL_SLIME_DNA.get())
+                .add(ModItems.BLACKSTONE_SLIME_DNA.get())
+                .add(ModItems.BASALT_SLIME_DNA.get())
+                .add(ModItems.ENDSTONE_SLIME_DNA.get())
+                .add(ModItems.QUARTZ_SLIME_DNA.get())
+                .add(ModItems.GLOWSTONE_SLIME_DNA.get())
+                .add(ModItems.AMETHYST_SLIME_DNA.get())
+                .add(ModItems.BROWN_MUSHROOM_SLIME_DNA.get())
+                .add(ModItems.RED_MUSHROOM_SLIME_DNA.get())
+                .add(ModItems.CACTUS_SLIME_DNA.get())
+                .add(ModItems.COAL_SLIME_DNA.get())
+                .add(ModItems.GRAVEL_SLIME_DNA.get())
+                .add(ModItems.SLIME_DNA.get());
     }
 }
