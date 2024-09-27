@@ -9,27 +9,35 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 import net.minecraft.resources.ResourceLocation;
 
-public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeModel<BaseSlime>> {
-    private static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
+public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeRenderState, SlimeModel> {
+    public static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
 
     public BaseSlimeRenderer(EntityRendererProvider.Context pContext, int color) {
-        super(pContext, new SlimeModel<>(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);
-        this.addLayer(new SlimeOuterLayer<>(this, pContext.getModelSet(), color));
+        super(pContext, new SlimeModel(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);
+        this.addLayer(new SlimeOuterLayer(this, pContext.getModelSet(), color));
     }
 
     @Override
-    public void render(BaseSlime pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(SlimeRenderState p_361886_, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         this.shadowRadius = 0.15f;
-        float scale = pEntity.getSize();
+        float scale = p_361886_.size;
         pPoseStack.scale(scale, scale, scale);
 
-        super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+        super.render(p_361886_, pPoseStack, pBuffer, pPackedLight);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BaseSlime pEntity) {
+    public SlimeRenderState createRenderState() {
+        return new SlimeRenderState();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(SlimeRenderState p_368654_) {
         return BASE_TEXTURE;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class MeltingStationBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public MeltingStationBlock(Properties pProperties) {
         super(pProperties);
@@ -92,7 +92,7 @@ public class MeltingStationBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected InteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof MeltingStationBlockEntity) {
@@ -103,7 +103,7 @@ public class MeltingStationBlock extends BaseEntityBlock {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable

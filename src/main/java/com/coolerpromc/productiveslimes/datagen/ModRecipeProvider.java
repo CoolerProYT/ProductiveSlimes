@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -661,3 +662,4 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
     }
 }
+*/

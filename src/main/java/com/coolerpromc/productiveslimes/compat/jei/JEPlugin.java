@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -16,6 +17,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -41,7 +43,8 @@ public class JEPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        ServerLevel serverLevel = Minecraft.getInstance().level.getServer().overworld();
+        RecipeManager recipeManager = serverLevel.recipeAccess();
 
         List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
         List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
@@ -60,7 +63,8 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipeList);
         registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
 
-        /*registration.addItemStackInfo(
+        */
+/*registration.addItemStackInfo(
                 new ItemStack(ModItems.DIRT_SLIME_BALL.get()),
                 Component.literal("""
                         §nDirt Slimeball§r
@@ -68,7 +72,8 @@ public class JEPlugin implements IModPlugin {
                         This slimeball is dropped from Dirt Slime.
 
                         Dirt Slime is obtainable by using dirt on a slime.""")
-        );*/
+        );*//*
+
     }
 
     @Override
@@ -78,4 +83,4 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
         registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
     }
-}
+}*/

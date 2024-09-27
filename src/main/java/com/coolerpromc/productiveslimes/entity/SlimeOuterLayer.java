@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.entity;
 
+import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -12,30 +13,30 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 
-public class SlimeOuterLayer<T extends BaseSlime> extends RenderLayer<T, SlimeModel<T>> {
-    private final EntityModel<T> model;
+public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
+    private final SlimeModel model;
 
-    public SlimeOuterLayer(RenderLayerParent<T, SlimeModel<T>> pRenderer, EntityModelSet pModelSet, int color) {
+    public SlimeOuterLayer(RenderLayerParent<SlimeRenderState, SlimeModel> pRenderer, EntityModelSet pModelSet, int color) {
         super(pRenderer);
-        this.model = new SlimeModel<>(pModelSet.bakeLayer(ModelLayers.SLIME_OUTER), color);
+        this.model = new SlimeModel(pModelSet.bakeLayer(ModelLayers.SLIME_OUTER), color);
     }
 
-    public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, T pLivingEntity, float pLimbSwing, float pLimbSwingAmount, float pPartialTicks, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
+    @Override
+    public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, SlimeRenderState p_361554_, float p_117353_, float p_117354_) {
         Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = minecraft.shouldEntityAppearGlowing(pLivingEntity) && pLivingEntity.isInvisible();
-        if (!pLivingEntity.isInvisible() || flag) {
+        boolean flag = p_361554_.appearsGlowing && p_361554_.isInvisible;
+        if (!p_361554_.isInvisible || flag) {
             VertexConsumer vertexconsumer;
             if (flag) {
-                vertexconsumer = pBuffer.getBuffer(RenderType.outline(this.getTextureLocation(pLivingEntity)));
+                vertexconsumer = pBuffer.getBuffer(RenderType.outline(BaseSlimeRenderer.BASE_TEXTURE));
             } else {
-                vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pLivingEntity)));
+                vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE));
             }
 
-            this.getParentModel().copyPropertiesTo(this.model);
-            this.model.prepareMobModel(pLivingEntity, pLimbSwing, pLimbSwingAmount, pPartialTicks);
-            this.model.setupAnim(pLivingEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(pLivingEntity, 0.0F));
+            this.model.setupAnim(p_361554_);
+            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F));
         }
     }
 }

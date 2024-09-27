@@ -14,6 +14,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -58,17 +59,17 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
 
     @Override
     public void draw(MeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+        Minecraft.getInstance().getTextureManager().getTexture(TEXTURE);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        guiGraphics.blit(TEXTURE, 72, 33, 176, 0, arrowWidth, 8);
+        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
+        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
         Component text = Component.literal("Energy: " + recipe.getEnergy() + " / " + 10000 + " FE");
 
@@ -82,7 +83,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MeltingRecipe meltingRecipe, IFocusGroup iFocusGroup) {
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, meltingRecipe.getOutputs().get(0).getCount()));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(meltingRecipe.getIngredients().get(0).getItems()[0].getItem(), meltingRecipe.getInputCount()));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(meltingRecipe.getInputItems().get(0).items().get(0), meltingRecipe.getInputCount()));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).addItemStack(meltingRecipe.getOutputs().get(0));
     }
 }

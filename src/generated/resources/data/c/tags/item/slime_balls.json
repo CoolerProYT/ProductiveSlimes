@@ -38,6 +38,9 @@
     "productiveslimes:amethyst_slimeball",
     "productiveslimes:brown_mushroom_slimeball",
     "productiveslimes:red_mushroom_slimeball",
-    "productiveslimes:cactus_slimeball"
+    "productiveslimes:cactus_slimeball",
+    "productiveslimes:coal_slimeball",
+    "productiveslimes:gravel_slimeball",
+    "productiveslimes:energy_slimeball"
   ]
 }

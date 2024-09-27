@@ -23,7 +23,7 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
     private final int energy;
 
     public MeltingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
-        this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
+        this.inputItems = NonNullList.of(inputItems.get(0));
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
@@ -44,27 +44,26 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
     }
 
     @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return true;
+    public RecipeSerializer<? extends Recipe<SingleRecipeInput>> getSerializer() {
+        return (RecipeSerializer<? extends Recipe<SingleRecipeInput>>) ModRecipes.MELTING_SERIALIZER.get();
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
-        return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.MELTING_SERIALIZER.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SingleRecipeInput>> getType() {
         return ModRecipes.MELTING_TYPE.get();
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public PlacementInfo placementInfo() {
+        return null;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
+    }
+
+    public NonNullList<Ingredient> getInputItems() {
         return inputItems;
     }
 

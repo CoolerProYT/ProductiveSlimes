@@ -8,6 +8,7 @@ import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.custom.MultipleRecipeInput;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -54,10 +56,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             if (slot != 2){
-                return stack.getItem() instanceof DnaItem;
+                return stack.getItem().getDefaultInstance().is(ModTags.Items.DNA_ITEM);
             }
             else {
-                return !(stack.getItem() instanceof DnaItem);
+                return !(stack.getItem().getDefaultInstance().is(ModTags.Items.DNA_ITEM));
             }
         }
     };
@@ -295,7 +297,8 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
 
     private Optional<RecipeHolder<DnaSynthesizingRecipe>> getCurrentRecipe(){
         MultipleRecipeInput input = new MultipleRecipeInput(List.of(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2)));
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get(), input, level);
+        ServerLevel level = (ServerLevel) this.level;
+        return level.recipeAccess().getRecipeFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get(), input, level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {

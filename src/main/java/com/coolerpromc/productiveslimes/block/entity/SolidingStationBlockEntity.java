@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -259,7 +260,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+        ServerLevel level = (ServerLevel) this.level;
+        return level.recipeAccess().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {

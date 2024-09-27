@@ -49,11 +49,11 @@ public class SlimeBlock extends HalfTransparentBlock {
      * This method is responsible for doing any modification on the motion of the entity that should result from the landing.
      */
     @Override
-    public void updateEntityAfterFallOn(BlockGetter pLevel, Entity pEntity) {
-        if (pEntity.isSuppressingBounce()) {
-            super.updateEntityAfterFallOn(pLevel, pEntity);
+    public void updateEntityMovementAfterFallOn(BlockGetter p_49821_, Entity p_49822_) {
+        if (p_49822_.isSuppressingBounce()) {
+            super.updateEntityMovementAfterFallOn(p_49821_, p_49822_);
         } else {
-            this.bounceUp(pEntity);
+            this.bounceUp(p_49822_);
         }
     }
 

@@ -4,7 +4,10 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.entity.slime.*;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Items;
@@ -18,7 +21,7 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> DIRT_SLIME =
             ENTITY_TYPES.register("dirt_slime", () -> EntityType.Builder.<BaseSlime>of(
                     ((pEntityType, pLevel) -> new Slime(pEntityType, pLevel, 1500, 0xF0866043, ModItems.DIRT_SLIME_BALL.get(), Items.DIRT)),
-                    MobCategory.CREATURE).build("dirt_slime"));
+                    MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.DIRT_SLIME.get()))));
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> STONE_SLIME =
             ENTITY_TYPES.register("stone_slime", () -> EntityType.Builder.<BaseSlime>of(
                     (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, 1700, 0xF04a4545, ModItems.STONE_SLIME_BALL.get(), Items.STONE),

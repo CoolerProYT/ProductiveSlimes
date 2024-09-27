@@ -17,7 +17,7 @@ public class EnergyMultiplierUpgrade extends Item {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack pStack) {
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
         return false;
     }
 
