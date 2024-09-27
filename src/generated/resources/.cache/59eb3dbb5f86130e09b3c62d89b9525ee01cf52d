@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-22T17:50:45.6805677	Loot Tables
+// 1.21.1	2024-09-27T14:25:10.7496126	Loot Tables
 54882a6c99ed875fe1aef3b80298eed5ae169884 data/productiveslimes/loot_table/blocks/amethyst_slime_block.json
 c30011866f8200e59e31002232dae02050b6c9c4 data/productiveslimes/loot_table/blocks/andesite_slime_block.json
 af04a98611a463d6d02be4968c7050a78bb21ed8 data/productiveslimes/loot_table/blocks/basalt_slime_block.json
@@ -20,6 +20,7 @@ bd4c3bf395ec65eba9674c1ac9d68d71d83b3846 data/productiveslimes/loot_table/blocks
 88ebe9e51a0eb0d5115903c18d035d9816a6d4a0 data/productiveslimes/loot_table/blocks/endstone_slime_block.json
 9bcf9abe7c7b4904dc3f268d80c65be8dfc2a742 data/productiveslimes/loot_table/blocks/energy_generator.json
 18e4f5275931c3fb8efd44568ffab28aab0da47e data/productiveslimes/loot_table/blocks/energy_slime_block.json
+1551260d789354eb933da2b77ab8a4bb2c10e327 data/productiveslimes/loot_table/blocks/fluid_tank.json
 1f8919e5de45fe5d86c525a34fc92ad90567d937 data/productiveslimes/loot_table/blocks/glowstone_slime_block.json
 eb949b816d89ba3df86aebf5cd136a02028e14ff data/productiveslimes/loot_table/blocks/gold_slime_block.json
 b49ca0dce57b232553e457280e787b0efb86ba74 data/productiveslimes/loot_table/blocks/granite_slime_block.json

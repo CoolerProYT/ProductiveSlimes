@@ -5,6 +5,7 @@
     "productiveslimes:dna_extractor",
     "productiveslimes:dna_synthesizer",
     "productiveslimes:energy_generator",
+    "productiveslimes:fluid_tank",
     "productiveslimes:cable"
   ]
 }

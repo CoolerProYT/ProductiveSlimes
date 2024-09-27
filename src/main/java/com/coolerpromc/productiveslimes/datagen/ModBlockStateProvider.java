@@ -25,6 +25,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithVariants(ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
         simpleBlockWithVariants(ModBlocks.DNA_EXTRACTOR.get(), "dna_extractor");
         simpleBlockWithVariants(ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
+        simpleBlockWithVariants(ModBlocks.FLUID_TANK.get(), "fluid_tank");
 
         registerSlimeBlock(ModBlocks.DIRT_SLIME_BLOCK.get(), "dirt_slime_block");
         registerSlimeBlock(ModBlocks.STONE_SLIME_BLOCK.get(), "stone_slime_block");

@@ -126,9 +126,9 @@ dependencies {
 //    implementation "curse.maven:ato-405593:5657484"
 //    implementation "curse.maven:geckolib-388172:5679344"
 //
-//    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
+    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
 //
-//    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
+    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
 //
     implementation "curse.maven:jade-324717:${jade_id}"
 

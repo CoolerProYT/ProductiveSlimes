@@ -38,6 +38,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer",
             () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
+    public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank",
+            () -> new FluidTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
+
     public static final DeferredBlock<Block> DIRT_SLIME_BLOCK = registerBlock("dirt_slime_block",
             () -> new SlimeBlock(MapColor.DIRT, 0xF0866043));
 
