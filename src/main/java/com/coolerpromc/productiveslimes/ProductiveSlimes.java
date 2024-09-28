@@ -7,6 +7,7 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockE
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.compat.atm.*;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -61,6 +62,7 @@ import java.util.function.Supplier;
 public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
+
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
         modEventBus.addListener(this::commonSetup);
@@ -69,12 +71,17 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
+        if (ModList.get().isLoaded("allthemodium"))
+        {
+            AtmRegistry.register(modEventBus);
+        }
+
         ModBlocks.register(modEventBus);
-        ModCreativeTabs.register(modEventBus);
         ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
@@ -162,6 +169,13 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a444b));
             EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
 
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                EntityRenderers.register(AtmEntities.ATM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ff8b04));
+                EntityRenderers.register(AtmEntities.VIBRANIUM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0148484));
+                EntityRenderers.register(AtmEntities.UNOBTAINIUM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF06c1ce4));
+            }
+
             event.enqueueWork(() -> {
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
@@ -229,6 +243,24 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmFluidTypes.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            event.registerFluidType(((BaseFluidType) supplier.get()).getClientFluidTypeExtensions(),
+                                    (FluidType) supplier.get());
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Block event) {
@@ -251,6 +283,31 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmBlocks.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            Block block = (Block) supplier.get();
+                            if (block instanceof SlimeBlock) {
+                                event.register((pState, pLevel, pPos, pTintIndex) -> {
+                                    if (pState.getBlock() instanceof SlimeBlock slimeBlock) {
+                                        return slimeBlock.getColor();
+                                    }
+                                    return 0xFFFFFFFF; // Default no color
+                                }, block);
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -279,6 +336,34 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmBlocks.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            Block block = (Block) supplier.get();
+                            if (block instanceof SlimeBlock) {
+                                event.register((itemStack, pTintIndex) -> {
+                                    if (itemStack.getItem() instanceof BlockItem blockItem) {
+                                        if (blockItem.getBlock() instanceof SlimeBlock slimeBlock) {
+                                            return slimeBlock.getColor();
+                                        }
+                                    }
+                                    return 0xFFFFFFFF; // Default no color
+                                }, block.asItem());
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         public static void registerAllSlimeballColor(RegisterColorHandlersEvent.Item event) {
@@ -298,6 +383,26 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmItems.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            Item item = (Item) supplier.get();
+                            if (item instanceof SlimeballItem) {
+                                event.register((stack, tintIndex) -> ((SlimeballItem) item).getColor(), item);
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         public static void registerAllSlimeDnaColor(RegisterColorHandlersEvent.Item event) {
@@ -315,6 +420,26 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmItems.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            Item item = (Item) supplier.get();
+                            if (item instanceof DnaItem) {
+                                event.register((stack, tintIndex) -> ((DnaItem) item).getColor(), item);
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -344,6 +469,34 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmFluids.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            if (supplier.get() instanceof BucketItem) {
+                                Item item = (Item) supplier.get();
+                                event.register((itemStack, pTintIndex) -> {
+                                    if (itemStack.getItem() instanceof BucketItem bucketItem) {
+                                        if (pTintIndex == 1) {
+                                            return bucketItem.getColor();
+                                        }
+                                    }
+
+                                    return 0xFFFFFFFF; // Default no color
+                                }, item);
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         public static void registerAllFluidRenderLayer() {
@@ -360,6 +513,25 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            if (ModList.get().isLoaded("allthemodium"))
+            {
+                fields = AtmFluids.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            if (supplier.get() instanceof FlowingFluid fluid) {
+                                ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent());
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -384,6 +556,24 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            if (ModList.get().isLoaded("allthemodium")) {
+                fields = AtmBlocks.class.getFields();
+
+                for (Field field : fields) {
+                    try {
+                        Object value = field.get(null);
+
+                        if (value instanceof Supplier<?> supplier) {
+                            if (supplier.get() instanceof SlimeBlock slimeBlock) {
+                                ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.translucent());
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

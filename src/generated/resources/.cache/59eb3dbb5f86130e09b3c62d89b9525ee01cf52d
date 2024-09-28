@@ -1,6 +1,7 @@
-// 1.21.1	2024-09-27T14:25:10.7496126	Loot Tables
+// 1.21.1	2024-09-28T12:10:13.0002364	Loot Tables
 54882a6c99ed875fe1aef3b80298eed5ae169884 data/productiveslimes/loot_table/blocks/amethyst_slime_block.json
 c30011866f8200e59e31002232dae02050b6c9c4 data/productiveslimes/loot_table/blocks/andesite_slime_block.json
+24e9ad070dac0b4f472181938adb6df23da45315 data/productiveslimes/loot_table/blocks/atm_slime_block.json
 af04a98611a463d6d02be4968c7050a78bb21ed8 data/productiveslimes/loot_table/blocks/basalt_slime_block.json
 951830a6f4f628c43a0baa531a09389ca60f3bd2 data/productiveslimes/loot_table/blocks/blackstone_slime_block.json
 beee5697fe3ec9fc7a4c882674803f4ddf7e3f5a data/productiveslimes/loot_table/blocks/brown_mushroom_slime_block.json
@@ -48,3 +49,5 @@ b4cfb76bc613cf07b751888b6f207b3428343d43 data/productiveslimes/loot_table/blocks
 c9696c833500d5f40569e2e9cc98393358aab106 data/productiveslimes/loot_table/blocks/soul_soil_slime_block.json
 9b698eff440ff7494a4b22a053428c87d4c7b128 data/productiveslimes/loot_table/blocks/stone_slime_block.json
 116a076244312a01af93a5c7138800215bc3ee37 data/productiveslimes/loot_table/blocks/tuff_slime_block.json
+b505bb3edf2d70f2ab6bf0da92cbfa888cd707dc data/productiveslimes/loot_table/blocks/unobtainium_slime_block.json
+63e6efb46827e36b5726ebc458367964adb35755 data/productiveslimes/loot_table/blocks/vibranium_slime_block.json

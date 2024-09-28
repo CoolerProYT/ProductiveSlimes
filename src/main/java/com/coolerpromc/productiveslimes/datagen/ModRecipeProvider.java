@@ -2,6 +2,9 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.compat.atm.AtmBlocks;
+import com.coolerpromc.productiveslimes.compat.atm.AtmFluids;
+import com.coolerpromc.productiveslimes.compat.atm.AtmItems;
 import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.DnaSynthesizingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
@@ -12,6 +15,7 @@ import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -269,6 +273,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
         slimeBallToSlimeBlock(recipeOutput, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
+        slimeBlockToSlimeBall(recipeOutput, AtmBlocks.ATM_SLIME_BLOCK, AtmItems.ATM_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, AtmItems.ATM_SLIME_BALL, AtmBlocks.ATM_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, AtmBlocks.VIBRANIUM_SLIME_BLOCK, AtmItems.VIBRANIUM_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, AtmItems.VIBRANIUM_SLIME_BALL, AtmBlocks.VIBRANIUM_SLIME_BLOCK);
+
+        slimeBlockToSlimeBall(recipeOutput, AtmBlocks.UNOBTAINIUM_SLIME_BLOCK, AtmItems.UNOBTAINIUM_SLIME_BALL);
+        slimeBallToSlimeBlock(recipeOutput, AtmItems.UNOBTAINIUM_SLIME_BALL, AtmBlocks.UNOBTAINIUM_SLIME_BLOCK);
+
         //Melting Recipe
         meltingRecipe(recipeOutput, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModFluids.MOLTEN_DIRT_BUCKET, 4, 1);
@@ -393,6 +406,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         meltingRecipe(recipeOutput, ModBlocks.GRAVEL_SLIME_BLOCK, ModFluids.MOLTEN_GRAVEL_BUCKET, 2, 5);
         meltingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModFluids.MOLTEN_GRAVEL_BUCKET, 4, 1);
 
+        meltingRecipe(recipeOutput, AtmBlocks.ATM_SLIME_BLOCK, AtmFluids.MOLTEN_ATM_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, AtmItems.ATM_SLIME_BALL, AtmFluids.MOLTEN_ATM_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, AtmBlocks.VIBRANIUM_SLIME_BLOCK, AtmFluids.MOLTEN_VIBRANIUM_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, AtmItems.VIBRANIUM_SLIME_BALL, AtmFluids.MOLTEN_VIBRANIUM_BUCKET, 4, 1);
+
+        meltingRecipe(recipeOutput, AtmBlocks.UNOBTAINIUM_SLIME_BLOCK, AtmFluids.MOLTEN_UNOBTAINIUM_BUCKET, 2, 5);
+        meltingRecipe(recipeOutput, AtmItems.UNOBTAINIUM_SLIME_BALL, AtmFluids.MOLTEN_UNOBTAINIUM_BUCKET, 4, 1);
+
         //Soliding Recipe
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_DIRT_BUCKET, Items.DIRT, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_STONE_BUCKET, Items.STONE, 1, 2);
@@ -435,6 +457,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_CACTUS_BUCKET, Items.CACTUS, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(recipeOutput, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
+
+        solidingRecipe(recipeOutput, AtmFluids.MOLTEN_ATM_BUCKET, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "allthemodium_ingot")), 1, 1);
+        solidingRecipe(recipeOutput, AtmFluids.MOLTEN_VIBRANIUM_BUCKET, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "vibranium_ingot")), 1, 1);
+        solidingRecipe(recipeOutput, AtmFluids.MOLTEN_UNOBTAINIUM_BUCKET, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "unobtainium_ingot")), 1, 1);
 
         dnaExtractingRecipe(recipeOutput, Items.SLIME_BALL, ModItems.SLIME_DNA, 1, 0.9f);
         dnaExtractingRecipe(recipeOutput, ModItems.DIRT_SLIME_BALL, ModItems.DIRT_SLIME_DNA, 1, 0.75f);
@@ -479,6 +505,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaExtractingRecipe(recipeOutput, ModItems.COAL_SLIME_BALL, ModItems.COAL_SLIME_DNA, 1, 0.65f);
         dnaExtractingRecipe(recipeOutput, ModItems.GRAVEL_SLIME_BALL, ModItems.GRAVEL_SLIME_DNA, 1, 0.6f);
 
+        dnaExtractingRecipe(recipeOutput, AtmItems.ATM_SLIME_BALL, AtmItems.ATM_SLIME_DNA, 1, 0.2f);
+        dnaExtractingRecipe(recipeOutput, AtmItems.VIBRANIUM_SLIME_BALL, AtmItems.VIBRANIUM_SLIME_DNA, 1, 0.1f);
+        dnaExtractingRecipe(recipeOutput, AtmItems.UNOBTAINIUM_SLIME_BALL, AtmItems.UNOBTAINIUM_SLIME_DNA, 1, 0.05f);
+
         //DNA Synthesizing Recipe For Getting Self
         dnaSynthesizingSelfRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 2, ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.DIRT);
         dnaSynthesizingSelfRecipe(recipeOutput, ModItems.STONE_SLIME_SPAWN_EGG, 2, ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.STONE);
@@ -522,6 +552,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaSynthesizingSelfRecipe(recipeOutput, ModItems.COAL_SLIME_SPAWN_EGG, 2, ModItems.COAL_SLIME_DNA, ModItems.COAL_SLIME_DNA, Items.COAL_BLOCK);
         dnaSynthesizingSelfRecipe(recipeOutput, ModItems.GRAVEL_SLIME_SPAWN_EGG, 2, ModItems.GRAVEL_SLIME_DNA, ModItems.GRAVEL_SLIME_DNA, Items.GRAVEL);
 
+        dnaSynthesizingSelfRecipe(recipeOutput, AtmItems.ATM_SLIME_SPAWN_EGG, 2, AtmItems.ATM_SLIME_DNA, AtmItems.ATM_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "allthemodium_block")));
+        dnaSynthesizingSelfRecipe(recipeOutput, AtmItems.VIBRANIUM_SLIME_SPAWN_EGG, 2, AtmItems.VIBRANIUM_SLIME_DNA, AtmItems.VIBRANIUM_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "vibranium_block")));
+        dnaSynthesizingSelfRecipe(recipeOutput, AtmItems.UNOBTAINIUM_SLIME_SPAWN_EGG, 2, AtmItems.UNOBTAINIUM_SLIME_DNA, AtmItems.UNOBTAINIUM_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "unobtainium_block")));
+
         //DNA Synthesizing Recipe For Getting New Egg
         dnaSynthesizingRecipe(recipeOutput, ModItems.DIRT_SLIME_SPAWN_EGG, 4,ModItems.SLIME_DNA, ModItems.SLIME_DNA, Items.DIRT);
         dnaSynthesizingRecipe(recipeOutput, ModItems.STONE_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.STONE);
@@ -564,6 +598,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaSynthesizingRecipe(recipeOutput, ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.BROWN_MUSHROOM_BLOCK);
         dnaSynthesizingRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.RED_MUSHROOM_BLOCK);
         dnaSynthesizingRecipe(recipeOutput, ModItems.CACTUS_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SLIME_DNA, Items.CACTUS);
+
+        dnaSynthesizingRecipe(recipeOutput, AtmItems.ATM_SLIME_SPAWN_EGG, 4,ModItems.NETHERITE_SLIME_DNA, ModItems.NETHERITE_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "allthemodium_block")));
+        dnaSynthesizingRecipe(recipeOutput, AtmItems.VIBRANIUM_SLIME_SPAWN_EGG, 4,AtmItems.ATM_SLIME_DNA, AtmItems.ATM_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "vibranium_block")));
+        dnaSynthesizingRecipe(recipeOutput, AtmItems.UNOBTAINIUM_SLIME_SPAWN_EGG, 4,AtmItems.VIBRANIUM_SLIME_DNA, AtmItems.VIBRANIUM_SLIME_DNA, BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("allthemodium", "unobtainium_block")));
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {

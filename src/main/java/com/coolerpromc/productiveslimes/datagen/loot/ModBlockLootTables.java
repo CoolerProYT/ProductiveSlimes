@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen.loot;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.compat.atm.AtmBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -80,6 +81,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.COAL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.GRAVEL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
+
+        dropSelf(AtmBlocks.ATM_SLIME_BLOCK.get());
+        dropSelf(AtmBlocks.VIBRANIUM_SLIME_BLOCK.get());
+        dropSelf(AtmBlocks.UNOBTAINIUM_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

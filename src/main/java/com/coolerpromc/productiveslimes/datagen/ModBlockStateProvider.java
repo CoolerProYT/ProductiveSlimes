@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.compat.atm.AtmBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -69,6 +70,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registerSlimeBlock(ModBlocks.COAL_SLIME_BLOCK.get(), "coal_slime_block");
         registerSlimeBlock(ModBlocks.GRAVEL_SLIME_BLOCK.get(), "gravel_slime_block");
         registerSlimeBlock(ModBlocks.ENERGY_SLIME_BLOCK.get(), "energy_slime_block");
+
+        registerSlimeBlock(AtmBlocks.ATM_SLIME_BLOCK.get(), "atm_slime_block");
+        registerSlimeBlock(AtmBlocks.VIBRANIUM_SLIME_BLOCK.get(), "vibranium_slime_block");
+        registerSlimeBlock(AtmBlocks.UNOBTAINIUM_SLIME_BLOCK.get(), "unobtainium_slime_block");
     }
 
     private void registerSlimeBlock(Block block, String textureName){

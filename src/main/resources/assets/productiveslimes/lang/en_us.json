@@ -54,6 +54,9 @@
   "block.productiveslimes.coal_slime_block": "Coal Slime Block",
   "block.productiveslimes.gravel_slime_block": "Gravel Slime Block",
   "block.productiveslimes.energy_slime_block": "Energy Slime Block",
+  "block.productiveslimes.atm_slime_block": "Allthemodium Slime Block",
+  "block.productiveslimes.vibranium_slime_block": "Vibranium Slime Block",
+  "block.productiveslimes.unobtainium_slime_block": "Unobtainium Slime Block",
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
   "item.productiveslimes.energy_multiplier_upgrade": "Energy Multiplier Upgrade",
@@ -100,6 +103,9 @@
   "item.productiveslimes.coal_slime_spawn_egg": "Coal Slime Spawn Egg",
   "item.productiveslimes.gravel_slime_spawn_egg": "Gravel Slime Spawn Egg",
   "item.productiveslimes.energy_slime_spawn_egg": "Energy Slime Spawn Egg",
+  "item.productiveslimes.atm_slime_spawn_egg": "Allthemodium Slime Spawn Egg",
+  "item.productiveslimes.vibranium_slime_spawn_egg": "Vibranium Slime Spawn Egg",
+  "item.productiveslimes.unobtainium_slime_spawn_egg": "Unobtainium Slime Spawn Egg",
 
   "item.productiveslimes.dirt_slimeball": "Dirt Slimeball",
   "item.productiveslimes.stone_slimeball": "Stone Slimeball",
@@ -143,6 +149,9 @@
   "item.productiveslimes.red_mushroom_slimeball": "Red Mushroom Slimeball",
   "item.productiveslimes.cactus_slimeball": "Cactus Slimeball",
   "item.productiveslimes.energy_slimeball": "Energy Slimeball",
+  "item.productiveslimes.atm_slimeball": "Allthemodium Slimeball",
+  "item.productiveslimes.vibranium_slimeball": "Vibranium Slimeball",
+  "item.productiveslimes.unobtainium_slimeball": "Unobtainium Slimeball",
 
   "entity.productiveslimes.dirt_slime": "Dirt Slime",
   "entity.productiveslimes.stone_slime": "Stone Slime",
@@ -186,6 +195,9 @@
   "entity.productiveslimes.red_mushroom_slime": "Red Mushroom Slime",
   "entity.productiveslimes.cactus_slime": "Cactus Slime",
   "entity.productiveslimes.energy_slime": "Energy Slime",
+  "entity.productiveslimes.atm_slime": "Allthemodium Slime",
+  "entity.productiveslimes.vibranium_slime": "Vibranium Slime",
+  "entity.productiveslimes.unobtainium_slime": "Unobtainium Slime",
 
   "item.productiveslimes.slime_dna": "Slime DNA",
   "item.productiveslimes.dirt_slime_dna": "Dirt Slime DNA",
@@ -229,6 +241,9 @@
   "item.productiveslimes.brown_mushroom_slime_dna": "Brown Mushroom Slime DNA",
   "item.productiveslimes.red_mushroom_slime_dna": "Red Mushroom Slime DNA",
   "item.productiveslimes.cactus_slime_dna": "Cactus Slime DNA",
+  "item.productiveslimes.atm_slime_dna": "Allthemodium Slime DNA",
+  "item.productiveslimes.vibranium_slime_dna": "Vibranium Slime DNA",
+  "item.productiveslimes.unobtainium_slime_dna": "Unobtainium Slime DNA",
 
   "item.productiveslimes.molten_dirt_bucket": "Molten Dirt Bucket",
   "block.productiveslimes.molten_dirt_block": "Molten Dirt",
@@ -312,6 +327,12 @@
   "block.productiveslimes.molten_coal_block": "Molten Coal",
   "item.productiveslimes.molten_gravel_bucket": "Molten Gravel Bucket",
   "block.productiveslimes.molten_gravel_block": "Molten Gravel",
+  "item.productiveslimes.molten_atm_bucket": "Molten Allthemodium Bucket",
+  "block.productiveslimes.molten_atm_block": "Molten Allthemodium",
+  "item.productiveslimes.molten_vibranium_bucket": "Molten Vibranium Bucket",
+  "block.productiveslimes.molten_vibranium_block": "Molten Vibranium",
+  "item.productiveslimes.molten_unobtainium_bucket": "Molten Unobtainium Bucket",
+  "block.productiveslimes.molten_unobtainium_block": "Molten Unobtainium",
 
   "fluid_type.productiveslimes.molten_dirt_fluid": "Molten Dirt",
   "fluid_type.productiveslimes.molten_stone_fluid": "Molten Stone",
@@ -353,5 +374,8 @@
   "fluid_type.productiveslimes.molten_red_mushroom_fluid": "Molten Red Mushroom",
   "fluid_type.productiveslimes.molten_cactus_fluid": "Molten Cactus",
   "fluid_type.productiveslimes.molten_coal_fluid": "Molten Coal",
-  "fluid_type.productiveslimes.molten_gravel_fluid": "Molten Gravel"
+  "fluid_type.productiveslimes.molten_gravel_fluid": "Molten Gravel",
+  "fluid_type.productiveslimes.molten_atm_fluid": "Molten Allthemodium",
+  "fluid_type.productiveslimes.molten_vibranium_fluid": "Molten Vibranium",
+  "fluid_type.productiveslimes.molten_unobtainium_fluid": "Molten Unobtainium"
 }

@@ -79,6 +79,12 @@
     "productiveslimes:source_molten_cactus",
     "productiveslimes:flowing_molten_cactus",
     "productiveslimes:source_molten_coal",
-    "productiveslimes:flowing_molten_coal"
+    "productiveslimes:flowing_molten_coal",
+    "productiveslimes:source_molten_atm",
+    "productiveslimes:flowing_molten_atm",
+    "productiveslimes:source_molten_vibranium",
+    "productiveslimes:flowing_molten_vibranium",
+    "productiveslimes:source_molten_unobtainium",
+    "productiveslimes:flowing_molten_unobtainium"
   ]
 }

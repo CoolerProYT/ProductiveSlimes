@@ -41,6 +41,9 @@
     "productiveslimes:cactus_slime_dna",
     "productiveslimes:coal_slime_dna",
     "productiveslimes:gravel_slime_dna",
-    "productiveslimes:slime_dna"
+    "productiveslimes:slime_dna",
+    "productiveslimes:atm_slime_dna",
+    "productiveslimes:vibranium_slime_dna",
+    "productiveslimes:unobtainium_slime_dna"
   ]
 }
