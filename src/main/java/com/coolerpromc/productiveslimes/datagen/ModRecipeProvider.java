@@ -140,6 +140,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
                 .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.FLUID_TANK,1)
+                .pattern("AAA")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.GLASS)
+                .define('C', Items.BUCKET)
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
+                .save(recipeOutput);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
                 .requires(Items.BOOK)
                 .requires(Tags.Items.SLIME_BALLS)
