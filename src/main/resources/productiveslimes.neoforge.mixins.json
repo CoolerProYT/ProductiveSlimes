@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.coolerpromc.productiveslimes.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "productiveslimes.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}

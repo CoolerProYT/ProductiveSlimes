@@ -17,6 +17,7 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
@@ -27,11 +28,16 @@ import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -48,12 +54,16 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import terrablender.api.SurfaceRuleManager;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
@@ -87,13 +97,15 @@ public class ProductiveSlimes
         ModMenuTypes.register(modEventBus);
         ModDataComponents.register(modEventBus);
 
+//        ModTerrablender.registerBiomes();
+
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
