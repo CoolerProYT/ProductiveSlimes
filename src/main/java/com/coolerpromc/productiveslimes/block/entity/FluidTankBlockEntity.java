@@ -15,7 +15,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity {
-    private final int capacity = 50000;
+    public final int capacity = 50000;
+    public static final int CAPACITY = 50000;
 
     private final FluidTank fluidTank = new FluidTank(capacity){
         @Override
