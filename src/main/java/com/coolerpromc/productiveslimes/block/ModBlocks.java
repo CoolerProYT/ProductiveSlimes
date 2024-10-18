@@ -170,9 +170,7 @@ public class ModBlocks {
 
     private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block){
         DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
-        if (!name.equals("fluid_tank")){
-            registerBlockItem(name,toReturn);
-        }
+        registerBlockItem(name,toReturn);
         return toReturn;
     }
 

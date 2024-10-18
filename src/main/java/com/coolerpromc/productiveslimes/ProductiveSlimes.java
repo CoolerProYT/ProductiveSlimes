@@ -194,7 +194,7 @@ public class ProductiveSlimes
         public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
             event.registerItem(
                     new ModClientItemExtensions(),
-                    ModItems.FLUID_TANK_ITEM
+                    ModBlocks.FLUID_TANK.get().asItem()
             );
         }
 
