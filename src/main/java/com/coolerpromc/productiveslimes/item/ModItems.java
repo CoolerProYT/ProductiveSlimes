@@ -1,11 +1,13 @@
 package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.EnergyMultiplierUpgrade;
 import com.coolerpromc.productiveslimes.item.custom.GuidebookItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.IEventBus;
@@ -18,7 +20,7 @@ public class ModItems {
     public static final DeferredItem<Item> GUIDEBOOK = ITEMS.register("guidebook", GuidebookItem::new);
 
     public static final DeferredItem<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
-
+    public static final DeferredItem<BlockItem> FLUID_TANK_ITEM = ITEMS.register("fluid_tank", () -> new BlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
     public static final DeferredItem<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));
     public static final DeferredItem<Item> STONE_SLIME_BALL = ITEMS.register("stone_slimeball", () -> new SlimeballItem(0xFF6F6969));
     public static final DeferredItem<Item> IRON_SLIME_BALL = ITEMS.register("iron_slimeball", () -> new SlimeballItem(0xFF898c8a));

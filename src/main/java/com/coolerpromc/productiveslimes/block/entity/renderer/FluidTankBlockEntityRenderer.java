@@ -57,23 +57,23 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
 
         VertexConsumer builder = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(state));
 
-        drawQuad(builder, pPoseStack, 0.2f, height, 0.2f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, height, 0.15f, 0.85f, height, 0.85f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
 
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
         pPoseStack.translate(-1f, 0, -1.6f);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.8f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.75f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
         pPoseStack.translate(-1f, 0, 0);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
         pPoseStack.translate(0, 0, -1f);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
     }
 

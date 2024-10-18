@@ -1,24 +1,41 @@
 package com.coolerpromc.productiveslimes.util;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.datafixers.util.Either;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
     private boolean isRendering = false;
@@ -35,90 +52,70 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
 
         isRendering = true;
         try {
-            // Ensure we're rendering only in the GUI context
-            if (pDisplayContext != ItemDisplayContext.GUI) {
-                return;
-            }
+            // First, render the tank using the solid buffer
+            pPoseStack.pushPose();
+            BlockState state = ModBlocks.FLUID_TANK.get().defaultBlockState();
+            // Use the solid buffer type for the tank to ensure it renders behind translucent fluids
+            VertexConsumer tankBuffer = pBuffer.getBuffer(RenderType.solid());
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+            pPoseStack.popPose();
 
+            // Then render the fluid if it exists
             ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
             FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
 
-            // Force the rendering of the tank model
-            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            BakedModel model = itemRenderer.getModel(pStack, null, null, 0);
+            float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;
 
-            // Begin rendering the tank base
-            pPoseStack.pushPose(); // Push the tank pose to ensure transformations don't interfere
-            itemRenderer.render(pStack, ItemDisplayContext.GUI, false, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, model);
-            pPoseStack.popPose();  // Ensure that the tank pose is reverted
+            IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+            ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+            if (stillTexture == null) return;
 
-            // Now, render the fluid if it exists
+
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
+            int fluidColor = 0xFFFFFFFF;
+
+            if (fluidStack.getFluid().getBucket() instanceof BucketItem bucketItem) {
+                fluidColor = bucketItem.getColor();
+            }
+
             if (!fluidStack.isEmpty()) {
+                VertexConsumer builder = pBuffer.getBuffer(ItemBlockRenderTypes.getRenderLayer(fluidStack.getFluid().defaultFluidState()));
+
+                drawQuad(builder, pPoseStack, 0.15f, height, 0.15f, 0.85f, height, 0.85f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
+
+                drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.pushPose();
-                pPoseStack.translate(0.525, 0.525, 0.525); // Positioning of fluid
-                pPoseStack.scale(0.875f, 0.875f, 0.875f); // Scaling fluid to fit within the tank
-
-                TextureAtlasSprite fluidSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(ResourceLocation.parse("block/water_still"));
-                int fluidColor = 0xFFFFFFFF; // Default color
-
-                if (fluidStack.getFluid().getBucket() instanceof BucketItem bucketItem) {
-                    fluidColor = bucketItem.getColor();
-                }
-
-                VertexConsumer builder = pBuffer.getBuffer(RenderType.translucent());
-                float height = (float) fluidStack.getAmount() / FluidTankBlockEntity.CAPACITY;
-                renderCube(builder, pPoseStack, fluidSprite, fluidColor, height, pPackedLight);
-
-                pPoseStack.popPose(); // Pop fluid pose after rendering
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+                pPoseStack.translate(-1f, 0, -1.6f);
+                drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.75f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
+                pPoseStack.popPose();
+                pPoseStack.pushPose();
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+                pPoseStack.translate(-1f, 0, 0);
+                drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
+                pPoseStack.popPose();
+                pPoseStack.pushPose();
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+                pPoseStack.translate(0, 0, -1f);
+                drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
+                pPoseStack.popPose();
             }
         } finally {
             isRendering = false;
         }
     }
 
-
-    private void renderCube(VertexConsumer builder, PoseStack matrixStack, TextureAtlasSprite sprite, int color, float height, int light) {
-        // Implement cube rendering with tinting here
-        // This is a simplified version; you may need to adjust UV coordinates and normals
-        float r = ((color >> 16) & 0xFF) / 255f;
-        float g = ((color >> 8) & 0xFF) / 255f;
-        float b = (color & 0xFF) / 255f;
-        float a = ((color >> 24) & 0xFF) / 255f;
-
-        Matrix4f matrix = matrixStack.last().pose();
-
-        // Bottom face
-        builder.addVertex(matrix, -0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(0, -1, 0);
-        builder.addVertex(matrix, 0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(0, -1, 0);
-        builder.addVertex(matrix, 0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(0, -1, 0);
-        builder.addVertex(matrix, -0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(0, -1, 0);
-
-        // Top face
-        float topY = -0.5f + height;
-        builder.addVertex(matrix, -0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(0, 1, 0);
-        builder.addVertex(matrix, -0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(0, 1, 0);
-        builder.addVertex(matrix, 0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(0, 1, 0);
-        builder.addVertex(matrix, 0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(0, 1, 0);
-
-        // Side faces
-        builder.addVertex(matrix, -0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(-1, 0, 0);
-        builder.addVertex(matrix, -0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(-1, 0, 0);
-        builder.addVertex(matrix, -0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(-1, 0, 0);
-        builder.addVertex(matrix, -0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(-1, 0, 0);
-
-        builder.addVertex(matrix, 0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(1, 0, 0);
-        builder.addVertex(matrix, 0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(1, 0, 0);
-        builder.addVertex(matrix, 0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(1, 0, 0);
-        builder.addVertex(matrix, 0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(1, 0, 0);
-
-        builder.addVertex(matrix, -0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(0, 0, -1);
-        builder.addVertex(matrix, -0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(0, 0, -1);
-        builder.addVertex(matrix, 0.5f, topY, -0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(0, 0, -1);
-        builder.addVertex(matrix, 0.5f, -0.5f, -0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(0, 0, -1);
-
-        builder.addVertex(matrix, -0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV0()).setLight(light).setNormal(0, 0, 1);
-        builder.addVertex(matrix, 0.5f, -0.5f, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV0()).setLight(light).setNormal(0, 0, 1);
-        builder.addVertex(matrix, 0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU1(), sprite.getV1()).setLight(light).setNormal(0, 0, 1);
-        builder.addVertex(matrix, -0.5f, topY, 0.5f).setColor(r, g, b, a).setUv(sprite.getU0(), sprite.getV1()).setLight(light).setNormal(0, 0, 1);
+    private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
+        builder.addVertex(poseStack.last().pose(), x, y, z)
+                .setColor(color)
+                .setUv(u, v)
+                .setLight(packedLight)
+                .setNormal(1, 0, 0);
+    }
+    private static void drawQuad(VertexConsumer builder, PoseStack poseStack, float x0, float y0, float z0, float x1, float y1, float z1, float u0, float v0, float u1, float v1, int packedLight, int color) {
+        drawVertex(builder, poseStack, x0, y0, z0, u0, v0, packedLight, color);
+        drawVertex(builder, poseStack, x0, y1, z1, u0, v1, packedLight, color);
+        drawVertex(builder, poseStack, x1, y1, z1, u1, v1, packedLight, color);
+        drawVertex(builder, poseStack, x1, y0, z0, u1, v0, packedLight, color);
     }
 }
