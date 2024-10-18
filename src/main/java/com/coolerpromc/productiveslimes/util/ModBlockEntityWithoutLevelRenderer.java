@@ -82,7 +82,7 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
                 pPoseStack.pushPose();
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
                 pPoseStack.translate(-1f, 0, -1.6f);
-                drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.75f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
+                drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.85f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.popPose();
                 pPoseStack.pushPose();
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
