@@ -55,30 +55,25 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
             // First, render the tank using the solid buffer
             pPoseStack.pushPose();
             BlockState state = ModBlocks.FLUID_TANK.get().defaultBlockState();
-            // Use the solid buffer type for the tank to ensure it renders behind translucent fluids
-            VertexConsumer tankBuffer = pBuffer.getBuffer(RenderType.solid());
             Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
             pPoseStack.popPose();
 
-            // Then render the fluid if it exists
             ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
             FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
 
-            float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;
-
-            IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
-            ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
-            if (stillTexture == null) return;
-
-
-            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
-            int fluidColor = 0xFFFFFFFF;
-
-            if (fluidStack.getFluid().getBucket() instanceof BucketItem bucketItem) {
-                fluidColor = bucketItem.getColor();
-            }
-
             if (!fluidStack.isEmpty()) {
+                float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;
+
+                IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+                ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+
+                TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
+                int fluidColor = 0xFFFFFFFF;
+
+                if (fluidStack.getFluid().getBucket() instanceof BucketItem bucketItem) {
+                    fluidColor = bucketItem.getColor();
+                }
+
                 VertexConsumer builder = pBuffer.getBuffer(ItemBlockRenderTypes.getRenderLayer(fluidStack.getFluid().defaultFluidState()));
 
                 drawQuad(builder, pPoseStack, 0.15f, height, 0.15f, 0.85f, height, 0.85f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
