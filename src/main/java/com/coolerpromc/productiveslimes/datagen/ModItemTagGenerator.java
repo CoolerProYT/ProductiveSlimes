@@ -110,7 +110,9 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.CACTUS_SLIME_DNA.get())
                 .add(ModItems.COAL_SLIME_DNA.get())
                 .add(ModItems.GRAVEL_SLIME_DNA.get())
-                .add(ModItems.SLIME_DNA.get())
+                .add(ModItems.SLIME_DNA.get());
+
+        tag(ModTags.Items.ATM_DNA_ITEM)
                 .add(AtmItems.ATM_SLIME_DNA.get())
                 .add(AtmItems.VIBRANIUM_SLIME_DNA.get())
                 .add(AtmItems.UNOBTAINIUM_SLIME_DNA.get());
