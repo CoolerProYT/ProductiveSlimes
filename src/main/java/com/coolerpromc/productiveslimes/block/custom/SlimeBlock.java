@@ -26,8 +26,8 @@ public class SlimeBlock extends HalfTransparentBlock {
         this.color = 0x7F7F7F;
     }
 
-    public SlimeBlock(MapColor mapColor, int color) {
-        super(BlockBehaviour.Properties.of().mapColor(mapColor).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+    public SlimeBlock(Properties properties, MapColor mapColor, int color) {
+        super(properties);
         this.color = color;
     }
 

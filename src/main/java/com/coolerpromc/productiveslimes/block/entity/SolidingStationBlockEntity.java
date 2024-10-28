@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
+//import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -157,7 +157,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
+        /*Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
         if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
@@ -169,14 +169,14 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
             }
         } else {
             resetProgress();
-        }
+        }*/
     }
 
     private void resetProgress() {
         progress = 0;
     }
 
-    private void craftItem() {
+    /*private void craftItem() {
         Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().getOutputs();
@@ -197,7 +197,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
                 }
             }
         }
-    }
+    }*/
 
     private int findSuitableOutputSlot(ItemStack result) {
         // Implement logic to find a suitable output slot for the given result
@@ -211,7 +211,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return -1;
     }
 
-    private boolean hasRecipe() {
+    /*private boolean hasRecipe() {
         Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
@@ -232,7 +232,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
         return checkSlot(results);
     }
-
+*/
     private boolean checkSlot(List<ItemStack> results){
         int count = 0;
         int emptyCount = 0;
@@ -259,10 +259,10 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
+    /*private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
         ServerLevel level = (ServerLevel) this.level;
         return level.recipeAccess().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
-    }
+    }*/
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {

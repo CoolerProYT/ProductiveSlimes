@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -139,3 +140,4 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
         }
     }
 }
+*/

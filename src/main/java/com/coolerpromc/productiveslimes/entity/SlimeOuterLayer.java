@@ -36,7 +36,7 @@ public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
             }
 
             this.model.setupAnim(p_361554_);
-            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F));
+            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F), model.color);
         }
     }
 }

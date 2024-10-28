@@ -1,9 +1,9 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
+//import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
+//import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -163,7 +163,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
+        /*Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
         if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
@@ -175,14 +175,14 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             }
         } else {
             resetProgress();
-        }
+        }*/
     }
 
     private void resetProgress() {
         progress = 0;
     }
 
-    private void craftItem() {
+    /*private void craftItem() {
         Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().getOutputs();
@@ -214,7 +214,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
                 }
             }
         }
-    }
+    }*/
 
     private int findSuitableOutputSlot(ItemStack result) {
         // Implement logic to find a suitable output slot for the given result
@@ -228,7 +228,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         return -1;
     }
 
-    private boolean hasRecipe() {
+    /*private boolean hasRecipe() {
         Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
@@ -248,7 +248,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
 
         return checkSlot(results);
-    }
+    }*/
 
     private boolean checkSlot(List<ItemStack> results){
         int count = 0;
@@ -276,10 +276,10 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<DnaExtractingRecipe>> getCurrentRecipe(){
-        ServerLevel level = (ServerLevel) this.level;
-        return level.recipeAccess().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
-    }
+//    private Optional<RecipeHolder<DnaExtractingRecipe>> getCurrentRecipe(){
+//        ServerLevel level = (ServerLevel) this.level;
+//        return level.recipeAccess().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+//    }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {

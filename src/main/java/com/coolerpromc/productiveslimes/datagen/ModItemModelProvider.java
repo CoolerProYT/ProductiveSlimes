@@ -20,7 +20,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        simpleItem(ModItems.GUIDEBOOK);
+//        simpleItem(ModItems.GUIDEBOOK);
         simpleItem(ModItems.ENERGY_MULTIPLIER_UPGRADE);
 
         slimeballItem(ModItems.DIRT_SLIME_BALL);

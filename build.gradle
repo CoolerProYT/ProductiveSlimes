@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'net.neoforged.gradle.userdev' version '7.0.165'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -116,11 +116,11 @@ dependencies {
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    compileOnly "mezz.jei:jei-1.21.1-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
-    localRuntime "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
+//   compileOnly "mezz.jei: jei-1.21.1-common-api:${jei_version}"
+//    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
+//    localRuntime "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
 
-    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
+//    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 //    implementation "curse.maven:allthemodium-364466:5676149"
 //    implementation "curse.maven:ato-405593:5657484"
 //    implementation "curse.maven:geckolib-388172:5679344"
