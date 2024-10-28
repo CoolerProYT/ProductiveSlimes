@@ -1,0 +1,14 @@
+{
+  "type": "productiveslimes:melting",
+  "energy": 200,
+  "ingredients": [
+    "productiveslimes:tuff_slimeball"
+  ],
+  "inputCount": 4,
+  "output": [
+    {
+      "count": 1,
+      "id": "productiveslimes:molten_tuff_bucket"
+    }
+  ]
+}
