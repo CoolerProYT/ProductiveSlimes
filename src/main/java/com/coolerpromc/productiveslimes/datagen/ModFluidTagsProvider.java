@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.compat.atm.AtmFluids;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -98,6 +99,12 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
                 .add(ModFluids.SOURCE_MOLTEN_CACTUS.get())
                 .add(ModFluids.FLOWING_MOLTEN_CACTUS.get())
                 .add(ModFluids.SOURCE_MOLTEN_COAL.get())
-                .add(ModFluids.FLOWING_MOLTEN_COAL.get());
+                .add(ModFluids.FLOWING_MOLTEN_COAL.get())
+                .add(AtmFluids.SOURCE_MOLTEN_ATM.get())
+                .add(AtmFluids.FLOWING_MOLTEN_ATM.get())
+                .add(AtmFluids.SOURCE_MOLTEN_VIBRANIUM.get())
+                .add(AtmFluids.FLOWING_MOLTEN_VIBRANIUM.get())
+                .add(AtmFluids.SOURCE_MOLTEN_UNOBTAINIUM.get())
+                .add(AtmFluids.FLOWING_MOLTEN_UNOBTAINIUM.get());
     }
 }

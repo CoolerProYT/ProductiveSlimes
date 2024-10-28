@@ -16,6 +16,8 @@ public class ModTags {
     }
     public static class Items {
         public static final TagKey<Item> DNA_ITEM = createTag("dna_item");
+        public static final TagKey<Item> ATM_DNA_ITEM = createTag("atm_dna_item");
+
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name));
         }
