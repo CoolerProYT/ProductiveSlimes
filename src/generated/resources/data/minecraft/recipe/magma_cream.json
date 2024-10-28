@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:slime_balls"
-    },
-    {
-      "item": "minecraft:blaze_powder"
-    }
+    "#c:slime_balls",
+    "minecraft:blaze_powder"
   ],
   "result": {
     "count": 1,

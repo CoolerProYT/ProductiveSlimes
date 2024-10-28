@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "A": {
-      "item": "minecraft:deepslate"
-    },
-    "B": {
-      "item": "minecraft:lava_bucket"
-    }
+    "A": "minecraft:deepslate",
+    "B": "minecraft:lava_bucket"
   },
   "pattern": [
     "AAA",

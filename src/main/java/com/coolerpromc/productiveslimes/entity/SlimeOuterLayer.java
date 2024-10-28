@@ -32,11 +32,12 @@ public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
             if (flag) {
                 vertexconsumer = pBuffer.getBuffer(RenderType.outline(BaseSlimeRenderer.BASE_TEXTURE));
             } else {
-                vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE));
+                vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucentEmissive(BaseSlimeRenderer.BASE_TEXTURE));
             }
 
             this.model.setupAnim(p_361554_);
             this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F), model.color);
+            this.getParentModel().root().render(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F), model.color);
         }
     }
 }

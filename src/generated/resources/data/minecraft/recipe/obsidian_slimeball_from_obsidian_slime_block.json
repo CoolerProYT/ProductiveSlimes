@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "productiveslimes:obsidian_slime_block"
-    }
+    "productiveslimes:obsidian_slime_block"
   ],
   "result": {
     "count": 9,

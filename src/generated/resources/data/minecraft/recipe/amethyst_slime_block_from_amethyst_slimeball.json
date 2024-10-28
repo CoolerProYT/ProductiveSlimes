@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "A": {
-      "item": "productiveslimes:amethyst_slimeball"
-    }
+    "A": "productiveslimes:amethyst_slimeball"
   },
   "pattern": [
     "AAA",

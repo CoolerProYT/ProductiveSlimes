@@ -49,13 +49,18 @@
 //    }
 //
 //    @Override
-//    public IDrawable getBackground() {
-//        return this.background;
+//    public IDrawable getIcon() {
+//        return this.icon;
 //    }
 //
 //    @Override
-//    public IDrawable getIcon() {
-//        return this.icon;
+//    public int getWidth() {
+//        return 168;
+//    }
+//
+//    @Override
+//    public int getHeight() {
+//        return 77;
 //    }
 //
 //    @Override

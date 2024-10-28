@@ -140,7 +140,7 @@ public class CableBlock extends Block implements EntityBlock {
 
     @Override
     protected BlockState updateShape(BlockState state, LevelReader p_374332_, ScheduledTickAccess p_374457_, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource p_374120_) {
-        if (p_374332_ instanceof Level level) { //Might be bugged
+        if (p_374332_ instanceof Level level) {
             boolean canConnect = this.canConnectTo(level, neighborPos, direction);
             return state.setValue(getPropertyForDirection(direction), canConnect);
         } else {

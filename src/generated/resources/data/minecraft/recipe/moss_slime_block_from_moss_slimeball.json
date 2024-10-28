@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "A": {
-      "item": "productiveslimes:moss_slimeball"
-    }
+    "A": "productiveslimes:moss_slimeball"
   },
   "pattern": [
     "AAA",

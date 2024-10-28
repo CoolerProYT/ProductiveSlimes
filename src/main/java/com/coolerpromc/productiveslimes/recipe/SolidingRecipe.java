@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -24,7 +23,11 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
     private final int energy;
 
     public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
-        this.inputItems = NonNullList.of(inputItems.get(0));
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        for (int i = 0; i < inputItems.size(); i++) {
+            ingredients.add(inputItems.get(i));
+        }
+        this.inputItems = ingredients;
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
@@ -56,7 +59,7 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
 
     @Override
     public PlacementInfo placementInfo() {
-        return null;
+        return PlacementInfo.create(inputItems);
     }
 
     @Override
@@ -140,4 +143,3 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
         }
     }
 }
-*/

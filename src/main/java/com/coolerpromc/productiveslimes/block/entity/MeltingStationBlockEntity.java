@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 //import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
+import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
 import net.minecraft.core.BlockPos;
@@ -169,7 +170,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        /*Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
         if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
@@ -181,14 +182,14 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
             }
         } else {
             resetProgress();
-        }*/
+        }
     }
 
     private void resetProgress() {
         progress = 0;
     }
 
-    /*private void craftItem() {
+    private void craftItem() {
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().getOutputs();
@@ -210,7 +211,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
                 }
             }
         }
-    }*/
+    }
 
     private int findSuitableOutputSlot(ItemStack result) {
         // Implement logic to find a suitable output slot for the given result
@@ -224,7 +225,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         return -1;
     }
 
-    /*private boolean hasRecipe() {
+    private boolean hasRecipe() {
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
@@ -244,7 +245,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         }
 
         return checkSlot(results);
-    }*/
+    }
 
     private boolean checkSlot(List<ItemStack> results){
         int count = 0;
@@ -272,10 +273,10 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         return emptyCount >= count;
     }
 
-    /*private Optional<RecipeHolder<MeltingRecipe>> getCurrentRecipe(){
+    private Optional<RecipeHolder<MeltingRecipe>> getCurrentRecipe(){
         ServerLevel level = (ServerLevel) this.level;
         return level.recipeAccess().getRecipeFor(ModRecipes.MELTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
-    }*/
+    }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {

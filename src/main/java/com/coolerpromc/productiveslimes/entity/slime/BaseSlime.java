@@ -201,6 +201,7 @@ public abstract class BaseSlime extends Slime {
         double width = 0.6F * (float)this.getSize();
         double height = 0.8F * (float)this.getSize();
         this.setBoundingBox(new AABB(-width / 2.0D, 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
+        super.refreshDimensions();
     }
 
     public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){

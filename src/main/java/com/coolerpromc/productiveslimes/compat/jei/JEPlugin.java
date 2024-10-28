@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeMap;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,36 +36,36 @@ public class JEPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new DnaExtractingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new DnaSynthesizingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new DnaSynthesizingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         ServerLevel serverLevel = Minecraft.getInstance().level.getServer().overworld();
         RecipeManager recipeManager = serverLevel.recipeAccess();
-
-        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
-        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
-
-        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
-        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+        Iterable<RecipeHolder<?>> recipe = DnaExtractingRecipe.getRecipes(recipeManager);
+        RecipeMap recipeMap = RecipeMap.create(recipe);
+//        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
+//        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+//
+//        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
+//        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
         List<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_EXTRACTING_TYPE.get());
         List<DnaExtractingRecipe> dnaExtractingRecipeList = dnaExtractingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
-        List<DnaSynthesizingRecipe> dnaSynthesizingRecipeList = dnaSynthesizingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+//        List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
+//        List<DnaSynthesizingRecipe> dnaSynthesizingRecipeList = dnaSynthesizingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
-        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
+//        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
+//        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
         registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipeList);
-        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
+//        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
 
-        */
-/*registration.addItemStackInfo(
+        registration.addItemStackInfo(
                 new ItemStack(ModItems.DIRT_SLIME_BALL.get()),
                 Component.literal("""
                         §nDirt Slimeball§r
@@ -72,7 +73,7 @@ public class JEPlugin implements IModPlugin {
                         This slimeball is dropped from Dirt Slime.
 
                         Dirt Slime is obtainable by using dirt on a slime.""")
-        );*//*
+        );
 
     }
 
@@ -83,4 +84,5 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
         registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
     }
-}*/
+}
+*/

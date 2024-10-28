@@ -11,6 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -80,8 +81,15 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
     }
 
     @Override
+    public List<RecipeDisplay> display() {
+        return List.of(
+
+        );
+    }
+
+    @Override
     public PlacementInfo placementInfo() {
-        return null;
+        return PlacementInfo.create(inputItems);
     }
 
     @Override

@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
@@ -106,4 +105,3 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
         output.accept(id, recipe, advancement.build(ResourceLocation.fromNamespaceAndPath(id.location().getNamespace(), "recipes/" + id.location().getPath())));
     }
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
@@ -94,4 +93,3 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.location().withPrefix("recipes/")));
     }
 }
-*/

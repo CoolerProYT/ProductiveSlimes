@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -26,7 +25,11 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
     private final float outputChance;
 
     public DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance) {
-        this.inputItems = NonNullList.of(inputItems.get(0));
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        for (int i = 0; i < inputItems.size(); i++) {
+            ingredients.add(inputItems.get(i));
+        }
+        this.inputItems = ingredients;
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
@@ -63,12 +66,12 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
 
     @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
+        return PlacementInfo.create(inputItems);
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return RecipeBookCategories.CRAFTING_MISC;
+        return null;
     }
 
     public NonNullList<Ingredient> getInputItems() {
@@ -155,4 +158,3 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
         }
     }
 }
-*/

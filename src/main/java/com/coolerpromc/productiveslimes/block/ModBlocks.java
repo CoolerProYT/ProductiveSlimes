@@ -121,7 +121,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ENERGY_SLIME_BLOCK = registerBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xF0ffff70);
 
     private static DeferredBlock<Block> registerBlock(String name, MapColor mapColor, int color){
-        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name))), mapColor, color), BlockBehaviour.Properties.of());
+        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name))).noOcclusion(), mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
         registerBlockItem(name,toReturn);
         return toReturn;
     }
