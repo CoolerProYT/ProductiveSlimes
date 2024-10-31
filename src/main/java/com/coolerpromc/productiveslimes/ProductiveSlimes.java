@@ -69,8 +69,8 @@ public class ProductiveSlimes
 
         ModBlocks.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
-        ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
+        ModEntities.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
