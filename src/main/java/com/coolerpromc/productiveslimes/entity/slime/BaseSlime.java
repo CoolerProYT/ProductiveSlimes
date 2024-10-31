@@ -10,7 +10,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -203,20 +205,9 @@ public abstract class BaseSlime extends Slime {
         this.setBoundingBox(new AABB(-width / 2.0D, 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
     }
 
-    public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(originalSlime.getSize() + 1);
-        }
-
-        if (newSlime != null) {
-            newSlime.moveTo(originalSlime.getX(), originalSlime.getY(), originalSlime.getZ(), originalSlime.getYRot(), originalSlime.getXRot());
-            newSlime.setSize(originalSlime.getSize(), true);
-            this.level().addFreshEntity(newSlime);
-        }
-
-        originalSlime.discard();
+    @Override
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+        return EntityDimensions.scalable((float) (0.5 * (float)this.getSize()), (float) (0.5 * (float)this.getSize()));
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
