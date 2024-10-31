@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -22,7 +21,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.level.Level;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +47,16 @@ public class JEPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         ServerLevel serverLevel = Minecraft.getInstance().level.getServer().overworld();
         RecipeManager recipeManager = serverLevel.recipeAccess();
-        Iterable<RecipeHolder<?>> recipe = DnaExtractingRecipe.getRecipes(recipeManager);
+        Iterable<RecipeHolder<?>> recipe = recipeManager.getRecipes();
         RecipeMap recipeMap = RecipeMap.create(recipe);
+
 //        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
 //        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 //
 //        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
 //        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        List<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_EXTRACTING_TYPE.get());
+        Collection<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeMap.byType(ModRecipes.DNA_EXTRACTING_TYPE.get());
         List<DnaExtractingRecipe> dnaExtractingRecipeList = dnaExtractingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
 //        List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
@@ -79,10 +81,9 @@ public class JEPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
-        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
+//        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
+//        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
-        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
+//        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
     }
 }
-*/
