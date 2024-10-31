@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -118,6 +119,25 @@ public abstract class BaseSlime extends Slime {
         pBuilder.define(RESOURCE, ItemStack.EMPTY);
         pBuilder.define(ID_SIZE, 1);
         pBuilder.define(GROWTH_COUNTER, 0);
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
+        return new Vec3(0.0, (double)dimensions.height() - 0.015625 * (double)this.getSize() * (double)partialTick, 0.0);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (ID_SIZE.equals(key)) {
+            this.refreshDimensions();
+            this.setYRot(this.yHeadRot);
+            this.yBodyRot = this.yHeadRot;
+            if (this.isInWater() && this.random.nextInt(20) == 0) {
+                this.doWaterSplashEffect();
+            }
+        }
+
+        super.onSyncedDataUpdated(key);
     }
 
     public abstract void dropResource();
