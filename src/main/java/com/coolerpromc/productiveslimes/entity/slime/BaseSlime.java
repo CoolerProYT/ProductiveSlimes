@@ -230,7 +230,7 @@ public abstract class BaseSlime extends Slime {
 
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
-        return super.getDefaultDimensions(pose).scalable(this.getSize(), this.getSize());
+        return super.getDefaultDimensions(pose).scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){

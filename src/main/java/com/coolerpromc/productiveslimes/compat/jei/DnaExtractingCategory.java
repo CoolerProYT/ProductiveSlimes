@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -99,3 +100,4 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
         }
     }
 }
+*/
