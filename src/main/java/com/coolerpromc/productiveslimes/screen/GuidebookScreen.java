@@ -31,7 +31,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     public GuidebookScreen(GuidebookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.displayItem = new ItemStack(Items.SLIME_BALL);
-        this.description = "Welcome to the Productive Slimes Guidebook! Click on a slimeball to learn more about it. Also try to use same tier of block on the slime, eg. Dirt on Dirt Slime (Except max size slime).";
+        this.description = "Welcome to the Productive Slimes Guidebook! For more information please visit the wiki at https://coolerproyt.github.io/ProductiveSlimes-Wiki/";
     }
 
     @Override
