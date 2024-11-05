@@ -1,0 +1,27 @@
+package com.coolerpromc.productiveslimes.fluid;
+
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+import java.util.Optional;
+
+public class FluidRegistry {
+    public static FluidStack getFluidStackByName(String fluidName, int amount) {
+        ResourceLocation fluidLocation;
+        try {
+            fluidLocation = ResourceLocation.parse(fluidName);
+        } catch (Exception e) {
+            return FluidStack.EMPTY;
+        }
+
+        Optional<Holder.Reference<Fluid>> fluid = BuiltInRegistries.FLUID.get(fluidLocation);
+        if (fluid.isPresent()) {
+            return new FluidStack(fluid.get(), amount);
+        }
+
+        return FluidStack.EMPTY;
+    }
+}

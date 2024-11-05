@@ -30,6 +30,9 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<DnaSynthesizerBlockEntity>> DNA_SYNTHESIZER_BE = BLOCK_ENTITIES.register("dna_synthesizer_be",
             () -> new BlockEntityType<>(DnaSynthesizerBlockEntity::new, ModBlocks.DNA_SYNTHESIZER.get()));
 
+    public static final Supplier<BlockEntityType<FluidTankBlockEntity>> FLUID_TANK_BE = BLOCK_ENTITIES.register("fluid_tank_be",
+            () -> new BlockEntityType<>(FluidTankBlockEntity::new, ModBlocks.FLUID_TANK.get()));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

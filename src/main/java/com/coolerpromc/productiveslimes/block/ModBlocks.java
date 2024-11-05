@@ -35,6 +35,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlockEntity("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlockEntity("dna_synthesizer", DnaSynthesizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> FLUID_TANK = registerBlockEntity("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     public static final DeferredBlock<Block> DIRT_SLIME_BLOCK = registerBlock("dirt_slime_block", MapColor.DIRT, 0xF0866043);
 

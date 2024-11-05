@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -21,6 +22,7 @@ import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
+import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -68,11 +70,11 @@ public class ProductiveSlimes
         }
 
         ModBlocks.register(modEventBus);
-        ModCreativeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
@@ -111,6 +113,7 @@ public class ProductiveSlimes
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.SOLIDING_STATION_BE.get(), SolidingStationBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_SYNTHESIZER_BE.get(), DnaSynthesizerBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.FLUID_TANK_BE.get(), FluidTankBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -166,11 +169,20 @@ public class ProductiveSlimes
                 registerBlockRenderLayer(
                         ModBlocks.DNA_EXTRACTOR.get(),
                         ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.DNA_SYNTHESIZER.get()
+                        ModBlocks.DNA_SYNTHESIZER.get(),
+                        ModBlocks.FLUID_TANK.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
+        }
+
+        @SubscribeEvent
+        public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+            event.registerItem(
+                    new ModClientItemExtensions(),
+                    ModBlocks.FLUID_TANK.get().asItem()
+            );
         }
 
         @SubscribeEvent
