@@ -41,9 +41,6 @@
     "productiveslimes:cactus_slimeball",
     "productiveslimes:coal_slimeball",
     "productiveslimes:gravel_slimeball",
-    "productiveslimes:energy_slimeball",
-    "productiveslimes:atm_slimeball",
-    "productiveslimes:vibranium_slimeball",
-    "productiveslimes:unobtainium_slimeball"
+    "productiveslimes:energy_slimeball"
   ]
 }
