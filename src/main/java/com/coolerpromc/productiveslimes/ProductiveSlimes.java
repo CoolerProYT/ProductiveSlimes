@@ -25,6 +25,7 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.ItemModelShaper;
@@ -51,6 +52,8 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -193,13 +196,18 @@ public class ProductiveSlimes
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
-
-                for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                    ModelResourceLocation modelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "inventory");
-                    ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
-                    itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), modelLocation);
-                }
             });
+        }
+
+        @SubscribeEvent
+        public static void onModel(ModelEvent.RegisterAdditional event) {
+            ModelResourceLocation modelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
+            event.register(modelLocation);
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
+                itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), modelLocation);
+            }
         }
 
         @SubscribeEvent

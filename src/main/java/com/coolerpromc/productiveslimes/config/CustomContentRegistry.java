@@ -19,6 +19,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +37,8 @@ public class CustomContentRegistry {
     public static void initialize(DeferredRegister.Items item) {
         createDefaultConfig();
         loadVariants(item);
+
+//        generateSlimeballTag();
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -71,7 +77,7 @@ public class CustomContentRegistry {
                 loadedVariants = validateTiers(tiers);
 
                 for (CustomVariants variant : loadedVariants){
-                    registerItem(ITEMS, variant);
+                    registerSlimeballItem(ITEMS, variant);
                 }
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
@@ -81,7 +87,7 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void registerItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+    private static void registerSlimeballItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slimeball";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
         DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor()){
@@ -92,6 +98,30 @@ public class CustomContentRegistry {
         }, new Item.Properties());
 
         registeredItems.put(itemId, item);
+    }
+
+    private static void generateSlimeballTag(){
+        List<String> itemIds = new ArrayList<>();
+
+        for (CustomVariants variants : getLoadedTiers()){
+            itemIds.add("productiveslimes:" + variants.getName() + "_slimeball");
+        }
+
+        Map<String, Object> tagJson = new HashMap<>();
+        tagJson.put("replace", false);
+        tagJson.put("values", itemIds);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonContent = gson.toJson(tagJson);
+
+        Path tagFile = Paths.get("config/productiveslimes/data/c/tags/item/slime_balls.json");
+        try{
+            Files.createDirectories(tagFile.getParent());
+            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
+        }
+        catch (IOException e){
+            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
+        }
     }
 
     private static List<CustomVariants> validateTiers(List<CustomVariants> tiers) {
