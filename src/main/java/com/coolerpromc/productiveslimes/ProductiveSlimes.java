@@ -9,6 +9,7 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEnti
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.compat.atm.*;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
@@ -24,9 +25,13 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -43,22 +48,23 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.function.Supplier;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
+
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
 
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -68,10 +74,9 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        if (ModList.get().isLoaded("allthemodium"))
-        {
-            AtmRegistry.register(modEventBus);
-        }
+        CustomContentRegistry.initialize(ITEMS);
+
+        ITEMS.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -100,6 +105,7 @@ public class ProductiveSlimes
     {
 
     }
+
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
@@ -187,6 +193,12 @@ public class ProductiveSlimes
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
+
+                for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                    ModelResourceLocation modelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "inventory");
+                    ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
+                    itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), modelLocation);
+                }
             });
         }
 
@@ -250,24 +262,6 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
-
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmFluidTypes.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            event.registerFluidType(((BaseFluidType) supplier.get()).getClientFluidTypeExtensions(),
-                                    (FluidType) supplier.get());
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Block event) {
@@ -290,31 +284,6 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                }
-            }
-
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmBlocks.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            Block block = (Block) supplier.get();
-                            if (block instanceof SlimeBlock) {
-                                event.register((pState, pLevel, pPos, pTintIndex) -> {
-                                    if (pState.getBlock() instanceof SlimeBlock slimeBlock) {
-                                        return slimeBlock.getColor();
-                                    }
-                                    return 0xFFFFFFFF; // Default no color
-                                }, block);
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
@@ -343,34 +312,6 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
-
-
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmBlocks.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            Block block = (Block) supplier.get();
-                            if (block instanceof SlimeBlock) {
-                                event.register((itemStack, pTintIndex) -> {
-                                    if (itemStack.getItem() instanceof BlockItem blockItem) {
-                                        if (blockItem.getBlock() instanceof SlimeBlock slimeBlock) {
-                                            return slimeBlock.getColor();
-                                        }
-                                    }
-                                    return 0xFFFFFFFF; // Default no color
-                                }, block.asItem());
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
         }
 
         public static void registerAllSlimeballColor(RegisterColorHandlersEvent.Item event) {
@@ -391,23 +332,9 @@ public class ProductiveSlimes
                 }
             }
 
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmItems.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            Item item = (Item) supplier.get();
-                            if (item instanceof SlimeballItem) {
-                                event.register((stack, tintIndex) -> ((SlimeballItem) item).getColor(), item);
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get() instanceof SlimeballItem item){
+                    event.register((stack, tintIndex) -> item.getColor(), item);
                 }
             }
         }

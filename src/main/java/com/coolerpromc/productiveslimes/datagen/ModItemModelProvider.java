@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.compat.atm.AtmFluids;
 import com.coolerpromc.productiveslimes.compat.atm.AtmItems;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.Direction;
@@ -68,9 +69,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.GRAVEL_SLIME_BALL);
         slimeballItem(ModItems.ENERGY_SLIME_BALL);
 
-        slimeballItem(AtmItems.ATM_SLIME_BALL);
-        slimeballItem(AtmItems.VIBRANIUM_SLIME_BALL);
-        slimeballItem(AtmItems.UNOBTAINIUM_SLIME_BALL);
+        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            slimeballItem(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()));
+        }
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
