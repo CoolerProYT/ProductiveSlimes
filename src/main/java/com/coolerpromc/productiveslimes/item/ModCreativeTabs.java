@@ -43,21 +43,8 @@ public class ModCreativeTabs {
                             }
                         }
 
-                        if (ModList.get().isLoaded("allthemodium")){
-                            // Use reflection to get all the fields from AtmBlocks
-                            for (Field field : AtmBlocks.class.getFields()) {
-                                try {
-                                    // Ensure the field is a Supplier of Block (for blocks)
-                                    if (Supplier.class.isAssignableFrom(field.getType())) {
-                                        Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                        if (supplier.get() instanceof Block) {
-                                            pOutput.accept((Block) supplier.get()); // Add block to the output
-                                        }
-                                    }
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()));
                         }
 
                         // Use reflection to get all the fields from ModItems

@@ -25,18 +25,25 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
-import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.ClientPackSource;
+import net.minecraft.client.resources.model.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,13 +59,17 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -68,6 +79,7 @@ public class ProductiveSlimes
     public static final String MODID = "productiveslimes";
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
 
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -77,9 +89,10 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS);
 
         ITEMS.register(modEventBus);
+        BLOCKS.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -98,6 +111,45 @@ public class ProductiveSlimes
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
+    public static void forceResourcePack(String packName) {
+        Minecraft mc = Minecraft.getInstance();
+        PackRepository repository = mc.getResourcePackRepository();
+
+        // Define the path for the resource pack folder
+        File resourcePackFolder = new File("resourcepacks/" + packName);
+
+        // Check if the folder exists in the resourcepacks directory
+        if (resourcePackFolder.exists() && resourcePackFolder.isDirectory()) {
+            // Find the resource pack by name in the repository
+            Pack resourcePack = repository.getPack("file/" + packName);
+            if (resourcePack != null) {
+                // Retrieve the current list of selected packs
+                List<String> selectedPacks = new ArrayList<>(repository.getSelectedIds());
+
+                // Add the resource pack if it's not already selected
+                if (!selectedPacks.contains(resourcePack.getId())) {
+                    selectedPacks.add(resourcePack.getId());
+                }
+
+                // Set the updated list of packs and reload
+                repository.setSelected(selectedPacks);
+                mc.reloadResourcePacks();
+            } else {
+                System.out.println("Resource pack not found in repository: " + packName);
+            }
+        } else {
+            System.out.println("Resource pack folder not found: " + packName);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity().getInventory().isEmpty()){
+            event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
+
+        }
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event)
     {
 //        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
@@ -106,9 +158,10 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
+        Path worldFolder = event.getServer().getWorldPath(LevelResource.ROOT);
 
+        CustomContentRegistry.generateSlimeballTag(worldFolder);
     }
-
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
@@ -177,13 +230,6 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a444b));
             EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
 
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                EntityRenderers.register(AtmEntities.ATM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ff8b04));
-                EntityRenderers.register(AtmEntities.VIBRANIUM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0148484));
-                EntityRenderers.register(AtmEntities.UNOBTAINIUM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF06c1ce4));
-            }
-
             event.enqueueWork(() -> {
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
@@ -197,18 +243,38 @@ public class ProductiveSlimes
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
+
+            forceResourcePack("productiveslimes");
         }
 
         @SubscribeEvent
         public static void onModel(ModelEvent.RegisterAdditional event) {
-            ModelResourceLocation modelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
-            event.register(modelLocation);
+            ModelResourceLocation slimeballModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
+            ModelResourceLocation slimeBlockItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_block"), "standalone");
+            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
+
+            event.register(slimeballModelLocation);
+            event.register(slimeBlockItemModelLocation);
+            event.register(slimeBlockModelLocation);
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
-                itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), modelLocation);
+
+                itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), slimeballModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
             }
         }
+
+        /*@SubscribeEvent
+        public static void onModel(ModelEvent.BakingCompleted event) {
+            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
+            ModelResourceLocation blockStateLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "inventory");
+
+            BakedModel model = event.getModels().get(slimeBlockModelLocation);
+            if (model != null) {
+                event.getModels().put(blockStateLocation, model);
+            }
+        }*/
 
         @SubscribeEvent
         public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
@@ -294,6 +360,12 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    event.register((pState, pLevel, pPos, pTintIndex) -> block.getColor(), block);
+                }
+            }
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Item event) {
@@ -318,6 +390,19 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    event.register((stack, tintIndex) -> {
+                        if (stack.getItem() instanceof BlockItem blockItem){
+                            if (blockItem.getBlock() instanceof SlimeBlock slimeBlock){
+                                return slimeBlock.getColor();
+                            }
+                        }
+                        return 0xFFFFFFFF;
+                    }, block.asItem());
                 }
             }
         }
@@ -501,21 +586,9 @@ public class ProductiveSlimes
                 }
             }
 
-            if (ModList.get().isLoaded("allthemodium")) {
-                fields = AtmBlocks.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            if (supplier.get() instanceof SlimeBlock slimeBlock) {
-                                ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.translucent());
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.TRANSLUCENT);
                 }
             }
         }
