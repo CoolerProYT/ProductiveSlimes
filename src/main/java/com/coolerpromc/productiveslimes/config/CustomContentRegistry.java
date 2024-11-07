@@ -2,7 +2,6 @@ package com.coolerpromc.productiveslimes.config;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
-import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -14,19 +13,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.MapItemColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -68,7 +66,9 @@ public class CustomContentRegistry {
     private static void createDefaultConfig() {
         File configFile = new File(CONFIG_PATH);
         if (!configFile.exists()) {
-            List<CustomVariants> defaultTiers = Arrays.asList();
+            List<CustomVariants> defaultTiers = Arrays.asList(
+                    new CustomVariants("birch", "#FF674d2e",5)
+            );
 
             try {
                 // Ensure the config directory exists
@@ -165,6 +165,15 @@ public class CustomContentRegistry {
     }
 
     private static void generateResourcePack(){
+        File file = new File("resourcepacks/productiveslimes");
+
+        try{
+            FileUtils.deleteDirectory(file);
+        }
+        catch (IOException e){
+
+        }
+
         Path blockstatePath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/birch_slime_balls.json");
         Path modelPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/birch_slime_balls.json");
         Path mcmeta = Paths.get("resourcepacks/productiveslimes/pack.mcmeta");
