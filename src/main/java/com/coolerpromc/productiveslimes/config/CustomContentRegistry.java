@@ -2,20 +2,27 @@ package com.coolerpromc.productiveslimes.config;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
+import com.coolerpromc.productiveslimes.entity.slime.Slime;
+import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.io.FileUtils;
@@ -40,14 +47,19 @@ public class CustomContentRegistry {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static List<CustomVariants> loadedVariants = new ArrayList<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
 
-    public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block) {
+    private static Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
+    private static Map<ResourceLocation, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
+    private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
+    private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
+    private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+
+    public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
-        loadVariants(item, block);
+        loadVariants(item, block, entityType);
 
         generateSlimeballTag();
+        generateDnaTag();
         generateResourcePack();
     }
 
@@ -59,15 +71,27 @@ public class CustomContentRegistry {
         return registeredItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slimeball"));
     }
 
+    public static DeferredItem<Item> getDnaItemForVariant(String variantName){
+        return registeredDnaItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_dna"));
+    }
+
+    public static DeferredItem<Item> getSpawnEggItemForVariant(String variantName){
+        return registeredSpawnEggItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_spawn_egg"));
+    }
+
     public static DeferredBlock<Block> getSlimeBlockForVariant(String variantName){
         return registeredBlocks.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_block"));
+    }
+
+    public static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> getSlimeForVariant(String variantName){
+        return registeredSlimes.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime"));
     }
 
     private static void createDefaultConfig() {
         File configFile = new File(CONFIG_PATH);
         if (!configFile.exists()) {
             List<CustomVariants> defaultTiers = Arrays.asList(
-                    new CustomVariants("birch", "#FF674d2e",5)
+                    new CustomVariants("birch", "#FFa69d6f",5, 1500, "minecraft:birch_log")
             );
 
             try {
@@ -84,7 +108,7 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void loadVariants(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS) {
+    private static void loadVariants(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS, DeferredRegister<EntityType<?>> ENTITY_TYPES) {
         File configFile = new File(CONFIG_PATH);
         if (configFile.exists()) {
             try (FileReader reader = new FileReader(configFile)) {
@@ -94,7 +118,10 @@ public class CustomContentRegistry {
 
                 for (CustomVariants variant : loadedVariants){
                     registerSlimeballItem(ITEMS, variant);
+                    registerDnaItem(ITEMS, variant);
                     registerSlimeBlock(BLOCKS, variant, ITEMS);
+                    registerSlime(ENTITY_TYPES, variant);
+//                    registerSpawnEggItem(ITEMS, variant);
                 }
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
@@ -102,6 +129,36 @@ public class CustomContentRegistry {
                 LOGGER.error("Failed to load tier config", e);
             }
         }
+    }
+
+    public static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+        String itemName = variant.getName() + "_slime_spawn_egg";
+        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
+        DeferredItem<Item> item = ITEMS.register("endstone_slime_spawn_egg",
+                () -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), 0xFF99996b, new Item.Properties()){
+                    @Override
+                    public Component getName(ItemStack pStack) {
+                        return Component.literal(variant.getName().substring(0,1).toUpperCase() + variant.getName().substring(1) + " Slime Spawn Egg");
+                    }
+                });
+
+        registeredSpawnEggItems.put(itemId, item);
+    }
+
+    private static void registerSlime(DeferredRegister<EntityType<?>> ENTITY_TYPES, CustomVariants variant){
+        String slimeName = variant.getName() + "_slime";
+        ResourceLocation slimeId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, slimeName);
+
+        DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem()))){
+                    @Override
+                    public Component getName() {
+                        return Component.literal(variant.getName().substring(0,1).toUpperCase() + variant.getName().substring(1) + " Slime");
+                    }
+                },
+                MobCategory.CREATURE).build(slimeName));
+
+        registeredSlimes.put(slimeId, slime);
     }
 
     private static void registerSlimeBlock(DeferredRegister.Blocks BLOCKS, CustomVariants variant, DeferredRegister.Items ITEMS){
@@ -128,6 +185,19 @@ public class CustomContentRegistry {
         }, new Item.Properties());
 
         registeredItems.put(itemId, item);
+    }
+
+    private static void registerDnaItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+        String itemName = variant.getName() + "_slime_dna";
+        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
+        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor()){
+            @Override
+            public Component getName(ItemStack stack) {
+                return Component.literal(variant.name.substring(0,1).toUpperCase() + variant.name.substring(1) + " Slime DNA");
+            }
+        }, new Item.Properties());
+
+        registeredDnaItems.put(itemId, item);
     }
 
     private static void generateSlimeballTag(){
@@ -158,6 +228,40 @@ public class CustomContentRegistry {
                                 "        \"pack_format\": 48\n" +
                                 "    }\n" +
                                 "}").getBytes());
+        }
+        catch (IOException e){
+            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
+        }
+    }
+
+    private static void generateDnaTag(){
+        List<String> itemIds = new ArrayList<>();
+
+        for (CustomVariants variants : getLoadedTiers()){
+            itemIds.add("productiveslimes:" + variants.getName() + "_slime_dna");
+        }
+
+        Map<String, Object> tagJson = new HashMap<>();
+        tagJson.put("replace", false);
+        tagJson.put("values", itemIds);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonContent = gson.toJson(tagJson);
+
+        if (Files.exists(Paths.get("saves"))) return;
+
+        Path tagFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/tags/item/dna_item.json");
+        Path mcmeta = Paths.get("world/datapacks/modify_tag/pack.mcmeta");
+        try{
+            Files.createDirectories(tagFile.getParent());
+            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
+
+            Files.write(mcmeta, ("{\n" +
+                    "    \"pack\": {\n" +
+                    "        \"description\": \"The default data for Minecraft\",\n" +
+                    "        \"pack_format\": 48\n" +
+                    "    }\n" +
+                    "}").getBytes());
         }
         catch (IOException e){
             LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
@@ -253,6 +357,39 @@ public class CustomContentRegistry {
         }
     }
 
+    public static void generateDnaTag(Path worldFolder){
+        List<String> itemIds = new ArrayList<>();
+
+        for (CustomVariants variants : getLoadedTiers()){
+            itemIds.add("productiveslimes:" + variants.getName() + "_slime_dna");
+        }
+
+        Map<String, Object> tagJson = new HashMap<>();
+        tagJson.put("replace", false);
+        tagJson.put("values", itemIds);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonContent = gson.toJson(tagJson);
+
+        Path tagFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/tags/item/dna_item.json");
+        Path mcmeta = worldFolder.resolve("datapacks/modify_tag/pack.mcmeta");
+
+        try{
+            Files.createDirectories(tagFile.getParent());
+            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
+
+            Files.write(mcmeta, ("{\n" +
+                    "    \"pack\": {\n" +
+                    "        \"description\": \"The default data for Minecraft\",\n" +
+                    "        \"pack_format\": 48\n" +
+                    "    }\n" +
+                    "}").getBytes());
+        }
+        catch (IOException e){
+            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
+        }
+    }
+
     private static List<CustomVariants> validateTiers(List<CustomVariants> tiers) {
         return tiers.stream()
                 .filter(tier -> {
@@ -285,11 +422,15 @@ public class CustomContentRegistry {
         private final String name;
         private final String color;
         private final int mapColorId;
+        private final int cooldown;
+        private final String growthItem;
 
-        public CustomVariants(String name, String color, int mapColorId) {
+        public CustomVariants(String name, String color, int mapColorId, int cooldown, String growthItem) {
             this.name = name;
             this.color = color;
             this.mapColorId = mapColorId;
+            this.cooldown = cooldown;
+            this.growthItem = growthItem;
         }
 
         public String getName() {
@@ -302,6 +443,14 @@ public class CustomContentRegistry {
 
         public int getMapColorId() {
             return mapColorId;
+        }
+
+        public int getCooldown() {
+            return cooldown;
+        }
+
+        public String getGrowthItem() {
+            return growthItem;
         }
 
         public int hexToInt(String hexColor) {

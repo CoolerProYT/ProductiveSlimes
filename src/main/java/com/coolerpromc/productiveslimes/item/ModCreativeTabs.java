@@ -2,9 +2,6 @@ package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.compat.atm.AtmBlocks;
-import com.coolerpromc.productiveslimes.compat.atm.AtmFluids;
-import com.coolerpromc.productiveslimes.compat.atm.AtmItems;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
@@ -80,6 +77,10 @@ public class ModCreativeTabs {
                             }
                         }
 
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()));
+                        }
+
                         for (Field field : ModItems.class.getFields()) {
                             try {
                                 // Ensure the field is a Supplier of Item (for items)
@@ -94,6 +95,10 @@ public class ModCreativeTabs {
                             }
                         }
 
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()));
+                        }
+
                         // Use reflection to get all the fields from ModFluids
                         for (Field field : ModFluids.class.getFields()) {
                             try {
@@ -106,23 +111,6 @@ public class ModCreativeTabs {
                                 }
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
-                            }
-                        }
-
-                        if (ModList.get().isLoaded("allthemodium")){
-                            // Use reflection to get all the fields from AtmFluids
-                            for (Field field : AtmFluids.class.getFields()) {
-                                try {
-                                    // Ensure the field is a Supplier of Item (for items)
-                                    if (Supplier.class.isAssignableFrom(field.getType())) {
-                                        Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                        if (supplier.get() instanceof Item) {
-                                            pOutput.accept((Item) supplier.get()); // Add items to the output
-                                        }
-                                    }
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
                             }
                         }
                     }).build());

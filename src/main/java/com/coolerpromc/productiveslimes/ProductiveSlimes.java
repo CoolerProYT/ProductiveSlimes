@@ -7,7 +7,6 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockE
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
-import com.coolerpromc.productiveslimes.compat.atm.*;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
@@ -32,6 +31,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.ClientPackSource;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -39,6 +39,7 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -79,7 +80,9 @@ public class ProductiveSlimes
     public static final String MODID = "productiveslimes";
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
+    public static final DeferredRegister.Items SPAWN_EGG_ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
 
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -89,10 +92,15 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
+        /*for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            CustomContentRegistry.registerSpawnEggItem(SPAWN_EGG_ITEMS, variant);
+        }
+        SPAWN_EGG_ITEMS.register(modEventBus);*/
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -145,9 +153,8 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity().getInventory().isEmpty()){
-            event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
-
         }
+        event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -161,6 +168,7 @@ public class ProductiveSlimes
         Path worldFolder = event.getServer().getWorldPath(LevelResource.ROOT);
 
         CustomContentRegistry.generateSlimeballTag(worldFolder);
+        CustomContentRegistry.generateDnaTag(worldFolder);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -230,6 +238,10 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a444b));
             EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
 
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
+            }
+
             event.enqueueWork(() -> {
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
@@ -252,16 +264,21 @@ public class ProductiveSlimes
             ModelResourceLocation slimeballModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
             ModelResourceLocation slimeBlockItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_block"), "standalone");
             ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
+            ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
+            ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
 
             event.register(slimeballModelLocation);
             event.register(slimeBlockItemModelLocation);
             event.register(slimeBlockModelLocation);
+            event.register(dnaItemModelLocation);
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
 
                 itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), slimeballModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get().asItem(), dnaItemModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get().asItem(), spawnEggItemModelLocation);
             }
         }
 
@@ -450,23 +467,9 @@ public class ProductiveSlimes
                 }
             }
 
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmItems.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            Item item = (Item) supplier.get();
-                            if (item instanceof DnaItem) {
-                                event.register((stack, tintIndex) -> ((DnaItem) item).getColor(), item);
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getDnaItemForVariant(variant.getName()).get() instanceof DnaItem item){
+                    event.register((stack, tintIndex) -> item.getColor(), item);
                 }
             }
         }
@@ -496,34 +499,6 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
-
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmFluids.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            if (supplier.get() instanceof BucketItem) {
-                                Item item = (Item) supplier.get();
-                                event.register((itemStack, pTintIndex) -> {
-                                    if (itemStack.getItem() instanceof BucketItem bucketItem) {
-                                        if (pTintIndex == 1) {
-                                            return bucketItem.getColor();
-                                        }
-                                    }
-
-                                    return 0xFFFFFFFF; // Default no color
-                                }, item);
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
         }
 
         public static void registerAllFluidRenderLayer() {
@@ -540,25 +515,6 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                }
-            }
-
-            if (ModList.get().isLoaded("allthemodium"))
-            {
-                fields = AtmFluids.class.getFields();
-
-                for (Field field : fields) {
-                    try {
-                        Object value = field.get(null);
-
-                        if (value instanceof Supplier<?> supplier) {
-                            if (supplier.get() instanceof FlowingFluid fluid) {
-                                ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent());
-                            }
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
