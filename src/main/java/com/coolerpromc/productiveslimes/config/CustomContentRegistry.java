@@ -1,17 +1,24 @@
 package com.coolerpromc.productiveslimes.config;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
+import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
+import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
+import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
+import com.coolerpromc.productiveslimes.item.custom.FakeBucketItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,12 +27,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.*;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.io.FileUtils;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -53,14 +66,16 @@ public class CustomContentRegistry {
     private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
     private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
     private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static Map<ResourceLocation, DeferredItem<Item>> registeredMoltenBucketItem = new HashMap<>();
 
-    public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
+    public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType, DeferredRegister<FluidType> fluidType, DeferredRegister<Fluid> fluid) {
         createDefaultConfig();
-        loadVariants(item, block, entityType);
+        loadVariants(item, block, entityType, fluidType, fluid);
 
         generateSlimeballTag();
         generateDnaTag();
         generateResourcePack();
+        generateCraftingRecipe();
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -87,6 +102,10 @@ public class CustomContentRegistry {
         return registeredSlimes.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime"));
     }
 
+    public static DeferredItem<Item> getBucketItemForVariant(String variantName){
+        return registeredMoltenBucketItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variantName + "_bucket"));
+    }
+
     private static void createDefaultConfig() {
         File configFile = new File(CONFIG_PATH);
         if (!configFile.exists()) {
@@ -108,7 +127,7 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void loadVariants(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS, DeferredRegister<EntityType<?>> ENTITY_TYPES) {
+    private static void loadVariants(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS, DeferredRegister<EntityType<?>> ENTITY_TYPES, DeferredRegister<FluidType> FLUID_TYPES, DeferredRegister<Fluid> FLUIDS) {
         File configFile = new File(CONFIG_PATH);
         if (configFile.exists()) {
             try (FileReader reader = new FileReader(configFile)) {
@@ -121,7 +140,8 @@ public class CustomContentRegistry {
                     registerDnaItem(ITEMS, variant);
                     registerSlimeBlock(BLOCKS, variant, ITEMS);
                     registerSlime(ENTITY_TYPES, variant);
-//                    registerSpawnEggItem(ITEMS, variant);
+                    registerSpawnEggItem(ITEMS, variant);
+                    registerFluids(ITEMS, BLOCKS, FLUID_TYPES, FLUIDS, variant);
                 }
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
@@ -131,14 +151,36 @@ public class CustomContentRegistry {
         }
     }
 
-    public static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+    private static void registerFluids(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS, DeferredRegister<FluidType> FLUID_TYPES, DeferredRegister<Fluid> FLUIDS, CustomVariants variant){
+        String itemName = variant.getName();
+        ResourceLocation moltenBucketId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + itemName + "_bucket");
+        DeferredItem<Item> bucket = ITEMS.register("molten_" + itemName + "_bucket", properties -> new FakeBucketItem(new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(64),  variant.getColor()){
+            @Override
+            public Component getName(ItemStack pStack) {
+                return Component.literal("Molten " +
+                        Arrays.stream(variant.getName().split("_"))
+                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                .collect(Collectors.joining(" ")) + " Bucket"
+                );
+            }
+        });
+
+        registeredMoltenBucketItem.put(moltenBucketId, bucket);
+    }
+
+    private static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.register("endstone_slime_spawn_egg",
-                () -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), 0xFF99996b, new Item.Properties()){
+        DeferredItem<Item> item = ITEMS.register(itemName,
+                () -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), new Item.Properties()){
                     @Override
                     public Component getName(ItemStack pStack) {
-                        return Component.literal(variant.getName().substring(0,1).toUpperCase() + variant.getName().substring(1) + " Slime Spawn Egg");
+                        return Component.literal(
+                                Arrays.stream(variant.getName().split("_"))
+                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                        .collect(Collectors.joining(" ")) + " Slime Spawn Egg"
+                        );
+
                     }
                 });
 
@@ -153,7 +195,12 @@ public class CustomContentRegistry {
                 (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem()))){
                     @Override
                     public Component getName() {
-                        return Component.literal(variant.getName().substring(0,1).toUpperCase() + variant.getName().substring(1) + " Slime");
+                        return Component.literal(
+                                Arrays.stream(variant.getName().split("_"))
+                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                        .collect(Collectors.joining(" ")) + " Slime"
+                        );
+
                     }
                 },
                 MobCategory.CREATURE).build(slimeName));
@@ -167,7 +214,12 @@ public class CustomContentRegistry {
         DeferredBlock<Block> block = registerBlock(blockName, () -> new SlimeBlock(MapColor.byId(variant.getMapColorId()), variant.getColor()){
             @Override
             public MutableComponent getName() {
-                return Component.literal(variant.getName().substring(0,1).toUpperCase() + variant.getName().substring(1) + " Slime Block");
+                return Component.literal(
+                        Arrays.stream(variant.getName().split("_"))
+                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                .collect(Collectors.joining(" ")) + " Slime Block"
+                );
+
             }
         }, BLOCKS, ITEMS, variant.getName());
 
@@ -180,7 +232,12 @@ public class CustomContentRegistry {
         DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor()){
             @Override
             public Component getName(ItemStack stack) {
-                return Component.literal(variant.name.substring(0,1).toUpperCase() + variant.name.substring(1) + " Slimeball");
+                return Component.literal(
+                        Arrays.stream(variant.getName().split("_"))
+                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                .collect(Collectors.joining(" ")) + " Slimeball"
+                );
+
             }
         }, new Item.Properties());
 
@@ -193,7 +250,12 @@ public class CustomContentRegistry {
         DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor()){
             @Override
             public Component getName(ItemStack stack) {
-                return Component.literal(variant.name.substring(0,1).toUpperCase() + variant.name.substring(1) + " Slime DNA");
+                return Component.literal(
+                        Arrays.stream(variant.getName().split("_"))
+                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                .collect(Collectors.joining(" ")) + " Slime DNA"
+                );
+
             }
         }, new Item.Properties());
 
@@ -268,6 +330,101 @@ public class CustomContentRegistry {
         }
     }
 
+    private static void generateCraftingRecipe(){
+        if (Files.exists(Paths.get("saves"))) return;
+
+        File file = new File("world/datapacks/modify_tag/data/minecraft/recipe");
+
+        try{
+            FileUtils.deleteDirectory(file);
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+
+        for (CustomVariants variant : loadedVariants){
+            slimeballToSlimeBlock(variant.getName(), null);
+            slimeBlockToSlimeball(variant.getName(), null);
+        }
+    }
+
+    public static void generateCraftingRecipe(Path worldFolder){
+        File file = new File(worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe").toString());
+
+        try{
+            FileUtils.deleteDirectory(file);
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+
+        for (CustomVariants variant : loadedVariants){
+            slimeballToSlimeBlock(variant.getName(), worldFolder);
+            slimeBlockToSlimeball(variant.getName(), worldFolder);
+        }
+    }
+
+    private static void slimeballToSlimeBlock(String name, Path worldFolder){
+        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/minecraft/recipe/" + name + "_slimeball_to_block.json");
+
+        if(worldFolder != null){
+            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe/" + name + "_slimeball_to_block.json");
+        }
+
+        try{
+            Files.createDirectories(recipeFile.getParent());
+            Files.write(recipeFile, ("{\n" +
+                    "  \"type\": \"minecraft:crafting_shaped\",\n" +
+                    "  \"category\": \"building\",\n" +
+                    "  \"key\": {\n" +
+                    "    \"A\": {\n" +
+                    "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                    "    }\n" +
+                    "  },\n" +
+                    "  \"pattern\": [\n" +
+                    "    \"AAA\",\n" +
+                    "    \"AAA\",\n" +
+                    "    \"AAA\"\n" +
+                    "  ],\n" +
+                    "  \"result\": {\n" +
+                    "    \"count\": 1,\n" +
+                    "    \"id\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                    "  }\n" +
+                    "}").getBytes());
+        }
+        catch (IOException e){
+
+        }
+    }
+
+    private static void slimeBlockToSlimeball(String name, Path worldFolder){
+        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/minecraft/recipe/" + name + "_slime_block_to_ball.json");
+
+        if(worldFolder != null){
+            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe/" + name + "_slime_block_to_ball.json");
+        }
+
+        try{
+            Files.createDirectories(recipeFile.getParent());
+            Files.write(recipeFile, ("{\n" +
+                    "  \"type\": \"minecraft:crafting_shapeless\",\n" +
+                    "  \"category\": \"misc\",\n" +
+                    "  \"ingredients\": [\n" +
+                    "    {\n" +
+                    "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"result\": {\n" +
+                    "    \"count\": 9,\n" +
+                    "    \"id\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                    "  }\n" +
+                    "}").getBytes());
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+    }
+
     private static void generateResourcePack(){
         File file = new File("resourcepacks/productiveslimes");
 
@@ -275,7 +432,7 @@ public class CustomContentRegistry {
             FileUtils.deleteDirectory(file);
         }
         catch (IOException e){
-
+            System.out.println(e);
         }
 
         Path blockstatePath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/birch_slime_balls.json");
@@ -416,6 +573,10 @@ public class CustomContentRegistry {
                 return Component.literal(variantName.substring(0,1).toUpperCase() + variantName.substring(1) + " Slime Block");
             }
         });
+    }
+
+    private static Supplier<FluidType> registerFluidType(String name, FluidType fluidType, DeferredRegister<FluidType> FLUID_TYPES) {
+        return FLUID_TYPES.register(name, () -> fluidType);
     }
 
     public static class CustomVariants {

@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -112,6 +111,10 @@ public class ModCreativeTabs {
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getBucketItemForVariant(variant.getName()));
                         }
                     }).build());
 

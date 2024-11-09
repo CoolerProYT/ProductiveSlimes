@@ -20,6 +20,7 @@ import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
+import com.coolerpromc.productiveslimes.item.custom.FakeBucketItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
@@ -29,21 +30,18 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.resources.ClientPackSource;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.LevelResource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -60,17 +58,16 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -80,9 +77,10 @@ public class ProductiveSlimes
     public static final String MODID = "productiveslimes";
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
-    public static final DeferredRegister.Items SPAWN_EGG_ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(BuiltInRegistries.FLUID, ProductiveSlimes.MODID);
+    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, ProductiveSlimes.MODID);
 
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -92,15 +90,13 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES, FLUID_TYPES, FLUIDS);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);
-        /*for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-            CustomContentRegistry.registerSpawnEggItem(SPAWN_EGG_ITEMS, variant);
-        }
-        SPAWN_EGG_ITEMS.register(modEventBus);*/
+        FLUID_TYPES.register(modEventBus);
+        FLUIDS.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -112,8 +108,6 @@ public class ProductiveSlimes
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModDataComponents.register(modEventBus);
-
-//        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -169,6 +163,7 @@ public class ProductiveSlimes
 
         CustomContentRegistry.generateSlimeballTag(worldFolder);
         CustomContentRegistry.generateDnaTag(worldFolder);
+        CustomContentRegistry.generateCraftingRecipe(worldFolder);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -266,19 +261,23 @@ public class ProductiveSlimes
             ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
             ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
             ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
+            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
 
             event.register(slimeballModelLocation);
             event.register(slimeBlockItemModelLocation);
             event.register(slimeBlockModelLocation);
             event.register(dnaItemModelLocation);
+            event.register(spawnEggItemModelLocation);
+            event.register(moltenBucketLocation);
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
 
                 itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), slimeballModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get().asItem(), dnaItemModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get().asItem(), spawnEggItemModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get(), dnaItemModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
+                itemModelShaper.register(CustomContentRegistry.getBucketItemForVariant(variant.getName()).get(), moltenBucketLocation);
             }
         }
 
@@ -497,6 +496,12 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getBucketItemForVariant(variant.getName()).get() instanceof FakeBucketItem bucketItem){
+                    event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
             }
         }
