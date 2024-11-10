@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.compat.atm.AtmItems;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -63,10 +62,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.CACTUS_SLIME_BALL.get())
                 .add(ModItems.COAL_SLIME_BALL.get())
                 .add(ModItems.GRAVEL_SLIME_BALL.get())
-                .add(ModItems.ENERGY_SLIME_BALL.get())
-                .add(AtmItems.ATM_SLIME_BALL.get())
-                .add(AtmItems.VIBRANIUM_SLIME_BALL.get())
-                .add(AtmItems.UNOBTAINIUM_SLIME_BALL.get());
+                .add(ModItems.ENERGY_SLIME_BALL.get());
 
         tag(ModTags.Items.DNA_ITEM)
                 .add(ModItems.DIRT_SLIME_DNA.get())
@@ -111,10 +107,5 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.COAL_SLIME_DNA.get())
                 .add(ModItems.GRAVEL_SLIME_DNA.get())
                 .add(ModItems.SLIME_DNA.get());
-
-        tag(ModTags.Items.ATM_DNA_ITEM)
-                .add(AtmItems.ATM_SLIME_DNA.get())
-                .add(AtmItems.VIBRANIUM_SLIME_DNA.get())
-                .add(AtmItems.UNOBTAINIUM_SLIME_DNA.get());
     }
 }

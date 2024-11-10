@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.worldgen.biome.surface;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
@@ -33,3 +34,4 @@ public class ModSurfaceRules {
         return SurfaceRules.state(block.defaultBlockState());
     }
 }
+*/

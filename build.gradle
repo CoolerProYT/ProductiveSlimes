@@ -136,14 +136,15 @@ dependencies {
 //    implementation "curse.maven:allthemodium-364466:5676149"
 //    implementation "curse.maven:ato-405593:5657484"
 //    implementation "curse.maven:geckolib-388172:5679344"
-
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 //
 //    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
 //
 //    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
 //
     implementation "curse.maven:jade-324717:${jade_id}"
+    implementation "curse.maven:kubejs-238086:5810100"
+    implementation "curse.maven:architectury-api-419699:5786327"
+    implementation "curse.maven:rhino-416294:5691686"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
@@ -178,7 +179,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            terrablender_version_range: terrablender_version_range,
+            kubejs_version_range: kubejs_version_range,
     ]
     inputs.properties replaceProperties
 

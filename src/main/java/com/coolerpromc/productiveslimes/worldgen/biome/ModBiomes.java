@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -59,3 +60,4 @@ public class ModBiomes {
                 .build();
     }
 }
+*/

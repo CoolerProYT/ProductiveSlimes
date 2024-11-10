@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -20,3 +21,4 @@ public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
         super(output, registries, BUILDER, Set.of(ProductiveSlimes.MODID));
     }
 }
+*/

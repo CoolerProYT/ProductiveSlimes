@@ -92,11 +92,11 @@ public class FluidTankBlock extends BaseEntityBlock {
     protected void bucketUsed(Level pLevel, BlockPos pPos, Player pPlayer) {
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
-            if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BucketItem bucketItem && bucketItem != Items.BUCKET) {
+            if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof net.minecraft.world.item.BucketItem bucketItem && bucketItem != Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
-                    if (bucketItem.getFluidStack().getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
+                    if (bucketItem.content.getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
                         if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
-                            FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
+                            FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
                             int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                             if (filled > 0) {
                                 pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -105,7 +105,7 @@ public class FluidTankBlock extends BaseEntityBlock {
                         }
                     }
                 } else {
-                    FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
+                    FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
                     int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                     if (filled > 0) {
                         pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);

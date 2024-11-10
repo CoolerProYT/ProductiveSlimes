@@ -1,8 +1,7 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.compat.atm.AtmFluids;
-import com.coolerpromc.productiveslimes.compat.atm.AtmItems;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.Direction;
@@ -68,9 +67,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         slimeballItem(ModItems.GRAVEL_SLIME_BALL);
         slimeballItem(ModItems.ENERGY_SLIME_BALL);
 
-        slimeballItem(AtmItems.ATM_SLIME_BALL);
-        slimeballItem(AtmItems.VIBRANIUM_SLIME_BALL);
-        slimeballItem(AtmItems.UNOBTAINIUM_SLIME_BALL);
+        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            slimeballItem(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()));
+        }
 
         bucketItem(ModFluids.MOLTEN_DIRT_BUCKET);
         bucketItem(ModFluids.MOLTEN_STONE_BUCKET);
@@ -113,10 +112,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         bucketItem(ModFluids.MOLTEN_CACTUS_BUCKET);
         bucketItem(ModFluids.MOLTEN_COAL_BUCKET);
         bucketItem(ModFluids.MOLTEN_GRAVEL_BUCKET);
-
-        bucketItem(AtmFluids.MOLTEN_ATM_BUCKET);
-        bucketItem(AtmFluids.MOLTEN_VIBRANIUM_BUCKET);
-        bucketItem(AtmFluids.MOLTEN_UNOBTAINIUM_BUCKET);
 
         dnaItem(ModItems.SLIME_DNA);
         dnaItem(ModItems.DIRT_SLIME_DNA);
@@ -161,10 +156,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         dnaItem(ModItems.COAL_SLIME_DNA);
         dnaItem(ModItems.GRAVEL_SLIME_DNA);
 
-        dnaItem(AtmItems.ATM_SLIME_DNA);
-        dnaItem(AtmItems.VIBRANIUM_SLIME_DNA);
-        dnaItem(AtmItems.UNOBTAINIUM_SLIME_DNA);
-
         withExistingParent(ModItems.DIRT_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.STONE_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.IRON_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
@@ -207,10 +198,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.COAL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.GRAVEL_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.ENERGY_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-
-        withExistingParent(AtmItems.ATM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(AtmItems.VIBRANIUM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(AtmItems.UNOBTAINIUM_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
