@@ -6,8 +6,10 @@ import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
@@ -114,7 +116,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getBucketItemForVariant(variant.getName()));
+                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("kubejs", "molten_" + variant.getName() + "_bucket")));
                         }
                     }).build());
 

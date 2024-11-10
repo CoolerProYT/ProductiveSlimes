@@ -79,8 +79,6 @@ public class ProductiveSlimes
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(BuiltInRegistries.FLUID, ProductiveSlimes.MODID);
-    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, ProductiveSlimes.MODID);
 
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
@@ -90,13 +88,11 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES, FLUID_TYPES, FLUIDS);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);
-        FLUID_TYPES.register(modEventBus);
-        FLUIDS.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -164,6 +160,7 @@ public class ProductiveSlimes
         CustomContentRegistry.generateSlimeballTag(worldFolder);
         CustomContentRegistry.generateDnaTag(worldFolder);
         CustomContentRegistry.generateCraftingRecipe(worldFolder);
+        CustomContentRegistry.generateModRecipe(worldFolder);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -261,14 +258,14 @@ public class ProductiveSlimes
             ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
             ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
             ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
-            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
+//            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
 
             event.register(slimeballModelLocation);
             event.register(slimeBlockItemModelLocation);
             event.register(slimeBlockModelLocation);
             event.register(dnaItemModelLocation);
             event.register(spawnEggItemModelLocation);
-            event.register(moltenBucketLocation);
+//            event.register(moltenBucketLocation);
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
@@ -277,7 +274,7 @@ public class ProductiveSlimes
                 itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get(), dnaItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getBucketItemForVariant(variant.getName()).get(), moltenBucketLocation);
+//                itemModelShaper.register(CustomContentRegistry.getBucketItemForVariant(variant.getName()).get(), moltenBucketLocation);
             }
         }
 
@@ -499,11 +496,11 @@ public class ProductiveSlimes
                 }
             }
 
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            /*for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 if (CustomContentRegistry.getBucketItemForVariant(variant.getName()).get() instanceof FakeBucketItem bucketItem){
                     event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
-            }
+            }*/
         }
 
         public static void registerAllFluidRenderLayer() {
