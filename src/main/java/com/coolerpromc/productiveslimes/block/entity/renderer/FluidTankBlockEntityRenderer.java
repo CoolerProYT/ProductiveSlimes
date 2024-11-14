@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
 
 public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
     public FluidTankBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
@@ -35,6 +36,9 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
 
         if (itemStack instanceof BucketItem) {
             color = ((BucketItem) itemStack).getColor();
+        }
+        else if (itemStack instanceof net.minecraft.world.item.BucketItem bucketItem){
+            color = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor();
         }
 
         if (fluidStack.isEmpty()) return;

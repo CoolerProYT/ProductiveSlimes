@@ -2,8 +2,11 @@ package com.coolerpromc.productiveslimes.config;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
+import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
+import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.FakeBucketItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
@@ -15,11 +18,16 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.*;
+import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -124,9 +132,8 @@ public class CustomContentRegistry {
                     registerSlimeBlock(BLOCKS, variant, ITEMS);
                     registerSlime(ENTITY_TYPES, variant);
                     registerSpawnEggItem(ITEMS, variant);
+                    registerFluid(variant);
                 }
-
-                registerFluid(loadedVariants);
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
             } catch (IOException e) {
@@ -542,43 +549,27 @@ public class CustomContentRegistry {
         });
     }
 
-    private static void registerFluid(List<CustomVariants> variants) {
-        File file = new File("kubejs/startup_scripts/productiveslimes/config/fluids");
-
-        try{
-            FileUtils.deleteDirectory(file);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
-        for (CustomVariants variant : variants){
-            registerFluid(variant);
-        }
-    }
-
-    private static void registerFluid(CustomVariants variant){
-        Path fluidFile = Paths.get("kubejs/startup_scripts/productiveslimes/config/fluids/" + variant.getName() + ".js");
-
-        try{
-            Files.createDirectories(fluidFile.getParent());
-            Files.write(fluidFile, ("StartupEvents.registry('fluid', event => {\n" +
-                    "    event.create('molten_" + variant.getName() + "', \"thin\")\n" +
-                    "        .tint(" + variant.getColor() + ")\n" +
-                    "        .translucent()\n" +
-                    "        .displayName('Molten " + Arrays.stream(variant.getName().split("_"))
-                    .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                    .collect(Collectors.joining(" ")) + "')\n" +
-                    "});\n" +
-                    "ItemEvents.modification(event => {\n" +
-                    "    event.modify('kubejs:molten_" + variant.getName() + "_bucket', item => {\n" +
-                    "        item.maxStackSize = 64\n" +
-                    "    })\n" +
-                    "})").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
+    private static void registerFluid(CustomVariants variants) {
+        FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
+                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
+                (supplier, properties) -> new LiquidBlock(supplier.get(), properties){
+                    @Override
+                    public MutableComponent getName() {
+                        return Component.literal("Molten " +
+                                Arrays.stream(variants.getName().split("_"))
+                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                                        .collect(Collectors.joining(" ")) + " Block"
+                        );
+                    }
+                }, properties -> properties.explosionResistance(1000F).tickRate(20),
+                FluidType.Properties.create()
+                        .canExtinguish(true)
+                        .supportsBoating(true)
+                        .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                        .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                        .canHydrate(true)
+                        .viscosity(3000)
+                        .motionScale(0.007D)));
     }
 
     private static void generateModRecipe(){
@@ -644,7 +635,7 @@ public class CustomContentRegistry {
                     "  \"output\": [\n" +
                     "    {\n" +
                     "      \"count\": 5,\n" +
-                    "      \"id\": \"kubejs:molten_" + name + "_bucket\"\n" +
+                    "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
                     "    }\n" +
                     "  ]\n" +
                     "}").getBytes());
@@ -675,7 +666,7 @@ public class CustomContentRegistry {
                     "  \"output\": [\n" +
                     "    {\n" +
                     "      \"count\": 1,\n" +
-                    "      \"id\": \"kubejs:molten_" + name + "_bucket\"\n" +
+                    "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
                     "    }\n" +
                     "  ]\n" +
                     "}").getBytes());
@@ -699,7 +690,7 @@ public class CustomContentRegistry {
                     "  \"energy\": 200,\n" +
                     "  \"ingredients\": [\n" +
                     "    {\n" +
-                    "      \"item\": \"kubejs:molten_" + variant.getName() + "_bucket\"\n" +
+                    "      \"item\": \"productiveslimes:molten_" + variant.getName() + "_bucket\"\n" +
                     "    }\n" +
                     "  ],\n" +
                     "  \"inputCount\": 1,\n" +
