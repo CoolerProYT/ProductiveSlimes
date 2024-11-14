@@ -555,21 +555,11 @@ public class CustomContentRegistry {
                 (supplier, properties) -> new LiquidBlock(supplier.get(), properties){
                     @Override
                     public MutableComponent getName() {
-                        return Component.literal("Molten " +
-                                Arrays.stream(variants.getName().split("_"))
-                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                        .collect(Collectors.joining(" ")) + " Block"
-                        );
+                        return Component.literal("Molten " + Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" ")) + " Block");
                     }
-                }, properties -> properties.explosionResistance(1000F).tickRate(20),
-                FluidType.Properties.create()
-                        .canExtinguish(true)
-                        .supportsBoating(true)
-                        .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-                        .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
-                        .canHydrate(true)
-                        .viscosity(3000)
-                        .motionScale(0.007D)));
+                },
+                properties -> properties.explosionResistance(1000F).tickRate(20),
+                FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
     }
 
     private static void generateModRecipe(){
