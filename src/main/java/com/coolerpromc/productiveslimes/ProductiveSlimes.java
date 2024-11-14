@@ -9,6 +9,8 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEnti
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
+import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
+import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
@@ -93,6 +95,8 @@ public class ProductiveSlimes
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         ENTITY_TYPES.register(modEventBus);
+
+        FluidResources.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -258,14 +262,14 @@ public class ProductiveSlimes
             ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
             ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
             ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
-//            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
+            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
 
             event.register(slimeballModelLocation);
             event.register(slimeBlockItemModelLocation);
             event.register(slimeBlockModelLocation);
             event.register(dnaItemModelLocation);
             event.register(spawnEggItemModelLocation);
-//            event.register(moltenBucketLocation);
+            event.register(moltenBucketLocation);
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
@@ -274,20 +278,9 @@ public class ProductiveSlimes
                 itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get(), dnaItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
-//                itemModelShaper.register(CustomContentRegistry.getBucketItemForVariant(variant.getName()).get(), moltenBucketLocation);
+                itemModelShaper.register(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")), moltenBucketLocation);
             }
         }
-
-        /*@SubscribeEvent
-        public static void onModel(ModelEvent.BakingCompleted event) {
-            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
-            ModelResourceLocation blockStateLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "inventory");
-
-            BakedModel model = event.getModels().get(slimeBlockModelLocation);
-            if (model != null) {
-                event.getModels().put(blockStateLocation, model);
-            }
-        }*/
 
         @SubscribeEvent
         public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
@@ -349,6 +342,11 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            FluidResources.fluidList.forEach(fluid -> {
+                if (fluid.TYPE.get() instanceof ModBaseFluidType modBaseFluidType)
+                    event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
+            });
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Block event) {
@@ -496,11 +494,11 @@ public class ProductiveSlimes
                 }
             }
 
-            /*for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (CustomContentRegistry.getBucketItemForVariant(variant.getName()).get() instanceof FakeBucketItem bucketItem){
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")) instanceof BucketItem bucketItem){
                     event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
-            }*/
+            }
         }
 
         public static void registerAllFluidRenderLayer() {
@@ -519,6 +517,13 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            FluidResources.fluidList.stream()
+                    .filter(fluid -> fluid.isTranslucent)
+                    .forEach(fluid -> {
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), RenderType.translucent());
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), RenderType.translucent());
+                    });
         }
 
         private static void registerBlockRenderLayer(Block... blocks) {

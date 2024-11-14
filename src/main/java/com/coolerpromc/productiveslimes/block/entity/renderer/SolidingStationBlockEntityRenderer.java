@@ -8,41 +8,21 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import dev.latvian.mods.kubejs.registry.BuilderBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.util.TransformationHelper;
-import net.neoforged.neoforge.fluids.CauldronFluidContent;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import java.util.Optional;
 
@@ -60,15 +40,6 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
         if (itemStack.getItem() instanceof BucketItem bucketItem) {
             fluidStack = bucketItem.getFluidStack();
             color = bucketItem.getColor();
-        }
-        else if (itemStack.getItem() instanceof net.minecraft.world.item.BucketItem bucketItem){
-            fluidStack = FluidUtil.getFluidContained(itemStack).get();
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (bucketItem.toString().equals("kubejs:molten_" + variant.getName() + "_bucket")){
-                    color = variant.getColor();
-                    break;
-                }
-            }
         }
         else {
             fluidStack = FluidStack.EMPTY;

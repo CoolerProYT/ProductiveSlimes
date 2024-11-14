@@ -139,12 +139,9 @@ dependencies {
 //
 //    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
 //
-//    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
+    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
 //
     implementation "curse.maven:jade-324717:${jade_id}"
-    implementation "curse.maven:kubejs-238086:5810100"
-    implementation "curse.maven:architectury-api-419699:5786327"
-    implementation "curse.maven:rhino-416294:5691686"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
@@ -178,8 +175,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description,
-            kubejs_version_range: kubejs_version_range,
+            mod_description        : mod_description
     ]
     inputs.properties replaceProperties
 
