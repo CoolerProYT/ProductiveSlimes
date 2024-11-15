@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
+import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FluidTankBlock extends BaseEntityBlock {
+public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighlightFix {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public FluidTankBlock(Properties pProperties) {

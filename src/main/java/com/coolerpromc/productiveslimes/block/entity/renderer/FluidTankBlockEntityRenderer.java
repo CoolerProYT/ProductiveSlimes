@@ -9,6 +9,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,10 +17,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.WaterFluid;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 
@@ -34,50 +39,50 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
         FluidStack fluidStack = pBlockEntity.getFluidStack();
         int color = 0xFFFFFFFF;
 
-        if (itemStack instanceof BucketItem) {
-            color = ((BucketItem) itemStack).getColor();
+        if (itemStack instanceof BucketItem bucketItem) {
+            color = bucketItem.getColor();
         }
         else if (itemStack instanceof net.minecraft.world.item.BucketItem bucketItem){
             color = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor();
         }
-
-        if (fluidStack.isEmpty()) return;
 
         Level level = pBlockEntity.getLevel();
         if (level == null) return;
 
         BlockPos pos = pBlockEntity.getBlockPos();
 
-        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
+        IClientFluidTypeExtensions fluidTypeExtensions = fluidStack.isEmpty() ? IClientFluidTypeExtensions.of(Fluids.WATER.getFluidType()) : IClientFluidTypeExtensions.of(fluidStack.getFluid());
         ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
-        if (stillTexture == null) return;
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
         int tintColor = color;
 
-        float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;
+        float height = ((float) fluidStack.getAmount() / 50000) * 0.90f;
+        if (fluidStack.getAmount() > 1000) {
+            height += 0.05f;
+        }
 
         VertexConsumer builder = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(state));
 
         drawQuad(builder, pPoseStack, 0.15f, height, 0.15f, 0.85f, height, 0.85f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
 
-        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0.05f, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
         pPoseStack.translate(-1f, 0, -1.6f);
-        drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.85f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0.05f, 0.75f, 0.85f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
         pPoseStack.translate(-1f, 0, 0);
-        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0.05f, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
         pPoseStack.translate(0, 0, -1f);
-        drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.15f, 0.05f, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
         pPoseStack.popPose();
     }
 
