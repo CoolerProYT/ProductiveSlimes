@@ -247,9 +247,7 @@ public class ProductiveSlimes
                 registerAllSlimeBlockRenderLayer();
 
                 registerBlockRenderLayer(
-                        ModBlocks.DNA_EXTRACTOR.get(),
                         ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.DNA_SYNTHESIZER.get(),
                         ModBlocks.FLUID_TANK.get()
                 );
 
@@ -532,7 +530,7 @@ public class ProductiveSlimes
 
         private static void registerBlockRenderLayer(Block... blocks) {
             for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
             }
         }
 
