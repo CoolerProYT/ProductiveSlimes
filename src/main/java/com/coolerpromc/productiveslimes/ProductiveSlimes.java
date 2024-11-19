@@ -121,23 +121,17 @@ public class ProductiveSlimes
         Minecraft mc = Minecraft.getInstance();
         PackRepository repository = mc.getResourcePackRepository();
 
-        // Define the path for the resource pack folder
         File resourcePackFolder = new File("resourcepacks/" + packName);
 
-        // Check if the folder exists in the resourcepacks directory
         if (resourcePackFolder.exists() && resourcePackFolder.isDirectory()) {
-            // Find the resource pack by name in the repository
             Pack resourcePack = repository.getPack("file/" + packName);
             if (resourcePack != null) {
-                // Retrieve the current list of selected packs
                 List<String> selectedPacks = new ArrayList<>(repository.getSelectedIds());
 
-                // Add the resource pack if it's not already selected
                 if (!selectedPacks.contains(resourcePack.getId())) {
                     selectedPacks.add(resourcePack.getId());
                 }
 
-                // Set the updated list of packs and reload
                 repository.setSelected(selectedPacks);
                 mc.reloadResourcePacks();
             } else {

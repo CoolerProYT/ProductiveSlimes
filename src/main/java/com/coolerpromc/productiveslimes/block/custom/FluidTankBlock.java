@@ -208,8 +208,8 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
         if (pStack.getOrDefault(ModDataComponents.FLUID_STACK.get(), FluidStack.EMPTY) != FluidStack.EMPTY) {
             ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
             FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
-            pTooltip.add(Component.literal("Fluid Stored: ").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDescriptionId()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
-            pTooltip.add(Component.literal("Stored Amount: ").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getAmount() / 1000 + "B").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDescriptionId()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
     }
 }

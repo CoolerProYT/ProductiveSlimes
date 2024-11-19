@@ -72,11 +72,9 @@ public class DnaSynthesizingCategory implements IRecipeCategory<DnaSynthesizingR
         guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
         guiGraphics.blit(TEXTURE, 31, 25, 176, 66, 6, dnaHeight);
 
-        Component text = Component.literal("Energy: " + recipe.getEnergy() + " / " + 10000 + " FE");
+        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            List<Component> tooltip = new ArrayList<>();
-            tooltip.add(Component.literal("Tooltip Text Here"));
             guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
         }
     }

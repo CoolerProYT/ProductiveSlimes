@@ -26,14 +26,14 @@ public class EnergyMultiplierUpgrade extends Item {
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
 
         pTooltipComponents.add(
-                Component.literal("Increases the energy multiplier of the Energy Generator.").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+                Component.translatable("tooltip.productiveslimes.energy_multiplier_upgrade_desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 
-        pTooltipComponents.add(Component.literal(""));
+        pTooltipComponents.add(Component.translatable(""));
 
-        pTooltipComponents.add(Component.literal("Stack Count: ").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(Component.translatable("tooltip.productiveslimes.stack_count").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
                 .append(Component.literal("1 / 2 / 3 / 4").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
 
-        pTooltipComponents.add(Component.literal("Multiplier: ").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
+        pTooltipComponents.add(Component.translatable("tooltip.productiveslimes.multiplier").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
                 .append(Component.literal("x5 / x10 / x20 / x40").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
     }
 }

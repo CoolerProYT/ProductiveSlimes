@@ -71,15 +71,13 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
 
         guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
 
-        Component text = Component.literal("Energy: " + recipe.getEnergy() + " / " + 10000 + " FE");
+        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            List<Component> tooltip = new ArrayList<>();
-            tooltip.add(Component.literal("Tooltip Text Here"));
             guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
         }
 
-        String outputChance = String.format("DNA Output Chance: %.1f%%", recipe.getOutputChance() * 100);
+        Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
 
         guiGraphics.drawString(Minecraft.getInstance().font, outputChance, 3, 68, 0xFFFFFF);
     }
