@@ -8,6 +8,7 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
 import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -18,12 +19,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -68,17 +71,18 @@ public class CustomContentRegistry {
     private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
     private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     private static Map<String, byte[]> resourceData = new HashMap<>();
+    private static Map<String, byte[]> dataPackResources = new HashMap<>();
+
 
     public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
         loadVariants(item, block, entityType);
 
-        generateSlimeballTag();
-        generateDnaTag();
-        generateCraftingRecipe();
-        generateModRecipe();
         generateResourcePackInMemory();
+        generateDataPackInMemory();
+    }
 
+    public static void handleResourcePack() {
         InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
         PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
 
@@ -104,6 +108,46 @@ public class CustomContentRegistry {
         });
 
         Minecraft.getInstance().reloadResourcePacks();
+    }
+
+    public static void handleDatapack(MinecraftServer server) {
+        InMemoryDataPack dataPack = new InMemoryDataPack(dataPackResources);
+
+        Pack pack = Pack.readMetaAndCreate(
+                new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
+                        new PackSource() {
+                            @Override
+                            public Component decorate(Component name) {
+                                return Component.literal("In Memory Pack");
+                            }
+
+                            @Override
+                            public boolean shouldAddAutomatically() {
+                                return true;
+                            }
+                        }, Optional.empty()),
+                new Pack.ResourcesSupplier() {
+                    @Override
+                    public PackResources openPrimary(PackLocationInfo location) {
+                        return dataPack;
+                    }
+
+                    @Override
+                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+                        return dataPack;
+                    }
+                },
+                PackType.SERVER_DATA,
+                new PackSelectionConfig(true, Pack.Position.TOP, true)
+        );
+
+        // Add your pack to the pack repository
+        server.getPackRepository().addPackFinder((consumer) -> consumer.accept(pack));
+
+        // Reload data packs to include your new pack
+        List<Pack> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
+        packs.add(pack);
+        server.reloadResources(packs.stream().map(Pack::getId).collect(Collectors.toList()));
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -219,167 +263,35 @@ public class CustomContentRegistry {
         registeredDnaItems.put(itemId, item);
     }
 
-    private static void generateSlimeballTag(){
-        List<String> itemIds = new ArrayList<>();
-
-        for (CustomVariants variants : getLoadedTiers()){
-            itemIds.add("productiveslimes:" + variants.getName() + "_slimeball");
-        }
-
-        Map<String, Object> tagJson = new HashMap<>();
-        tagJson.put("replace", false);
-        tagJson.put("values", itemIds);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonContent = gson.toJson(tagJson);
-
-        if (Files.exists(Paths.get("saves"))) return;
-
-        Path tagFile = Paths.get("world/datapacks/modify_tag/data/c/tags/item/slime_balls.json");
-        Path mcmeta = Paths.get("world/datapacks/modify_tag/pack.mcmeta");
-        try{
-            Files.createDirectories(tagFile.getParent());
-            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
-
-            Files.write(mcmeta, ("{\n" +
-                                "    \"pack\": {\n" +
-                                "        \"description\": \"The default data for Minecraft\",\n" +
-                                "        \"pack_format\": 48\n" +
-                                "    }\n" +
-                                "}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
+    private static List<CustomVariants> validateTiers(List<CustomVariants> tiers) {
+        return tiers.stream()
+                .filter(tier -> {
+                    // Validate name (no spaces, special characters, etc.)
+                    if (!tier.name.matches("^[a-z0-9_]+$")) {
+                        LOGGER.error("Invalid name format for tier: " + tier.name);
+                        return false;
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
     }
 
-    private static void generateDnaTag(){
-        List<String> itemIds = new ArrayList<>();
-
-        for (CustomVariants variants : getLoadedTiers()){
-            itemIds.add("productiveslimes:" + variants.getName() + "_slime_dna");
-        }
-
-        Map<String, Object> tagJson = new HashMap<>();
-        tagJson.put("replace", false);
-        tagJson.put("values", itemIds);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonContent = gson.toJson(tagJson);
-
-        if (Files.exists(Paths.get("saves"))) return;
-
-        Path tagFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/tags/item/dna_item.json");
-        Path mcmeta = Paths.get("world/datapacks/modify_tag/pack.mcmeta");
-        try{
-            Files.createDirectories(tagFile.getParent());
-            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
-
-            Files.write(mcmeta, ("{\n" +
-                    "    \"pack\": {\n" +
-                    "        \"description\": \"The default data for Minecraft\",\n" +
-                    "        \"pack_format\": 48\n" +
-                    "    }\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
+    private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block, DeferredRegister.Blocks BLOCKS, DeferredRegister.Items ITEMS, String variantName){
+        DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name,toReturn, ITEMS, variantName);
+        return toReturn;
     }
 
-    private static void generateCraftingRecipe(){
-        if (Files.exists(Paths.get("saves"))) return;
-
-        File file = new File("world/datapacks/modify_tag/data/minecraft/recipe");
-
-        try{
-            FileUtils.deleteDirectory(file);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
-        for (CustomVariants variant : loadedVariants){
-            slimeballToSlimeBlock(variant.getName(), null);
-            slimeBlockToSlimeball(variant.getName(), null);
-        }
+    private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block, DeferredRegister.Items ITEMS, String variantName){
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    public static void generateCraftingRecipe(Path worldFolder){
-        File file = new File(worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe").toString());
-
-        try{
-            FileUtils.deleteDirectory(file);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
-        for (CustomVariants variant : loadedVariants){
-            slimeballToSlimeBlock(variant.getName(), worldFolder);
-            slimeBlockToSlimeball(variant.getName(), worldFolder);
-        }
-    }
-
-    private static void slimeballToSlimeBlock(String name, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/minecraft/recipe/" + name + "_slimeball_to_block.json");
-
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe/" + name + "_slimeball_to_block.json");
-        }
-
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"minecraft:crafting_shaped\",\n" +
-                    "  \"category\": \"building\",\n" +
-                    "  \"key\": {\n" +
-                    "    \"A\": {\n" +
-                    "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
-                    "    }\n" +
-                    "  },\n" +
-                    "  \"pattern\": [\n" +
-                    "    \"AAA\",\n" +
-                    "    \"AAA\",\n" +
-                    "    \"AAA\"\n" +
-                    "  ],\n" +
-                    "  \"result\": {\n" +
-                    "    \"count\": 1,\n" +
-                    "    \"id\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                    "  }\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
-    }
-
-    private static void slimeBlockToSlimeball(String name, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/minecraft/recipe/" + name + "_slime_block_to_ball.json");
-
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/minecraft/recipe/" + name + "_slime_block_to_ball.json");
-        }
-
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"minecraft:crafting_shapeless\",\n" +
-                    "  \"category\": \"misc\",\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"result\": {\n" +
-                    "    \"count\": 9,\n" +
-                    "    \"id\": \"productiveslimes:" + name + "_slimeball\"\n" +
-                    "  }\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
+    private static void registerFluid(CustomVariants variants) {
+        FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
+                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
+                (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
+                properties -> properties.explosionResistance(1000F).tickRate(20),
+                FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
     }
 
     private static void generateResourcePackInMemory() {
@@ -445,8 +357,27 @@ public class CustomContentRegistry {
         resourceData.put(langFilePath, langJsonContent.getBytes(StandardCharsets.UTF_8));
     }
 
+    private static void generateDataPackInMemory() {
+        dataPackResources.clear();
+        addPackMcmeta();
+        generateSlimeballTag();
+        generateDnaTag();
+        generateCraftingRecipe();
+        generateModRecipe();
+    }
 
-    public static void generateSlimeballTag(Path worldFolder){
+    private static void addPackMcmeta() {
+        String packMcmetaContent = "{\n" +
+                "  \"pack\": {\n" +
+                "    \"pack_format\": 10,\n" + // Adjust pack_format according to Minecraft version
+                "    \"description\": \"Productive Slimes Generated Data Pack\"\n" +
+                "  }\n" +
+                "}";
+        dataPackResources.put("pack.mcmeta", packMcmetaContent.getBytes(StandardCharsets.UTF_8));
+    }
+
+
+    private static void generateSlimeballTag(){
         List<String> itemIds = new ArrayList<>();
 
         for (CustomVariants variants : getLoadedTiers()){
@@ -460,26 +391,11 @@ public class CustomContentRegistry {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonContent = gson.toJson(tagJson);
 
-        Path tagFile = worldFolder.resolve("datapacks/modify_tag/data/c/tags/item/slime_balls.json");
-        Path mcmeta = worldFolder.resolve("datapacks/modify_tag/pack.mcmeta");
-
-        try{
-            Files.createDirectories(tagFile.getParent());
-            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
-
-            Files.write(mcmeta, ("{\n" +
-                    "    \"pack\": {\n" +
-                    "        \"description\": \"The default data for Minecraft\",\n" +
-                    "        \"pack_format\": 48\n" +
-                    "    }\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
+        String tagPath = "data/c/tags/item/slime_balls.json";
+        dataPackResources.put(tagPath, jsonContent.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static void generateDnaTag(Path worldFolder){
+    private static void generateDnaTag(){
         List<String> itemIds = new ArrayList<>();
 
         for (CustomVariants variants : getLoadedTiers()){
@@ -493,303 +409,230 @@ public class CustomContentRegistry {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonContent = gson.toJson(tagJson);
 
-        Path tagFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/tags/item/dna_item.json");
-        Path mcmeta = worldFolder.resolve("datapacks/modify_tag/pack.mcmeta");
+        String tagPath = "data/productiveslimes/tags/item/dna_item.json";
+        dataPackResources.put(tagPath, jsonContent.getBytes(StandardCharsets.UTF_8));
+    }
 
-        try{
-            Files.createDirectories(tagFile.getParent());
-            Files.write(tagFile, jsonContent.getBytes(StandardCharsets.UTF_8));
-
-            Files.write(mcmeta, ("{\n" +
-                    "    \"pack\": {\n" +
-                    "        \"description\": \"The default data for Minecraft\",\n" +
-                    "        \"pack_format\": 48\n" +
-                    "    }\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
+    public static void generateCraftingRecipe(){
+        for (CustomVariants variant : loadedVariants){
+            slimeballToSlimeBlock(variant.getName());
+            slimeBlockToSlimeball(variant.getName());
         }
     }
 
-    private static List<CustomVariants> validateTiers(List<CustomVariants> tiers) {
-        return tiers.stream()
-                .filter(tier -> {
-                    // Validate name (no spaces, special characters, etc.)
-                    if (!tier.name.matches("^[a-z0-9_]+$")) {
-                        LOGGER.error("Invalid name format for tier: " + tier.name);
-                        return false;
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
+    private static void slimeballToSlimeBlock(String name){
+        String recipePath = "data/minecraft/recipes/" + name + "_slimeball_to_block.json";
+
+        String recipe = "{\n" +
+                "  \"type\": \"minecraft:crafting_shaped\",\n" +
+                "  \"category\": \"building\",\n" +
+                "  \"key\": {\n" +
+                "    \"A\": {\n" +
+                "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"pattern\": [\n" +
+                "    \"AAA\",\n" +
+                "    \"AAA\",\n" +
+                "    \"AAA\"\n" +
+                "  ],\n" +
+                "  \"result\": {\n" +
+                "    \"count\": 1,\n" +
+                "    \"id\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                "  }\n" +
+                "}";
+
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block, DeferredRegister.Blocks BLOCKS, DeferredRegister.Items ITEMS, String variantName){
-        DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name,toReturn, ITEMS, variantName);
-        return toReturn;
-    }
+    private static void slimeBlockToSlimeball(String name){
+        String recipePath = "data/minecraft/recipes/" + name + "_slime_block_to_ball.json";
 
-    private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block, DeferredRegister.Items ITEMS, String variantName){
-        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
-    }
+        String recipe = "{\n" +
+                "  \"type\": \"minecraft:crafting_shapeless\",\n" +
+                "  \"category\": \"misc\",\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"result\": {\n" +
+                "    \"count\": 9,\n" +
+                "    \"id\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                "  }\n" +
+                "}";
 
-    private static void registerFluid(CustomVariants variants) {
-        FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
-                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
-                (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
-                properties -> properties.explosionResistance(1000F).tickRate(20),
-                FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
     private static void generateModRecipe(){
-        if (Files.exists(Paths.get("saves"))) return;
-
-        File file = new File("world/datapacks/modify_tag/data/productiveslimes/recipe");
-
-        try{
-            FileUtils.deleteDirectory(file);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
         for (CustomVariants variant : loadedVariants){
-            meltingRecipeBlock(variant.getName(), null);
-            meltingRecipeBall(variant.getName(), null);
-            solidingRecipe(variant, null);
-            dnaExtracting(variant,null);
-            dnaSynthesizingSelf(variant,null);
-            dnaSynthesizing(variant, null);
+            meltingRecipeBlock(variant.getName());
+            meltingRecipeBall(variant.getName());
+            solidingRecipe(variant);
+            dnaExtracting(variant);
+            dnaSynthesizingSelf(variant);
+            dnaSynthesizing(variant);
         }
     }
 
-    public static void generateModRecipe(Path worldFolder){
-        File file = new File(worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe").toString());
+    private static void meltingRecipeBlock(String name){
+        String recipePath = "data/productiveslimes/recipes/" + name + "_slime_block_melting.json";
 
-        try{
-            FileUtils.deleteDirectory(file);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:melting\",\n" +
+                "  \"energy\": 200,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 2,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": 5,\n" +
+                "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
-        for (CustomVariants variant : loadedVariants){
-            meltingRecipeBlock(variant.getName(), worldFolder);
-            meltingRecipeBall(variant.getName(), worldFolder);
-            solidingRecipe(variant, worldFolder);
-            dnaExtracting(variant, worldFolder);
-            dnaSynthesizingSelf(variant, worldFolder);
-            dnaSynthesizing(variant, worldFolder);
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static void meltingRecipeBlock(String name, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/" + name + "_slime_block_melting.json");
+    private static void meltingRecipeBall(String name){
+        String recipePath = "data/productiveslimes/recipes/" + name + "_slimeball_melting.json";
 
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/" + name + "_slime_block_melting.json");
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:melting\",\n" +
+                "  \"energy\": 200,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 4,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:melting\",\n" +
-                    "  \"energy\": 200,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 2,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": 5,\n" +
-                    "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static void meltingRecipeBall(String name, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/" + name + "_slimeball_melting.json");
+    private static void solidingRecipe(CustomVariants variant){
+        String recipePath = "data/productiveslimes/recipes/molten_" + variant.getName() + "_bucket_soliding.json";
 
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/" + name + "_slimeball_melting.json");
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:soliding\",\n" +
+                "  \"energy\": 200,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:molten_" + variant.getName() + "_bucket\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 1,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": " + variant.getSolidingOutputCount() + ",\n" +
+                "      \"id\": \"" + variant.getSolidingOutput() + "\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"minecraft:bucket\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:melting\",\n" +
-                    "  \"energy\": 200,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 4,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static void solidingRecipe(CustomVariants variant, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/molten_" + variant.getName() + "_bucket_soliding.json");
+    private static void dnaExtracting(CustomVariants variant){
+        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slimeball_dna_extracting.json";
 
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/molten_" + variant.getName() + "_bucket_soliding.json");
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:dna_extracting\",\n" +
+                "  \"energy\": 400,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slimeball\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 1,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"minecraft:slime_ball\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"outputChance\": " + variant.getDnaOutputChance() + "\n" +
+                "}";
 
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:soliding\",\n" +
-                    "  \"energy\": 200,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:molten_" + variant.getName() + "_bucket\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 1,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": " + variant.getSolidingOutputCount() + ",\n" +
-                    "      \"id\": \"" + variant.getSolidingOutput() + "\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"minecraft:bucket\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static void dnaExtracting(CustomVariants variant, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slimeball_dna_extracting.json");
+    private static void dnaSynthesizingSelf(CustomVariants variant){
+        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
 
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slimeball_dna_extracting.json");
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
+                "  \"energy\": 600,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 2,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:dna_extracting\",\n" +
-                    "  \"energy\": 400,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + variant.getName() + "_slimeball\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 1,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"minecraft:slime_ball\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"outputChance\": " + variant.getDnaOutputChance() + "\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static void dnaSynthesizingSelf(CustomVariants variant, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json");
+    private static void dnaSynthesizing(CustomVariants variant){
+        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
 
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json");
-        }
+        String recipe = "{\n" +
+                "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
+                "  \"energy\": 600,\n" +
+                "  \"ingredients\": [\n" +
+                "    {\n" +
+                "      \"item\": \"" + variant.getSynthesizingInputDna1() + "\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"item\": \"" + variant.getSynthesizingInputDna2() + "\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"inputCount\": 4,\n" +
+                "  \"output\": [\n" +
+                "    {\n" +
+                "      \"count\": 1,\n" +
+                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
 
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
-                    "  \"energy\": 600,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 2,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
-    }
-
-    private static void dnaSynthesizing(CustomVariants variant, Path worldFolder){
-        Path recipeFile = Paths.get("world/datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slime_spawn_egg_synthesizing.json");
-
-        if(worldFolder != null){
-            recipeFile = worldFolder.resolve("datapacks/modify_tag/data/productiveslimes/recipe/" + variant.getName() + "_slime_spawn_egg_synthesizing.json");
-        }
-
-        try{
-            Files.createDirectories(recipeFile.getParent());
-            Files.write(recipeFile, ("{\n" +
-                    "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
-                    "  \"energy\": 600,\n" +
-                    "  \"ingredients\": [\n" +
-                    "    {\n" +
-                    "      \"item\": \"" + variant.getSynthesizingInputDna1() + "\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"item\": \"" + variant.getSynthesizingInputDna2() + "\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"inputCount\": 4,\n" +
-                    "  \"output\": [\n" +
-                    "    {\n" +
-                    "      \"count\": 1,\n" +
-                    "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}").getBytes());
-        }
-        catch (IOException e){
-
-        }
+        dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
     public static class CustomVariants {
