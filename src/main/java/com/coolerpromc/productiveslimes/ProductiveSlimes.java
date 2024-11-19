@@ -117,31 +117,6 @@ public class ProductiveSlimes
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    public static void forceResourcePack(String packName) {
-        Minecraft mc = Minecraft.getInstance();
-        PackRepository repository = mc.getResourcePackRepository();
-
-        File resourcePackFolder = new File("resourcepacks/" + packName);
-
-        if (resourcePackFolder.exists() && resourcePackFolder.isDirectory()) {
-            Pack resourcePack = repository.getPack("file/" + packName);
-            if (resourcePack != null) {
-                List<String> selectedPacks = new ArrayList<>(repository.getSelectedIds());
-
-                if (!selectedPacks.contains(resourcePack.getId())) {
-                    selectedPacks.add(resourcePack.getId());
-                }
-
-                repository.setSelected(selectedPacks);
-                mc.reloadResourcePacks();
-            } else {
-                System.out.println("Resource pack not found in repository: " + packName);
-            }
-        } else {
-            System.out.println("Resource pack folder not found: " + packName);
-        }
-    }
-
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity().getInventory().isEmpty()){
@@ -247,8 +222,6 @@ public class ProductiveSlimes
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
-
-            forceResourcePack("productiveslimes");
         }
 
         @SubscribeEvent

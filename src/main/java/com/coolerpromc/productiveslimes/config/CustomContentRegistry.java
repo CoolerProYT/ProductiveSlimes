@@ -8,14 +8,22 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -59,6 +67,7 @@ public class CustomContentRegistry {
     private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
     private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
     private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static Map<String, byte[]> resourceData = new HashMap<>();
 
     public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
@@ -66,9 +75,35 @@ public class CustomContentRegistry {
 
         generateSlimeballTag();
         generateDnaTag();
-        generateResourcePack();
         generateCraftingRecipe();
         generateModRecipe();
+        generateResourcePackInMemory();
+
+        InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
+        PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
+
+        Pack pack = Pack.readMetaAndCreate(
+                resourcePack.location(),
+                new Pack.ResourcesSupplier() {
+                    @Override
+                    public PackResources openPrimary(PackLocationInfo location) {
+                        return resourcePack;
+                    }
+
+                    @Override
+                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+                        return resourcePack;
+                    }
+                },
+                PackType.CLIENT_RESOURCES,
+                new PackSelectionConfig(true, Pack.Position.TOP, true)
+        );
+
+        packRepository.addPackFinder((consumer) -> {
+            consumer.accept(pack);
+        });
+
+        Minecraft.getInstance().reloadResourcePacks();
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -347,51 +382,33 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void generateResourcePack(){
-        File blockState = new File("resourcepacks/productiveslimes/assets/blockstates");
-        File model = new File("resourcepacks/productiveslimes/assets/models");
-
-        try{
-            FileUtils.deleteDirectory(blockState);
-            FileUtils.deleteDirectory(model);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
-        Path blockstatePath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/birch_slime_balls.json");
-        Path modelPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/birch_slime_balls.json");
-        Path langPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/lang/en_us.json");
-        Path mcmeta = Paths.get("resourcepacks/productiveslimes/pack.mcmeta");
-
-        Path blockstate;
-        Path blockModel;
-
-        try{
-            Files.createDirectories(blockstatePath.getParent());
-            Files.createDirectories(modelPath.getParent());
-            Files.createDirectories(langPath.getParent());
-
-            Files.write(mcmeta, ("{\n" +
-                    "  \"pack\": {\n" +
-                    "    \"pack_format\": 34,\n" +
-                    "    \"description\": \"Custom variants resources\"\n" +
-                    "  }\n" +
-                    "}}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
-
+    private static void generateResourcePackInMemory() {
         Map<String, String> langJson = new HashMap<>();
 
-        for (CustomVariants variants : getLoadedTiers()){
+        // Prepare pack.mcmeta content
+        String packMcmetaContent = "{\n" +
+                "  \"pack\": {\n" +
+                "    \"pack_format\": 34,\n" +
+                "    \"description\": \"Custom variants resources\"\n" +
+                "  }\n" +
+                "}";
+
+        // Add pack.mcmeta to resource data
+        resourceData.put("pack.mcmeta", packMcmetaContent.getBytes(StandardCharsets.UTF_8));
+
+        for (CustomVariants variants : getLoadedTiers()) {
             String id = variants.getName() + "_slime_block";
-            blockstate = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/" + id + ".json");
-            blockModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/" + id + ".json");
 
-            String formattedName = Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" "));
+            // Resource paths
+            String blockstatePath = "assets/productiveslimes/blockstates/" + id + ".json";
+            String modelPath = "assets/productiveslimes/models/block/" + id + ".json";
 
+            // Generate formatted name
+            String formattedName = Arrays.stream(variants.getName().split("_"))
+                    .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
+                    .collect(Collectors.joining(" "));
+
+            // Populate lang entries
             langJson.put("block.productiveslimes." + variants.getName() + "_slime_block", formattedName + " Slime Block");
             langJson.put("item.productiveslimes." + variants.getName()  + "_slime_spawn_egg", formattedName + " Slime Spawn Egg");
             langJson.put("item.productiveslimes." + variants.getName()  + "_slimeball", formattedName + " Slimeball");
@@ -401,34 +418,33 @@ public class CustomContentRegistry {
             langJson.put("item.productiveslimes." + "molten_" + variants.getName() + "_bucket", "Molten " + formattedName + " Bucket");
             langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
 
-            try{
-                Files.write(blockModel, ("{\n" +
-                        "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
-                        "}").getBytes());
+            // Create block model content
+            String blockModelContent = "{\n" +
+                    "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
+                    "}";
 
-                Files.write(blockstate, ("{\n" +
-                        "  \"variants\": {\n" +
-                        "    \"\": {\n" +
-                        "      \"model\": \"productiveslimes:block/"+ id + "\"\n" +
-                        "    }\n" +
-                        "  }\n" +
-                        "}").getBytes());
-            }
-            catch (IOException e){
+            // Create blockstate content
+            String blockstateContent = "{\n" +
+                    "  \"variants\": {\n" +
+                    "    \"\": {\n" +
+                    "      \"model\": \"productiveslimes:block/" + id + "\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-            }
+            // Add to resource data
+            resourceData.put(blockstatePath, blockstateContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(modelPath, blockModelContent.getBytes(StandardCharsets.UTF_8));
         }
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonContent = gson.toJson(langJson);
+        // Convert langJson map to JSON string
+        String langJsonContent = new GsonBuilder().setPrettyPrinting().create().toJson(langJson);
 
-        try{
-            Files.write(langPath, jsonContent.getBytes(StandardCharsets.UTF_8));
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for lang", e);
-        }
+        // Add language file to resource data
+        String langFilePath = "assets/productiveslimes/lang/en_us.json";
+        resourceData.put(langFilePath, langJsonContent.getBytes(StandardCharsets.UTF_8));
     }
+
 
     public static void generateSlimeballTag(Path worldFolder){
         List<String> itemIds = new ArrayList<>();
