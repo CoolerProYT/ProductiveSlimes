@@ -99,7 +99,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
                         if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
                             FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
                             int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
-                            if (filled > 0) {
+                            if (filled > 0 && !pPlayer.isCreative()) {
                                 pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
                                 pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
                             }
@@ -108,7 +108,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
                 } else {
                     FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
                     int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
-                    if (filled > 0) {
+                    if (filled > 0 && !pPlayer.isCreative()) {
                         pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
                         pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
                     }
