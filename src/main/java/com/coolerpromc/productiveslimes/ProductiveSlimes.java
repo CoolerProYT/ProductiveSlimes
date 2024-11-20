@@ -32,24 +32,14 @@ import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.storage.LevelResource;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -65,16 +55,11 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 @Mod(ProductiveSlimes.MODID)
@@ -117,13 +102,6 @@ public class ProductiveSlimes
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    @SubscribeEvent
-    public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity().getInventory().isEmpty()){
-        }
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
-    }
-
     private void commonSetup(final FMLCommonSetupEvent event)
     {
 //        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
@@ -138,7 +116,6 @@ public class ProductiveSlimes
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
     }
-
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
@@ -273,25 +250,6 @@ public class ProductiveSlimes
             registerAllBucketColor(event);
             registerAllSlimeBlockColor(event);
         }
-
-        /*public static void registerAllSlimeEntityRenderer(){
-            Field[] fields = ModEntities.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof DeferredHolder<?, ?> holder && holder.get() instanceof EntityType<?> entityType) {
-                        Integer color = ModEntities.SLIME_COLORS.get(entityType);
-                        if (color != null) {
-                            EntityRenderers.register((EntityType<? extends BaseSlime>) entityType, pContext -> new BaseSlimeRenderer(pContext, color.intValue()));
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
 
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
             Field[] fields = ModFluidTypes.class.getFields();
