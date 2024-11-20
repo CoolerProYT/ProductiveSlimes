@@ -92,16 +92,7 @@ public class FluidResources {
                 fluidProperties.accept(PROPERTIES);
 
             FLUID_BLOCK = BLOCKS.register("molten_" + name + "_block", () -> block.apply(FLUID, properties.lightLevel((state) -> { return type.getLightLevel(); }).randomTicks().strength(100.0F).noLootTable()));
-            FLUID_BUCKET = ITEMS.registerItem("molten_" + name + "_bucket", properties1 -> new BucketItem(FLUID.get(), properties1.craftRemainder(Items.BUCKET).stacksTo(64), color){
-                @Override
-                public Component getName(ItemStack pStack) {
-                    return Component.literal("Molten " +
-                            Arrays.stream(name.split("_"))
-                                    .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                    .collect(Collectors.joining(" ")) + " Bucket"
-                    );
-                }
-            });
+            FLUID_BUCKET = ITEMS.registerItem("molten_" + name + "_bucket", properties1 -> new BucketItem(FLUID.get(), properties1.craftRemainder(Items.BUCKET).stacksTo(64), color));
 
             PROPERTIES.bucket(FLUID_BUCKET).block(FLUID_BLOCK);
         }

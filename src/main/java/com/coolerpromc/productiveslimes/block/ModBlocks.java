@@ -134,7 +134,7 @@ public class ModBlocks {
     }
 
     private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block){
-        return ModItems.ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties));
+        return ModItems.ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
     public static void register(IEventBus eventBus) {

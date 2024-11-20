@@ -14,8 +14,6 @@ import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -46,8 +44,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class CustomContentRegistry {
@@ -146,18 +142,7 @@ public class CustomContentRegistry {
     private static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(itemName,
-                properties -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), properties){
-                    @Override
-                    public Component getName(ItemStack pStack) {
-                        return Component.literal(
-                                Arrays.stream(variant.getName().split("_"))
-                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                        .collect(Collectors.joining(" ")) + " Slime Spawn Egg"
-                        );
-
-                    }
-                });
+        DeferredItem<Item> item = ITEMS.registerItem(itemName, properties -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), properties));
 
         registeredSpawnEggItems.put(itemId, item);
     }
@@ -167,17 +152,7 @@ public class CustomContentRegistry {
         ResourceLocation slimeId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, slimeName);
 
         DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem())).get().value()){
-                    @Override
-                    public Component getName() {
-                        return Component.literal(
-                                Arrays.stream(variant.getName().split("_"))
-                                        .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                        .collect(Collectors.joining(" ")) + " Slime"
-                        );
-
-                    }
-                },
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem())).get().value()),
                 MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variant.getName() + "_slime"))));
 
         registeredSlimes.put(slimeId, slime);
@@ -194,17 +169,7 @@ public class CustomContentRegistry {
     private static void registerSlimeballItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slimeball";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor(), properties){
-            @Override
-            public Component getName(ItemStack stack) {
-                return Component.literal(
-                        Arrays.stream(variant.getName().split("_"))
-                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                .collect(Collectors.joining(" ")) + " Slimeball"
-                );
-
-            }
-        }, new Item.Properties());
+        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor(), properties), new Item.Properties());
 
         registeredItems.put(itemId, item);
     }
@@ -212,17 +177,7 @@ public class CustomContentRegistry {
     private static void registerDnaItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_dna";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor(), properties){
-            @Override
-            public Component getName(ItemStack stack) {
-                return Component.literal(
-                        Arrays.stream(variant.getName().split("_"))
-                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                .collect(Collectors.joining(" ")) + " Slime DNA"
-                );
-
-            }
-        }, new Item.Properties());
+        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor(), properties), new Item.Properties());
 
         registeredDnaItems.put(itemId, item);
     }
@@ -391,10 +346,12 @@ public class CustomContentRegistry {
     }
 
     private static void generateResourcePack(){
-        File file = new File("resourcepacks/productiveslimes");
+        File blockState = new File("resourcepacks/productiveslimes/assets/blockstates");
+        File model = new File("resourcepacks/productiveslimes/assets/models");
 
         try{
-            FileUtils.deleteDirectory(file);
+            FileUtils.deleteDirectory(blockState);
+            FileUtils.deleteDirectory(model);
         }
         catch (IOException e){
             System.out.println(e);
@@ -402,6 +359,7 @@ public class CustomContentRegistry {
 
         Path blockstatePath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/birch_slime_balls.json");
         Path modelPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/birch_slime_balls.json");
+        Path langPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/lang/en_us.json");
         Path mcmeta = Paths.get("resourcepacks/productiveslimes/pack.mcmeta");
 
         Path blockstate;
@@ -410,6 +368,7 @@ public class CustomContentRegistry {
         try{
             Files.createDirectories(blockstatePath.getParent());
             Files.createDirectories(modelPath.getParent());
+            Files.createDirectories(langPath.getParent());
 
             Files.write(mcmeta, ("{\n" +
                     "  \"pack\": {\n" +
@@ -422,10 +381,23 @@ public class CustomContentRegistry {
             LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
         }
 
+        Map<String, String> langJson = new HashMap<>();
+
         for (CustomVariants variants : getLoadedTiers()){
             String id = variants.getName() + "_slime_block";
             blockstate = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/" + id + ".json");
             blockModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/" + id + ".json");
+
+            String formattedName = Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" "));
+            langJson.put("block.productiveslimes." + variants.getName() + "_slime_block", formattedName + " Slime Block");
+            langJson.put("item.productiveslimes." + variants.getName()  + "_slime_spawn_egg", formattedName + " Slime Spawn Egg");
+            langJson.put("item.productiveslimes." + variants.getName()  + "_slimeball", formattedName + " Slimeball");
+            langJson.put("item.productiveslimes." + variants.getName()  + "_slime_dna", formattedName + " Slime DNA");
+            langJson.put("entity.productiveslimes." + variants.getName()  + "_slime", formattedName + " Slime");
+            langJson.put("block.productiveslimes." + "molten_" + variants.getName() + "_block", "Molten " + formattedName);
+            langJson.put("item.productiveslimes." + "molten_" + variants.getName() + "_bucket", "Molten " + formattedName + " Bucket");
+            langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
+
 
             try{
                 Files.write(blockModel, ("{\n" +
@@ -699,39 +671,19 @@ public class CustomContentRegistry {
     }
 
     private static DeferredBlock<Block> registerBlock(String name, MapColor mapColor, int color, DeferredRegister.Blocks BLOCKS, DeferredRegister.Items ITEMS, String variantName){
-        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties, mapColor, color){
-            @Override
-            public MutableComponent getName() {
-                return Component.literal(
-                        Arrays.stream(variantName.split("_"))
-                                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                                .collect(Collectors.joining(" ")) + " Slime Block"
-                );
-
-            }
-        }, BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
+        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties, mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
         registerBlockItem(name,toReturn, ITEMS, variantName);
         return toReturn;
     }
 
     private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block, DeferredRegister.Items ITEMS, String variantName){
-        return ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties){
-            @Override
-            public Component getName(ItemStack pStack) {
-                return Component.literal(variantName.substring(0,1).toUpperCase() + variantName.substring(1) + " Slime Block");
-            }
-        });
+        return ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties));
     }
 
     private static void registerFluid(CustomVariants variants) {
         FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
                 new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
-                (supplier, properties) -> new LiquidBlock(supplier.get(), properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variants.getName() + "_block")))){
-                    @Override
-                    public MutableComponent getName() {
-                        return Component.literal("Molten " + Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" ")) + " Block");
-                    }
-                },
+                (supplier, properties) -> new LiquidBlock(supplier.get(), properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variants.getName() + "_block")))),
                 properties -> properties.explosionResistance(1000F).tickRate(20),
                 FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
     }

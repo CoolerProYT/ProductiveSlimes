@@ -68,16 +68,6 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipeList);
 //        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
 
-        registration.addItemStackInfo(
-                new ItemStack(ModItems.DIRT_SLIME_BALL.get()),
-                Component.literal("""
-                        §nDirt Slimeball§r
-
-                        This slimeball is dropped from Dirt Slime.
-
-                        Dirt Slime is obtainable by using dirt on a slime.""")
-        );
-
     }
 
     @Override
