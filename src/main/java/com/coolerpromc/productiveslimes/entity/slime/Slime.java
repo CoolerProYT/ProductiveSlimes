@@ -19,7 +19,7 @@ public class Slime extends BaseSlime {
     private final ItemLike growthItem;
 
     public Slime(EntityType<? extends net.minecraft.world.entity.monster.Slime> entityType, Level level, int cooldown, int color, ItemLike item, ItemLike growthItem) {
-        super(entityType, level, cooldown);
+        super(entityType, level, cooldown, growthItem);
         this.item = item;
         this.growthItem = growthItem;
     }
