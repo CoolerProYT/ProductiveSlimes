@@ -5,6 +5,7 @@
 		"1": "productiveslimes:block/dna_extractor_texture",
 		"particle": "productiveslimes:block/dna_extractor_texture"
 	},
+	"render_type": "minecraft:translucent",
 	"elements": [
 		{
 			"from": [0, 0, 0],

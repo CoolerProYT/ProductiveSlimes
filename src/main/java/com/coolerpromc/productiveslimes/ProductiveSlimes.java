@@ -235,9 +235,7 @@ public class ProductiveSlimes
                 registerAllSlimeBlockRenderLayer();
 
                 registerBlockRenderLayer(
-                        ModBlocks.DNA_EXTRACTOR.get(),
                         ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.DNA_SYNTHESIZER.get(),
                         ModBlocks.FLUID_TANK.get()
                 );
 
@@ -506,7 +504,7 @@ public class ProductiveSlimes
 
                     if (value instanceof Supplier<?> supplier) {
                         if (supplier.get() instanceof SlimeBlock slimeBlock) {
-                            ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.translucent());
+                            ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.cutout());
                         }
                     }
                 } catch (IllegalAccessException e) {
