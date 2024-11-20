@@ -107,11 +107,6 @@ public class ProductiveSlimes
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    @SubscribeEvent
-    public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
-    }
-
     private void commonSetup(final FMLCommonSetupEvent event)
     {
 
