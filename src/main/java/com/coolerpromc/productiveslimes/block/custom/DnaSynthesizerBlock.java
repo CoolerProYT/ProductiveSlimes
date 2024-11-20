@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 import com.coolerpromc.productiveslimes.block.entity.DnaSynthesizerBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
+import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class DnaSynthesizerBlock extends BaseEntityBlock {
+public class DnaSynthesizerBlock extends BaseEntityBlock implements TranslucentHighlightFix {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public DnaSynthesizerBlock(Properties pProperties) {
