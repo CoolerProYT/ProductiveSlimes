@@ -8,14 +8,22 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -58,6 +66,7 @@ public class CustomContentRegistry {
     private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
     private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
     private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static Map<String, byte[]> resourceData = new HashMap<>();
 
     public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
@@ -65,9 +74,31 @@ public class CustomContentRegistry {
 
         generateSlimeballTag();
         generateDnaTag();
-        generateResourcePack();
         generateCraftingRecipe();
         generateModRecipe();
+        generateResourcePackInMemory();
+
+        InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
+        PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
+        Pack pack = Pack.readMetaAndCreate(
+                resourcePack.location(),
+                new Pack.ResourcesSupplier() {
+                    @Override
+                    public PackResources openPrimary(PackLocationInfo location) {
+                        return resourcePack;
+                    }
+                    @Override
+                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+                        return resourcePack;
+                    }
+                },
+                PackType.CLIENT_RESOURCES,
+                new PackSelectionConfig(true, Pack.Position.TOP, true)
+        );
+        packRepository.addPackFinder((consumer) -> {
+            consumer.accept(pack);
+        });
+        Minecraft.getInstance().reloadResourcePacks();
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -345,50 +376,34 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void generateResourcePack(){
-        File blockState = new File("resourcepacks/productiveslimes/assets/blockstates");
-        File model = new File("resourcepacks/productiveslimes/assets/models");
-
-        try{
-            FileUtils.deleteDirectory(blockState);
-            FileUtils.deleteDirectory(model);
-        }
-        catch (IOException e){
-            System.out.println(e);
-        }
-
-        Path blockstatePath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/birch_slime_balls.json");
-        Path modelPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/birch_slime_balls.json");
-        Path langPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/lang/en_us.json");
-        Path mcmeta = Paths.get("resourcepacks/productiveslimes/pack.mcmeta");
-
-        Path blockstate;
-        Path blockModel;
-
-        try{
-            Files.createDirectories(blockstatePath.getParent());
-            Files.createDirectories(modelPath.getParent());
-            Files.createDirectories(langPath.getParent());
-
-            Files.write(mcmeta, ("{\n" +
-                    "  \"pack\": {\n" +
-                    "    \"pack_format\": 34,\n" +
-                    "    \"description\": \"Custom variants resources\"\n" +
-                    "  }\n" +
-                    "}}").getBytes());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
-
+    private static void generateResourcePackInMemory(){
         Map<String, String> langJson = new HashMap<>();
+
+        // Prepare pack.mcmeta content
+        String packMcmetaContent = "{\n" +
+                "  \"pack\": {\n" +
+                "    \"pack_format\": 34,\n" +
+                "    \"description\": \"Custom variants resources\"\n" +
+                "  }\n" +
+                "}";
+
+        resourceData.put("pack.mcmeta", packMcmetaContent.getBytes(StandardCharsets.UTF_8));
 
         for (CustomVariants variants : getLoadedTiers()){
             String id = variants.getName() + "_slime_block";
-            blockstate = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/blockstates/" + id + ".json");
-            blockModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/block/" + id + ".json");
 
+
+            String blockstatePath = "assets/productiveslimes/blockstates/" + id + ".json";
+            String modelPath = "assets/productiveslimes/models/block/" + id + ".json";
+            String bucketModelPath = "assets/productiveslimes/models/item/molten_" + variants.getName() + "_bucket.json";
+            String slimeBlockModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_block.json";
+            String dnaModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_dna.json";
+            String spawnEggModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_spawn_egg.json";
+            String slimeballModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slimeball.json";
+
+            // Generate formatted name
             String formattedName = Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" "));
+
             langJson.put("block.productiveslimes." + variants.getName() + "_slime_block", formattedName + " Slime Block");
             langJson.put("item.productiveslimes." + variants.getName()  + "_slime_spawn_egg", formattedName + " Slime Spawn Egg");
             langJson.put("item.productiveslimes." + variants.getName()  + "_slimeball", formattedName + " Slimeball");
@@ -399,196 +414,183 @@ public class CustomContentRegistry {
             langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
 
 
-            try{
-                Files.write(blockModel, ("{\n" +
-                        "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
-                        "}").getBytes());
+            String blockModelContent = "{\n" +
+                    "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
+                    "}";
 
-                Files.write(blockstate, ("{\n" +
-                        "  \"variants\": {\n" +
-                        "    \"\": {\n" +
-                        "      \"model\": \"productiveslimes:block/"+ id + "\"\n" +
-                        "    }\n" +
-                        "  }\n" +
-                        "}").getBytes());
-            }
-            catch (IOException e){
+            String blockstateContent = "{\n" +
+                    "  \"variants\": {\n" +
+                    "    \"\": {\n" +
+                    "      \"model\": \"productiveslimes:block/"+ id + "\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
 
-            }
+            String bucketModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"elements\": [\n" +
+                    "    {\n" +
+                    "      \"faces\": {\n" +
+                    "        \"down\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        },\n" +
+                    "        \"east\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        },\n" +
+                    "        \"north\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        },\n" +
+                    "        \"south\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        },\n" +
+                    "        \"up\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        },\n" +
+                    "        \"west\": {\n" +
+                    "          \"texture\": \"#layer1\",\n" +
+                    "          \"tintindex\": 1\n" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"from\": [\n" +
+                    "        0,\n" +
+                    "        0,\n" +
+                    "        0\n" +
+                    "      ],\n" +
+                    "      \"to\": [\n" +
+                    "        16,\n" +
+                    "        16,\n" +
+                    "        16\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/bucket\",\n" +
+                    "    \"layer1\": \"productiveslimes:item/bucket_fluid\"\n" +
+                    "  }\n" +
+                    "}";
+
+            String slimeBlockModelContent = "{\n" +
+                    "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
+                    "}";
+
+            String dnaModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"elements\": [\n" +
+                    "    {\n" +
+                    "      \"faces\": {\n" +
+                    "        \"down\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"east\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"north\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"south\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"up\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"west\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"from\": [\n" +
+                    "        0,\n" +
+                    "        0,\n" +
+                    "        0\n" +
+                    "      ],\n" +
+                    "      \"to\": [\n" +
+                    "        16,\n" +
+                    "        16,\n" +
+                    "        16\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/template_dna\"\n" +
+                    "  }\n" +
+                    "}";
+
+            String spawnEggModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/template_spawn_egg\"\n" +
+                    "}";
+
+            String slimeballModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"elements\": [\n" +
+                    "    {\n" +
+                    "      \"faces\": {\n" +
+                    "        \"down\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"east\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"north\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"south\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"up\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        },\n" +
+                    "        \"west\": {\n" +
+                    "          \"texture\": \"#layer0\",\n" +
+                    "          \"tintindex\": 0\n" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"from\": [\n" +
+                    "        0,\n" +
+                    "        0,\n" +
+                    "        0\n" +
+                    "      ],\n" +
+                    "      \"to\": [\n" +
+                    "        16,\n" +
+                    "        16,\n" +
+                    "        16\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/template_slimeball\"\n" +
+                    "  }\n" +
+                    "}";
+
+            resourceData.put(blockstatePath, blockstateContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(modelPath, blockModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(bucketModelPath, bucketModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(slimeBlockModelPath, slimeBlockModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(dnaModelPath, dnaModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(spawnEggModelPath, spawnEggModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(slimeballModelPath, slimeballModelContent.getBytes(StandardCharsets.UTF_8));
         }
 
-        modelPath = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/birch_slime_balls.json");
+        // Convert langJson map to JSON string
+        String langJsonContent = new GsonBuilder().setPrettyPrinting().create().toJson(langJson);
 
-        try{
-            Files.createDirectories(blockstatePath.getParent());
-            Files.createDirectories(modelPath.getParent());
-        }
-        catch (IOException e){
-            LOGGER.error("Failed to generate tag JSON file for tag: slime_balls", e);
-        }
-
-        for (CustomVariants variants : getLoadedTiers()){
-            Path bucketModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/" + "molten_" + variants.getName() + "_bucket" + ".json");
-            Path slimeBlockModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/" + variants.getName() + "_slime_block" + ".json");
-            Path dnaModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/" + variants.getName() + "_slime_dna" + ".json");
-            Path spawnEggModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/" + variants.getName() + "_slime_spawn_egg" + ".json");
-            Path slimeballModel = Paths.get("resourcepacks/productiveslimes/assets/productiveslimes/models/item/" + variants.getName() + "_slimeball" + ".json");
-
-            try{
-                Files.write(bucketModel, ("{\n" +
-                        "  \"parent\": \"minecraft:item/generated\",\n" +
-                        "  \"elements\": [\n" +
-                        "    {\n" +
-                        "      \"faces\": {\n" +
-                        "        \"down\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        },\n" +
-                        "        \"east\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        },\n" +
-                        "        \"north\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        },\n" +
-                        "        \"south\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        },\n" +
-                        "        \"up\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        },\n" +
-                        "        \"west\": {\n" +
-                        "          \"texture\": \"#layer1\",\n" +
-                        "          \"tintindex\": 1\n" +
-                        "        }\n" +
-                        "      },\n" +
-                        "      \"from\": [\n" +
-                        "        0,\n" +
-                        "        0,\n" +
-                        "        0\n" +
-                        "      ],\n" +
-                        "      \"to\": [\n" +
-                        "        16,\n" +
-                        "        16,\n" +
-                        "        16\n" +
-                        "      ]\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"textures\": {\n" +
-                        "    \"layer0\": \"productiveslimes:item/bucket\",\n" +
-                        "    \"layer1\": \"productiveslimes:item/bucket_fluid\"\n" +
-                        "  }\n" +
-                        "}").getBytes());
-
-                Files.write(slimeBlockModel, ("{\n" +
-                        "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
-                        "}").getBytes());
-
-                Files.write(dnaModel, ("{\n" +
-                        "  \"parent\": \"minecraft:item/generated\",\n" +
-                        "  \"elements\": [\n" +
-                        "    {\n" +
-                        "      \"faces\": {\n" +
-                        "        \"down\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"east\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"north\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"south\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"up\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"west\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        }\n" +
-                        "      },\n" +
-                        "      \"from\": [\n" +
-                        "        0,\n" +
-                        "        0,\n" +
-                        "        0\n" +
-                        "      ],\n" +
-                        "      \"to\": [\n" +
-                        "        16,\n" +
-                        "        16,\n" +
-                        "        16\n" +
-                        "      ]\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"textures\": {\n" +
-                        "    \"layer0\": \"productiveslimes:item/template_dna\"\n" +
-                        "  }\n" +
-                        "}").getBytes());
-
-                Files.write(spawnEggModel, ("{\n" +
-                        "  \"parent\": \"minecraft:item/template_spawn_egg\"\n" +
-                        "}").getBytes());
-
-                Files.write(slimeballModel, ("{\n" +
-                        "  \"parent\": \"minecraft:item/generated\",\n" +
-                        "  \"elements\": [\n" +
-                        "    {\n" +
-                        "      \"faces\": {\n" +
-                        "        \"down\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"east\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"north\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"south\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"up\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        },\n" +
-                        "        \"west\": {\n" +
-                        "          \"texture\": \"#layer0\",\n" +
-                        "          \"tintindex\": 0\n" +
-                        "        }\n" +
-                        "      },\n" +
-                        "      \"from\": [\n" +
-                        "        0,\n" +
-                        "        0,\n" +
-                        "        0\n" +
-                        "      ],\n" +
-                        "      \"to\": [\n" +
-                        "        16,\n" +
-                        "        16,\n" +
-                        "        16\n" +
-                        "      ]\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"textures\": {\n" +
-                        "    \"layer0\": \"productiveslimes:item/template_slimeball\"\n" +
-                        "  }\n" +
-                        "}").getBytes());
-            }
-            catch (IOException e){
-
-            }
-        }
+        // Add language file to resource data
+        String langFilePath = "assets/productiveslimes/lang/en_us.json";
+        resourceData.put(langFilePath, langJsonContent.getBytes(StandardCharsets.UTF_8));
     }
 
     public static void generateSlimeballTag(Path worldFolder){
@@ -677,7 +679,7 @@ public class CustomContentRegistry {
     }
 
     private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block, DeferredRegister.Items ITEMS, String variantName){
-        return ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties));
+        return ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
     private static void registerFluid(CustomVariants variants) {

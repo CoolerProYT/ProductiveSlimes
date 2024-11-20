@@ -107,37 +107,6 @@ public class ProductiveSlimes
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    public static void forceResourcePack(String packName) {
-        Minecraft mc = Minecraft.getInstance();
-        PackRepository repository = mc.getResourcePackRepository();
-
-        // Define the path for the resource pack folder
-        File resourcePackFolder = new File("resourcepacks/" + packName);
-
-        // Check if the folder exists in the resourcepacks directory
-        if (resourcePackFolder.exists() && resourcePackFolder.isDirectory()) {
-            // Find the resource pack by name in the repository
-            Pack resourcePack = repository.getPack("file/" + packName);
-            if (resourcePack != null) {
-                // Retrieve the current list of selected packs
-                List<String> selectedPacks = new ArrayList<>(repository.getSelectedIds());
-
-                // Add the resource pack if it's not already selected
-                if (!selectedPacks.contains(resourcePack.getId())) {
-                    selectedPacks.add(resourcePack.getId());
-                }
-
-                // Set the updated list of packs and reload
-                repository.setSelected(selectedPacks);
-                mc.reloadResourcePacks();
-            } else {
-                System.out.println("Resource pack not found in repository: " + packName);
-            }
-        } else {
-            System.out.println("Resource pack folder not found: " + packName);
-        }
-    }
-
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
         event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
@@ -241,8 +210,6 @@ public class ProductiveSlimes
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
-
-            forceResourcePack("productiveslimes");
         }
 
         @SubscribeEvent
@@ -491,7 +458,7 @@ public class ProductiveSlimes
 
         private static void registerBlockRenderLayer(Block... blocks) {
             for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
             }
         }
 
@@ -504,7 +471,7 @@ public class ProductiveSlimes
 
                     if (value instanceof Supplier<?> supplier) {
                         if (supplier.get() instanceof SlimeBlock slimeBlock) {
-                            ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.cutout());
+                            ItemBlockRenderTypes.setRenderLayer(slimeBlock, RenderType.translucent());
                         }
                     }
                 } catch (IllegalAccessException e) {
