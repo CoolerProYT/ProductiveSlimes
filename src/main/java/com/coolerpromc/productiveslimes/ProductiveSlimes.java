@@ -120,12 +120,7 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        Path worldFolder = event.getServer().getWorldPath(LevelResource.ROOT);
-
-        CustomContentRegistry.generateSlimeballTag(worldFolder);
-        CustomContentRegistry.generateDnaTag(worldFolder);
-        CustomContentRegistry.generateCraftingRecipe(worldFolder);
-        CustomContentRegistry.generateModRecipe(worldFolder);
+        CustomContentRegistry.handleDatapack(event.getServer());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -210,6 +205,8 @@ public class ProductiveSlimes
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
+
+            CustomContentRegistry.handleResourcePack();
         }
 
         @SubscribeEvent
