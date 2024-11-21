@@ -38,6 +38,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.DNA_SYNTHESIZER.get());
         dropSelf(ModBlocks.FLUID_TANK.get());
 
+        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT);
+        dropSelf(ModBlocks.SLIMY_DIRT.get());
+
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COPPER_SLIME_BLOCK.get());

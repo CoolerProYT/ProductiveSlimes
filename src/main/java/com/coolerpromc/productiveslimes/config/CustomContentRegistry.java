@@ -362,6 +362,7 @@ public class CustomContentRegistry {
         addPackMcmeta();
         generateSlimeballTag();
         generateDnaTag();
+        generateSlimeBlockLootTable();
         generateCraftingRecipe();
         generateModRecipe();
     }
@@ -411,6 +412,36 @@ public class CustomContentRegistry {
 
         String tagPath = "data/productiveslimes/tags/item/dna_item.json";
         dataPackResources.put(tagPath, jsonContent.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static void generateSlimeBlockLootTable(){
+        for (CustomVariants variants : getLoadedTiers()){
+            String lootTablePath = "data/productiveslimes/loot_tables/blocks/" + variants.getName() + "_slime_block.json";
+
+            String lootTable = "{\n" +
+                    "  \"type\": \"minecraft:block\",\n" +
+                    "  \"pools\": [\n" +
+                    "    {\n" +
+                    "      \"bonus_rolls\": 0.0,\n" +
+                    "      \"conditions\": [\n" +
+                    "        {\n" +
+                    "          \"condition\": \"minecraft:survives_explosion\"\n" +
+                    "        }\n" +
+                    "      ],\n" +
+                    "      \"entries\": [\n" +
+                    "        {\n" +
+                    "          \"type\": \"minecraft:item\",\n" +
+                    "          \"name\": \"productiveslimes:" + variants.getName() + "_slime_block\"\n" +
+                    "        }\n" +
+                    "      ],\n" +
+                    "      \"rolls\": 1.0\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"random_sequence\": \"productiveslimes:blocks/" + variants.getName() + "_slime_block\"\n" +
+                    "}";
+
+            dataPackResources.put(lootTablePath, lootTable.getBytes(StandardCharsets.UTF_8));
+        }
     }
 
     public static void generateCraftingRecipe(){

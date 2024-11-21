@@ -28,6 +28,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.FLUID_TANK.get())
                 .add(ModBlocks.CABLE.get());
 
+        this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.SLIMY_GRASS_BLOCK.get())
+                .add(ModBlocks.SLIMY_DIRT.get());
+
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.MELTING_STATION.get())
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())

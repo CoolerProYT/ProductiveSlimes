@@ -41,6 +41,11 @@ public class ModBlocks {
     public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank",
             () -> new FluidTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
+    public static final DeferredBlock<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block",
+            () -> new SlimyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)));
+
+    public static final DeferredBlock<Block> SLIMY_DIRT = registerBlock("slimy_dirt",
+            () -> new SlimyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)));
 
     public static final DeferredBlock<Block> DIRT_SLIME_BLOCK = registerBlock("dirt_slime_block",
             () -> new SlimeBlock(MapColor.DIRT, 0xF0866043));

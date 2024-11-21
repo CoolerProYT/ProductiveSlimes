@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.mojang.datafixers.util.Pair;
@@ -21,7 +20,7 @@ public class ModOverworldRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
         this.addModifiedVanillaOverworldBiomes(mapper, modifiedVanillaOverworldBuilder -> {
-            modifiedVanillaOverworldBuilder.replaceBiome(Biomes.FOREST, ModBiomes.SLIME_LAND);
+            modifiedVanillaOverworldBuilder.replaceBiome(Biomes.PLAINS, ModBiomes.SLIME_LAND);
         });
     }
-}*/
+}
