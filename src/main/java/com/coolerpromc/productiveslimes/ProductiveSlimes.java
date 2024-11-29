@@ -25,6 +25,7 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -99,6 +100,7 @@ public class ProductiveSlimes
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModDataComponents.register(modEventBus);
+        ModVillagers.register(modEventBus);
 
         ModTerrablender.registerBiomes();
 
