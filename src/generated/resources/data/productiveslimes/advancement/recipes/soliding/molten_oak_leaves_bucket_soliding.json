@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_air": {
+    "has_molten_oak_leaves_bucket": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:air"
+            "items": "productiveslimes:molten_oak_leaves_bucket"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:soliding/air_soliding"
+        "recipe": "productiveslimes:soliding/molten_oak_leaves_bucket_soliding"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_air"
+      "has_molten_oak_leaves_bucket"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:soliding/air_soliding"
+      "productiveslimes:soliding/molten_oak_leaves_bucket_soliding"
     ]
   }
 }
