@@ -6,6 +6,10 @@
     "productiveslimes:dna_extractor",
     "productiveslimes:dna_synthesizer",
     "productiveslimes:fluid_tank",
-    "productiveslimes:cable"
+    "productiveslimes:cable",
+    "productiveslimes:slimy_stone",
+    "productiveslimes:slimy_deepslate",
+    "productiveslimes:slimy_cobblestone",
+    "productiveslimes:slimy_cobbled_deepslate"
   ]
 }
