@@ -38,6 +38,14 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.DNA_SYNTHESIZER.get());
         dropSelf(ModBlocks.FLUID_TANK.get());
 
+        createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK);
+        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT);
+        dropSelf(ModBlocks.SLIMY_DIRT.get());
+        dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE);
+        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE);
+        dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
+        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COPPER_SLIME_BLOCK.get());
@@ -80,6 +88,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.COAL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.GRAVEL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.OAK_LEAVES_SLIME_BLOCK.get());
     }
 
     protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){

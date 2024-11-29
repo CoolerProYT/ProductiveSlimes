@@ -601,6 +601,20 @@ public class ModFluids {
             .slopeFindDistance(2).levelDecreasePerBlock(1)
             .block(ModFluids.MOLTEN_GRAVEL_BLOCK).bucket(ModFluids.MOLTEN_GRAVEL_BUCKET);
 
+    // Oak Leaves
+    public static final Supplier<FlowingFluid> SOURCE_MOLTEN_OAK_LEAVES = FLUIDS.register("source_molten_oak_leaves",
+            () -> new BaseFlowingFluid.Source(ModFluids.MOLTEN_OAK_LEAVES_PROPERTIES));
+    public static final Supplier<FlowingFluid> FLOWING_MOLTEN_OAK_LEAVES = FLUIDS.register("flowing_molten_oak_leaves",
+            () -> new BaseFlowingFluid.Flowing(ModFluids.MOLTEN_OAK_LEAVES_PROPERTIES));
+    public static final DeferredBlock<LiquidBlock> MOLTEN_OAK_LEAVES_BLOCK = ModBlocks.BLOCKS.registerBlock("molten_oak_leaves_block",
+            properties -> new LiquidBlock(ModFluids.SOURCE_MOLTEN_OAK_LEAVES.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable().setId(createKey("molten_oak_leaves_block"))), BlockBehaviour.Properties.of());
+    public static final DeferredItem<Item> MOLTEN_OAK_LEAVES_BUCKET = ModItems.ITEMS.registerItem("molten_oak_leaves_bucket",
+            properties -> new BucketItem(ModFluids.SOURCE_MOLTEN_OAK_LEAVES.get(), properties.craftRemainder(Items.BUCKET).stacksTo(64), 0xFF48b518));
+    public static final BaseFlowingFluid.Properties MOLTEN_OAK_LEAVES_PROPERTIES = new BaseFlowingFluid.Properties(
+            ModFluidTypes.MOLTEN_OAK_LEAVES_FLUID_TYPE, SOURCE_MOLTEN_OAK_LEAVES, FLOWING_MOLTEN_OAK_LEAVES)
+            .slopeFindDistance(2).levelDecreasePerBlock(1)
+            .block(ModFluids.MOLTEN_OAK_LEAVES_BLOCK).bucket(ModFluids.MOLTEN_OAK_LEAVES_BUCKET);
+
     public static ResourceKey createKey(String name) {
         return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name));
     }

@@ -6,7 +6,10 @@
   "mixins": [
   ],
   "client": [
-    "LevelRendererAccess"
+    "LevelRendererAccess",
+    "SlimeMixin",
+    "CustomMeleeAttackGoalMixin",
+    "CustomMoveTowardsTargetGoalMixin"
   ],
   "injectors": {
     "defaultRequire": 1

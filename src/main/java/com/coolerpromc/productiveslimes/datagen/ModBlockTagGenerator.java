@@ -19,6 +19,14 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        this.tag(BlockTags.DIRT)
+                .add(ModBlocks.SLIMY_GRASS_BLOCK.get())
+                .add(ModBlocks.SLIMY_DIRT.get());
+        this.tag(BlockTags.STONE_ORE_REPLACEABLES)
+                .add(ModBlocks.SLIMY_STONE.get());
+        this.tag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+                .add(ModBlocks.SLIMY_DEEPSLATE.get());
+
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.MELTING_STATION.get())
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())
@@ -26,7 +34,16 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.DNA_EXTRACTOR.get())
                 .add(ModBlocks.DNA_SYNTHESIZER.get())
                 .add(ModBlocks.FLUID_TANK.get())
-                .add(ModBlocks.CABLE.get());
+                .add(ModBlocks.CABLE.get())
+                .add(ModBlocks.CABLE.get())
+                .add(ModBlocks.SLIMY_STONE.get())
+                .add(ModBlocks.SLIMY_DEEPSLATE.get())
+                .add(ModBlocks.SLIMY_COBBLESTONE.get())
+                .add(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+
+        this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(ModBlocks.SLIMY_GRASS_BLOCK.get())
+                .add(ModBlocks.SLIMY_DIRT.get());
 
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(ModBlocks.MELTING_STATION.get())

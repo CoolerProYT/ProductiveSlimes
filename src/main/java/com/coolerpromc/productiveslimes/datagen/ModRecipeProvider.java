@@ -278,6 +278,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         slimeBlockToSlimeBall(output, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
         slimeBallToSlimeBlock(output, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
+        slimeBlockToSlimeBall(output, ModBlocks.OAK_LEAVES_SLIME_BLOCK, ModItems.OAK_LEAVES_SLIME_BALL);
+        slimeBallToSlimeBlock(output, ModItems.OAK_LEAVES_SLIME_BALL, ModBlocks.OAK_LEAVES_SLIME_BLOCK);
+
         //Melting Recipe
         meltingRecipe(output, ModBlocks.DIRT_SLIME_BLOCK, ModFluids.MOLTEN_DIRT_BUCKET, 2, 5);
         meltingRecipe(output, ModItems.DIRT_SLIME_BALL, ModFluids.MOLTEN_DIRT_BUCKET, 4, 1);
@@ -402,6 +405,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         meltingRecipe(output, ModBlocks.GRAVEL_SLIME_BLOCK, ModFluids.MOLTEN_GRAVEL_BUCKET, 2, 5);
         meltingRecipe(output, ModItems.GRAVEL_SLIME_BALL, ModFluids.MOLTEN_GRAVEL_BUCKET, 4, 1);
 
+        meltingRecipe(output, ModBlocks.OAK_LEAVES_SLIME_BLOCK, ModFluids.MOLTEN_OAK_LEAVES_BUCKET, 2, 5);
+        meltingRecipe(output, ModItems.OAK_LEAVES_SLIME_BALL, ModFluids.MOLTEN_OAK_LEAVES_BUCKET, 4, 1);
+
         //Soliding Recipe
         solidingRecipe(output, ModFluids.MOLTEN_DIRT_BUCKET, Items.DIRT, 1, 2);
         solidingRecipe(output, ModFluids.MOLTEN_STONE_BUCKET, Items.STONE, 1, 2);
@@ -444,6 +450,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         solidingRecipe(output, ModFluids.MOLTEN_CACTUS_BUCKET, Items.CACTUS, 1, 2);
         solidingRecipe(output, ModFluids.MOLTEN_COAL_BUCKET, Items.COAL, 1, 2);
         solidingRecipe(output, ModFluids.MOLTEN_GRAVEL_BUCKET, Items.GRAVEL, 1, 2);
+        solidingRecipe(output, ModFluids.MOLTEN_OAK_LEAVES_BUCKET, Items.OAK_LEAVES, 1, 2);
 
         dnaExtractingRecipe(output, Items.SLIME_BALL, ModItems.SLIME_DNA, 1, 0.9f);
         dnaExtractingRecipe(output, ModItems.DIRT_SLIME_BALL, ModItems.DIRT_SLIME_DNA, 1, 0.75f);
@@ -487,6 +494,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaExtractingRecipe(output, ModItems.CACTUS_SLIME_BALL, ModItems.CACTUS_SLIME_DNA, 1, 0.6f);
         dnaExtractingRecipe(output, ModItems.COAL_SLIME_BALL, ModItems.COAL_SLIME_DNA, 1, 0.65f);
         dnaExtractingRecipe(output, ModItems.GRAVEL_SLIME_BALL, ModItems.GRAVEL_SLIME_DNA, 1, 0.6f);
+        dnaExtractingRecipe(output, ModItems.OAK_LEAVES_SLIME_BALL, ModItems.OAK_LEAVES_SLIME_DNA, 1, 0.7f);
+
         //DNA Synthesizing Recipe For Getting Self
         dnaSynthesizingSelfRecipe(output, ModItems.DIRT_SLIME_SPAWN_EGG, 2, ModItems.DIRT_SLIME_DNA, ModItems.DIRT_SLIME_DNA, Items.DIRT);
         dnaSynthesizingSelfRecipe(output, ModItems.STONE_SLIME_SPAWN_EGG, 2, ModItems.STONE_SLIME_DNA, ModItems.STONE_SLIME_DNA, Items.STONE);
@@ -529,6 +538,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaSynthesizingSelfRecipe(output, ModItems.CACTUS_SLIME_SPAWN_EGG, 2, ModItems.CACTUS_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.CACTUS);
         dnaSynthesizingSelfRecipe(output, ModItems.COAL_SLIME_SPAWN_EGG, 2, ModItems.COAL_SLIME_DNA, ModItems.COAL_SLIME_DNA, Items.COAL_BLOCK);
         dnaSynthesizingSelfRecipe(output, ModItems.GRAVEL_SLIME_SPAWN_EGG, 2, ModItems.GRAVEL_SLIME_DNA, ModItems.GRAVEL_SLIME_DNA, Items.GRAVEL);
+        dnaSynthesizingSelfRecipe(output, ModItems.OAK_LEAVES_SLIME_SPAWN_EGG, 2, ModItems.OAK_LEAVES_SLIME_DNA, ModItems.OAK_LEAVES_SLIME_DNA, Items.OAK_LEAVES);
 
         //DNA Synthesizing Recipe For Getting New Egg
         dnaSynthesizingRecipe(output, ModItems.DIRT_SLIME_SPAWN_EGG, 4,ModItems.SLIME_DNA, ModItems.SLIME_DNA, Items.DIRT);
@@ -572,6 +582,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaSynthesizingRecipe(output, ModItems.BROWN_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.BROWN_MUSHROOM_BLOCK);
         dnaSynthesizingRecipe(output, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.RED_MUSHROOM_BLOCK);
         dnaSynthesizingRecipe(output, ModItems.CACTUS_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SLIME_DNA, Items.CACTUS);
+        dnaSynthesizingRecipe(output, ModItems.OAK_LEAVES_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.SLIME_DNA, Items.OAK_LEAVES);
     }
 
     public static final class Runner extends RecipeProvider.Runner {

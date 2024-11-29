@@ -11,6 +11,12 @@
   "block.productiveslimes.cable": "Cable",
   "block.productiveslimes.dna_synthesizer": "DNA Synthesizer",
   "block.productiveslimes.fluid_tank": "Fluid Tank",
+  "block.productiveslimes.slimy_grass_block": "Slimy Grass Block",
+  "block.productiveslimes.slimy_dirt": "Slimy Dirt",
+  "block.productiveslimes.slimy_stone": "Slimy Stone",
+  "block.productiveslimes.slimy_deepslate": "Slimy Deepslate",
+  "block.productiveslimes.slimy_cobblestone": "Slimy Cobblestone",
+  "block.productiveslimes.slimy_cobbled_deepslate": "Slimy Cobbled Deepslate",
 
   "block.productiveslimes.dirt_slime_block": "Dirt Slime Block",
   "block.productiveslimes.stone_slime_block": "Stone Slime Block",
@@ -54,6 +60,7 @@
   "block.productiveslimes.coal_slime_block": "Coal Slime Block",
   "block.productiveslimes.gravel_slime_block": "Gravel Slime Block",
   "block.productiveslimes.energy_slime_block": "Energy Slime Block",
+  "block.productiveslimes.oak_leaves_slime_block": "Oak Leaves Slime Block",
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
   "item.productiveslimes.energy_multiplier_upgrade": "Energy Multiplier Upgrade",
@@ -100,6 +107,7 @@
   "item.productiveslimes.coal_slime_spawn_egg": "Coal Slime Spawn Egg",
   "item.productiveslimes.gravel_slime_spawn_egg": "Gravel Slime Spawn Egg",
   "item.productiveslimes.energy_slime_spawn_egg": "Energy Slime Spawn Egg",
+  "item.productiveslimes.oak_leaves_slime_spawn_egg": "Oak Leaves Slime Spawn Egg",
 
   "item.productiveslimes.dirt_slimeball": "Dirt Slimeball",
   "item.productiveslimes.stone_slimeball": "Stone Slimeball",
@@ -143,6 +151,7 @@
   "item.productiveslimes.red_mushroom_slimeball": "Red Mushroom Slimeball",
   "item.productiveslimes.cactus_slimeball": "Cactus Slimeball",
   "item.productiveslimes.energy_slimeball": "Energy Slimeball",
+  "item.productiveslimes.oak_leaves_slimeball": "Oak Leaves Slimeball",
 
   "entity.productiveslimes.dirt_slime": "Dirt Slime",
   "entity.productiveslimes.stone_slime": "Stone Slime",
@@ -186,6 +195,7 @@
   "entity.productiveslimes.red_mushroom_slime": "Red Mushroom Slime",
   "entity.productiveslimes.cactus_slime": "Cactus Slime",
   "entity.productiveslimes.energy_slime": "Energy Slime",
+  "entity.productiveslimes.oak_leaves_slime": "Oak Leaves Slime",
 
   "item.productiveslimes.slime_dna": "Slime DNA",
   "item.productiveslimes.dirt_slime_dna": "Dirt Slime DNA",
@@ -229,6 +239,7 @@
   "item.productiveslimes.brown_mushroom_slime_dna": "Brown Mushroom Slime DNA",
   "item.productiveslimes.red_mushroom_slime_dna": "Red Mushroom Slime DNA",
   "item.productiveslimes.cactus_slime_dna": "Cactus Slime DNA",
+  "item.productiveslimes.oak_leaves_slime_dna": "Oak Leaves Slime DNA",
 
   "item.productiveslimes.molten_dirt_bucket": "Molten Dirt Bucket",
   "block.productiveslimes.molten_dirt_block": "Molten Dirt",
@@ -312,6 +323,8 @@
   "block.productiveslimes.molten_coal_block": "Molten Coal",
   "item.productiveslimes.molten_gravel_bucket": "Molten Gravel Bucket",
   "block.productiveslimes.molten_gravel_block": "Molten Gravel",
+  "item.productiveslimes.molten_oak_leaves_bucket": "Molten Oak Leaves Bucket",
+  "block.productiveslimes.molten_oak_leaves_block": "Molten Oak Leaves",
 
   "fluid_type.productiveslimes.molten_dirt_fluid": "Molten Dirt",
   "fluid_type.productiveslimes.molten_stone_fluid": "Molten Stone",
@@ -354,6 +367,7 @@
   "fluid_type.productiveslimes.molten_cactus_fluid": "Molten Cactus",
   "fluid_type.productiveslimes.molten_coal_fluid": "Molten Coal",
   "fluid_type.productiveslimes.molten_gravel_fluid": "Molten Gravel",
+  "fluid_type.productiveslimes.molten_oak_leaves_fluid": "Molten Oak Leaves",
 
   "tooltip.productiveslimes.energy_stored": "Energy Stored: ",
   "tooltip.productiveslimes.energy_usage": "Energy: %d / 10000 FE",
@@ -369,5 +383,7 @@
   "gui.productiveslimes.output_chance": "Output Chance: %s",
   "gui.productiveslimes.energy_stored": "Energy Stored: %d / %d FE",
 
-  "": ""
+  "": "",
+
+  "entity.minecraft.villager.productiveslimes.scientist": "Scientist"
 }

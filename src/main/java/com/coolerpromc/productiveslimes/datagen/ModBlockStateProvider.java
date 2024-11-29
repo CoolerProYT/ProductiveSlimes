@@ -27,6 +27,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithVariants(ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
         simpleBlockWithVariants(ModBlocks.FLUID_TANK.get(), "fluid_tank");
 
+        simpleBlockWithItem(ModBlocks.SLIMY_GRASS_BLOCK.get(), new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
+        blockWithItem(ModBlocks.SLIMY_DIRT);
+        blockWithItem(ModBlocks.SLIMY_STONE);
+        blockWithItem(ModBlocks.SLIMY_DEEPSLATE);
+        blockWithItem(ModBlocks.SLIMY_COBBLESTONE);
+        blockWithItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE);
+
         registerSlimeBlock(ModBlocks.DIRT_SLIME_BLOCK.get(), "dirt_slime_block");
         registerSlimeBlock(ModBlocks.STONE_SLIME_BLOCK.get(), "stone_slime_block");
         registerSlimeBlock(ModBlocks.COPPER_SLIME_BLOCK.get(), "copper_slime_block");
@@ -69,6 +76,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         registerSlimeBlock(ModBlocks.COAL_SLIME_BLOCK.get(), "coal_slime_block");
         registerSlimeBlock(ModBlocks.GRAVEL_SLIME_BLOCK.get(), "gravel_slime_block");
         registerSlimeBlock(ModBlocks.ENERGY_SLIME_BLOCK.get(), "energy_slime_block");
+        registerSlimeBlock(ModBlocks.OAK_LEAVES_SLIME_BLOCK.get(), "oak_leaves_slime_block");
     }
 
     private void registerSlimeBlock(Block block, String textureName){
