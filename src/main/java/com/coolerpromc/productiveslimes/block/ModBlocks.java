@@ -24,15 +24,15 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
 
-    public static final DeferredBlock<Block> MELTING_STATION = registerBlockEntity("melting_station", MeltingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> MELTING_STATION = registerBlock("melting_station", MeltingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
-    public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlockEntity("soliding_station", SolidingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station", SolidingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
-    public static final DeferredBlock<Block> ENERGY_GENERATOR = registerBlockEntity("energy_generator", EnergyGeneratorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> ENERGY_GENERATOR = registerBlock("energy_generator", EnergyGeneratorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
-    public static final DeferredBlock<Block> CABLE = registerBlockEntity("cable", CableBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> CABLE = registerBlock("cable", CableBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
-    public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlockEntity("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlock("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlockEntity("dna_synthesizer", DnaSynthesizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
     public static final DeferredBlock<Block> FLUID_TANK = registerBlockEntity("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
@@ -130,16 +130,16 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> OAK_LEAVES_SLIME_BLOCK = registerBlock("oak_leaves_slime_block", MapColor.COLOR_GREEN, 0xFF48b518);
 
-    private static DeferredBlock<Block> registerBlock(String name, MapColor mapColor, int color){
-        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name))).noOcclusion(), mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> ENERGY_SLIME_BLOCK = registerSlimeBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xF0ffff70);
+
+    private static DeferredBlock<Block> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends Block> func, BlockBehaviour.Properties properties){
+        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, func, properties);
         registerBlockItem(name,toReturn);
         return toReturn;
     }
 
-    private static DeferredBlock<Block> registerBlockEntity(String name, Function<BlockBehaviour.Properties, ? extends Block> block, BlockBehaviour.Properties properties){
-        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, block, properties);
-        registerBlockItem(name,toReturn);
-        return toReturn;
+    private static DeferredBlock<Block> registerSlimeBlock(String name, MapColor mapColor, int color){
+        return registerBlock(name, properties -> new SlimeBlock(properties, mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
     }
 
     private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block){
