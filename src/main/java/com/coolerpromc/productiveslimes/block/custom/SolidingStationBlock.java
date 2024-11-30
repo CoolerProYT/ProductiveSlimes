@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
+import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SolidingStationBlock extends BaseEntityBlock {
+public class SolidingStationBlock extends BaseEntityBlock implements TranslucentHighlightFix {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SolidingStationBlock(Properties pProperties) {
@@ -163,9 +164,9 @@ public class SolidingStationBlock extends BaseEntityBlock {
 
         if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
             int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-            pTooltip.add(Component.literal("Energy Stored: ")
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
-                    .append(Component.literal(energy + " / 10000 FE")
+                    .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
     }

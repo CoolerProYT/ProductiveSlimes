@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.*;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +32,11 @@ public class ModEntitiesEvent {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+
+        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = CustomContentRegistry.getSlimeForVariant(variant.getName());
+            event.put(slime.get(), BaseSlime.createAttributes().build());
         }
     }
 }

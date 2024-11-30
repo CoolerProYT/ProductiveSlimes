@@ -5,6 +5,7 @@
 		"0": "productiveslimes:block/dna_synthesizer_texture",
 		"particle": "productiveslimes:block/dna_synthesizer_texture"
 	},
+	"render_type": "minecraft:translucent",
 	"elements": [
 		{
 			"from": [0, 0, 0],

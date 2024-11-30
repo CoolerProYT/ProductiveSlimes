@@ -5,12 +5,15 @@ import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
+import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
+import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
-import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
@@ -21,21 +24,26 @@ import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
+import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import com.coolerpromc.productiveslimes.villager.ModVillagers;
+import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -48,9 +56,11 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import terrablender.api.SurfaceRuleManager;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
@@ -59,6 +69,11 @@ import java.util.function.Supplier;
 public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
+
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
+
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
         modEventBus.addListener(this::commonSetup);
@@ -67,16 +82,27 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+
+        ITEMS.register(modEventBus);
+        BLOCKS.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);
+
+        FluidResources.register(modEventBus);
+
         ModBlocks.register(modEventBus);
-        ModCreativeTabs.register(modEventBus);
-        ModEntities.register(modEventBus);
         ModItems.register(modEventBus);
+        ModEntities.register(modEventBus);
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModDataComponents.register(modEventBus);
+        ModVillagers.register(modEventBus);
+
+        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -84,13 +110,13 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-
+        CustomContentRegistry.handleDatapack(event.getServer());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -111,6 +137,7 @@ public class ProductiveSlimes
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_EXTRACTOR_BE.get(), DnaExtractorBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.SOLIDING_STATION_BE.get(), SolidingStationBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_SYNTHESIZER_BE.get(), DnaSynthesizerBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.FLUID_TANK_BE.get(), FluidTankBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
@@ -159,18 +186,36 @@ public class ProductiveSlimes
             EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a444b));
             EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
 
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
+            }
+
             event.enqueueWork(() -> {
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
 
                 registerBlockRenderLayer(
-                        ModBlocks.DNA_EXTRACTOR.get(),
                         ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.DNA_SYNTHESIZER.get()
+                        ModBlocks.FLUID_TANK.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
+
+            CustomContentRegistry.handleResourcePack();
+        }
+
+        @SubscribeEvent
+        public static void entitySpawnRestriction(RegisterSpawnPlacementsEvent event) {
+            event.register(ModEntities.DIRT_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> serverLevel.getBlockState(pos.below()).getBlock() == ModBlocks.SLIMY_GRASS_BLOCK.get(), RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        }
+
+        @SubscribeEvent
+        public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+            event.registerItem(
+                    new ModClientItemExtensions(),
+                    ModBlocks.FLUID_TANK.get().asItem()
+            );
         }
 
         @SubscribeEvent
@@ -225,6 +270,11 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            FluidResources.fluidList.forEach(fluid -> {
+                if (fluid.TYPE.get() instanceof ModBaseFluidType modBaseFluidType)
+                    event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
+            });
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Block event) {
@@ -247,6 +297,12 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    event.register((pState, pLevel, pPos, pTintIndex) -> block.getColor(), block);
                 }
             }
         }
@@ -275,6 +331,19 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    event.register((stack, tintIndex) -> {
+                        if (stack.getItem() instanceof BlockItem blockItem){
+                            if (blockItem.getBlock() instanceof SlimeBlock slimeBlock){
+                                return slimeBlock.getColor();
+                            }
+                        }
+                        return 0xFFFFFFFF;
+                    }, block.asItem());
+                }
+            }
         }
 
         public static void registerAllSlimeballColor(RegisterColorHandlersEvent.Item event) {
@@ -294,6 +363,12 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get() instanceof SlimeballItem item){
+                    event.register((stack, tintIndex) -> item.getColor(), item);
+                }
+            }
         }
 
         public static void registerAllSlimeDnaColor(RegisterColorHandlersEvent.Item event) {
@@ -311,6 +386,12 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getDnaItemForVariant(variant.getName()).get() instanceof DnaItem item){
+                    event.register((stack, tintIndex) -> item.getColor(), item);
                 }
             }
         }
@@ -340,6 +421,12 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value() instanceof BucketItem bucketItem){
+                    event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
+                }
+            }
         }
 
         public static void registerAllFluidRenderLayer() {
@@ -358,11 +445,18 @@ public class ProductiveSlimes
                     e.printStackTrace();
                 }
             }
+
+            FluidResources.fluidList.stream()
+                    .filter(fluid -> fluid.isTranslucent)
+                    .forEach(fluid -> {
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), RenderType.translucent());
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), RenderType.translucent());
+                    });
         }
 
         private static void registerBlockRenderLayer(Block... blocks) {
             for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
             }
         }
 
@@ -380,6 +474,12 @@ public class ProductiveSlimes
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                }
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
+                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.TRANSLUCENT);
                 }
             }
         }

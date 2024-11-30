@@ -88,5 +88,9 @@ public class ModCapabilities {
                         return be.getInputHandler();
                     }
                 });
+
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.FLUID_TANK_BE.get(),
+                (be, side) -> be.getFluidTank());
     }
 }

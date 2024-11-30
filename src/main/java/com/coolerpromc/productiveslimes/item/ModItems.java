@@ -61,6 +61,7 @@ public class ModItems {
     public static final DeferredItem<Item> COAL_SLIME_BALL = ITEMS.registerItem("coal_slimeball", properties -> new SlimeballItem(0xFF3b3d3b, properties), new Item.Properties());
     public static final DeferredItem<Item> GRAVEL_SLIME_BALL = ITEMS.registerItem("gravel_slimeball", properties -> new SlimeballItem(0xFF4a444b, properties), new Item.Properties());
     public static final DeferredItem<Item> ENERGY_SLIME_BALL = ITEMS.registerItem("energy_slimeball", properties -> new SlimeballItem(0xFFFFFF70, properties), new Item.Properties());
+    public static final DeferredItem<Item> OAK_LEAVES_SLIME_BALL = ITEMS.registerItem("oak_leaves_slimeball", properties -> new SlimeballItem(0xFF48b518, properties), new Item.Properties());
 
     public static final DeferredItem<Item> SLIME_DNA = ITEMS.registerItem("slime_dna", properties -> new DnaItem(0xFF7BC35C, properties), new Item.Properties());
     public static final DeferredItem<Item> DIRT_SLIME_DNA = ITEMS.registerItem("dirt_slime_dna", properties -> new DnaItem(0xFF866043, properties), new Item.Properties());
@@ -104,6 +105,7 @@ public class ModItems {
     public static final DeferredItem<Item> CACTUS_SLIME_DNA = ITEMS.registerItem("cactus_slime_dna", properties -> new DnaItem(0xFF476d21, properties), new Item.Properties());
     public static final DeferredItem<Item> COAL_SLIME_DNA = ITEMS.registerItem("coal_slime_dna", properties -> new DnaItem(0xFF3b3d3b, properties), new Item.Properties());
     public static final DeferredItem<Item> GRAVEL_SLIME_DNA = ITEMS.registerItem("gravel_slime_dna", properties -> new DnaItem(0xFF4a444b, properties), new Item.Properties());
+    public static final DeferredItem<Item> OAK_LEAVES_SLIME_DNA = ITEMS.registerItem("oak_leaves_slime_dna", properties -> new DnaItem(0xFF48b518, properties), new Item.Properties());
 
     public static final DeferredItem<Item> DIRT_SLIME_SPAWN_EGG = ITEMS.registerItem("dirt_slime_spawn_egg",
             properties -> new SpawnEggItem(ModEntities.DIRT_SLIME.get(), 0x5e3a1c, 0x885022, properties), new Item.Properties());
@@ -189,6 +191,8 @@ public class ModItems {
             properties -> new SpawnEggItem(ModEntities.GRAVEL_SLIME.get(), 0x4a444b, 0x2f2f2f, properties), new Item.Properties());
     public static final DeferredItem<Item> ENERGY_SLIME_SPAWN_EGG = ITEMS.registerItem("energy_slime_spawn_egg",
             properties -> new SpawnEggItem(ModEntities.ENERGY_SLIME.get(), 0xffff70, 0xFFFF00, properties), new Item.Properties());
+    public static final DeferredItem<Item> OAK_LEAVES_SLIME_SPAWN_EGG  = ITEMS.registerItem("oak_leaves_slime_spawn_egg",
+            properties -> new SpawnEggItem(ModEntities.ENERGY_SLIME.get(), 0xFF48b518, 0xFF48b518, properties), new Item.Properties());
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

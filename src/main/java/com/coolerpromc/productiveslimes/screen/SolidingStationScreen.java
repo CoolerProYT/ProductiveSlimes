@@ -56,7 +56,7 @@ public class SolidingStationScreen extends AbstractContainerScreen<SolidingStati
         int energyStored = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
 
-        Component text = Component.literal("Energy: " + energyStored + " / " + maxEnergy + " FE");
+        Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
             pGuiGraphics.renderTooltip(this.font, text, pMouseX, pMouseY);
         }

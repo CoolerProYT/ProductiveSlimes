@@ -2,13 +2,15 @@ package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.item.custom.DnaItem;
+import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -39,19 +41,63 @@ public class ModCreativeTabs {
                             }
                         }
 
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()));
+                        }
+
                         // Use reflection to get all the fields from ModItems
                         for (Field field : ModItems.class.getFields()) {
                             try {
                                 // Ensure the field is a Supplier of Item (for items)
                                 if (Supplier.class.isAssignableFrom(field.getType())) {
                                     Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Item) {
+                                    if (supplier.get() instanceof SlimeballItem) {
                                         pOutput.accept((Item) supplier.get()); // Add item to the output
                                     }
                                 }
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()));
+                        }
+
+                        for (Field field : ModItems.class.getFields()) {
+                            try {
+                                // Ensure the field is a Supplier of Item (for items)
+                                if (Supplier.class.isAssignableFrom(field.getType())) {
+                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
+                                    if (supplier.get() instanceof DnaItem) {
+                                        pOutput.accept((Item) supplier.get()); // Add item to the output
+                                    }
+                                }
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()));
+                        }
+
+                        for (Field field : ModItems.class.getFields()) {
+                            try {
+                                // Ensure the field is a Supplier of Item (for items)
+                                if (Supplier.class.isAssignableFrom(field.getType())) {
+                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
+                                    if (supplier.get() instanceof SpawnEggItem) {
+                                        pOutput.accept((Item) supplier.get()); // Add item to the output
+                                    }
+                                }
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()));
                         }
 
                         // Use reflection to get all the fields from ModFluids
@@ -67,6 +113,10 @@ public class ModCreativeTabs {
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
+                        }
+
+                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value());
                         }
                     }).build());
 
