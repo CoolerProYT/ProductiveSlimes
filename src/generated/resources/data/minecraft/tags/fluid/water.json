@@ -79,6 +79,8 @@
     "productiveslimes:source_molten_cactus",
     "productiveslimes:flowing_molten_cactus",
     "productiveslimes:source_molten_coal",
-    "productiveslimes:flowing_molten_coal"
+    "productiveslimes:flowing_molten_coal",
+    "productiveslimes:source_molten_oak_leaves",
+    "productiveslimes:flowing_molten_oak_leaves"
   ]
 }

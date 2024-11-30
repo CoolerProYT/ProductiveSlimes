@@ -1,10 +1,14 @@
 package com.coolerpromc.productiveslimes.event;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
+import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.slime.*;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -31,6 +35,11 @@ public class ModEntitiesEvent {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+
+        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = CustomContentRegistry.getSlimeForVariant(variant.getName());
+            event.put(slime.get(), BaseSlime.createAttributes().build());
         }
     }
 }

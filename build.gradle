@@ -3,7 +3,13 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id "net.neoforged.gradle.mixin" version "7.0.142"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+mixin {
+    config "${mod_id}.mixins.json"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -21,6 +27,10 @@ group = mod_group_id
 repositories {
     mavenLocal()
 
+    maven {
+        name = "Forge"
+        url = "https://maven.minecraftforge.net"
+    }
     maven { // TOP
         url "https://maven.k-4u.nl"
     }
@@ -128,8 +138,10 @@ dependencies {
 //
 //    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
 //
-//    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
-//
+    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
+
+    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
+
     implementation "curse.maven:jade-324717:${jade_id}"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
@@ -164,7 +176,9 @@ tasks.withType(ProcessResources).configureEach {
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description
+            mod_description        : mod_description,
+            terrablender_version   : terrablender_version,
+            terrablender_version_range: terrablender_version_range,
     ]
     inputs.properties replaceProperties
 

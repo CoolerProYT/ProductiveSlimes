@@ -62,7 +62,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.CACTUS_SLIME_BALL.get())
                 .add(ModItems.COAL_SLIME_BALL.get())
                 .add(ModItems.GRAVEL_SLIME_BALL.get())
-                .add(ModItems.ENERGY_SLIME_BALL.get());
+                .add(ModItems.ENERGY_SLIME_BALL.get())
+                .add(ModItems.OAK_LEAVES_SLIME_BALL.get());
 
         tag(ModTags.Items.DNA_ITEM)
                 .add(ModItems.DIRT_SLIME_DNA.get())
@@ -106,6 +107,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.CACTUS_SLIME_DNA.get())
                 .add(ModItems.COAL_SLIME_DNA.get())
                 .add(ModItems.GRAVEL_SLIME_DNA.get())
-                .add(ModItems.SLIME_DNA.get());
+                .add(ModItems.SLIME_DNA.get())
+                .add(ModItems.OAK_LEAVES_SLIME_DNA.get());
     }
 }

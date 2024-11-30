@@ -9,22 +9,26 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public abstract class BaseSlime extends Slime {
     private static final EntityDataAccessor<ItemStack> RESOURCE =
@@ -35,11 +39,14 @@ public abstract class BaseSlime extends Slime {
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
 
     public final int growthTime;
+    public final Item growthItem;
 
-    public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown) {
+    public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown, ItemLike growthItem) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
         growthTime = cooldown;
+        this.growthItem = growthItem.asItem();
+        this.goalSelector.addGoal(1, new BaseSlime.SlimeFollowGoal(this, this.growthItem));
     }
 
     @Override
@@ -64,7 +71,7 @@ public abstract class BaseSlime extends Slime {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new BaseSlime.SlimeFloatGoal(this));
+        this.goalSelector.addGoal(2, new BaseSlime.SlimeFloatGoal(this));
         this.goalSelector.addGoal(3, new BaseSlime.SlimeRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new BaseSlime.SlimeKeepOnJumpingGoal(this));
     }
@@ -116,6 +123,25 @@ public abstract class BaseSlime extends Slime {
         pBuilder.define(RESOURCE, ItemStack.EMPTY);
         pBuilder.define(ID_SIZE, 1);
         pBuilder.define(GROWTH_COUNTER, 0);
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
+        return new Vec3(0.0, (double)dimensions.height() - 0.015625 * (double)this.getSize() * (double)partialTick, 0.0);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (ID_SIZE.equals(key)) {
+            this.refreshDimensions();
+            this.setYRot(this.yHeadRot);
+            this.yBodyRot = this.yHeadRot;
+            if (this.isInWater() && this.random.nextInt(20) == 0) {
+                this.doWaterSplashEffect();
+            }
+        }
+
+        super.onSyncedDataUpdated(key);
     }
 
     public abstract void dropResource();
@@ -200,23 +226,13 @@ public abstract class BaseSlime extends Slime {
     public void refreshDimensions() {
         double width = 0.6F * (float)this.getSize();
         double height = 0.8F * (float)this.getSize();
-        this.setBoundingBox(new AABB(-width / 2.0D, 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
+        this.setBoundingBox(new AABB(this.getSize(), 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
     }
 
-    public void transformSlime(Player pPlayer, InteractionHand pHand, BaseSlime originalSlime, BaseSlime newSlime){
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if (!pPlayer.getAbilities().instabuild){
-            itemStack.shrink(originalSlime.getSize() + 1);
-        }
-
-        if (newSlime != null) {
-            newSlime.moveTo(originalSlime.getX(), originalSlime.getY(), originalSlime.getZ(), originalSlime.getYRot(), originalSlime.getXRot());
-            newSlime.setSize(originalSlime.getSize(), true);
-            this.level().addFreshEntity(newSlime);
-        }
-
-        originalSlime.discard();
+    @Override
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+//        return EntityDimensions.scalable((float) (0.5 * (float)this.getSize()), (float) (0.5 * (float)this.getSize()));
+        return super.getDefaultDimensions(pose).scalable(this.getSize(), this.getSize());
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
@@ -367,6 +383,83 @@ public abstract class BaseSlime extends Slime {
             }
 
             ((BaseSlime.SlimeMoveControl)this.slime.getMoveControl()).setDirection(this.chosenDegrees, false);
+        }
+    }
+
+    static class SlimeFollowGoal extends Goal {
+        private final Slime slime;
+        private int growTiredTimer;
+        private final Item targetItem; // The item to check for
+
+        public SlimeFollowGoal(Slime slime, Item targetItem) {
+            this.slime = slime;
+            this.targetItem = targetItem;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        private boolean isPlayerHoldingTargetItem(Player player) {
+            return player.getMainHandItem().is(targetItem) || player.getOffhandItem().is(targetItem);
+        }
+
+        private boolean isInRange(Player player) {
+            return this.slime.distanceTo(player) <= 8.0F;
+        }
+
+        private Player findNearestPlayerWithItem() {
+            return this.slime.level().getNearestPlayer(
+                    TargetingConditions.forNonCombat().selector(livingEntity -> {
+                        if (livingEntity instanceof Player player) {
+                            return isPlayerHoldingTargetItem(player) && this.slime.getSize() < 4 && isInRange(player);
+                        }
+                        return false;
+                    }),
+                    this.slime.getX(),
+                    this.slime.getY(),
+                    this.slime.getZ()
+            );
+        }
+
+        @Override
+        public boolean canUse() {
+            Player player = findNearestPlayerWithItem();
+            if (player == null) {
+                return false;
+            }
+            this.slime.setTarget(player);
+            return this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
+        }
+
+        @Override
+        public void start() {
+            this.growTiredTimer = reducedTickDelay(300);
+            super.start();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            Player player = findNearestPlayerWithItem();
+            if (player == null) {
+                return false;
+            }
+            this.slime.setTarget(player);
+            return --this.growTiredTimer > 0;
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            Player player = findNearestPlayerWithItem();
+            if (player != null) {
+                this.slime.lookAt(player, 10.0F, 10.0F);
+            }
+
+            if (this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl slimeMoveControl) {
+                slimeMoveControl.setDirection(this.slime.getYRot(), false);
+            }
         }
     }
 }

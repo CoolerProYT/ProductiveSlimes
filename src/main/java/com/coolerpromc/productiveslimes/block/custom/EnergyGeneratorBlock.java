@@ -172,9 +172,9 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
 
         if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
             int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-            pTooltip.add(Component.literal("Energy Stored: ")
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
-                    .append(Component.literal(energy + " / 10000 FE")
+                    .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
     }
