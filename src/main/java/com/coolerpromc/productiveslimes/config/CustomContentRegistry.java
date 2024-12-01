@@ -556,7 +556,7 @@ public class CustomContentRegistry {
 
     private static void generateSlimeBlockLootTable(){
         for (CustomVariants variants : getLoadedTiers()){
-            String lootTablePath = "data/productiveslimes/loot_tables/blocks/" + variants.getName() + "_slime_block.json";
+            String lootTablePath = "data/productiveslimes/loot_table/blocks/" + variants.getName() + "_slime_block.json";
             String lootTable = "{\n" +
                     "  \"type\": \"minecraft:block\",\n" +
                     "  \"pools\": [\n" +
@@ -590,15 +590,13 @@ public class CustomContentRegistry {
     }
 
     private static void slimeballToSlimeBlock(String name){
-        String recipePath = "data/minecraft/recipes/" + name + "_slimeball_to_block.json";
+        String recipePath = "data/minecraft/recipe/" + name + "_slimeball_to_block.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shaped\",\n" +
                 "  \"category\": \"building\",\n" +
                 "  \"key\": {\n" +
-                "    \"A\": {\n" +
-                "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
-                "    }\n" +
+                "    \"A\": \"productiveslimes:" + name + "_slimeball\"\n" +
                 "  },\n" +
                 "  \"pattern\": [\n" +
                 "    \"AAA\",\n" +
@@ -615,15 +613,13 @@ public class CustomContentRegistry {
     }
 
     private static void slimeBlockToSlimeball(String name){
-        String recipePath = "data/minecraft/recipes/" + name + "_slime_block_to_ball.json";
+        String recipePath = "data/minecraft/recipe/" + name + "_slime_block_to_ball.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shapeless\",\n" +
                 "  \"category\": \"misc\",\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                "    }\n" +
+                "    \"productiveslimes:" + name + "_slime_block\"\n" +
                 "  ],\n" +
                 "  \"result\": {\n" +
                 "    \"count\": 9,\n" +
@@ -719,15 +715,13 @@ public class CustomContentRegistry {
     }
 
     private static void dnaExtracting(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slimeball_dna_extracting.json";
+        String recipePath = "data/productiveslimes/recipe/" + variant.getName() + "_slimeball_dna_extracting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_extracting\",\n" +
                 "  \"energy\": 400,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + variant.getName() + "_slimeball\"\n" +
-                "    }\n" +
+                "    \"productiveslimes:" + variant.getName() + "_slimeball\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 1,\n" +
                 "  \"output\": [\n" +
