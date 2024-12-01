@@ -6,7 +6,7 @@ This is a simple mod for Minecraft that adds a new type of slime to the game. Th
 
 Progress Tracking: [Trello](https://trello.com/b/Xtij0qyG/productive-slimes)
 
-Official Wiki: [Wiki](https://coolerproyt.github.io/ProductiveSlimes-Wiki/)
+Official Wiki (WIP): [Wiki](https://coolerproyt.github.io/ProductiveSlimes-Wiki/#/Home)
 
 ## Compatability
 - JEI
