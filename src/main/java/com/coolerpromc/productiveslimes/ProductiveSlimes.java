@@ -138,6 +138,7 @@ public class ProductiveSlimes
                     .collect(Collectors.toList());
             serverPlayer.awardRecipes(modRecipes);
         }
+        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

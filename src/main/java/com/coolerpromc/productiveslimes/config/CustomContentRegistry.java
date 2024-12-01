@@ -511,7 +511,7 @@ public class CustomContentRegistry {
     private static void addPackMcmeta() {
         String packMcmetaContent = "{\n" +
                 "  \"pack\": {\n" +
-                "    \"pack_format\": 10,\n" + // Adjust pack_format according to Minecraft version
+                "    \"pack_format\": 57,\n" + // Adjust pack_format according to Minecraft version
                 "    \"description\": \"Productive Slimes Generated Data Pack\"\n" +
                 "  }\n" +
                 "}";
@@ -642,15 +642,13 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBlock(String name){
-        String recipePath = "data/productiveslimes/recipes/" + name + "_slime_block_melting.json";
+        String recipePath = "data/productiveslimes/recipe/melting/" + name + "_slime_block_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
                 "  \"energy\": 200,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                "    }\n" +
+                "      \"productiveslimes:" + name + "_slime_block\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 2,\n" +
                 "  \"output\": [\n" +
@@ -665,15 +663,13 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBall(String name){
-        String recipePath = "data/productiveslimes/recipes/" + name + "_slimeball_melting.json";
+        String recipePath = "data/productiveslimes/recipe/melting/" + name + "_slimeball_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
                 "  \"energy\": 200,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
-                "    }\n" +
+                "      \"productiveslimes:" + name + "_slimeball\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 4,\n" +
                 "  \"output\": [\n" +
@@ -688,15 +684,13 @@ public class CustomContentRegistry {
     }
 
     private static void solidingRecipe(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/molten_" + variant.getName() + "_bucket_soliding.json";
+        String recipePath = "data/productiveslimes/recipe/soliding/molten_" + variant.getName() + "_bucket_soliding.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:soliding\",\n" +
                 "  \"energy\": 200,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:molten_" + variant.getName() + "_bucket\"\n" +
-                "    }\n" +
+                "      \"productiveslimes:molten_" + variant.getName() + "_bucket\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 1,\n" +
                 "  \"output\": [\n" +
@@ -715,7 +709,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaExtracting(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/" + variant.getName() + "_slimeball_dna_extracting.json";
+        String recipePath = "data/productiveslimes/recipe/dna_extracting/" + variant.getName() + "_slimeball_dna_extracting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_extracting\",\n" +
@@ -741,21 +735,15 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizingSelf(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
+        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
                 "  \"energy\": 600,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
-                "    }\n" +
+                "      \"productiveslimes:" + variant.getName() + "_slime_dna\",\n" +
+                "      \"productiveslimes:" + variant.getName() + "_slime_dna\",\n" +
+                "      \"" + variant.getSynthesizingInputItem() + "\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 2,\n" +
                 "  \"output\": [\n" +
@@ -770,21 +758,15 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizing(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
+        String recipePath = "data/productiveslimes/recipe/dna_synthesizer/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
                 "  \"energy\": 600,\n" +
                 "  \"ingredients\": [\n" +
-                "    {\n" +
-                "      \"item\": \"" + variant.getSynthesizingInputDna1() + "\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"item\": \"" + variant.getSynthesizingInputDna2() + "\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"item\": \"" + variant.getSynthesizingInputItem() + "\"\n" +
-                "    }\n" +
+                        variant.getSynthesizingInputDna1() + "\",\n" +
+                        variant.getSynthesizingInputDna2() + "\",\n" +
+                        variant.getSynthesizingInputItem() + "\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 4,\n" +
                 "  \"output\": [\n" +
