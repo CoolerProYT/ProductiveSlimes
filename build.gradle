@@ -125,7 +125,7 @@ dependencies {
     implementation "dev.architectury:architectury-neoforge:${architectury_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-    implementation  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
