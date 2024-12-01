@@ -764,9 +764,9 @@ public class CustomContentRegistry {
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
                 "  \"energy\": 600,\n" +
                 "  \"ingredients\": [\n" +
-                        variant.getSynthesizingInputDna1() + "\",\n" +
-                        variant.getSynthesizingInputDna2() + "\",\n" +
-                        variant.getSynthesizingInputItem() + "\"\n" +
+                "  \"" + variant.getSynthesizingInputDna1() + "\",\n" +
+                "  \"" + variant.getSynthesizingInputDna2() + "\",\n" +
+                "  \"" + variant.getSynthesizingInputItem() + "\"\n" +
                 "  ],\n" +
                 "  \"inputCount\": 4,\n" +
                 "  \"output\": [\n" +
