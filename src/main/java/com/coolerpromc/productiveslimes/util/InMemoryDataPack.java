@@ -75,7 +75,7 @@ public class InMemoryDataPack implements PackResources {
         Set<String> namespaces = new HashSet<>();
         resources.keySet().forEach(key -> {
             if (key.startsWith("data/")) {
-                String[] parts = key.substring("data/".length()).split("/", 2);
+                String[] parts = key.substring("data/".length()).split("/", 4);
                 if (parts.length > 1) {
                     namespaces.add(parts[0]);
                 }
