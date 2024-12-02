@@ -132,12 +132,6 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            List<RecipeHolder<?>> modRecipes = serverPlayer.server.getRecipeManager().getRecipes().stream()
-                    .filter(recipe -> recipe.id().location().getNamespace().equals(ProductiveSlimes.MODID))
-                    .collect(Collectors.toList());
-            serverPlayer.awardRecipes(modRecipes);
-        }
         event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
     }
 

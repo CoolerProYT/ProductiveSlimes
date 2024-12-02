@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class DnaExtractingRecipeDisplay extends BasicDisplay {
-    private int energy;
-    private float outputChance;
-    private int inputCount;
+    private final int energy;
+    private final float outputChance;
+    private final int inputCount;
 
     public static final DisplaySerializer<DnaExtractingRecipeDisplay> SERIALIZER = DisplaySerializer.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -31,8 +31,7 @@ public class DnaExtractingRecipeDisplay extends BasicDisplay {
                     EntryIngredient.codec().listOf().fieldOf("output").forGetter(DnaExtractingRecipeDisplay::getOutputEntries),
                     Codec.INT.fieldOf("inputCount").forGetter(DnaExtractingRecipeDisplay::getInputCount),
                     Codec.INT.fieldOf("energy").forGetter(DnaExtractingRecipeDisplay::getEnergy),
-                    Codec.FLOAT.fieldOf("output_chance").forGetter(DnaExtractingRecipeDisplay::getOutputChance),
-                    ResourceLocation.CODEC.optionalFieldOf("location").forGetter(DnaExtractingRecipeDisplay::getDisplayLocation)
+                    Codec.FLOAT.fieldOf("output_chance").forGetter(DnaExtractingRecipeDisplay::getOutputChance)
             ).apply(instance, DnaExtractingRecipeDisplay::new)),
             StreamCodec.composite(
                     EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
@@ -45,8 +44,6 @@ public class DnaExtractingRecipeDisplay extends BasicDisplay {
                     DnaExtractingRecipeDisplay::getEnergy,
                     ByteBufCodecs.FLOAT,
                     DnaExtractingRecipeDisplay::getOutputChance,
-                    ByteBufCodecs.optional(ResourceLocation.STREAM_CODEC),
-                    DnaExtractingRecipeDisplay::getDisplayLocation,
                     DnaExtractingRecipeDisplay::new
             )
     );
@@ -60,8 +57,8 @@ public class DnaExtractingRecipeDisplay extends BasicDisplay {
         inputCount = recipe.value().getInputCount();
     }
 
-    public DnaExtractingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int inputCount, int energy, float outputChance, Optional<ResourceLocation> location) {
-        super(input, output, location);
+    public DnaExtractingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int inputCount, int energy, float outputChance) {
+        super(input, output);
         this.energy = energy;
         this.outputChance = outputChance;
         this.inputCount = inputCount;
