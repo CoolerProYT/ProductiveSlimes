@@ -19,7 +19,10 @@ Official Wiki: [Wiki](https://coolerproyt.github.io/ProductiveSlimes-Wiki/#/Home
 - **1.2.1**
   - Changes
     - Added REI compat
+    - Added Guidebook and Energy Multiplier Upgrade to Creative Tab
     - Removed Lake Placed Feature in Slime Land to avoid crash on chunk loading
+  - Fixes
+    - Fixed custom variants recipe, tags not working
 - **1.2.0**
   - Changes
     - Added `Fluid Tank`, `Slimy Grass Block`, `Slimy Dirt`, `Oak Leaves Slime`, `Slimy Stone` , `Slimy Deepslate`
