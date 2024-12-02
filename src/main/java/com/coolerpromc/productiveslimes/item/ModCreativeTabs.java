@@ -26,6 +26,9 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
+                        pOutput.accept(ModItems.GUIDEBOOK);
+                        pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+
                         // Use reflection to get all the fields from ModBlocks
                         for (Field field : ModBlocks.class.getFields()) {
                             try {

@@ -416,7 +416,7 @@ public class CustomContentRegistry {
 
     private static void generateSlimeBlockLootTable(){
         for (CustomVariants variants : getLoadedTiers()){
-            String lootTablePath = "data/productiveslimes/loot_tables/blocks/" + variants.getName() + "_slime_block.json";
+            String lootTablePath = "data/productiveslimes/loot_table/blocks/" + variants.getName() + "_slime_block.json";
 
             String lootTable = "{\n" +
                     "  \"type\": \"minecraft:block\",\n" +
@@ -452,7 +452,7 @@ public class CustomContentRegistry {
     }
 
     private static void slimeballToSlimeBlock(String name){
-        String recipePath = "data/minecraft/recipes/" + name + "_slimeball_to_block.json";
+        String recipePath = "data/minecraft/recipe/" + name + "_slimeball_to_block.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shaped\",\n" +
@@ -477,7 +477,7 @@ public class CustomContentRegistry {
     }
 
     private static void slimeBlockToSlimeball(String name){
-        String recipePath = "data/minecraft/recipes/" + name + "_slime_block_to_ball.json";
+        String recipePath = "data/minecraft/recipe/" + name + "_slime_block_to_ball.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shapeless\",\n" +
@@ -508,7 +508,7 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBlock(String name){
-        String recipePath = "data/productiveslimes/recipes/" + name + "_slime_block_melting.json";
+        String recipePath = "data/productiveslimes/recipe/melting/" + name + "_slime_block_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
@@ -531,7 +531,7 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBall(String name){
-        String recipePath = "data/productiveslimes/recipes/" + name + "_slimeball_melting.json";
+        String recipePath = "data/productiveslimes/recipe/melting" + name + "_slimeball_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
@@ -554,7 +554,7 @@ public class CustomContentRegistry {
     }
 
     private static void solidingRecipe(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/molten_" + variant.getName() + "_bucket_soliding.json";
+        String recipePath = "data/productiveslimes/recipe/soliding/molten_" + variant.getName() + "_bucket_soliding.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:soliding\",\n" +
@@ -581,7 +581,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaExtracting(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slimeball_dna_extracting.json";
+        String recipePath = "data/productiveslimes/recipe/dna_extracting/" + variant.getName() + "_slimeball_dna_extracting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_extracting\",\n" +
@@ -609,7 +609,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizingSelf(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
+        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
@@ -638,7 +638,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizing(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipes/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
+        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +

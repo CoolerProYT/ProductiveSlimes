@@ -60,6 +60,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -124,6 +125,11 @@ public class ProductiveSlimes
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
+    }
+
+    @SubscribeEvent
+    public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
+        event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
