@@ -43,8 +43,8 @@ public class ModBiomes {
 
         biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.SLIME_TREE));
 
-        biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_DIRT));
-        biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_STONE));
+        /*biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_DIRT));
+        biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_STONE));*/
 
 
         globalOverworldGeneration(biomeBuilder);
