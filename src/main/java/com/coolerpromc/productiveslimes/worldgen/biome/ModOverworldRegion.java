@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.mojang.datafixers.util.Pair;
@@ -23,4 +24,4 @@ public class ModOverworldRegion extends Region {
             modifiedVanillaOverworldBuilder.replaceBiome(Biomes.DESERT, ModBiomes.SLIME_LAND);
         });
     }
-}
+}*/

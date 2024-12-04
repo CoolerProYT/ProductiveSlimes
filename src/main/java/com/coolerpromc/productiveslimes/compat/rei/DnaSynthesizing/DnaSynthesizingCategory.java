@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -105,3 +106,4 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
         return 83;
     }
 }
+*/

@@ -1,12 +1,13 @@
 package com.coolerpromc.productiveslimes.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import org.jetbrains.annotations.Nullable;
@@ -69,18 +70,28 @@ public class InMemoryResourcePack implements PackResources {
         // Nothing to close
     }
     @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
-        if ("pack".equals(serializer.getMetadataSectionName())) {
+    public <T> T getMetadataSection(MetadataSectionType<T> sectionType) throws IOException {
+        if ("pack".equals(sectionType.name())) { // Check the section name
             IoSupplier<InputStream> supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {
                 try (InputStream stream = supplier.get()) {
+                    // Parse the JSON using Gson
                     JsonObject json = new Gson().fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class);
-                    return serializer.fromJson(json.getAsJsonObject("pack"));
+
+                    // Deserialize the JSON using the Codec from the MetadataSectionType
+                    return sectionType.codec()
+                            .parse(JsonOps.INSTANCE, json.getAsJsonObject("pack"))
+                            .resultOrPartial(error -> {
+                                // Log or handle errors here
+                                System.err.println("Error parsing metadata section: " + error);
+                            })
+                            .orElse(null); // Return null if parsing fails
                 }
             }
         }
         return null;
     }
+
     @Override
     public PackLocationInfo location() {
         return new PackLocationInfo("productiveslimes", Component.literal("In Memory Pack"),

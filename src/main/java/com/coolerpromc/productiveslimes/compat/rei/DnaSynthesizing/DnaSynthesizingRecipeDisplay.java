@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
@@ -81,4 +82,4 @@ public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
     public @Nullable DisplaySerializer<? extends Display> getSerializer() {
         return SERIALIZER;
     }
-}
+}*/

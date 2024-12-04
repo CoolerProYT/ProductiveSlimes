@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -8,4 +9,4 @@ public class ModTerrablender {
     public static void registerBiomes() {
         Regions.register(new ModOverworldRegion(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimy_dimension"), 5));
     }
-}
+}*/

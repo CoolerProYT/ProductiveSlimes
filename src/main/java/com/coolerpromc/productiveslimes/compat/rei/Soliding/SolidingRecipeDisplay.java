@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
 import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingCategory;
@@ -81,4 +82,4 @@ public class SolidingRecipeDisplay extends BasicDisplay {
     public @Nullable DisplaySerializer<? extends Display> getSerializer() {
         return SERIALIZER;
     }
-}
+}*/

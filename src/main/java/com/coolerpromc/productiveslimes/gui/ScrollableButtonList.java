@@ -15,8 +15,7 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
     private final int margin;
 
     public ScrollableButtonList(Minecraft minecraft, int width, int height, int top, int x, int itemHeight) {
-        super(minecraft, width, height, top, itemHeight + 2);
-        super.setRenderHeader(false, 0);
+        super(minecraft, width, height, top, itemHeight + 2, 0);
         super.setX(x);
         this.margin = 2;
     }
@@ -27,7 +26,7 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
     }
 
     @Override
-    protected int getScrollbarPosition() {
+    protected int scrollBarX() {
         return this.getX() + 22;
     }
 

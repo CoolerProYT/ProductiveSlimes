@@ -29,6 +29,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.*;
@@ -211,7 +212,7 @@ public class CustomContentRegistry {
     private static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(itemName, properties -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), properties));
+        DeferredItem<Item> item = ITEMS.registerItem(itemName, properties -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), properties));
 
         registeredSpawnEggItems.put(itemId, item);
     }
@@ -307,6 +308,12 @@ public class CustomContentRegistry {
             String spawnEggModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_spawn_egg.json";
             String slimeballModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slimeball.json";
 
+            String itemsBucketPath = "assets/productiveslimes/items/molten_" + variants.getName() + "_bucket.json";
+            String itemsSlimeBlockPath = "assets/productiveslimes/items/" + variants.getName() + "_slime_block.json";
+            String itemsDnaPath = "assets/productiveslimes/items/" + variants.getName() + "_slime_dna.json";
+            String itemsSpawnEggPath = "assets/productiveslimes/items/" + variants.getName() + "_slime_spawn_egg.json";
+            String itemsSlimeballPath = "assets/productiveslimes/items/" + variants.getName() + "_slimeball.json";
+
             // Generate formatted name
             String formattedName = Arrays.stream(variants.getName().split("_")).map(word -> word.substring(0, 1).toUpperCase() + word.substring(1)).collect(Collectors.joining(" "));
 
@@ -318,7 +325,6 @@ public class CustomContentRegistry {
             langJson.put("block.productiveslimes." + "molten_" + variants.getName() + "_block", "Molten " + formattedName);
             langJson.put("item.productiveslimes." + "molten_" + variants.getName() + "_bucket", "Molten " + formattedName + " Bucket");
             langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
-
 
             String blockModelContent = "{\n" +
                     "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
@@ -334,46 +340,6 @@ public class CustomContentRegistry {
 
             String bucketModelContent = "{\n" +
                     "  \"parent\": \"minecraft:item/generated\",\n" +
-                    "  \"elements\": [\n" +
-                    "    {\n" +
-                    "      \"faces\": {\n" +
-                    "        \"down\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        },\n" +
-                    "        \"east\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        },\n" +
-                    "        \"north\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        },\n" +
-                    "        \"south\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        },\n" +
-                    "        \"up\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        },\n" +
-                    "        \"west\": {\n" +
-                    "          \"texture\": \"#layer1\",\n" +
-                    "          \"tintindex\": 1\n" +
-                    "        }\n" +
-                    "      },\n" +
-                    "      \"from\": [\n" +
-                    "        0,\n" +
-                    "        0,\n" +
-                    "        0\n" +
-                    "      ],\n" +
-                    "      \"to\": [\n" +
-                    "        16,\n" +
-                    "        16,\n" +
-                    "        16\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  ],\n" +
                     "  \"textures\": {\n" +
                     "    \"layer0\": \"productiveslimes:item/bucket\",\n" +
                     "    \"layer1\": \"productiveslimes:item/bucket_fluid\"\n" +
@@ -386,46 +352,6 @@ public class CustomContentRegistry {
 
             String dnaModelContent = "{\n" +
                     "  \"parent\": \"minecraft:item/generated\",\n" +
-                    "  \"elements\": [\n" +
-                    "    {\n" +
-                    "      \"faces\": {\n" +
-                    "        \"down\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"east\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"north\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"south\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"up\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"west\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        }\n" +
-                    "      },\n" +
-                    "      \"from\": [\n" +
-                    "        0,\n" +
-                    "        0,\n" +
-                    "        0\n" +
-                    "      ],\n" +
-                    "      \"to\": [\n" +
-                    "        16,\n" +
-                    "        16,\n" +
-                    "        16\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  ],\n" +
                     "  \"textures\": {\n" +
                     "    \"layer0\": \"productiveslimes:item/template_dna\"\n" +
                     "  }\n" +
@@ -437,48 +363,81 @@ public class CustomContentRegistry {
 
             String slimeballModelContent = "{\n" +
                     "  \"parent\": \"minecraft:item/generated\",\n" +
-                    "  \"elements\": [\n" +
-                    "    {\n" +
-                    "      \"faces\": {\n" +
-                    "        \"down\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"east\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"north\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"south\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"up\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        },\n" +
-                    "        \"west\": {\n" +
-                    "          \"texture\": \"#layer0\",\n" +
-                    "          \"tintindex\": 0\n" +
-                    "        }\n" +
-                    "      },\n" +
-                    "      \"from\": [\n" +
-                    "        0,\n" +
-                    "        0,\n" +
-                    "        0\n" +
-                    "      ],\n" +
-                    "      \"to\": [\n" +
-                    "        16,\n" +
-                    "        16,\n" +
-                    "        16\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  ],\n" +
                     "  \"textures\": {\n" +
                     "    \"layer0\": \"productiveslimes:item/template_slimeball\"\n" +
+                    "  }\n" +
+                    "}";
+
+            String itemsBucketContent = "{\n" +
+                    "  \"model\": {\n" +
+                    "    \"type\": \"minecraft:model\",\n" +
+                    "    \"model\": \"productiveslimes:item/molten_" + variants.getName() + "_bucket\",\n" +
+                    "    \"tints\": [\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": -1\n" +
+                    "      },\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      }\n" +
+                    "    ]\n" +
+                    "  }\n" +
+                    "}";
+
+            String itemsSlimeBlockContent = "{\n" +
+                    "  \"model\": {\n" +
+                    "    \"type\": \"minecraft:model\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + variants.getName() + "_slime_block\",\n" +
+                    "    \"tints\": [\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      }\n" +
+                    "    ]\n" +
+                    "  }\n" +
+                    "}";
+
+            String itemsDnaContent = "{\n" +
+                    "  \"model\": {\n" +
+                    "    \"type\": \"minecraft:model\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + variants.getName() + "_slime_dna\",\n" +
+                    "    \"tints\": [\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      }\n" +
+                    "    ]\n" +
+                    "  }\n" +
+                    "}";
+
+            String itemsSpawnEggContent = "{\n" +
+                    "  \"model\": {\n" +
+                    "    \"type\": \"minecraft:model\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + variants.getName() + "_slime_spawn_egg\",\n" +
+                    "    \"tints\": [\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      },\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      }\n" +
+                    "    ]\n" +
+                    "  }\n" +
+                    "}";
+
+            String itemsSlimeballContent = "{\n" +
+                    "  \"model\": {\n" +
+                    "    \"type\": \"minecraft:model\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + variants.getName() + "_slimeball\",\n" +
+                    "    \"tints\": [\n" +
+                    "      {\n" +
+                    "        \"type\": \"minecraft:constant\",\n" +
+                    "        \"value\": " + ARGB.opaque(variants.getColor()) + "\n" +
+                    "      }\n" +
+                    "    ]\n" +
                     "  }\n" +
                     "}";
 
@@ -489,6 +448,11 @@ public class CustomContentRegistry {
             resourceData.put(dnaModelPath, dnaModelContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(spawnEggModelPath, spawnEggModelContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(slimeballModelPath, slimeballModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(itemsBucketPath, itemsBucketContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(itemsSlimeBlockPath, itemsSlimeBlockContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(itemsDnaPath, itemsDnaContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(itemsSpawnEggPath, itemsSpawnEggContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(itemsSlimeballPath, itemsSlimeballContent.getBytes(StandardCharsets.UTF_8));
         }
 
         // Convert langJson map to JSON string

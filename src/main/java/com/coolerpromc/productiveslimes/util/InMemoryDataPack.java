@@ -1,12 +1,13 @@
 package com.coolerpromc.productiveslimes.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
@@ -75,23 +76,33 @@ public class InMemoryDataPack implements PackResources {
         });
         return namespaces;
     }
+
+    @org.jetbrains.annotations.Nullable
     @Override
-    public void close() {
-        // Nothing to close
-    }
-    @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
-        if ("pack".equals(serializer.getMetadataSectionName())) {
+    public <T> T getMetadataSection(MetadataSectionType<T> sectionType) throws IOException {
+        if ("pack".equals(sectionType.name())) { // Use name() method to get the section name
             IoSupplier<InputStream> supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {
                 try (InputStream stream = supplier.get()) {
                     JsonObject json = new Gson().fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class);
-                    return serializer.fromJson(json.getAsJsonObject("pack"));
+                    // Use the Codec from the sectionType to deserialize the JSON object
+                    return sectionType.codec().parse(JsonOps.INSTANCE, json.getAsJsonObject("pack"))
+                            .resultOrPartial(error -> {
+                                System.err.println("Failed to parse metadata section: " + error);
+                            })
+                            .orElse(null);
                 }
             }
         }
         return null;
     }
+
+
+    @Override
+    public void close() {
+        // Nothing to close
+    }
+
     @Override
     public PackLocationInfo location() {
         return new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
@@ -106,6 +117,7 @@ public class InMemoryDataPack implements PackResources {
                     }
                 }, Optional.empty());
     }
+
     @Override
     public String packId() {
         return "productiveslimes_datapack";

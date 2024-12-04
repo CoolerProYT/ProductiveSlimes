@@ -177,7 +177,9 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
             ItemStack stack = new ItemStack(this);
             ImmutableFluidStack immutableFluidStack = new ImmutableFluidStack(fluidTankBlockEntity.getFluidStack().copy());
 
-            stack.set(ModDataComponents.FLUID_STACK.get(), immutableFluidStack);
+            if (immutableFluidStack.fluidStack() != FluidStack.EMPTY) {
+                stack.set(ModDataComponents.FLUID_STACK.get(), immutableFluidStack);
+            }
 
             drops.clear();
             drops.add(stack);

@@ -3,7 +3,6 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -202,44 +201,20 @@ public class ModItemModelProvider extends ItemModelProvider {
     private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"))
-                .element()
-                .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
-                .face(Direction.UP).texture("#layer0").tintindex(0).end()
-                .face(Direction.NORTH).texture("#layer0").tintindex(0).end()
-                .face(Direction.SOUTH).texture("#layer0").tintindex(0).end()
-                .face(Direction.WEST).texture("#layer0").tintindex(0).end()
-                .face(Direction.EAST).texture("#layer0").tintindex(0).end()
-                .end();
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"));
     }
 
     private ItemModelBuilder dnaItem(DeferredItem<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"))
-                .element()
-                .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
-                .face(Direction.UP).texture("#layer0").tintindex(0).end()
-                .face(Direction.NORTH).texture("#layer0").tintindex(0).end()
-                .face(Direction.SOUTH).texture("#layer0").tintindex(0).end()
-                .face(Direction.WEST).texture("#layer0").tintindex(0).end()
-                .face(Direction.EAST).texture("#layer0").tintindex(0).end()
-                .end();
+                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"));
     }
 
     private ItemModelBuilder bucketItem(DeferredItem<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
                 .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket"))
-                .texture("layer1", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket_fluid"))
-                .element()
-                .face(Direction.DOWN).texture("#layer1").tintindex(1).end()
-                .face(Direction.UP).texture("#layer1").tintindex(1).end()
-                .face(Direction.NORTH).texture("#layer1").tintindex(1).end()
-                .face(Direction.SOUTH).texture("#layer1").tintindex(1).end()
-                .face(Direction.WEST).texture("#layer1").tintindex(1).end()
-                .face(Direction.EAST).texture("#layer1").tintindex(1).end()
-                .end();
+                .texture("layer1", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket_fluid"));
     }
 
     private ItemModelBuilder simpleItem(DeferredItem<Item> item){

@@ -93,7 +93,7 @@ runs {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
     }
 
-    data {
+    clientData {
         // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
         // workingDirectory project.file('run-data')
 
@@ -122,10 +122,10 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+    /*implementation "dev.architectury:architectury-neoforge:${architectury_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"*/
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -141,9 +141,9 @@ dependencies {
 //
 //    runtimeOnly("mekanism:Mekanism:${mekanism_version}")
 
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
+//    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 //
-    implementation "curse.maven:jade-324717:${jade_id}"
+//    implementation "curse.maven:jade-324717:${jade_id}"
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar

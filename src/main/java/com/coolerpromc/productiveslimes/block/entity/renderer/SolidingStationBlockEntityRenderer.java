@@ -74,7 +74,7 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(stillTexture);
         int tintColor = color;
 
         float height = 0.8f;

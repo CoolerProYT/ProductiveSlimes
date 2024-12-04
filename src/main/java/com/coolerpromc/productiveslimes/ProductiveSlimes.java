@@ -19,28 +19,18 @@ import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.item.custom.BucketItem;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
-import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import com.coolerpromc.productiveslimes.util.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
+//import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -57,6 +47,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
@@ -64,13 +55,10 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import terrablender.api.SurfaceRuleManager;
+//import terrablender.api.SurfaceRuleManager;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -109,7 +97,7 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
+//        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -117,7 +105,7 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
@@ -222,49 +210,38 @@ public class ProductiveSlimes
         }
 
         @SubscribeEvent
-        public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-            event.registerItem(
-                    new ModClientItemExtensions(),
-                    ModBlocks.FLUID_TANK.get().asItem()
-            );
+        public static void onClientExtensions(RegisterClientExtensionsEvent event) {
+            registerAllFluidType(event);
         }
 
         @SubscribeEvent
-        public static void onClientExtensions(RegisterClientExtensionsEvent event) {
-            registerAllFluidType(event);
+        public static void onRegisterColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_tint"), FluidTankTint.MAP_CODEC);
+        }
+
+        @SubscribeEvent
+        public static void onRegisterConditionalItemModelProperty(RegisterConditionalItemModelPropertyEvent event) {
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_empty"), FluidTankProperty.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_3k"), FluidTankProperty3k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_6k"), FluidTankProperty6k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_9k"), FluidTankProperty9k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_12k"), FluidTankProperty12k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_15k"), FluidTankProperty15k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_18k"), FluidTankProperty18k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_21k"), FluidTankProperty21k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_24k"), FluidTankProperty24k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_27k"), FluidTankProperty27k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_30k"), FluidTankProperty30k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_33k"), FluidTankProperty33k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_36k"), FluidTankProperty36k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_40k"), FluidTankProperty40k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_45k"), FluidTankProperty45k.MAP_CODEC);
         }
 
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Block event) {
             registerAllSlimeBlockColor(event);
         }
-
-        @SubscribeEvent
-        public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event) {
-            registerAllSlimeballColor(event);
-            registerAllSlimeDnaColor(event);
-            registerAllBucketColor(event);
-            registerAllSlimeBlockColor(event);
-        }
-
-        /*public static void registerAllSlimeEntityRenderer(){
-            Field[] fields = ModEntities.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof DeferredHolder<?, ?> holder && holder.get() instanceof EntityType<?> entityType) {
-                        Integer color = ModEntities.SLIME_COLORS.get(entityType);
-                        if (color != null) {
-                            EntityRenderers.register((EntityType<? extends BaseSlime>) entityType, pContext -> new BaseSlimeRenderer(pContext, color.intValue()));
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
 
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
             Field[] fields = ModFluidTypes.class.getFields();
@@ -314,128 +291,6 @@ public class ProductiveSlimes
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
                     event.register((pState, pLevel, pPos, pTintIndex) -> block.getColor(), block);
-                }
-            }
-        }
-
-        public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Item event) {
-            Field[] fields = ModBlocks.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof Supplier<?> supplier) {
-                        Block block = (Block) supplier.get();
-                        if (block instanceof SlimeBlock) {
-                            event.register((itemStack, pTintIndex) -> {
-                                if (itemStack.getItem() instanceof BlockItem blockItem) {
-                                    if (blockItem.getBlock() instanceof SlimeBlock slimeBlock) {
-                                        return slimeBlock.getColor();
-                                    }
-                                }
-                                return 0xFFFFFFFF; // Default no color
-                            }, block.asItem());
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
-                    event.register((stack, tintIndex) -> {
-                        if (stack.getItem() instanceof BlockItem blockItem){
-                            if (blockItem.getBlock() instanceof SlimeBlock slimeBlock){
-                                return slimeBlock.getColor();
-                            }
-                        }
-                        return 0xFFFFFFFF;
-                    }, block.asItem());
-                }
-            }
-        }
-
-        public static void registerAllSlimeballColor(RegisterColorHandlersEvent.Item event) {
-            Field[] fields = ModItems.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof Supplier<?> supplier) {
-                        Item item = (Item) supplier.get();
-                        if (item instanceof SlimeballItem) {
-                            event.register((stack, tintIndex) -> ((SlimeballItem) item).getColor(), item);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get() instanceof SlimeballItem item){
-                    event.register((stack, tintIndex) -> item.getColor(), item);
-                }
-            }
-        }
-
-        public static void registerAllSlimeDnaColor(RegisterColorHandlersEvent.Item event) {
-            Field[] fields = ModItems.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof Supplier<?> supplier) {
-                        Item item = (Item) supplier.get();
-                        if (item instanceof DnaItem) {
-                            event.register((stack, tintIndex) -> ((DnaItem) item).getColor(), item);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (CustomContentRegistry.getDnaItemForVariant(variant.getName()).get() instanceof DnaItem item){
-                    event.register((stack, tintIndex) -> item.getColor(), item);
-                }
-            }
-        }
-
-        public static void registerAllBucketColor(RegisterColorHandlersEvent.Item event) {
-            Field[] fields = ModFluids.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof Supplier<?> supplier) {
-                        if (supplier.get() instanceof BucketItem) {
-                            Item item = (Item) supplier.get();
-                            event.register((itemStack, pTintIndex) -> {
-                                if (itemStack.getItem() instanceof BucketItem bucketItem) {
-                                    if (pTintIndex == 1) {
-                                        return bucketItem.getColor();
-                                    }
-                                }
-
-                                return 0xFFFFFFFF; // Default no color
-                            }, item);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value() instanceof BucketItem bucketItem){
-                    event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
             }
         }

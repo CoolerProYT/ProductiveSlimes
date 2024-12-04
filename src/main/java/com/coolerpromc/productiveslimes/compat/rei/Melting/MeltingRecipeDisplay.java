@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
 import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingRecipeDisplay;
@@ -77,3 +78,4 @@ public class MeltingRecipeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 }
+*/
