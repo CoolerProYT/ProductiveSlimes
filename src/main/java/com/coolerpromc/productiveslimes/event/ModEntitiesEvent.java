@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.*;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,6 +33,11 @@ public class ModEntitiesEvent {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+
+        for (String name : ModTierLists.TIER_NAMES){
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(name);
+            event.put(slime.get(), BaseSlime.createAttributes().build());
         }
 
         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

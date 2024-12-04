@@ -1,14 +1,15 @@
 {
   "values": [
+    "productiveslimes:energy_slimeball",
     "productiveslimes:dirt_slimeball",
     "productiveslimes:stone_slimeball",
     "productiveslimes:copper_slimeball",
     "productiveslimes:iron_slimeball",
     "productiveslimes:gold_slimeball",
     "productiveslimes:diamond_slimeball",
+    "productiveslimes:netherite_slimeball",
     "productiveslimes:lapis_slimeball",
     "productiveslimes:redstone_slimeball",
-    "productiveslimes:netherite_slimeball",
     "productiveslimes:oak_slimeball",
     "productiveslimes:sand_slimeball",
     "productiveslimes:andesite_slimeball",
@@ -32,7 +33,7 @@
     "productiveslimes:soul_soil_slimeball",
     "productiveslimes:blackstone_slimeball",
     "productiveslimes:basalt_slimeball",
-    "productiveslimes:endstone_slimeball",
+    "productiveslimes:end_stone_slimeball",
     "productiveslimes:quartz_slimeball",
     "productiveslimes:glowstone_slimeball",
     "productiveslimes:amethyst_slimeball",
@@ -41,7 +42,6 @@
     "productiveslimes:cactus_slimeball",
     "productiveslimes:coal_slimeball",
     "productiveslimes:gravel_slimeball",
-    "productiveslimes:energy_slimeball",
     "productiveslimes:oak_leaves_slimeball"
   ]
 }

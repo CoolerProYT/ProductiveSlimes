@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_endstone_slimeball": {
+    "has_molten_end_stone_bucket": {
       "conditions": {
         "items": [
           {
-            "items": "productiveslimes:endstone_slimeball"
+            "items": "productiveslimes:molten_end_stone_bucket"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:dna_extracting/endstone_slimeball_dna_extracting"
+        "recipe": "productiveslimes:soliding/molten_end_stone_bucket_soliding"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_endstone_slimeball"
+      "has_molten_end_stone_bucket"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:dna_extracting/endstone_slimeball_dna_extracting"
+      "productiveslimes:soliding/molten_end_stone_bucket_soliding"
     ]
   }
 }

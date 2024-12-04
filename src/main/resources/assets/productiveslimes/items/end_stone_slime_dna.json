@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "productiveslimes:item/endstone_slime_block",
+    "model": "productiveslimes:item/end_stone_slime_dna",
     "tints": [
       {
         "type": "minecraft:constant",

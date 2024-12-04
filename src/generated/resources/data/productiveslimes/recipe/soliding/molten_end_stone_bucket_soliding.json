@@ -2,7 +2,7 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": [
-    "productiveslimes:molten_endstone_bucket"
+    "productiveslimes:molten_end_stone_bucket"
   ],
   "inputCount": 1,
   "output": [
