@@ -4,7 +4,7 @@
   "ingredients": [
     "productiveslimes:mud_slime_dna",
     "productiveslimes:cactus_slime_dna",
-    "minecraft:red_mushroom_block"
+    "minecraft:red_mushroom"
   ],
   "inputCount": 4,
   "output": [

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_egg": {
+    "has_end_stone_slime_block": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:egg"
+            "items": "productiveslimes:end_stone_slime_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:dna_synthesizing/endstone_slime_spawn_egg_dna_synthesizing_self"
+        "recipe": "productiveslimes:melting/end_stone_slime_block_melting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_egg"
+      "has_end_stone_slime_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:dna_synthesizing/endstone_slime_spawn_egg_dna_synthesizing_self"
+      "productiveslimes:melting/end_stone_slime_block_melting"
     ]
   }
 }

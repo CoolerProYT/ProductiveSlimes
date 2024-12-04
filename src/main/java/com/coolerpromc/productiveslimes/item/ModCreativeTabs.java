@@ -3,9 +3,7 @@ package com.coolerpromc.productiveslimes.item;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -44,78 +42,46 @@ public class ModCreativeTabs {
                             }
                         }
 
+                        for (String name : ModTierLists.TIER_NAMES){
+                            pOutput.accept(ModTierLists.getBlockByName(name).get());
+                        }
+
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()));
                         }
 
-                        // Use reflection to get all the fields from ModItems
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof SlimeballItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.ENERGY_SLIME_BALL);
+
+                        for (String name : ModTierLists.TIER_NAMES){
+                            pOutput.accept(ModTierLists.getSlimeballItemByName(name).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()));
                         }
 
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof DnaItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.SLIME_DNA);
+
+                        for (String name : ModTierLists.TIER_NAMES){
+                            pOutput.accept(ModTierLists.getDnaItemByName(name).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()));
                         }
 
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof SpawnEggItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG);
+
+                        for (String name : ModTierLists.TIER_NAMES){
+                            pOutput.accept(ModTierLists.getSpawnEggItemByName(name).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()));
                         }
 
-                        // Use reflection to get all the fields from ModFluids
-                        for (Field field : ModFluids.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Item) {
-                                        pOutput.accept((Item) supplier.get()); // Add items to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        for (String name : ModTierLists.TIER_NAMES){
+                            pOutput.accept(ModTierLists.getBucketItemByName(name).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

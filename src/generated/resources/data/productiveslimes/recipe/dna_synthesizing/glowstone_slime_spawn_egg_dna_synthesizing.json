@@ -4,7 +4,7 @@
   "ingredients": [
     "productiveslimes:gold_slime_dna",
     "productiveslimes:netherrack_slime_dna",
-    "minecraft:glowstone"
+    "minecraft:glowstone_dust"
   ],
   "inputCount": 4,
   "output": [

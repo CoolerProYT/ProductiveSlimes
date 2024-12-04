@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:dna_synthesizing/endstone_slime_spawn_egg_dna_synthesizing"
+        "recipe": "productiveslimes:dna_synthesizing/end_stone_slime_spawn_egg_dna_synthesizing_self"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:dna_synthesizing/endstone_slime_spawn_egg_dna_synthesizing"
+      "productiveslimes:dna_synthesizing/end_stone_slime_spawn_egg_dna_synthesizing_self"
     ]
   }
 }

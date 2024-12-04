@@ -2,13 +2,12 @@ package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
@@ -24,12 +23,12 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_STONE = registerKey("lake_molten_stone");
     public static final ResourceKey<ConfiguredFeature<?,?>> SLIME_TREE = registerKey("slime_tree");
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
-        register(context, ModConfiguredFeatures.LAKE_MOLTEN_DIRT, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModFluids.MOLTEN_DIRT_BLOCK.get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
-        register(context, ModConfiguredFeatures.LAKE_MOLTEN_STONE, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModFluids.MOLTEN_STONE_BLOCK.get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
+        register(context, ModConfiguredFeatures.LAKE_MOLTEN_DIRT, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("dirt").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
+        register(context, ModConfiguredFeatures.LAKE_MOLTEN_STONE, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("stone").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
         register(context, ModConfiguredFeatures.SLIME_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.OAK_SLIME_BLOCK.get()),
+                BlockStateProvider.simple(ModTierLists.getBlockByName("oak").get()),
                 new DarkOakTrunkPlacer(7, 2, 2),
-                BlockStateProvider.simple(ModBlocks.OAK_LEAVES_SLIME_BLOCK.get()),
+                BlockStateProvider.simple(ModTierLists.getBlockByName("oak_leaves").get()),
                 new DarkOakFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
                 new TwoLayersFeatureSize(1, 0, 1)
         ).dirt(BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get())).build());

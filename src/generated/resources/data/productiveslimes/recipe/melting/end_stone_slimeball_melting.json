@@ -2,13 +2,13 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    "productiveslimes:endstone_slimeball"
+    "productiveslimes:end_stone_slimeball"
   ],
   "inputCount": 4,
   "output": [
     {
       "count": 1,
-      "id": "productiveslimes:molten_endstone_bucket"
+      "id": "productiveslimes:molten_end_stone_bucket"
     }
   ]
 }
