@@ -19,4 +19,4 @@ Official Wiki: [Wiki](https://coolerproyt.github.io/ProductiveSlimes-Wiki/#/Home
 - **1.2.0**
   - Changes
     - Initial port to 1.21.4
-    - Waiting for JEI and Terrablender to be updated, once they updated the plugin will be added back in next version.
+    - Waiting for Jade and Terrablender to be updated, once they updated the plugin will be added back in next version.
