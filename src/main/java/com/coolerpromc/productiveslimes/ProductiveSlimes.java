@@ -22,6 +22,7 @@ import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.util.*;
+import com.coolerpromc.productiveslimes.util.property.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 //import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

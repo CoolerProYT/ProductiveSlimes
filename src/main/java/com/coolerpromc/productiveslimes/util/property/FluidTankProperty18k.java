@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.util;
+package com.coolerpromc.productiveslimes.util.property;
 
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
@@ -11,13 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public record FluidTankProperty27k() implements ConditionalItemModelProperty {
-    public static final MapCodec<FluidTankProperty27k> MAP_CODEC = MapCodec.unit(new FluidTankProperty27k());
+public record FluidTankProperty18k() implements ConditionalItemModelProperty {
+    public static final MapCodec<FluidTankProperty18k> MAP_CODEC = MapCodec.unit(new FluidTankProperty18k());
     @Override
     public boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int p_388885_, ItemDisplayContext displayContext) {
         ImmutableFluidStack immutableFluidStack = stack.get(ModDataComponents.FLUID_STACK.get());
         FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
-        return fluidStack.getAmount() <= 27000;
+        return fluidStack.getAmount() <= 18000;
     }
 
     @Override
