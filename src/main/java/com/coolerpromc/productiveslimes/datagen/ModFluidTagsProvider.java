@@ -2,6 +2,8 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
@@ -20,9 +22,10 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         var fluidTag = tag(FluidTags.WATER);
 
-        for (String name : ModTierLists.TIER_NAMES){
-            fluidTag.add(ModTierLists.getSourceByName(name).get());
-            fluidTag.add(ModTierLists.getFlowByName(name).get());
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+            fluidTag.add(ModTierLists.getSourceByName(tiers.getName()).get());
+            fluidTag.add(ModTierLists.getFlowByName(tiers.getName()).get());
         }
     }
 }

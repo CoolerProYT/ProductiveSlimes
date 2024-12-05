@@ -3,6 +3,8 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -26,11 +28,13 @@ public class ModItemModelProvider extends ItemModelProvider {
         dnaItem(ModItems.SLIME_DNA);
         withExistingParent(ModItems.ENERGY_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 
-        for(String name : ModTierLists.TIER_NAMES){
-            slimeballItem(ModTierLists.getSlimeballItemByName(name));
-            bucketItem(ModTierLists.getBucketItemByName(name));
-            dnaItem(ModTierLists.getDnaItemByName(name));
-            withExistingParent(ModTierLists.getSpawnEggItemByName(name).getId().getPath(), mcLoc("item/template_spawn_egg"));
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+
+            slimeballItem(ModTierLists.getSlimeballItemByName(tiers.getName()));
+            bucketItem(ModTierLists.getBucketItemByName(tiers.getName()));
+            dnaItem(ModTierLists.getDnaItemByName(tiers.getName()));
+            withExistingParent(ModTierLists.getSpawnEggItemByName(tiers.getName()).getId().getPath(), mcLoc("item/template_spawn_egg"));
         }
     }
 

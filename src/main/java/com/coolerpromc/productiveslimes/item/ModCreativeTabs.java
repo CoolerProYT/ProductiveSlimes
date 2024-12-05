@@ -4,6 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -24,7 +26,6 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.GUIDEBOOK);
                         pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
 
                         // Use reflection to get all the fields from ModBlocks
@@ -42,8 +43,9 @@ public class ModCreativeTabs {
                             }
                         }
 
-                        for (String name : ModTierLists.TIER_NAMES){
-                            pOutput.accept(ModTierLists.getBlockByName(name).get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBlockByName(tiers.getName()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -52,8 +54,9 @@ public class ModCreativeTabs {
 
                         pOutput.accept(ModItems.ENERGY_SLIME_BALL);
 
-                        for (String name : ModTierLists.TIER_NAMES){
-                            pOutput.accept(ModTierLists.getSlimeballItemByName(name).get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSlimeballItemByName(tiers.getName()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -62,8 +65,9 @@ public class ModCreativeTabs {
 
                         pOutput.accept(ModItems.SLIME_DNA);
 
-                        for (String name : ModTierLists.TIER_NAMES){
-                            pOutput.accept(ModTierLists.getDnaItemByName(name).get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getDnaItemByName(tiers.getName()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -72,16 +76,18 @@ public class ModCreativeTabs {
 
                         pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG);
 
-                        for (String name : ModTierLists.TIER_NAMES){
-                            pOutput.accept(ModTierLists.getSpawnEggItemByName(name).get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSpawnEggItemByName(tiers.getName()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()));
                         }
 
-                        for (String name : ModTierLists.TIER_NAMES){
-                            pOutput.accept(ModTierLists.getBucketItemByName(name).get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBucketItemByName(tiers.getName()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

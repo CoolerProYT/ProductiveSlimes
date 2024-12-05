@@ -3,6 +3,8 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -36,9 +38,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE);
         registerSlimeBlock(ModBlocks.ENERGY_SLIME_BLOCK.get(), "energy_slime_block");
 
-        for (String name : ModTierLists.TIER_NAMES){
-            String textureName = name + "_slime_block";
-            registerSlimeBlock(ModTierLists.getBlockByName(name).get(), textureName);
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+            String textureName = tiers.getName() + "_slime_block";
+            registerSlimeBlock(ModTierLists.getBlockByName(tiers.getName()).get(), textureName);
         }
     }
 

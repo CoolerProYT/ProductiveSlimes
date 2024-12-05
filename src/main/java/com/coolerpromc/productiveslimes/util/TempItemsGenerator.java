@@ -9,6 +9,7 @@ import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.util.ARGB;
@@ -33,15 +34,15 @@ public class TempItemsGenerator {
     }
 
     private static void registerBlock(){
-        for (String name : ModTierLists.TIER_NAMES) {
-            ModTiers tiers = ModTierLists.getTierByName(name);
+        for (Tier tier : Tier.values()) {
+            ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            Path path = Paths.get("assets/productiveslimes/items/" + name + "_slime_block.json");
+            Path path = Paths.get("assets/productiveslimes/items/" + tiers.getName() + "_slime_block.json");
 
             String content = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/" + name + "_slime_block\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + tiers.getName() + "_slime_block\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +
@@ -62,15 +63,15 @@ public class TempItemsGenerator {
     }
 
     private static void registerSlimeball(){
-        for (String name : ModTierLists.TIER_NAMES) {
-            ModTiers tiers = ModTierLists.getTierByName(name);
+        for (Tier tier : Tier.values()) {
+            ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            Path path = Paths.get("assets/productiveslimes/items/" + name + "_slimeball.json");
+            Path path = Paths.get("assets/productiveslimes/items/" + tiers.getName() + "_slimeball.json");
 
             String content = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/" + name + "_slimeball\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + tiers.getName() + "_slimeball\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +
@@ -91,15 +92,15 @@ public class TempItemsGenerator {
     }
 
     private static void registerDna(){
-        for (String name : ModTierLists.TIER_NAMES) {
-            ModTiers tiers = ModTierLists.getTierByName(name);
+        for (Tier tier : Tier.values()) {
+            ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            Path path = Paths.get("assets/productiveslimes/items/" + name + "_slime_dna.json");
+            Path path = Paths.get("assets/productiveslimes/items/" + tiers.getName() + "_slime_dna.json");
 
             String content = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/" + name + "_slime_dna\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + tiers.getName() + "_slime_dna\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +
@@ -120,15 +121,15 @@ public class TempItemsGenerator {
     }
 
     private static void registerSpawnEgg(){
-        for (String name : ModTierLists.TIER_NAMES) {
-            ModTiers tiers = ModTierLists.getTierByName(name);
+        for (Tier tier : Tier.values()) {
+            ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            Path path = Paths.get("assets/productiveslimes/items/" + name + "_slime_spawn_egg.json");
+            Path path = Paths.get("assets/productiveslimes/items/" + tiers.getName() + "_slime_spawn_egg.json");
 
             String content = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/" + name + "_slime_spawn_egg\",\n" +
+                    "    \"model\": \"productiveslimes:item/" + tiers.getName() + "_slime_spawn_egg\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +
@@ -153,15 +154,15 @@ public class TempItemsGenerator {
     }
 
     private static void registerBucket(){
-        for (String name : ModTierLists.TIER_NAMES) {
-            ModTiers tiers = ModTierLists.getTierByName(name);
+        for (Tier tier : Tier.values()) {
+            ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            Path path = Paths.get("assets/productiveslimes/items/molten_" + name + "_bucket.json");
+            Path path = Paths.get("assets/productiveslimes/items/molten_" + tiers.getName() + "_bucket.json");
 
             String content = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/molten_" + name + "_bucket\",\n" +
+                    "    \"model\": \"productiveslimes:item/molten_" + tiers.getName() + "_bucket\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +

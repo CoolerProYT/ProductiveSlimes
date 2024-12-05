@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.block.custom.*;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,11 +44,11 @@ public class ModBlocks {
     public static final DeferredBlock<Block> ENERGY_SLIME_BLOCK = registerSlimeBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xFFffff70);
 
     public static void registerTierBlocks(){
-        for (String name : ModTierLists.TIER_NAMES){
+        for (Tier name : Tier.values()){
             ModTiers tier = ModTierLists.getTierByName(name);
             String blockName = tier.getName() + "_slime_block";
             DeferredBlock<Block> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.getMapColorId()), tier.getColor());
-            ModTierLists.addRegisteredBlock(name, registeredSlimeBlock);
+            ModTierLists.addRegisteredBlock(tier.getName(), registeredSlimeBlock);
         }
     }
 

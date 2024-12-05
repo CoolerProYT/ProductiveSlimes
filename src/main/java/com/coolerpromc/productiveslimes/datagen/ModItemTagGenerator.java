@@ -3,6 +3,8 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -25,14 +27,16 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         slimeballTag.add(ModItems.ENERGY_SLIME_BALL.get());
 
-        for (String name : ModTierLists.TIER_NAMES){
-            slimeballTag.add(ModTierLists.getSlimeballItemByName(name).get());
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+            slimeballTag.add(ModTierLists.getSlimeballItemByName(tiers.getName()).get());
         }
 
         var dnaTag = tag(ModTags.Items.DNA_ITEM);
 
-        for (String name : ModTierLists.TIER_NAMES){
-            dnaTag.add(ModTierLists.getDnaItemByName(name).get());
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+            dnaTag.add(ModTierLists.getDnaItemByName(tiers.getName()).get());
         }
     }
 }

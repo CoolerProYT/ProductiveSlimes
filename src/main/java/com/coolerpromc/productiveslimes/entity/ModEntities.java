@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.entity.slime.*;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -25,17 +26,17 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> ENERGY_SLIME = registerSlime("energy_slime", 2000, 0xFFffff70, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
     public static void registerTierEntities(){
-        for (String name : ModTierLists.TIER_NAMES){
+        for (Tier name : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(name);
 
-            String entityName = name + "_slime";
+            String entityName = tiers.getName() + "_slime";
             int cooldown = tiers.getCooldown();
             int color = tiers.getColor();
-            ItemLike dropItem = ModTierLists.getSlimeballItemByName(name);
+            ItemLike dropItem = ModTierLists.getSlimeballItemByName(tiers.getName());
             ItemLike growthItem = ModTierLists.getItemByKey(tiers.getGrowthItemKey());
 
             DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = registerSlime(entityName, cooldown, color, dropItem, growthItem);
-            ModTierLists.addRegisteredSlime(name, slime);
+            ModTierLists.addRegisteredSlime(tiers.getName(), slime);
         }
     }
 
