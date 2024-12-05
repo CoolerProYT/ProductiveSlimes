@@ -161,19 +161,19 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            slimeBlockToSlimeBall(output, ModTierLists.getBlockByName(tiers.getName()), ModTierLists.getSlimeballItemByName(tiers.getName()));
-            slimeBallToSlimeBlock(output, ModTierLists.getSlimeballItemByName(tiers.getName()), ModTierLists.getBlockByName(tiers.getName()));
+            slimeBlockToSlimeBall(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSlimeballItemByName(tiers.name()));
+            slimeBallToSlimeBlock(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBlockByName(tiers.name()));
 
-            meltingRecipe(output, ModTierLists.getBlockByName(tiers.getName()), ModTierLists.getBucketItemByName(tiers.getName()), 2, 5);
-            meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.getName()), ModTierLists.getBucketItemByName(tiers.getName()), 4, 1);
+            meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 2, 5);
+            meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 4, 1);
 
-            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.getName()), ModTierLists.getItemByKey(tiers.getGrowthItemKey()), 1, tiers.getSolidingOutputAmount());
+            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.growthItemKey()), 1, tiers.solidingOutputAmount());
 
-            dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.getName()), ModTierLists.getDnaItemByName(tiers.getName()), 1, tiers.getDnaOutputChance());
+            dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
 
-            dnaSynthesizingSelfRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.getName()), 2, ModTierLists.getDnaItemByName(tiers.getName()), ModTierLists.getDnaItemByName(tiers.getName()), ModTierLists.getItemByKey(tiers.getSynthesizingInputItemKey()));
+            dnaSynthesizingSelfRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), 2, ModTierLists.getDnaItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()));
 
-            dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.getName()), 4, ModTierLists.getItemByKey(tiers.getSynthesizingInputDnaKey1()), ModTierLists.getItemByKey(tiers.getSynthesizingInputDnaKey2()), ModTierLists.getItemByKey(tiers.getSynthesizingInputItemKey()));
+            dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), 4, ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey1()), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey2()), ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()));
         }
     }
 

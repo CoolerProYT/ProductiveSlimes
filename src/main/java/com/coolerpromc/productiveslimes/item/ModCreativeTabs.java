@@ -45,7 +45,7 @@ public class ModCreativeTabs {
 
                         for (Tier tier : Tier.values()){
                             ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBlockByName(tiers.getName()).get());
+                            pOutput.accept(ModTierLists.getBlockByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -56,7 +56,7 @@ public class ModCreativeTabs {
 
                         for (Tier tier : Tier.values()){
                             ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSlimeballItemByName(tiers.getName()).get());
+                            pOutput.accept(ModTierLists.getSlimeballItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -67,7 +67,7 @@ public class ModCreativeTabs {
 
                         for (Tier tier : Tier.values()){
                             ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getDnaItemByName(tiers.getName()).get());
+                            pOutput.accept(ModTierLists.getDnaItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -78,7 +78,7 @@ public class ModCreativeTabs {
 
                         for (Tier tier : Tier.values()){
                             ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSpawnEggItemByName(tiers.getName()).get());
+                            pOutput.accept(ModTierLists.getSpawnEggItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -87,7 +87,7 @@ public class ModCreativeTabs {
 
                         for (Tier tier : Tier.values()){
                             ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBucketItemByName(tiers.getName()).get());
+                            pOutput.accept(ModTierLists.getBucketItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

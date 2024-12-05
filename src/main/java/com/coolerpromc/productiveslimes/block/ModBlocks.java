@@ -46,9 +46,9 @@ public class ModBlocks {
     public static void registerTierBlocks(){
         for (Tier name : Tier.values()){
             ModTiers tier = ModTierLists.getTierByName(name);
-            String blockName = tier.getName() + "_slime_block";
-            DeferredBlock<Block> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.getMapColorId()), tier.getColor());
-            ModTierLists.addRegisteredBlock(tier.getName(), registeredSlimeBlock);
+            String blockName = tier.name() + "_slime_block";
+            DeferredBlock<Block> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.mapColorId()), tier.color());
+            ModTierLists.addRegisteredBlock(tier.name(), registeredSlimeBlock);
         }
     }
 

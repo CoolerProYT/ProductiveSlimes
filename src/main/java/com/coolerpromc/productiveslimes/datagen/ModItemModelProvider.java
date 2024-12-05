@@ -31,10 +31,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            slimeballItem(ModTierLists.getSlimeballItemByName(tiers.getName()));
-            bucketItem(ModTierLists.getBucketItemByName(tiers.getName()));
-            dnaItem(ModTierLists.getDnaItemByName(tiers.getName()));
-            withExistingParent(ModTierLists.getSpawnEggItemByName(tiers.getName()).getId().getPath(), mcLoc("item/template_spawn_egg"));
+            slimeballItem(ModTierLists.getSlimeballItemByName(tiers.name()));
+            bucketItem(ModTierLists.getBucketItemByName(tiers.name()));
+            dnaItem(ModTierLists.getDnaItemByName(tiers.name()));
+            withExistingParent(ModTierLists.getSpawnEggItemByName(tiers.name()).getId().getPath(), mcLoc("item/template_spawn_egg"));
         }
     }
 

@@ -40,8 +40,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            String textureName = tiers.getName() + "_slime_block";
-            registerSlimeBlock(ModTierLists.getBlockByName(tiers.getName()).get(), textureName);
+            String textureName = tiers.name() + "_slime_block";
+            registerSlimeBlock(ModTierLists.getBlockByName(tiers.name()).get(), textureName);
         }
     }
 

@@ -29,14 +29,14 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            slimeballTag.add(ModTierLists.getSlimeballItemByName(tiers.getName()).get());
+            slimeballTag.add(ModTierLists.getSlimeballItemByName(tiers.name()).get());
         }
 
         var dnaTag = tag(ModTags.Items.DNA_ITEM);
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            dnaTag.add(ModTierLists.getDnaItemByName(tiers.getName()).get());
+            dnaTag.add(ModTierLists.getDnaItemByName(tiers.name()).get());
         }
     }
 }

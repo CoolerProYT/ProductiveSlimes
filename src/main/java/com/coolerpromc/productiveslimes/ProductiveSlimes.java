@@ -153,7 +153,7 @@ public class ProductiveSlimes
 
             for (Tier name : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(name);
-                EntityRenderers.register(ModTierLists.getEntityByName(tiers.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.getColor()));
+                EntityRenderers.register(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -217,7 +217,7 @@ public class ProductiveSlimes
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                if (ModTierLists.getFluidTypeByName(tiers.getName()).get() instanceof com.coolerpromc.productiveslimes.fluid.ModBaseFluidType modBaseFluidType)
+                if (ModTierLists.getFluidTypeByName(tiers.name()).get() instanceof com.coolerpromc.productiveslimes.fluid.ModBaseFluidType modBaseFluidType)
                     event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
             }
 
@@ -234,7 +234,7 @@ public class ProductiveSlimes
 
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                if (ModTierLists.getBlockByName(tiers.getName()).get() instanceof SlimeBlock block){
+                if (ModTierLists.getBlockByName(tiers.name()).get() instanceof SlimeBlock block){
                     event.register((pState, pLevel, pPos, pTintIndex) -> block.getColor(), block);
                 }
             }
@@ -249,8 +249,8 @@ public class ProductiveSlimes
         public static void registerAllFluidRenderLayer() {
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getSourceByName(tiers.getName()).get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getFlowByName(tiers.getName()).get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getSourceByName(tiers.name()).get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getFlowByName(tiers.name()).get(), RenderType.translucent());
             }
 
             FluidResources.fluidList.stream()
@@ -272,7 +272,7 @@ public class ProductiveSlimes
 
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getBlockByName(tiers.getName()).get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getBlockByName(tiers.name()).get(), RenderType.translucent());
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

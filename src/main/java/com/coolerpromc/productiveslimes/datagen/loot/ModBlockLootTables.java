@@ -53,7 +53,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            dropSelf(ModTierLists.getBlockByName(tiers.getName()).get());
+            dropSelf(ModTierLists.getBlockByName(tiers.name()).get());
         }
     }
 

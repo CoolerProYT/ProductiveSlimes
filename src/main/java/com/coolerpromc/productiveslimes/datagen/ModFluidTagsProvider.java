@@ -24,8 +24,8 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            fluidTag.add(ModTierLists.getSourceByName(tiers.getName()).get());
-            fluidTag.add(ModTierLists.getFlowByName(tiers.getName()).get());
+            fluidTag.add(ModTierLists.getSourceByName(tiers.name()).get());
+            fluidTag.add(ModTierLists.getFlowByName(tiers.name()).get());
         }
     }
 }

@@ -40,7 +40,7 @@ public class ModEntitiesEvent {
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
 
-            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(tiers.getName());
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(tiers.name());
             event.put(slime.get(), BaseSlime.createAttributes().build());
         }
 

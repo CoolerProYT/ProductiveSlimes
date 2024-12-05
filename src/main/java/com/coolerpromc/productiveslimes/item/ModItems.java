@@ -6,10 +6,8 @@ import com.coolerpromc.productiveslimes.item.custom.*;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,19 +26,19 @@ public class ModItems {
     public static void registerTierItems() {
         for (Tier name : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(name);
-            String slimeballName = tiers.getName() + "_slimeball";
-            String dnaName = tiers.getName() + "_slime_dna";
-            String spawnEggName = tiers.getName() + "_slime_spawn_egg";
+            String slimeballName = tiers.name() + "_slimeball";
+            String dnaName = tiers.name() + "_slime_dna";
+            String spawnEggName = tiers.name() + "_slime_spawn_egg";
 
-            int color = tiers.getColor();
+            int color = tiers.color();
 
             DeferredItem<Item> slimeball = ITEMS.registerItem(slimeballName, properties -> new SlimeballItem(color, properties), new Item.Properties());
             DeferredItem<Item> dna = ITEMS.registerItem(dnaName, properties -> new DnaItem(color, properties), new Item.Properties());
-            DeferredItem<Item> spawnEgg = ITEMS.registerItem(spawnEggName, properties -> new SpawnEggItem(ModTierLists.getEntityByName(tiers.getName()).get(), color, color, properties), new Item.Properties());
+            DeferredItem<Item> spawnEgg = ITEMS.registerItem(spawnEggName, properties -> new SpawnEggItem(ModTierLists.getEntityByName(tiers.name()).get(), color, color, properties), new Item.Properties());
 
-            ModTierLists.addRegisteredSlimeballItem(tiers.getName(), slimeball);
-            ModTierLists.addRegisteredDnaItem(tiers.getName(), dna);
-            ModTierLists.addRegisteredSpawnEggItem(tiers.getName(), spawnEgg);
+            ModTierLists.addRegisteredSlimeballItem(tiers.name(), slimeball);
+            ModTierLists.addRegisteredDnaItem(tiers.name(), dna);
+            ModTierLists.addRegisteredSpawnEggItem(tiers.name(), spawnEgg);
         }
     }
 
