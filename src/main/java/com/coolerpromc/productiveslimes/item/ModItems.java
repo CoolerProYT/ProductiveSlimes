@@ -1,11 +1,9 @@
 package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.EnergyMultiplierUpgrade;
-import com.coolerpromc.productiveslimes.item.custom.GuidebookItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.item.custom.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +15,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
 
     public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", GuidebookItem::new);
+    public static final RegistryObject<Item> FLUID_TANK = ITEMS.register("fluid_tank", () -> new FluidTankBlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
     public static final RegistryObject<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));

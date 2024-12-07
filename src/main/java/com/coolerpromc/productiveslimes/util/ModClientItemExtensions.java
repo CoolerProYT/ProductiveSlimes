@@ -1,8 +1,7 @@
 package com.coolerpromc.productiveslimes.util;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 public class ModClientItemExtensions implements IClientItemExtensions {
     private final ModBlockEntityWithoutLevelRenderer blockEntityWithoutLevelRenderer = new ModBlockEntityWithoutLevelRenderer();
 

@@ -189,7 +189,9 @@ public class ModBlocks {
 
     private static RegistryObject<Block> registerBlock(String name, Supplier<Block> block){
         RegistryObject<Block> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name,toReturn);
+        if (!(block.get() instanceof FluidTankBlock)){
+            registerBlockItem(name,toReturn);
+        }
         return toReturn;
     }
 
