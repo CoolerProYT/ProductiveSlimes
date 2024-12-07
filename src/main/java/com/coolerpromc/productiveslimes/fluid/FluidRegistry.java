@@ -1,22 +1,15 @@
 package com.coolerpromc.productiveslimes.fluid;
 
-import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-
-import java.lang.reflect.Field;
-import java.util.Objects;
-import java.util.function.Supplier;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FluidRegistry {
     public static FluidStack getFluidStackByName(String fluidName, int amount) {
         ResourceLocation fluidLocation;
         try {
-            fluidLocation = ResourceLocation.parse(fluidName);
+            fluidLocation = new ResourceLocation(fluidName);
         } catch (Exception e) {
             return FluidStack.EMPTY;
         }

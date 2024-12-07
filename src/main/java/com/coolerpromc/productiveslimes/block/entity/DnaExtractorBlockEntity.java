@@ -3,10 +3,8 @@ package com.coolerpromc.productiveslimes.block.entity;
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -22,12 +20,10 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -140,35 +136,35 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.put("InputInventory", inputHandler.serializeNBT());
+        pTag.put("OutputInventory", outputHandler.serializeNBT());
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
         pTag.putInt("dna_extractor.progress", progress);
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(pTag);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
+        inputHandler.deserializeNBT(pTag.getCompound("InputInventory"));
+        outputHandler.deserializeNBT(pTag.getCompound("OutputInventory"));
         energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
         progress = pTag.getInt("dna_extractor.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
+        Optional<DnaExtractingRecipe> recipe = getCurrentRecipe();
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
             }
@@ -182,12 +178,12 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
+        Optional<DnaExtractingRecipe> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutputs();
+            List<ItemStack> results = recipe.get().getOutputs();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
+            this.inputHandler.extractItem(0, recipe.get().getInputCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -199,7 +195,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
                     }
                     else{
                         Random random = new Random();
-                        float chance = recipe.get().value().getOutputChance();
+                        float chance = recipe.get().getOutputChance();
                         if (random.nextFloat() < chance){
                             this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
                                     this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
@@ -228,17 +224,17 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
+        Optional<DnaExtractingRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().getInputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().getInputCount()) {
             return false;
         }
 
-        List<ItemStack> results = recipe.get().value().getOutputs();
+        List<ItemStack> results = recipe.get().getOutputs();
 
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {
@@ -275,8 +271,8 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<DnaExtractingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+    private Optional<DnaExtractingRecipe> getCurrentRecipe(){
+        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SimpleContainer(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -348,7 +344,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 }

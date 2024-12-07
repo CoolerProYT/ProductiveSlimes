@@ -5,37 +5,37 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModRecipes{
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, ProductiveSlimes.MODID);
     public static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, ProductiveSlimes.MODID);
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> MELTING_SERIALIZER =
+    public static final RegistryObject<RecipeSerializer<MeltingRecipe>> MELTING_SERIALIZER =
             SERIALIZERS.register("melting", () -> MeltingRecipe.Serializer.INSTANCE);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<MeltingRecipe>> MELTING_TYPE =
-            TYPES.register("melting", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting")));
+    public static final RegistryObject<RecipeType<MeltingRecipe>> MELTING_TYPE =
+            TYPES.register("melting", () -> RecipeType.simple(new ResourceLocation(ProductiveSlimes.MODID, "melting")));
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> SOLIDING_SERIALIZER =
+    public static final RegistryObject< RecipeSerializer<SolidingRecipe>> SOLIDING_SERIALIZER =
             SERIALIZERS.register("soliding", () -> SolidingRecipe.Serializer.INSTANCE);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<SolidingRecipe>> SOLIDING_TYPE =
-            TYPES.register("soliding", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding")));
+    public static final RegistryObject<RecipeType<SolidingRecipe>> SOLIDING_TYPE =
+            TYPES.register("soliding", () -> RecipeType.simple(new ResourceLocation(ProductiveSlimes.MODID, "soliding")));
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> DNA_EXTRACTING_SERIALIZER =
+    public static final RegistryObject<RecipeSerializer<DnaExtractingRecipe>> DNA_EXTRACTING_SERIALIZER =
             SERIALIZERS.register("dna_extracting", () -> DnaExtractingRecipe.Serializer.INSTANCE);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<DnaExtractingRecipe>> DNA_EXTRACTING_TYPE =
-            TYPES.register("dna_extracting", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting")));
+    public static final RegistryObject<RecipeType<DnaExtractingRecipe>> DNA_EXTRACTING_TYPE =
+            TYPES.register("dna_extracting", () -> RecipeType.simple(new ResourceLocation(ProductiveSlimes.MODID, "dna_extracting")));
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> DNA_SYNTHESIZING_SERIALIZER =
+    public static final RegistryObject<RecipeSerializer<DnaSynthesizingRecipe>> DNA_SYNTHESIZING_SERIALIZER =
             SERIALIZERS.register("dna_synthesizing", () -> DnaSynthesizingRecipe.Serializer.INSTANCE);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<DnaSynthesizingRecipe>> DNA_SYNTHESIZING_TYPE =
-            TYPES.register("dna_synthesizing", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing")));
+    public static final RegistryObject<RecipeType<DnaSynthesizingRecipe>> DNA_SYNTHESIZING_TYPE =
+            TYPES.register("dna_synthesizing", () -> RecipeType.simple(new ResourceLocation(ProductiveSlimes.MODID, "dna_synthesizing")));
 
     public static void register(IEventBus eventBus){
         SERIALIZERS.register(eventBus);

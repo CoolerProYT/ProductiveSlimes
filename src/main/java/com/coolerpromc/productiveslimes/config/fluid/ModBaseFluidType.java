@@ -1,15 +1,13 @@
 package com.coolerpromc.productiveslimes.config.fluid;
 
-import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidType;
 import org.joml.Vector3f;
 
 import java.awt.*;
@@ -23,9 +21,9 @@ public class ModBaseFluidType extends FluidType {
 
     public ModBaseFluidType(Properties properties, FunkyFluidInfo info, int color) {
         super(properties);
-        ResourceLocation WATER_STILL_RL = ResourceLocation.parse("block/water_still");
-        ResourceLocation WATER_FLOWING_RL = ResourceLocation.parse("block/water_flow");
-        ResourceLocation WATER_OVERLAY_RL = ResourceLocation.parse("block/water_overlay");
+        ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
+        ResourceLocation WATER_FLOWING_RL = new ResourceLocation("block/water_flow");
+        ResourceLocation WATER_OVERLAY_RL = new ResourceLocation("block/water_overlay");
 
         Color colorObject = new Color(info.color);
         FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);

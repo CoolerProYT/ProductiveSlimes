@@ -1,23 +1,18 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
-import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
-import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,8 +36,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -55,23 +50,18 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(FluidTankBlock::new);
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return Block.box(2, 0, 2, 14, 16, 14);
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof FluidTankBlockEntity){
@@ -83,11 +73,11 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             bucketUsed(pLevel, pPos, pPlayer);
         }
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     protected void bucketUsed(Level pLevel, BlockPos pPos, Player pPlayer) {
@@ -95,9 +85,9 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
         if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
             if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof net.minecraft.world.item.BucketItem bucketItem && bucketItem != Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
-                    if (bucketItem.content.getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
+                    if (bucketItem.getFluid().getFluidType() == fluidTankBlockEntity.getFluidStack().getFluid().getFluidType()) {
                         if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
-                            FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
+                            FluidStack fluidToAdd = new FluidStack(bucketItem.getFluid(), 1000);
                             int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                             if (filled > 0 && !pPlayer.isCreative()) {
                                 pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -106,7 +96,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
                         }
                     }
                 } else {
-                    FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
+                    FluidStack fluidToAdd = new FluidStack(bucketItem.getFluid(), 1000);
                     int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                     if (filled > 0 && !pPlayer.isCreative()) {
                         pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -169,7 +159,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
-    protected List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         List<ItemStack> drops = super.getDrops(pState, pParams);
         BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 
@@ -200,15 +190,14 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
-
     @Override
-    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
-        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
         if (pStack.getOrDefault(ModDataComponents.FLUID_STACK.get(), FluidStack.EMPTY) != FluidStack.EMPTY) {
             ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
             FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
-            pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDescriptionId()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
             pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
     }

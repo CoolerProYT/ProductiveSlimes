@@ -20,9 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -36,13 +34,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.*;
-import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.apache.commons.io.FileUtils;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -51,9 +46,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -65,16 +57,16 @@ public class CustomContentRegistry {
 
     private static List<CustomVariants> loadedVariants = new ArrayList<>();
 
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
-    private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static Map<ResourceLocation, RegistryObject<Item>> registeredItems = new HashMap<>();
+    private static Map<ResourceLocation, RegistryObject<Item>> registeredDnaItems = new HashMap<>();
+    private static Map<ResourceLocation, RegistryObject<Item>> registeredSpawnEggItems = new HashMap<>();
+    private static Map<ResourceLocation, RegistryObject<Block>> registeredBlocks = new HashMap<>();
+    private static Map<ResourceLocation, RegistryObject<EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     private static Map<String, byte[]> resourceData = new HashMap<>();
     private static Map<String, byte[]> dataPackResources = new HashMap<>();
 
 
-    public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
+    public static void initialize(DeferredRegister<Item> item, DeferredRegister<Block> block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
         loadVariants(item, block, entityType);
 
@@ -87,20 +79,18 @@ public class CustomContentRegistry {
         PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
 
         Pack pack = Pack.readMetaAndCreate(
-                resourcePack.location(),
+                resourcePack.packId(),
+                Component.literal("productiveslimes_resourcepack"),
+                true,
                 new Pack.ResourcesSupplier() {
                     @Override
-                    public PackResources openPrimary(PackLocationInfo location) {
-                        return resourcePack;
-                    }
-
-                    @Override
-                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
+                    public PackResources open(String s) {
                         return resourcePack;
                     }
                 },
                 PackType.CLIENT_RESOURCES,
-                new PackSelectionConfig(true, Pack.Position.TOP, true)
+                Pack.Position.TOP,
+                PackSource.BUILT_IN
         );
 
         packRepository.addPackFinder((consumer) -> {
@@ -114,31 +104,13 @@ public class CustomContentRegistry {
         InMemoryDataPack dataPack = new InMemoryDataPack(dataPackResources);
 
         Pack pack = Pack.readMetaAndCreate(
-                new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
-                        new PackSource() {
-                            @Override
-                            public Component decorate(Component name) {
-                                return Component.literal("In Memory Pack");
-                            }
-
-                            @Override
-                            public boolean shouldAddAutomatically() {
-                                return true;
-                            }
-                        }, Optional.empty()),
-                new Pack.ResourcesSupplier() {
-                    @Override
-                    public PackResources openPrimary(PackLocationInfo location) {
-                        return dataPack;
-                    }
-
-                    @Override
-                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
-                        return dataPack;
-                    }
-                },
+                dataPack.packId(),
+                Component.literal("productiveslimes_datapack"),
+                true,
+                s -> dataPack,
                 PackType.SERVER_DATA,
-                new PackSelectionConfig(true, Pack.Position.TOP, true)
+                Pack.Position.TOP,
+                PackSource.BUILT_IN
         );
 
         // Add your pack to the pack repository
@@ -154,24 +126,24 @@ public class CustomContentRegistry {
         return loadedVariants;
     }
 
-    public static DeferredItem<Item> getSlimeballItemForVariant(String variantName){
-        return registeredItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slimeball"));
+    public static RegistryObject<Item> getSlimeballItemForVariant(String variantName){
+        return registeredItems.get(new ResourceLocation(ProductiveSlimes.MODID, variantName + "_slimeball"));
     }
 
-    public static DeferredItem<Item> getDnaItemForVariant(String variantName){
-        return registeredDnaItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_dna"));
+    public static RegistryObject<Item> getDnaItemForVariant(String variantName){
+        return registeredDnaItems.get(new ResourceLocation(ProductiveSlimes.MODID, variantName + "_slime_dna"));
     }
 
-    public static DeferredItem<Item> getSpawnEggItemForVariant(String variantName){
-        return registeredSpawnEggItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_spawn_egg"));
+    public static RegistryObject<Item> getSpawnEggItemForVariant(String variantName){
+        return registeredSpawnEggItems.get(new ResourceLocation(ProductiveSlimes.MODID, variantName + "_slime_spawn_egg"));
     }
 
-    public static DeferredBlock<Block> getSlimeBlockForVariant(String variantName){
-        return registeredBlocks.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_block"));
+    public static RegistryObject<Block> getSlimeBlockForVariant(String variantName){
+        return registeredBlocks.get(new ResourceLocation(ProductiveSlimes.MODID, variantName + "_slime_block"));
     }
 
-    public static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> getSlimeForVariant(String variantName){
-        return registeredSlimes.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime"));
+    public static RegistryObject<EntityType<BaseSlime>> getSlimeForVariant(String variantName){
+        return registeredSlimes.get(new ResourceLocation(ProductiveSlimes.MODID, variantName + "_slime"));
     }
 
     private static void createDefaultConfig() {
@@ -195,7 +167,7 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void loadVariants(DeferredRegister.Items ITEMS, DeferredRegister.Blocks BLOCKS, DeferredRegister<EntityType<?>> ENTITY_TYPES) {
+    private static void loadVariants(DeferredRegister<Item> ITEMS, DeferredRegister<Block> BLOCKS, DeferredRegister<EntityType<?>> ENTITY_TYPES) {
         File configFile = new File(CONFIG_PATH);
         if (configFile.exists()) {
             try (FileReader reader = new FileReader(configFile)) {
@@ -219,10 +191,10 @@ public class CustomContentRegistry {
         }
     }
 
-    private static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+    private static void registerSpawnEggItem(DeferredRegister<Item> ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_spawn_egg";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.register(itemName,
+        ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
+        RegistryObject<Item> item = ITEMS.register(itemName,
                 () -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), new Item.Properties()));
 
         registeredSpawnEggItems.put(itemId, item);
@@ -230,35 +202,35 @@ public class CustomContentRegistry {
 
     private static void registerSlime(DeferredRegister<EntityType<?>> ENTITY_TYPES, CustomVariants variant){
         String slimeName = variant.getName() + "_slime";
-        ResourceLocation slimeId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, slimeName);
+        ResourceLocation slimeId = new ResourceLocation(ProductiveSlimes.MODID, slimeName);
 
-        DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem()))),
+        RegistryObject<EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(new ResourceLocation(variant.getGrowthItem()))),
                 MobCategory.CREATURE).build(slimeName));
 
         registeredSlimes.put(slimeId, slime);
     }
 
-    private static void registerSlimeBlock(DeferredRegister.Blocks BLOCKS, CustomVariants variant, DeferredRegister.Items ITEMS){
+    private static void registerSlimeBlock(DeferredRegister<Block> BLOCKS, CustomVariants variant, DeferredRegister<Item> ITEMS){
         String blockName = variant.getName() + "_slime_block";
-        ResourceLocation blockId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, blockName);
-        DeferredBlock<Block> block = registerBlock(blockName, () -> new SlimeBlock(MapColor.byId(variant.getMapColorId()), variant.getColor()), BLOCKS, ITEMS, variant.getName());
+        ResourceLocation blockId = new ResourceLocation(ProductiveSlimes.MODID, blockName);
+        RegistryObject<Block> block = registerBlock(blockName, () -> new SlimeBlock(MapColor.byId(variant.getMapColorId()), variant.getColor()), BLOCKS, ITEMS, variant.getName());
 
         registeredBlocks.put(blockId, block);
     }
 
-    private static void registerSlimeballItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+    private static void registerSlimeballItem(DeferredRegister<Item> ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slimeball";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor()), new Item.Properties());
+        ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
+        RegistryObject<Item> item = ITEMS.register(variant.name + "_slimeball", () -> new SlimeballItem(variant.getColor()));
 
         registeredItems.put(itemId, item);
     }
 
-    private static void registerDnaItem(DeferredRegister.Items ITEMS, CustomVariants variant){
+    private static void registerDnaItem(DeferredRegister<Item> ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_dna";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor()), new Item.Properties());
+        ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
+        RegistryObject<Item> item = ITEMS.register(variant.name + "_slime_dna", () -> new DnaItem(variant.getColor()));
 
         registeredDnaItems.put(itemId, item);
     }
@@ -276,19 +248,20 @@ public class CustomContentRegistry {
                 .collect(Collectors.toList());
     }
 
-    private static DeferredBlock<Block> registerBlock(String name, Supplier<Block> block, DeferredRegister.Blocks BLOCKS, DeferredRegister.Items ITEMS, String variantName){
-        DeferredBlock<Block> toReturn = BLOCKS.register(name, block);
+    private static RegistryObject<Block> registerBlock(String name, Supplier<Block> block, DeferredRegister<Block> BLOCKS, DeferredRegister<Item> ITEMS, String variantName){
+        RegistryObject<Block> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name,toReturn, ITEMS, variantName);
         return toReturn;
     }
 
-    private static DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<Block> block, DeferredRegister.Items ITEMS, String variantName){
+    private static RegistryObject<BlockItem> registerBlockItem(String name, RegistryObject<Block> block, DeferredRegister<Item> ITEMS, String variantName){
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
     private static void registerFluid(CustomVariants variants) {
         FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
-                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
+                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())),
+                ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
                 (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
                 properties -> properties.explosionResistance(1000F).tickRate(20),
                 FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));

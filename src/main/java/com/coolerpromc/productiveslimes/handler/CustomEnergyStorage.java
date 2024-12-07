@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.handler;
 
-import net.neoforged.neoforge.energy.EnergyStorage;
+
+import net.minecraftforge.energy.EnergyStorage;
 
 public class CustomEnergyStorage extends EnergyStorage {
     public CustomEnergyStorage(int capacity) {

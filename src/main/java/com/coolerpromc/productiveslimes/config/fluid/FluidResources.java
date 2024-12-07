@@ -3,49 +3,45 @@ package com.coolerpromc.productiveslimes.config.fluid;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class FluidResources {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, ProductiveSlimes.MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, ProductiveSlimes.MODID);
-    public static final DeferredRegister<FluidType> FLUIDTYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ProductiveSlimes.MODID);
+    public static final DeferredRegister<FluidType> FLUIDTYPES = DeferredRegister.create(ForgeRegistries.FLUID_TYPES.get(), ProductiveSlimes.MODID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, ProductiveSlimes.MODID);
 
     public static List<FluidStuff> fluidList = new ArrayList<FluidStuff>();
 
-    public static FluidStuff addFluid(String localizedName, ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<FluidType.Properties, ModBaseFluidType.FunkyFluidInfo, FluidType> type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Source> source, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Flowing> flowing, @Nullable Consumer<BaseFlowingFluid.Properties> fluidProperties, FluidType.Properties prop) {
+    public static FluidStuff addFluid(String localizedName, ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<FluidType.Properties, ModBaseFluidType.FunkyFluidInfo, FluidType> type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties, FluidType.Properties prop) {
         FluidStuff fluid = new FluidStuff(info.name, localizedName, info.color,info.isTranslucent, type.apply(prop, info), block, fluidProperties, source, flowing, properties);
         fluidList.add(fluid);
         return fluid;
     }
 
-    public static FluidStuff addFluid(String localizedName, ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<FluidType.Properties, ModBaseFluidType.FunkyFluidInfo, FluidType> type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<BaseFlowingFluid.Properties> fluidProperties, FluidType.Properties prop) {
-        return addFluid(localizedName, info, properties, type, block, BaseFlowingFluid.Source::new, BaseFlowingFluid.Flowing::new, fluidProperties, prop);
+    public static FluidStuff addFluid(String localizedName, ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<FluidType.Properties, ModBaseFluidType.FunkyFluidInfo, FluidType> type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties, FluidType.Properties prop) {
+        return addFluid(localizedName, info, properties, type, block, ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new, fluidProperties, prop);
     }
 
     public static void register(IEventBus modEventBus) {
@@ -61,15 +57,15 @@ public class FluidResources {
 
     public static class FluidStuff {
 
-        public final BaseFlowingFluid.Properties PROPERTIES;
+        public final ForgeFlowingFluid.Properties PROPERTIES;
 
-        public final Supplier<BaseFlowingFluid.Source> FLUID;
-        public final Supplier<BaseFlowingFluid.Flowing> FLUID_FLOW;
+        public final Supplier<ForgeFlowingFluid.Source> FLUID;
+        public final Supplier<ForgeFlowingFluid.Flowing> FLUID_FLOW;
         public final Supplier<FluidType> TYPE;
 
         public final Supplier<LiquidBlock> FLUID_BLOCK;
 
-        public final DeferredHolder<Item, BucketItem> FLUID_BUCKET;
+        public final RegistryObject<Item> FLUID_BUCKET;
 
         public final String name;
         public final String localizedName;
@@ -77,7 +73,7 @@ public class FluidResources {
         public final boolean isTranslucent;
 
 
-        public FluidStuff(String name, String localizedName, int color,boolean isTranslucent, FluidType type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<BaseFlowingFluid.Properties> fluidProperties, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Source> source, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Flowing> flowing, Block.Properties properties) {
+        public FluidStuff(String name, String localizedName, int color,boolean isTranslucent, FluidType type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, Block.Properties properties) {
             this.name = name;
             this.localizedName = localizedName;
             this.color = color;
@@ -87,7 +83,7 @@ public class FluidResources {
             FLUID_FLOW = FLUIDS.register("flowing_" + name, () -> flowing.apply(getFluidProperties()));
             TYPE = FLUIDTYPES.register(name, () -> type);
 
-            PROPERTIES = new BaseFlowingFluid.Properties(TYPE, FLUID, FLUID_FLOW);
+            PROPERTIES = new ForgeFlowingFluid.Properties(TYPE, FLUID, FLUID_FLOW);
             if (fluidProperties != null)
                 fluidProperties.accept(PROPERTIES);
 
@@ -97,7 +93,7 @@ public class FluidResources {
             PROPERTIES.bucket(FLUID_BUCKET).block(FLUID_BLOCK);
         }
 
-        public BaseFlowingFluid.Properties getFluidProperties() {
+        public ForgeFlowingFluid.Properties getFluidProperties() {
             return PROPERTIES;
         }
     }

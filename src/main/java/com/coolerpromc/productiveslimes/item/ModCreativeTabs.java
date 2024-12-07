@@ -12,9 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
@@ -22,12 +22,12 @@ import java.util.function.Supplier;
 public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MOD_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ProductiveSlimes.MODID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> PRODUCTIVE_SLIMES_TAB = CREATIVE_MOD_TABS.register("productive_slimes",
+    public static final RegistryObject<CreativeModeTab> PRODUCTIVE_SLIMES_TAB = CREATIVE_MOD_TABS.register("productive_slimes",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.GUIDEBOOK);
-                        pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+                        pOutput.accept(ModItems.GUIDEBOOK.get());
+                        pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
 
                         // Use reflection to get all the fields from ModBlocks
                         for (Field field : ModBlocks.class.getFields()) {
@@ -45,7 +45,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()));
+                            pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get());
                         }
 
                         // Use reflection to get all the fields from ModItems
@@ -64,7 +64,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()));
+                            pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get());
                         }
 
                         for (Field field : ModItems.class.getFields()) {
@@ -82,7 +82,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()));
+                            pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get());
                         }
 
                         for (Field field : ModItems.class.getFields()) {
@@ -100,7 +100,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()));
+                            pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get());
                         }
 
                         // Use reflection to get all the fields from ModFluids
@@ -119,7 +119,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")));
+                            pOutput.accept(BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")));
                         }
                     }).build());
 

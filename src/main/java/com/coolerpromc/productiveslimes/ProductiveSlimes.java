@@ -36,7 +36,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.BlockItem;
@@ -44,26 +43,26 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.InterModComms;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import terrablender.api.SurfaceRuleManager;
 
 import java.lang.reflect.Field;
@@ -74,12 +73,14 @@ public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
 
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, ProductiveSlimes.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProductiveSlimes.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);
 
-    public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
+    public ProductiveSlimes()
     {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         modEventBus.addListener(this::commonSetup);
         if (ModList.get().isLoaded("theoneprobe"))
         {
@@ -108,8 +109,7 @@ public class ProductiveSlimes
 
         ModTerrablender.registerBiomes();
 
-        NeoForge.EVENT_BUS.register(this);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -129,10 +129,10 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().createCommandSourceStack().dispatcher().parse("reload", event.getEntity().createCommandSourceStack()), "reload");
+        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
     }
 
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
@@ -216,12 +216,12 @@ public class ProductiveSlimes
 
         @SubscribeEvent
         public static void onModel(ModelEvent.RegisterAdditional event) {
-            ModelResourceLocation slimeballModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
-            ModelResourceLocation slimeBlockItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_block"), "standalone");
-            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
-            ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
-            ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
-            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
+            ModelResourceLocation slimeballModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
+            ModelResourceLocation slimeBlockItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_block"), "standalone");
+            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
+            ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
+            ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
+            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
 
             event.register(slimeballModelLocation);
             event.register(slimeBlockItemModelLocation);
@@ -237,26 +237,13 @@ public class ProductiveSlimes
                 itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get(), dnaItemModelLocation);
                 itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
-                itemModelShaper.register(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")), moltenBucketLocation);
+                itemModelShaper.register(BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")), moltenBucketLocation);
             }
         }
 
         @SubscribeEvent
-        public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-            event.registerItem(
-                    new ModClientItemExtensions(),
-                    ModBlocks.FLUID_TANK.get().asItem()
-            );
-        }
-
-        @SubscribeEvent
-        public static void entitySpawnRestriction(RegisterSpawnPlacementsEvent event) {
-            event.register(ModEntities.DIRT_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> serverLevel.getBlockState(pos.below()).getBlock() == ModBlocks.SLIMY_GRASS_BLOCK.get(), RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        }
-
-        @SubscribeEvent
-        public static void onClientExtensions(RegisterClientExtensionsEvent event) {
-            registerAllFluidType(event);
+        public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
+            event.register(ModEntities.DIRT_SLIME.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> serverLevel.getBlockState(pos.below()).getBlock() == ModBlocks.SLIMY_GRASS_BLOCK.get(), SpawnPlacementRegisterEvent.Operation.REPLACE);
         }
 
         @SubscribeEvent
@@ -270,28 +257,6 @@ public class ProductiveSlimes
             registerAllSlimeDnaColor(event);
             registerAllBucketColor(event);
             registerAllSlimeBlockColor(event);
-        }
-
-        public static void registerAllFluidType(RegisterClientExtensionsEvent event){
-            Field[] fields = ModFluidTypes.class.getFields();
-
-            for (Field field : fields) {
-                try {
-                    Object value = field.get(null);
-
-                    if (value instanceof Supplier<?> supplier) {
-                        event.registerFluidType(((BaseFluidType) supplier.get()).getClientFluidTypeExtensions(),
-                                (FluidType) supplier.get());
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            FluidResources.fluidList.forEach(fluid -> {
-                if (fluid.TYPE.get() instanceof ModBaseFluidType modBaseFluidType)
-                    event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
-            });
         }
 
         public static void registerAllSlimeBlockColor(RegisterColorHandlersEvent.Block event) {
@@ -440,7 +405,7 @@ public class ProductiveSlimes
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")) instanceof BucketItem bucketItem){
+                if (BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")) instanceof BucketItem bucketItem){
                     event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
             }
@@ -496,7 +461,7 @@ public class ProductiveSlimes
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
-                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.TRANSLUCENT);
+                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.translucent());
                 }
             }
         }

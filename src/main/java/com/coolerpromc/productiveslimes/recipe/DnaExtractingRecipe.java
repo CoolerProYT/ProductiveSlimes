@@ -1,22 +1,24 @@
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
+public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int inputCount;
@@ -32,16 +34,16 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
     }
 
     @Override
-    public boolean matches(SingleRecipeInput pInput, Level pLevel) {
+    public boolean matches(SimpleContainer pInput, Level pLevel) {
         if (pLevel.isClientSide()){
             return false;
         }
 
-        return inputItems.getFirst().test(pInput.getItem(0));
+        return inputItems.get(0).test(pInput.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -51,7 +53,7 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -68,6 +70,11 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return inputItems;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return Serializer.ID;
     }
 
     public List<ItemStack> getOutputs() {
@@ -88,30 +95,44 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
 
     public static class Serializer implements RecipeSerializer<DnaExtractingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting");
-        private final MapCodec<DnaExtractingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
-                ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),
-                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy),
-                Codec.FLOAT.fieldOf("outputChance").forGetter(recipe -> recipe.outputChance)
-        ).apply(instance, DnaExtractingRecipe::new));
+        public static final ResourceLocation ID = new ResourceLocation(ProductiveSlimes.MODID, "dna_extracting");
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, DnaExtractingRecipe> STREAM_CODEC = StreamCodec.of(
-                DnaExtractingRecipe.Serializer::toNetwork, DnaExtractingRecipe.Serializer::fromNetwork
-        );
+        @Override
+        public DnaExtractingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 
-        private static DnaExtractingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int ingredientCount = buffer.readVarInt();
-            List<Ingredient> inputItems = new ArrayList<>(ingredientCount);
-            for (int i = 0; i < ingredientCount; i++) {
-                inputItems.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+            for (int i = 0; i < ingredients.size(); i++) {
+                inputItems.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            int outputCount = buffer.readVarInt();
-            List<ItemStack> result = new ArrayList<>(outputCount);
-            for (int i = 0; i < outputCount; i++) {
-                result.add(ItemStack.STREAM_CODEC.decode(buffer));
+            JsonArray outputs = GsonHelper.getAsJsonArray(jsonObject, "output");
+            List<ItemStack> output = new ArrayList<>();
+
+            for(JsonElement element : outputs) {
+                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()).getDefaultInstance());
+            }
+
+            int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
+            int energy = GsonHelper.getAsInt(jsonObject, "energy");
+            float outputChance = GsonHelper.getAsFloat(jsonObject, "outputChance");
+
+            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance);
+        }
+
+        @Override
+        public @Nullable DnaExtractingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
+
+            for (int i = 0; i < inputItems.size(); i++) {
+                inputItems.set(i, Ingredient.fromNetwork(buffer));
+            }
+
+            int outputSize = buffer.readInt();
+            List<ItemStack> output = new ArrayList<>();
+
+            for (int i = 0; i < outputSize; i++) {
+                output.add(buffer.readItem());
             }
 
             int inputCount = buffer.readInt();
@@ -120,33 +141,29 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
 
             float outputChance = buffer.readFloat();
 
-            return new DnaExtractingRecipe(inputItems, result, inputCount, energy, outputChance);
+            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance);
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, DnaExtractingRecipe recipe) {
-            buffer.writeVarInt(recipe.inputItems.size());
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, DnaExtractingRecipe recipe) {
+            buffer.writeInt(recipe.inputItems.size());
+
             for (Ingredient ingredient : recipe.inputItems) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                ingredient.toNetwork(buffer);
             }
 
-            buffer.writeVarInt(recipe.output.size());
-            for (ItemStack itemStack : recipe.output) {
-                ItemStack.STREAM_CODEC.encode(buffer, itemStack);
+            List<ItemStack> output = recipe.output;
+            buffer.writeInt(recipe.output.size());
+
+            for (ItemStack stack : output) {
+                buffer.writeItem(stack);
             }
 
             buffer.writeInt(recipe.inputCount);
+
             buffer.writeInt(recipe.energy);
+
             buffer.writeFloat(recipe.outputChance);
-        }
-
-        @Override
-        public MapCodec<DnaExtractingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, DnaExtractingRecipe> streamCodec() {
-            return STREAM_CODEC;
         }
     }
 }

@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 
@@ -61,7 +59,7 @@ public class InMemoryDataPack implements PackResources {
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
                 String resourcePath = key.substring(("data/" + namespace + "/").length());
-                ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, resourcePath);
+                ResourceLocation location = new ResourceLocation(namespace, resourcePath);
                 resourceOutput.accept(location, () -> new ByteArrayInputStream(data));
             }
         });
@@ -101,22 +99,6 @@ public class InMemoryDataPack implements PackResources {
             }
         }
         return null;
-    }
-
-    @Override
-    public PackLocationInfo location() {
-        return new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
-                new PackSource() {
-                    @Override
-                    public Component decorate(Component name) {
-                        return Component.literal("In Memory Pack");
-                    }
-
-                    @Override
-                    public boolean shouldAddAutomatically() {
-                        return true;
-                    }
-                }, Optional.empty());
     }
 
     @Override

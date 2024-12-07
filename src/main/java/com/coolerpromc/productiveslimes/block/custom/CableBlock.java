@@ -21,8 +21,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
@@ -55,10 +56,7 @@ public class CableBlock extends Block implements EntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
     }
-    @Override
-    protected RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
+
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
@@ -89,6 +87,12 @@ public class CableBlock extends Block implements EntityBlock {
                 .setValue(EAST, this.canConnectToBlock(level, pos.east()))
                 .setValue(WEST, this.canConnectToBlock(level, pos.west()));
     }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         VoxelShape shape = CORE_SHAPE;
@@ -161,8 +165,9 @@ public class CableBlock extends Block implements EntityBlock {
     }
     private boolean canConnectTo(Level level, BlockPos pos, Direction direction) {
         // Access the capability at the neighbor position and side
-        IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction.getOpposite());
-        if (energyStorage != null) {
+        LazyOptional<IEnergyStorage> energyStorage = level.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+
+        if (energyStorage.isPresent()) {
             return true;
         } else {
             // Check if the block is another cable

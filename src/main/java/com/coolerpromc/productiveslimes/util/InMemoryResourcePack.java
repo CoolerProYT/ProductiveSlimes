@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class InMemoryResourcePack implements PackResources {
     private final Map<String, byte[]> resources;
@@ -54,7 +50,7 @@ public class InMemoryResourcePack implements PackResources {
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
                 String resourcePath = key.substring((packType.getDirectory() + "/" + namespace + "/").length());
-                ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, resourcePath);
+                ResourceLocation location = new ResourceLocation(namespace, resourcePath);
                 resourceOutput.accept(location, () -> new ByteArrayInputStream(data));
             }
         });
@@ -96,19 +92,8 @@ public class InMemoryResourcePack implements PackResources {
     }
 
     @Override
-    public PackLocationInfo location() {
-        return new PackLocationInfo("productiveslimes", Component.literal("In Memory Pack"),
-                new PackSource() {
-                    @Override
-                    public Component decorate(Component name) {
-                        return Component.literal("In Memory Pack");
-                    }
-
-                    @Override
-                    public boolean shouldAddAutomatically() {
-                        return true;
-                    }
-                }, Optional.empty());
+    public String packId() {
+        return "productiveslimes_resourcepack";
     }
 
     @Override
