@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,11 +15,6 @@ import net.minecraft.world.phys.Vec3;
 
 public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighlightFix {
     public final int color;
-
-    @Override
-    public MapCodec<? extends SlimeBlock> codec() {
-        return simpleCodec(SlimeBlock::new);
-    }
 
     public SlimeBlock(Properties p_56402_) {
         super(p_56402_);

@@ -1,22 +1,28 @@
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeltingRecipe implements Recipe<SingleRecipeInput>{
+public class MeltingRecipe implements Recipe<SimpleContainer>{
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int inputCount;
@@ -30,16 +36,16 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
     }
 
     @Override
-    public boolean matches(SingleRecipeInput pInput, Level pLevel) {
+    public boolean matches(SimpleContainer pInput, Level pLevel) {
         if (pLevel.isClientSide()){
             return false;
         }
 
-        return inputItems.getFirst().test(pInput.getItem(0));
+        return inputItems.get(0).test(pInput.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -49,7 +55,7 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -60,7 +66,7 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.MELTING_TYPE.get();
+        return Type.INSTANCE;
     }
 
     @Override
@@ -80,63 +86,81 @@ public class MeltingRecipe implements Recipe<SingleRecipeInput>{
         return energy;
     }
 
+    @Override
+    public ResourceLocation getId() {
+        return Serializer.ID;
+    }
+
+    public static class Type implements RecipeType<MeltingRecipe> {
+        public static final MeltingRecipe.Type INSTANCE = new MeltingRecipe.Type();
+        public static final String ID = "melting";
+    }
+
     public static class Serializer implements RecipeSerializer<MeltingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting");
-        private final MapCodec<MeltingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
-                ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),
-                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
-        ).apply(instance, MeltingRecipe::new));
+        public static final ResourceLocation ID = new ResourceLocation(ProductiveSlimes.MODID, "melting");
+        @Override
+        public MeltingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, MeltingRecipe> STREAM_CODEC = StreamCodec.of(
-                MeltingRecipe.Serializer::toNetwork, MeltingRecipe.Serializer::fromNetwork
-        );
-
-        private static MeltingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int ingredientCount = buffer.readVarInt();
-            List<Ingredient> inputItems = new ArrayList<>(ingredientCount);
-            for (int i = 0; i < ingredientCount; i++) {
-                inputItems.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+            for (int i = 0; i < ingredients.size(); i++) {
+                inputItems.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            int outputCount = buffer.readVarInt();
-            List<ItemStack> result = new ArrayList<>(outputCount);
-            for (int i = 0; i < outputCount; i++) {
-                result.add(ItemStack.STREAM_CODEC.decode(buffer));
+            JsonArray outputs = GsonHelper.getAsJsonArray(jsonObject, "output");
+            List<ItemStack> output = new ArrayList<>();
+
+            for(JsonElement element : outputs) {
+                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()).getDefaultInstance());
+            }
+
+            int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
+            int energy = GsonHelper.getAsInt(jsonObject, "energy");
+
+            return new MeltingRecipe(inputItems, output, inputCount, energy);
+        }
+
+        @Override
+        public @Nullable MeltingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
+
+            for (int i = 0; i < inputItems.size(); i++) {
+                inputItems.set(i, Ingredient.fromNetwork(buffer));
+            }
+
+            int outputSize = buffer.readInt();
+            List<ItemStack> output = new ArrayList<>();
+
+            for (int i = 0; i < outputSize; i++) {
+                output.add(buffer.readItem());
             }
 
             int inputCount = buffer.readInt();
 
             int energy = buffer.readInt();
 
-            return new MeltingRecipe(inputItems, result, inputCount, energy);
+            return new MeltingRecipe(inputItems, output, inputCount, energy);
         }
 
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, MeltingRecipe recipe) {
-            buffer.writeVarInt(recipe.inputItems.size());
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, MeltingRecipe recipe) {
+            buffer.writeInt(recipe.inputItems.size());
+
             for (Ingredient ingredient : recipe.inputItems) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                ingredient.toNetwork(buffer);
             }
 
-            buffer.writeVarInt(recipe.output.size());
-            for (ItemStack itemStack : recipe.output) {
-                ItemStack.STREAM_CODEC.encode(buffer, itemStack);
+            List<ItemStack> output = recipe.output;
+            buffer.writeInt(recipe.output.size());
+
+            for (ItemStack stack : output) {
+                buffer.writeItem(stack);
             }
 
             buffer.writeInt(recipe.inputCount);
+
             buffer.writeInt(recipe.energy);
-        }
-
-        @Override
-        public MapCodec<MeltingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, MeltingRecipe> streamCodec() {
-            return STREAM_CODEC;
         }
     }
 }

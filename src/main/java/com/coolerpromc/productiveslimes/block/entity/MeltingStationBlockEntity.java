@@ -18,12 +18,10 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -144,37 +142,37 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("BucketInventory", bucketHandler.serializeNBT(pRegistries));
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.put("BucketInventory", bucketHandler.serializeNBT());
+        pTag.put("InputInventory", inputHandler.serializeNBT());
+        pTag.put("OutputInventory", outputHandler.serializeNBT());
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
         pTag.putInt("melting_station.progress", progress);
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(pTag);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
 
-        bucketHandler.deserializeNBT(pRegistries, pTag.getCompound("BucketInventory"));
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
+        bucketHandler.deserializeNBT(pTag.getCompound("BucketInventory"));
+        inputHandler.deserializeNBT(pTag.getCompound("InputInventory"));
+        outputHandler.deserializeNBT(pTag.getCompound("OutputInventory"));
         energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
         progress = pTag.getInt("melting_station.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
+        Optional<MeltingRecipe> recipe = getCurrentRecipe();
+        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
             }
@@ -188,13 +186,13 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
+        Optional<MeltingRecipe> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutputs();
+            List<ItemStack> results = recipe.get().getOutputs();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
-            this.bucketHandler.extractItem(0, recipe.get().value().getOutputs().get(0).getCount(), false);
+            this.inputHandler.extractItem(0, recipe.get().getInputCount(), false);
+            this.bucketHandler.extractItem(0, recipe.get().getOutputs().get(0).getCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -224,17 +222,17 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
+        Optional<MeltingRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().getInputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().getInputCount()) {
             return false;
         }
 
-        List<ItemStack> results = recipe.get().value().getOutputs();
+        List<ItemStack> results = recipe.get().getOutputs();
 
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {
@@ -271,8 +269,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<MeltingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.MELTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+    private Optional<MeltingRecipe> getCurrentRecipe(){
+        return this.level.getRecipeManager().getRecipeFor(MeltingRecipe.Type.INSTANCE, new SimpleContainer(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {

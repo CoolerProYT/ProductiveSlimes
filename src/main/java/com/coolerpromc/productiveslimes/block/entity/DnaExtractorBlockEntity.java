@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -23,7 +24,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -68,6 +73,10 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     private int progress = 0;
     private int maxProgress = 78;
 
+    private LazyOptional<CustomEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
+    private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
+
     public DnaExtractorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.DNA_EXTRACTOR_BE.get(), pPos, pBlockState);
         this.data = new ContainerData() {
@@ -108,6 +117,23 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     public CustomEnergyStorage getEnergyHandler() {
         return energyHandler;
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY && side != Direction.DOWN && side != Direction.UP){
+            return energy.cast();
+        }
+
+        if (cap == ForgeCapabilities.ITEM_HANDLER && side == Direction.UP){
+            return input.cast();
+        }
+
+        if (cap == ForgeCapabilities.ITEM_HANDLER && side == Direction.DOWN){
+            return output.cast();
+        }
+
+        return super.getCapability(cap, side);
     }
 
     @Override
@@ -272,7 +298,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private Optional<DnaExtractingRecipe> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SimpleContainer(inputHandler.getStackInSlot(0)), level);
+        return this.level.getRecipeManager().getRecipeFor(DnaExtractingRecipe.Type.INSTANCE, new SimpleContainer(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {

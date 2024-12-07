@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingRecipeDisplay> {
     public static final CategoryIdentifier<? extends DnaSynthesizingRecipeDisplay> DNA_SYNTHESIZING = CategoryIdentifier.of(ProductiveSlimes.MODID, "dna_synthesizing");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/dna_synthesizer_gui.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/rei/dna_synthesizer_gui.png");
 
     private int tickCount = 0;
 
@@ -64,7 +65,7 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
                 .entries(Collections.singleton(EntryStacks.of(Items.EGG))).markInput());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 125, startPoint.y + 34))
-                .entries(display.getOutputEntries().getFirst()).markOutput());
+                .entries(display.getOutputEntries().get(0)).markOutput());
 
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.getEnergy());
 
@@ -93,6 +94,27 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
             @Override
             public List<? extends GuiEventListener> children() {
                 return new ArrayList<>();
+            }
+
+            @Override
+            public boolean isDragging() {
+                return false;
+            }
+
+            @Override
+            public void setDragging(boolean b) {
+
+            }
+
+            @Nullable
+            @Override
+            public GuiEventListener getFocused() {
+                return null;
+            }
+
+            @Override
+            public void setFocused(@Nullable GuiEventListener guiEventListener) {
+
             }
         });
 

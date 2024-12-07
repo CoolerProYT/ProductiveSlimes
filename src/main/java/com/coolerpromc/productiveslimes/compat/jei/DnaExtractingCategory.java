@@ -13,19 +13,14 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Matrix4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"dna_extracting");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/dna_extractor_gui.png");
+    public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"dna_extracting");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/dna_extractor_gui.png");
     public static final RecipeType<DnaExtractingRecipe> DNA_EXTRACTING_TYPE = new RecipeType<>(UID, DnaExtractingRecipe.class);
     private int tickCount = 0;
 

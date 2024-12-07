@@ -5,22 +5,19 @@ import com.coolerpromc.productiveslimes.entity.ModEntities;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.Musics;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModBiomes {
-    public static final ResourceKey<Biome> SLIME_LAND = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_land"));
+    public static final ResourceKey<Biome> SLIME_LAND = ResourceKey.create(Registries.BIOME, new ResourceLocation(ProductiveSlimes.MODID, "slime_land"));
 
-    public static void boostrap(BootstrapContext<Biome> context){
+    public static void boostrap(BootstapContext<Biome> context){
         context.register(SLIME_LAND, slimeLand(context));
     }
 
@@ -29,7 +26,7 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultOres(builder);
     }
 
-    private static Biome slimeLand(BootstrapContext<Biome> context){
+    private static Biome slimeLand(BootstapContext<Biome> context){
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 
         spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 1, 1));

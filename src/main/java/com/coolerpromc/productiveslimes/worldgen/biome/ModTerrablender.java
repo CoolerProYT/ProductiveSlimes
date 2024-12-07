@@ -6,6 +6,6 @@ import terrablender.api.Regions;
 
 public class ModTerrablender {
     public static void registerBiomes() {
-        Regions.register(new ModOverworldRegion(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimy_dimension"), 5));
+        Regions.register(new ModOverworldRegion(new ResourceLocation(ProductiveSlimes.MODID, "slimy_dimension"), 5));
     }
 }

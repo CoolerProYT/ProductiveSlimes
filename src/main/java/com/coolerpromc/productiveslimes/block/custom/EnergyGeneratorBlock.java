@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.EnergyGeneratorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
+import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +13,6 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -37,6 +36,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -46,11 +46,6 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
 
     public EnergyGeneratorBlock(Properties p_49792_) {
         super(p_49792_);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(EnergyGeneratorBlock::new);
     }
 
     @Override
@@ -91,7 +86,9 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
             ItemStack stack = new ItemStack(this);
             EnergyGeneratorBlockEntity energyGeneratorBlockEntity = (EnergyGeneratorBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), energyGeneratorBlockEntity.getEnergyHandler().getEnergyStored());
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putInt("energy", energyGeneratorBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.setTag(tag);
 
             drops.clear();
             drops.add(stack);
@@ -101,18 +98,17 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof EnergyGeneratorBlockEntity) {
-                MenuProvider containerProvider = (EnergyGeneratorBlockEntity) entity;
-                pPlayer.openMenu(containerProvider, pPos);
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (EnergyGeneratorBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Nullable
@@ -158,20 +154,20 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof EnergyGeneratorBlockEntity energyGeneratorBlockEntity) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-
-            energyGeneratorBlockEntity.getEnergyHandler().setEnergy(energy);
+            if (pStack.hasTag() && pStack.getTag().contains("energy")) {
+                energyGeneratorBlockEntity.getEnergyHandler().setEnergy(pStack.getOrCreateTag().getInt("energy"));
+            }
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
-        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
-        if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
+        if (pStack.hasTag() && pStack.getTag().getInt("energy") != 0) {
+            int energy = pStack.getTag().getInt("energy");
             pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
                     .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)

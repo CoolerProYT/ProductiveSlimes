@@ -19,12 +19,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DnaSynthesizingCategory implements IRecipeCategory<DnaSynthesizingRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"dna_synthesizing");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/dna_synthesizer_gui.png");
+    public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"dna_synthesizing");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/dna_synthesizer_gui.png");
     public static final RecipeType<DnaSynthesizingRecipe> DNA_SYNTHESIZING_TYPE = new RecipeType<>(UID, DnaSynthesizingRecipe.class);
     private int tickCount = 0;
 

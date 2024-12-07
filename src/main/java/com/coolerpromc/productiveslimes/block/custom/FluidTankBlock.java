@@ -2,12 +2,10 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
-import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -15,11 +13,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -165,9 +163,11 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
 
         if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
             ItemStack stack = new ItemStack(this);
-            ImmutableFluidStack immutableFluidStack = new ImmutableFluidStack(fluidTankBlockEntity.getFluidStack().copy());
 
-            stack.set(ModDataComponents.FLUID_STACK.get(), immutableFluidStack);
+            CompoundTag tag = stack.getOrCreateTag();
+            CompoundTag fluidTag = new CompoundTag();
+            tag.put("fluid", fluidTag);
+            stack.setTag(tag);
 
             drops.clear();
             drops.add(stack);
@@ -180,11 +180,11 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof FluidTankBlockEntity fluidTankBlockEntity) {
-            ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
-
-            FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
-
-            fluidTankBlockEntity.setFluidStack(fluidStack);
+            if (pStack.hasTag() && pStack.getTag().contains("fluid")){
+                CompoundTag fluidTag = pStack.getTag().getCompound("fluid");
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
+                fluidTankBlockEntity.setFluidStack(fluidStack);
+            }
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -194,9 +194,9 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
-        if (pStack.getOrDefault(ModDataComponents.FLUID_STACK.get(), FluidStack.EMPTY) != FluidStack.EMPTY) {
-            ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
-            FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
+        if (pStack.hasTag() && pStack.getTag().contains("fluid") && FluidStack.loadFluidStackFromNBT(pStack.getTag().getCompound("fluid")) != FluidStack.EMPTY) {
+            CompoundTag fluidTag = pStack.getTag().getCompound("fluid");
+            FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
             pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
             pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }

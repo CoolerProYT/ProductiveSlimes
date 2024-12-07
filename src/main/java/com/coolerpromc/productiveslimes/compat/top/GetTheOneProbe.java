@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.top;
 
 import mcjty.theoneprobe.api.ITheOneProbe;
@@ -10,4 +11,4 @@ public class GetTheOneProbe implements Function<ITheOneProbe, Void> {
         probe.registerEntityProvider(new TOPPlugin());
         return null;
     }
-}
+}*/

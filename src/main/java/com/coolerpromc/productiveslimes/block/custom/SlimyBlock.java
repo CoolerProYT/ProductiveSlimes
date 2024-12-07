@@ -28,12 +28,12 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return !state.isSolidRender(level, pos);
     }
 
@@ -52,8 +52,8 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return level.getBlockState(pos.above()).isAir();
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean b) {
+        return levelReader.getBlockState(blockPos.above()).isAir();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos blockpos = pos.above();
-        BlockState blockstate = Blocks.SHORT_GRASS.defaultBlockState();
+        BlockState blockstate = Blocks.GRASS.defaultBlockState();
         Optional<Holder.Reference<PlacedFeature>> optional = level.registryAccess()
                 .registryOrThrow(Registries.PLACED_FEATURE)
                 .getHolder(VegetationPlacements.GRASS_BONEMEAL);

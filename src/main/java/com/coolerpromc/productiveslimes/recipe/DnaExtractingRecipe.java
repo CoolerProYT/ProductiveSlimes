@@ -64,7 +64,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.DNA_EXTRACTING_TYPE.get();
+        return Type.INSTANCE;
     }
 
     @Override
@@ -91,6 +91,11 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
 
     public float getOutputChance() {
         return outputChance;
+    }
+
+    public static class Type implements RecipeType<DnaExtractingRecipe> {
+        public static final DnaExtractingRecipe.Type INSTANCE = new DnaExtractingRecipe.Type();
+        public static final String ID = "dna_extracting";
     }
 
     public static class Serializer implements RecipeSerializer<DnaExtractingRecipe>{

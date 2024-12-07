@@ -8,7 +8,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +22,9 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
     private EnergyNetwork network;
     private final int capacity = 10000; // Example capacity
     private final int transferRate = 500; // Energy transfer rate per tick
+
+    private LazyOptional<IEnergyStorage> storageLazyOptional = LazyOptional.of(() -> this);
+
     public CableBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CABLE_BE.get(), pos, state);
     }
@@ -117,14 +124,14 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
         }
     }
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
         int energyStored = network != null ? network.getEnergyStored() : 0;
         pTag.putInt("EnergyStored", energyStored);
     }
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
         energyStoredToLoad = pTag.getInt("EnergyStored");
     }
     public void onRemoved() {
@@ -141,5 +148,14 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
             }
             initializeNetwork();
         }
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return this.storageLazyOptional.cast();
+        }
+
+        return super.getCapability(cap);
     }
 }

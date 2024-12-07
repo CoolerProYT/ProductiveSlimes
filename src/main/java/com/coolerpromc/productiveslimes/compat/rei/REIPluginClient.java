@@ -33,10 +33,10 @@ public class REIPluginClient implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(DnaExtractingRecipe.class, ModRecipes.DNA_EXTRACTING_TYPE.get(), DnaExtractingRecipeDisplay::new);
-        registry.registerRecipeFiller(DnaSynthesizingRecipe.class, ModRecipes.DNA_SYNTHESIZING_TYPE.get(), DnaSynthesizingRecipeDisplay::new);
-        registry.registerRecipeFiller(MeltingRecipe.class, ModRecipes.MELTING_TYPE.get(), MeltingRecipeDisplay::new);
-        registry.registerRecipeFiller(SolidingRecipe.class, ModRecipes.SOLIDING_TYPE.get(), SolidingRecipeDisplay::new);
+        registry.registerRecipeFiller(DnaExtractingRecipe.class, DnaExtractingRecipe.Type.INSTANCE, DnaExtractingRecipeDisplay::new);
+        registry.registerRecipeFiller(DnaSynthesizingRecipe.class, DnaSynthesizingRecipe.Type.INSTANCE, DnaSynthesizingRecipeDisplay::new);
+        registry.registerRecipeFiller(MeltingRecipe.class, MeltingRecipe.Type.INSTANCE, MeltingRecipeDisplay::new);
+        registry.registerRecipeFiller(SolidingRecipe.class, SolidingRecipe.Type.INSTANCE, SolidingRecipeDisplay::new);
     }
 
     @Override

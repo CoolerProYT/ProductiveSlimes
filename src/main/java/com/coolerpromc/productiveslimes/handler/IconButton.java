@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class IconButton extends Button {
-    public static final ResourceLocation iconTexture = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/widgets.png");
+    public static final ResourceLocation iconTexture = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/widgets.png");
     private final int closedTextureX;
     private final int closedTextureY;
     private final int openTextureX;

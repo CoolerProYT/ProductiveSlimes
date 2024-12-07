@@ -1,20 +1,12 @@
 package com.coolerpromc.productiveslimes.worldgen.biome.surface;
 
-import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
-import terrablender.api.SurfaceRuleManager;
 
 public class ModSurfaceRules {
     private static final SurfaceRules.RuleSource SLIMY_GRASS_BLOCK = makeStateRule(ModBlocks.SLIMY_GRASS_BLOCK.get());

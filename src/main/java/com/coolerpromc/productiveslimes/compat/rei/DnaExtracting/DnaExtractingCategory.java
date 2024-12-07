@@ -16,6 +16,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecipeDisplay> {
     public static final CategoryIdentifier<? extends DnaExtractingRecipeDisplay> DNA_EXTRACTING = CategoryIdentifier.of(ProductiveSlimes.MODID, "dna_extracting");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/dna_extractor_gui.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/rei/dna_extractor_gui.png");
 
     private int tickCount = 0;
 
@@ -89,6 +90,27 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
             @Override
             public List<? extends GuiEventListener> children() {
                 return new ArrayList<>();
+            }
+
+            @Override
+            public boolean isDragging() {
+                return false;
+            }
+
+            @Override
+            public void setDragging(boolean b) {
+
+            }
+
+            @Nullable
+            @Override
+            public GuiEventListener getFocused() {
+                return null;
+            }
+
+            @Override
+            public void setFocused(@Nullable GuiEventListener guiEventListener) {
+
             }
         });
 

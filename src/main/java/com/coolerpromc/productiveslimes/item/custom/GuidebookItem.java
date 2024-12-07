@@ -1,8 +1,6 @@
 package com.coolerpromc.productiveslimes.item.custom;
 
 import com.coolerpromc.productiveslimes.screen.GuidebookMenu;
-import com.coolerpromc.productiveslimes.screen.GuidebookScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

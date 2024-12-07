@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.top;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -24,3 +25,4 @@ public class TOPPlugin implements IProbeInfoEntityProvider {
         }
     }
 }
+*/

@@ -1,6 +1,5 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,13 +21,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.function.Predicate;
 
 public abstract class BaseSlime extends Slime {
     private static final EntityDataAccessor<ItemStack> RESOURCE =
@@ -117,17 +114,42 @@ public abstract class BaseSlime extends Slime {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-
-        pBuilder.define(RESOURCE, ItemStack.EMPTY);
-        pBuilder.define(ID_SIZE, 1);
-        pBuilder.define(GROWTH_COUNTER, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RESOURCE, ItemStack.EMPTY);
+        this.entityData.define(ID_SIZE, 1);
+        this.entityData.define(GROWTH_COUNTER, 0);
     }
 
     @Override
-    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
-        return new Vec3(0.0, (double)dimensions.height() - 0.015625 * (double)this.getSize() * (double)partialTick, 0.0);
+    public boolean save(CompoundTag pCompound) {
+        pCompound.putInt("size", this.getSize());
+        pCompound.putInt("growth_counter", this.entityData.get(GROWTH_COUNTER));
+        pCompound.put("resource", this.entityData.get(RESOURCE).save(new CompoundTag()));
+
+        return super.save(pCompound);
+    }
+
+    @Override
+    public void load(CompoundTag pCompound) {
+        super.load(pCompound);
+
+        if (pCompound.contains("size", 99)) {
+            this.setSize(pCompound.getInt("size"), false);
+        }
+
+        if (pCompound.contains("growth_counter", 99)) {
+            this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
+        }
+
+        if (pCompound.contains("resource", 10)) {
+            this.setResource(ItemStack.of(pCompound.getCompound("resource")));
+        }
+    }
+
+    @Override
+    public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
+        return new Vec3(0.0, (double)this.level().getHeight() - 0.015625 * (double)this.getSize(), 0.0);
     }
 
     @Override
@@ -200,16 +222,6 @@ public abstract class BaseSlime extends Slime {
         this.xpReward = i;
     }
 
-    /*@Override
-    public void remove(Entity.RemovalReason pReason) {
-        this.setRemoved(pReason);
-        if (pReason == Entity.RemovalReason.KILLED) {
-            this.gameEvent(GameEvent.ENTITY_DIE);
-
-            this.spawnAtLocation(this.entityData.get(RESOURCE));
-        }
-    }*/
-
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)
@@ -230,9 +242,8 @@ public abstract class BaseSlime extends Slime {
     }
 
     @Override
-    public EntityDimensions getDefaultDimensions(Pose pose) {
-//        return EntityDimensions.scalable((float) (0.5 * (float)this.getSize()), (float) (0.5 * (float)this.getSize()));
-        return super.getDefaultDimensions(pose).scalable(this.getSize(), this.getSize());
+    public EntityDimensions getDimensions(Pose pPose) {
+        return super.getDimensions(pPose).scale(this.getSize(), this.getSize());
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){

@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"soliding");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
+    public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"soliding");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
     public static final RecipeType<SolidingRecipe> SOLIDING_TYPE = new RecipeType<>(UID, SolidingRecipe.class);
     private int tickCount = 0;
 

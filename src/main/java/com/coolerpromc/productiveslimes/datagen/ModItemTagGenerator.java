@@ -7,8 +7,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +20,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(Tags.Items.SLIME_BALLS)
+        tag(Tags.Items.SLIMEBALLS)
                 .add(ModItems.DIRT_SLIME_BALL.get())
                 .add(ModItems.STONE_SLIME_BALL.get())
                 .add(ModItems.COPPER_SLIME_BALL.get())

@@ -7,7 +7,6 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 
@@ -15,13 +14,13 @@ public class DnaExtractingRecipeDisplay extends BasicDisplay {
     private int energy;
     private float outputChance;
 
-    public DnaExtractingRecipeDisplay(RecipeHolder<DnaExtractingRecipe> recipe) {
-        super(List.of(EntryIngredients.ofIngredient(recipe.value().getIngredients().getFirst())),
-                List.of(EntryIngredient.of(EntryStacks.of(recipe.value().getOutputs().get(0))),
-                        EntryIngredient.of(EntryStacks.of(recipe.value().getOutputs().size() > 1 ? recipe.value().getOutputs().get(1) : ItemStack.EMPTY))));
+    public DnaExtractingRecipeDisplay(DnaExtractingRecipe recipe) {
+        super(List.of(EntryIngredients.ofIngredient(recipe.getIngredients().get(0))),
+                List.of(EntryIngredient.of(EntryStacks.of(recipe.getOutputs().get(0))),
+                        EntryIngredient.of(EntryStacks.of(recipe.getOutputs().size() > 1 ? recipe.getOutputs().get(1) : ItemStack.EMPTY))));
 
-        energy = recipe.value().getEnergy();
-        outputChance = recipe.value().getOutputChance();
+        energy = recipe.getEnergy();
+        outputChance = recipe.getOutputChance();
     }
 
     public int getEnergy() {

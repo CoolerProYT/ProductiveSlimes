@@ -19,9 +19,9 @@ public abstract class CustomMeleeAttackGoalMixin {
     @Accessor
     public abstract PathfinderMob getMob();
 
-    @Inject(method = "canPerformAttack", at = @At("HEAD"))
-    private void canPerformAttack(LivingEntity entity, CallbackInfoReturnable<Boolean> info) {
-        if (entity instanceof Slime) {
+    @Inject(method = "checkAndPerformAttack", at = @At("HEAD"))
+    private void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr, CallbackInfo ci) {
+        if (pEnemy instanceof Slime) {
             stop();
         }
     }

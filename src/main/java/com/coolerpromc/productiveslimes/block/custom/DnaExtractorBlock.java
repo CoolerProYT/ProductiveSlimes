@@ -2,12 +2,15 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
+import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -32,6 +35,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -75,7 +79,9 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
             ItemStack stack = new ItemStack(this);
             DnaExtractorBlockEntity dnaExtractorBlockEntity = (DnaExtractorBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), dnaExtractorBlockEntity.getEnergyHandler().getEnergyStored());
+            CompoundTag energyTag = stack.getOrCreateTag();
+            energyTag.putInt("energy", dnaExtractorBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.setTag(energyTag);
 
             drops.clear();
             drops.add(stack);
@@ -89,8 +95,7 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof DnaExtractorBlockEntity) {
-                MenuProvider containerProvider = (DnaExtractorBlockEntity) entity;
-                pPlayer.openMenu(containerProvider);
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (DnaExtractorBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -142,9 +147,9 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof DnaExtractorBlockEntity dnaExtractorBlockEntity) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-
-            dnaExtractorBlockEntity.getEnergyHandler().setEnergy(energy);
+            if (pStack.hasTag() && pStack.getTag().contains("energy")) {
+                dnaExtractorBlockEntity.getEnergyHandler().setEnergy(pStack.getOrCreateTag().getInt("energy"));
+            }
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -154,8 +159,8 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
-        if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
+        if (pStack.hasTag() && pStack.getTag().getInt("energy") != 0) {
+            int energy = pStack.getOrCreateTag().getInt("energy");
             pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
                     .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)

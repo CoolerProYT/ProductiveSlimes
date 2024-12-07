@@ -7,15 +7,11 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockE
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
-import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
-import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
-import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
@@ -24,12 +20,12 @@ import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
-import com.coolerpromc.productiveslimes.util.ModClientItemExtensions;
+import com.coolerpromc.productiveslimes.screen.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.RenderType;
@@ -54,7 +50,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -73,27 +68,23 @@ public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
+    /*public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProductiveSlimes.MODID);
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);*/
 
     public ProductiveSlimes()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
-        if (ModList.get().isLoaded("theoneprobe"))
-        {
-            modEventBus.addListener(this::enqueueIMC);
-        }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+//        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
-        ITEMS.register(modEventBus);
+        /*ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
-        ENTITY_TYPES.register(modEventBus);
+        ENTITY_TYPES.register(modEventBus);*/
 
-        FluidResources.register(modEventBus);
+//        FluidResources.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -104,7 +95,6 @@ public class ProductiveSlimes
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
-        ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
         ModTerrablender.registerBiomes();
@@ -120,12 +110,9 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        CustomContentRegistry.handleDatapack(event.getServer());
+//        CustomContentRegistry.handleDatapack(event.getServer());
     }
 
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
-    }
 
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
@@ -151,48 +138,55 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            EntityRenderers.register(ModEntities.DIRT_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0866043));
-            EntityRenderers.register(ModEntities.STONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a4545));
-            EntityRenderers.register(ModEntities.IRON_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0898c8a));
-            EntityRenderers.register(ModEntities.COPPER_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF06a3e15));
-            EntityRenderers.register(ModEntities.GOLD_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0a5953f));
-            EntityRenderers.register(ModEntities.DIAMOND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0178f9c));
-            EntityRenderers.register(ModEntities.NETHERITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04c2b2b));
-            EntityRenderers.register(ModEntities.LAPIS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF01c41ba));
-            EntityRenderers.register(ModEntities.REDSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0a10505));
-            EntityRenderers.register(ModEntities.OAK_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0a69d6f));
-            EntityRenderers.register(ModEntities.SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0f7f7c6));
-            EntityRenderers.register(ModEntities.ANDESITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF09d9e9a));
-            EntityRenderers.register(ModEntities.SNOW_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0f2fcfc));
-            EntityRenderers.register(ModEntities.ICE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF089b1fc));
-            EntityRenderers.register(ModEntities.MUD_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0363339));
-            EntityRenderers.register(ModEntities.CLAY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF09ca2ac));
-            EntityRenderers.register(ModEntities.RED_SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0bb6520));
-            EntityRenderers.register(ModEntities.MOSS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a6029));
-            EntityRenderers.register(ModEntities.DEEPSLATE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF03c3c42));
-            EntityRenderers.register(ModEntities.GRANITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0835949));
-            EntityRenderers.register(ModEntities.DIORITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0adacad));
-            EntityRenderers.register(ModEntities.CALCITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0e9e9e3));
-            EntityRenderers.register(ModEntities.TUFF_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF055564c));
-            EntityRenderers.register(ModEntities.DRIPSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0806155));
-            EntityRenderers.register(ModEntities.NETHERRACK_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0763535));
-            EntityRenderers.register(ModEntities.PRISMARINE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0529584));
-            EntityRenderers.register(ModEntities.MAGMA_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0561f1f));
-            EntityRenderers.register(ModEntities.OBSIDIAN_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0030106));
-            EntityRenderers.register(ModEntities.SOUL_SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0413127));
-            EntityRenderers.register(ModEntities.SOUL_SOIL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0392b23));
-            EntityRenderers.register(ModEntities.BLACKSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0201819));
-            EntityRenderers.register(ModEntities.BASALT_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0565456));
-            EntityRenderers.register(ModEntities.QUARTZ_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0e4ddd3));
-            EntityRenderers.register(ModEntities.GLOWSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0784e27));
-            EntityRenderers.register(ModEntities.ENDSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0cece8e));
-            EntityRenderers.register(ModEntities.AMETHYST_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF06b4da5));
-            EntityRenderers.register(ModEntities.BROWN_MUSHROOM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0967251));
-            EntityRenderers.register(ModEntities.RED_MUSHROOM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0c02624));
-            EntityRenderers.register(ModEntities.CACTUS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0476d21));
-            EntityRenderers.register(ModEntities.COAL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF03b3d3b));
-            EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF04a444b));
-            EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
+            MenuScreens.register(ModMenuTypes.MELTING_STATION_MENU.get(), MeltingStationScreen::new);
+            MenuScreens.register(ModMenuTypes.SOLIDING_STATION_MENU.get(), SolidingStationScreen::new);
+            MenuScreens.register(ModMenuTypes.GUIDEBOOK_MENU.get(), GuidebookScreen::new);
+            MenuScreens.register(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), EnergyGeneratorScreen::new);
+            MenuScreens.register(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), DnaExtractorScreen::new);
+            MenuScreens.register(ModMenuTypes.DNA_SYNTHESIZER_MENU.get(), DnaSynthesizerScreen::new);
+
+            EntityRenderers.register(ModEntities.DIRT_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF866043));
+            EntityRenderers.register(ModEntities.STONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF4a4545));
+            EntityRenderers.register(ModEntities.IRON_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF898c8a));
+            EntityRenderers.register(ModEntities.COPPER_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF6a3e15));
+            EntityRenderers.register(ModEntities.GOLD_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFa5953f));
+            EntityRenderers.register(ModEntities.DIAMOND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF178f9c));
+            EntityRenderers.register(ModEntities.NETHERITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF4c2b2b));
+            EntityRenderers.register(ModEntities.LAPIS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF1c41ba));
+            EntityRenderers.register(ModEntities.REDSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFa10505));
+            EntityRenderers.register(ModEntities.OAK_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFa69d6f));
+            EntityRenderers.register(ModEntities.SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFf7f7c6));
+            EntityRenderers.register(ModEntities.ANDESITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF9d9e9a));
+            EntityRenderers.register(ModEntities.SNOW_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFf2fcfc));
+            EntityRenderers.register(ModEntities.ICE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF89b1fc));
+            EntityRenderers.register(ModEntities.MUD_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF363339));
+            EntityRenderers.register(ModEntities.CLAY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF9ca2ac));
+            EntityRenderers.register(ModEntities.RED_SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFbb6520));
+            EntityRenderers.register(ModEntities.MOSS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF4a6029));
+            EntityRenderers.register(ModEntities.DEEPSLATE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF3c3c42));
+            EntityRenderers.register(ModEntities.GRANITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF835949));
+            EntityRenderers.register(ModEntities.DIORITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFadacad));
+            EntityRenderers.register(ModEntities.CALCITE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFe9e9e3));
+            EntityRenderers.register(ModEntities.TUFF_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF55564c));
+            EntityRenderers.register(ModEntities.DRIPSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF806155));
+            EntityRenderers.register(ModEntities.NETHERRACK_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF763535));
+            EntityRenderers.register(ModEntities.PRISMARINE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF529584));
+            EntityRenderers.register(ModEntities.MAGMA_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF561f1f));
+            EntityRenderers.register(ModEntities.OBSIDIAN_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF030106));
+            EntityRenderers.register(ModEntities.SOUL_SAND_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF413127));
+            EntityRenderers.register(ModEntities.SOUL_SOIL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF392b23));
+            EntityRenderers.register(ModEntities.BLACKSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF201819));
+            EntityRenderers.register(ModEntities.BASALT_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF565456));
+            EntityRenderers.register(ModEntities.QUARTZ_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFe4ddd3));
+            EntityRenderers.register(ModEntities.GLOWSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF784e27));
+            EntityRenderers.register(ModEntities.ENDSTONE_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFcece8e));
+            EntityRenderers.register(ModEntities.AMETHYST_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF6b4da5));
+            EntityRenderers.register(ModEntities.BROWN_MUSHROOM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF967251));
+            EntityRenderers.register(ModEntities.RED_MUSHROOM_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFc02624));
+            EntityRenderers.register(ModEntities.CACTUS_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF476d21));
+            EntityRenderers.register(ModEntities.COAL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF3b3d3b));
+            EntityRenderers.register(ModEntities.GRAVEL_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF4a444b));
+            EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFffff70));
             EntityRenderers.register(ModEntities.OAK_LEAVES_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFF48b518));
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -211,7 +205,7 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
 
-            CustomContentRegistry.handleResourcePack();
+//            CustomContentRegistry.handleResourcePack();
         }
 
         @SubscribeEvent
@@ -239,11 +233,6 @@ public class ProductiveSlimes
                 itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
                 itemModelShaper.register(BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")), moltenBucketLocation);
             }
-        }
-
-        @SubscribeEvent
-        public static void entitySpawnRestriction(SpawnPlacementRegisterEvent event) {
-            event.register(ModEntities.DIRT_SLIME.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> serverLevel.getBlockState(pos.below()).getBlock() == ModBlocks.SLIMY_GRASS_BLOCK.get(), SpawnPlacementRegisterEvent.Operation.REPLACE);
         }
 
         @SubscribeEvent

@@ -12,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -69,16 +68,5 @@ public class Slime extends BaseSlime {
     @Override
     protected ParticleOptions getParticleType() {
         return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(this.growthItem));
-    }
-
-    public static boolean checkMobSpawnRules(
-            EntityType<? extends Mob> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random
-    ) {
-        boolean flag = MobSpawnType.ignoresLightRequirements(spawnType) || isBrightEnoughToSpawn(level, pos);
-        return level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && flag;
-    }
-
-    protected static boolean isBrightEnoughToSpawn(BlockAndTintGetter level, BlockPos pos) {
-        return level.getRawBrightness(pos, 0) > 8;
     }
 }

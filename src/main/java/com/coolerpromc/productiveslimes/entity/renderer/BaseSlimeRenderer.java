@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeModel<BaseSlime>> {
-    private static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
+    private static final ResourceLocation BASE_TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
 
     public BaseSlimeRenderer(EntityRendererProvider.Context pContext, int color) {
         super(pContext, new SlimeModel<>(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);

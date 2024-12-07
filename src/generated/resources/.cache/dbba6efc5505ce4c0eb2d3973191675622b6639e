@@ -1,8 +1,8 @@
-// 1.21.1	2024-11-28T19:18:33.3103492	Tags for minecraft:block mod id productiveslimes
-789ec8f42e079a48a9e7e0c3fd1ff3ca0a0a7579 data/minecraft/tags/block/deepslate_ore_replaceables.json
-c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/block/dirt.json
-a9dc12e50daa1ffc751cb17a93b05f24acbdbb10 data/minecraft/tags/block/mineable/pickaxe.json
-c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/block/mineable/shovel.json
-f2d703be4566be854db452e721428072a7b0aeec data/minecraft/tags/block/needs_iron_tool.json
-4f14ddc0c347cc8fdbdabdb10f95eb6878c9f60e data/minecraft/tags/block/stone_ore_replaceables.json
-35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/neoforge/tags/block/needs_netherite_tool.json
+// 1.20.1	2024-12-07T23:24:29.7078174	Tags for minecraft:block mod id productiveslimes
+35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/forge/tags/blocks/needs_netherite_tool.json
+789ec8f42e079a48a9e7e0c3fd1ff3ca0a0a7579 data/minecraft/tags/blocks/deepslate_ore_replaceables.json
+c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/blocks/dirt.json
+a9dc12e50daa1ffc751cb17a93b05f24acbdbb10 data/minecraft/tags/blocks/mineable/pickaxe.json
+c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/blocks/mineable/shovel.json
+f2d703be4566be854db452e721428072a7b0aeec data/minecraft/tags/blocks/needs_iron_tool.json
+4f14ddc0c347cc8fdbdabdb10f95eb6878c9f60e data/minecraft/tags/blocks/stone_ore_replaceables.json

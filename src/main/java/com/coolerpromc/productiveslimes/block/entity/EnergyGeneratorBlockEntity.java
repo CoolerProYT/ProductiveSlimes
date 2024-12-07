@@ -6,7 +6,6 @@ import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.screen.EnergyGeneratorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -20,14 +19,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,6 +59,9 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
     private int progress = 0;
     private int maxProgress = 100;
+
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<ItemStackHandler> items = LazyOptional.of(() -> itemHandler);
 
     public CustomEnergyStorage getEnergyHandler() {
         return energyHandler;
@@ -104,6 +107,14 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
                 return 4;
             }
         };
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) return energy.cast();
+        if (cap == ForgeCapabilities.ITEM_HANDLER) return items.cast();
+
+        return super.getCapability(cap, side);
     }
 
     @Override
@@ -160,17 +171,23 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
                 Level level = this.level;
                 BlockPos neighborPos = this.getBlockPos().relative(direction);
 
-                Optional<IEnergyStorage> neighborEnergy = Optional.ofNullable(level.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, direction.getOpposite()));
+                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()));
 
-                if (neighborEnergy.isPresent()) {
-                    IEnergyStorage neighborStorage = neighborEnergy.get();
+                if (neighborEnergy.get().isPresent()) {
+                    LazyOptional<IEnergyStorage> neighborStorage = neighborEnergy.get();
 
-                    if (neighborStorage.canReceive()) {
-                        int energyToExtract = Math.min(this.energyHandler.extractEnergy(1000, true), neighborStorage.receiveEnergy(1000, true));
+                    neighborStorage.ifPresent(neighbor -> {
+                        if (neighbor.canReceive()) {
+                            int energyToExtract = Math.min(
+                                    this.energyHandler.extractEnergy(1000, true),
+                                    neighbor.receiveEnergy(1000, true)
+                            );
 
-                        this.energyHandler.extractEnergy(energyToExtract, false);
-                        neighborStorage.receiveEnergy(energyToExtract, false);
-                    }
+                            // Perform the actual transfer
+                            this.energyHandler.extractEnergy(energyToExtract, false);
+                            neighbor.receiveEnergy(energyToExtract, false);
+                        }
+                    });
                 }
             }
         }
@@ -181,25 +198,25 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
 
-        pTag.put("Inventory", itemHandler.serializeNBT(pRegistries));
-        pTag.put("Energy", energyHandler.serializeNBT(pRegistries));
+        pTag.put("Inventory", itemHandler.serializeNBT());
+        pTag.put("Energy", energyHandler.serializeNBT());
         pTag.putInt("Progress", progress);
         pTag.putInt("MaxProgress", maxProgress);
-        pTag.put("Upgrades", upgradeHandler.serializeNBT(pRegistries));
+        pTag.put("Upgrades", upgradeHandler.serializeNBT());
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
 
-        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompound("Inventory"));
-        this.energyHandler.deserializeNBT(pRegistries, pTag.get("Energy"));
+        this.itemHandler.deserializeNBT(pTag.getCompound("Inventory"));
+        this.energyHandler.deserializeNBT(pTag.get("Energy"));
         this.progress = pTag.getInt("Progress");
         this.maxProgress = pTag.getInt("MaxProgress");
-        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompound("Upgrades"));
+        this.upgradeHandler.deserializeNBT(pTag.getCompound("Upgrades"));
     }
 
     @Nullable

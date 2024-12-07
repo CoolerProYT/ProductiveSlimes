@@ -24,8 +24,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ModBlockLootTables extends BlockLootSubProvider {
-    public ModBlockLootTables(HolderLookup.Provider provider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+    public ModBlockLootTables() {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
@@ -38,11 +38,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.DNA_SYNTHESIZER.get());
         dropSelf(ModBlocks.FLUID_TANK.get());
 
-        createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK);
-        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT);
+        createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK.get());
+        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT.get());
         dropSelf(ModBlocks.SLIMY_DIRT.get());
-        dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE);
-        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE);
+        dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
@@ -89,11 +89,6 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.GRAVEL_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
         dropSelf(ModBlocks.OAK_LEAVES_SLIME_BLOCK.get());
-    }
-
-    protected LootTable.Builder createCopperLikeOreDrops(Block pBlock, Item item){
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        return this.createSilkTouchDispatchTable(pBlock, (LootPoolEntryContainer.Builder)this.applyExplosionDecay(pBlock, LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))));
     }
 
     @Override

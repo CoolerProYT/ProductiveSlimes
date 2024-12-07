@@ -1,10 +1,7 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
-import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -20,11 +17,8 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-
-import java.util.Optional;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 
 public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<SolidingStationBlockEntity> {
     public SolidingStationBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
@@ -86,11 +80,11 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
     }
 
     private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
-        builder.addVertex(poseStack.last().pose(), x, y, z)
-                .setColor(color)
-                .setUv(u, v)
-                .setLight(packedLight)
-                .setNormal(1, 0, 0);
+        builder.vertex(poseStack.last().pose(), x, y, z)
+                .color(color)
+                .uv(u, v)
+                .uv2(packedLight)
+                .normal(1, 0, 0);
     }
     private static void drawQuad(VertexConsumer builder, PoseStack poseStack, float x0, float y0, float z0, float x1, float y1, float z1, float u0, float v0, float u1, float v1, int packedLight, int color) {
         drawVertex(builder, poseStack, x0, y0, z0, u0, v0, packedLight, color);

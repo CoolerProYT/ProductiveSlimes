@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook_gui.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/guidebook_gui.png");
     private ScrollableButtonList scrollableButtonList;
 
     private ItemStack displayItem;
@@ -322,7 +322,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        renderBackground(pGuiGraphics);
 
         int x = (this.width - imageWidth) / 2;
         int y = (this.height - imageHeight) / 2;

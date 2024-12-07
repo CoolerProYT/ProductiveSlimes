@@ -37,7 +37,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer",
             () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
-    public static final RegistryObject<Block> FLUID_TANK = registerBlock("fluid_tank",
+    public static final RegistryObject<Block> FLUID_TANK = registerBlockWithoutItem("fluid_tank",
             () -> new FluidTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block",
@@ -189,10 +189,12 @@ public class ModBlocks {
 
     private static RegistryObject<Block> registerBlock(String name, Supplier<Block> block){
         RegistryObject<Block> toReturn = BLOCKS.register(name, block);
-        if (!(block.get() instanceof FluidTankBlock)){
-            registerBlockItem(name,toReturn);
-        }
+        registerBlockItem(name,toReturn);
         return toReturn;
+    }
+
+    private static RegistryObject<Block> registerBlockWithoutItem(String name, Supplier<Block> block){
+        return BLOCKS.register(name, block);
     }
 
     private static RegistryObject<BlockItem> registerBlockItem(String name, RegistryObject<Block> block){

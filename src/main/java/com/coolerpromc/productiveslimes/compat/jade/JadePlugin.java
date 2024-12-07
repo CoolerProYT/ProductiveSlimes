@@ -27,7 +27,7 @@ public class JadePlugin implements IWailaPlugin {
 
         @Override
         public ResourceLocation getUid() {
-            return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_info");
+            return new ResourceLocation(ProductiveSlimes.MODID, "slime_info");
         }
     }
 }

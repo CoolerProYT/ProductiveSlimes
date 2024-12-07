@@ -1,18 +1,16 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredItem;
-
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -200,10 +198,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(ModItems.OAK_LEAVES_SLIME_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
     }
 
-    private ItemModelBuilder slimeballItem(DeferredItem<Item> item){
+    private ItemModelBuilder slimeballItem(RegistryObject<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"))
+                .texture("layer0", new ResourceLocation(ProductiveSlimes.MODID, "item/template_slimeball"))
                 .element()
                 .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
                 .face(Direction.UP).texture("#layer0").tintindex(0).end()
@@ -214,10 +212,10 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .end();
     }
 
-    private ItemModelBuilder dnaItem(DeferredItem<Item> item){
+    private ItemModelBuilder dnaItem(RegistryObject<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"))
+                .texture("layer0", new ResourceLocation(ProductiveSlimes.MODID, "item/template_dna"))
                 .element()
                 .face(Direction.DOWN).texture("#layer0").tintindex(0).end()
                 .face(Direction.UP).texture("#layer0").tintindex(0).end()
@@ -228,11 +226,11 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .end();
     }
 
-    private ItemModelBuilder bucketItem(DeferredItem<Item> item){
+    private ItemModelBuilder bucketItem(RegistryObject<Item> item){
         return getBuilder(item.getId().getPath())
                 .parent(getExistingFile(mcLoc("item/generated")))
-                .texture("layer0", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket"))
-                .texture("layer1", ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket_fluid"))
+                .texture("layer0", new ResourceLocation(ProductiveSlimes.MODID, "item/bucket"))
+                .texture("layer1", new ResourceLocation(ProductiveSlimes.MODID, "item/bucket_fluid"))
                 .element()
                 .face(Direction.DOWN).texture("#layer1").tintindex(1).end()
                 .face(Direction.UP).texture("#layer1").tintindex(1).end()
@@ -243,9 +241,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .end();
     }
 
-    private ItemModelBuilder simpleItem(DeferredItem<Item> item){
+    private ItemModelBuilder simpleItem(RegistryObject<Item> item){
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.tryParse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"item/" + item.getId().getPath()));
+                new ResourceLocation(ProductiveSlimes.MODID,"item/" + item.getId().getPath()));
     }
 }

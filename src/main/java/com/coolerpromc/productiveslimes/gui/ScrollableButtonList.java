@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Button;
@@ -15,9 +14,10 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
     private final int margin;
 
     public ScrollableButtonList(Minecraft minecraft, int width, int height, int top, int x, int itemHeight) {
-        super(minecraft, width, height, top, itemHeight + 2);
+        super(minecraft, width, height, top, itemHeight + 2, itemHeight);
         super.setRenderHeader(false, 0);
-        super.setX(x);
+        super.x0 = x;
+        super.x1 = x + width;
         this.margin = 2;
     }
 
@@ -28,7 +28,7 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
 
     @Override
     protected int getScrollbarPosition() {
-        return this.getX() + 22;
+        return this.x0 + 22;
     }
 
     @Override
@@ -42,27 +42,17 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
-
-    }
-
-    @Override
-    protected void renderListBackground(GuiGraphics pGuiGraphics) {
-
-    }
-
-    @Override
-    protected void renderListSeparators(GuiGraphics pGuiGraphics) {
-
-    }
-
-    @Override
     protected void renderDecorations(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
 
     }
 
     @Override
     protected void renderSelection(GuiGraphics pGuiGraphics, int pTop, int pWidth, int pHeight, int pOuterColor, int pInnerColor) {
+
+    }
+
+    @Override
+    public void updateNarration(NarrationElementOutput narrationElementOutput) {
 
     }
 

@@ -1,24 +1,31 @@
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
+import com.coolerpromc.productiveslimes.recipe.ModRecipes;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class DnaExtractingRecipeBuilder implements RecipeBuilder {
     private final List<Ingredient> ingredients = new ArrayList<>();
@@ -26,7 +33,9 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
     private int energy;
     private float outputChance;
     private final List<ItemStack> outputs = new ArrayList<>();
-    private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
+    private final List<JsonObject> outputJson = new ArrayList<>();
+    private final Map<String, CriterionTriggerInstance> criteria = new LinkedHashMap<>();
+
     @Nullable
     private String group;
 
@@ -49,7 +58,11 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
     }
 
     public DnaExtractingRecipeBuilder addOutput(ItemStack output) {
+        JsonObject outputJson = new JsonObject();
+        outputJson.addProperty("item", output.getDescriptionId().substring(output.getDescriptionId().indexOf(".") + 1).replace('.', ':'));
+        outputJson.addProperty("count", output.getCount());
         this.outputs.add(output);
+        this.outputJson.add(outputJson);
         return this;
     }
 
@@ -64,7 +77,7 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public DnaExtractingRecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
+    public DnaExtractingRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
@@ -82,24 +95,68 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(RecipeOutput output, ResourceLocation id) {
-        // Build the advancement
-        Advancement.Builder advancement = output.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-                .rewards(AdvancementRewards.Builder.recipe(id))
-                .requirements(AdvancementRequirements.Strategy.OR);
-        this.criteria.forEach(advancement::addCriterion);
+    public void save(Consumer<FinishedRecipe> consumer, ResourceLocation resourceLocation) {
+        consumer.accept(new Result(resourceLocation, ingredients, outputJson, inputCount, energy, outputChance));
+    }
 
-        // Create the recipe instance
-        DnaExtractingRecipe recipe = new DnaExtractingRecipe(
-                this.ingredients,
-                this.outputs,
-                this.inputCount,
-                this.energy,
-                this.outputChance
-        );
+    public static class Result implements FinishedRecipe{
+        private final ResourceLocation id;
+        private final List<Ingredient> ingredients;
+        private final List<JsonObject> outputs;
+        private final int inputCount;
+        private final int energy;
+        private final float outputChance;
 
-        // Pass the recipe and advancement to the output
-        output.accept(id, recipe, advancement.build(id.withPrefix("recipes/")));
+        public Result(ResourceLocation id, List<Ingredient> ingredients, List<JsonObject> outputs, int inputCount, int energy, float outputChance) {
+            this.id = id;
+            this.ingredients = ingredients;
+            this.outputs = outputs;
+            this.inputCount = inputCount;
+            this.energy = energy;
+            this.outputChance = outputChance;
+        }
+
+        @Override
+        public void serializeRecipeData(JsonObject jsonObject) {
+            jsonObject.addProperty("type", "productiveslimes:dna_extracting");
+            jsonObject.addProperty("energy", energy);
+
+            JsonArray ingredientArray = new JsonArray();
+            for (Ingredient ingredient : ingredients) {
+                ingredientArray.add(ingredient.toJson());
+            }
+            jsonObject.add("ingredients", ingredientArray);
+            jsonObject.addProperty("inputCount", inputCount);
+
+            JsonArray outputArray = new JsonArray();
+            for (JsonObject output : outputs) {
+                outputArray.add(output);
+            }
+            jsonObject.add("output", outputArray);
+
+            jsonObject.addProperty("outputChance", outputChance);
+        }
+
+        @Override
+        public ResourceLocation getId() {
+            return id;
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
+        }
+
+        @org.jetbrains.annotations.Nullable
+        @Override
+        public JsonObject serializeAdvancement() {
+            return null;
+        }
+
+        @org.jetbrains.annotations.Nullable
+        @Override
+        public ResourceLocation getAdvancementId() {
+            return null;
+        }
     }
 }

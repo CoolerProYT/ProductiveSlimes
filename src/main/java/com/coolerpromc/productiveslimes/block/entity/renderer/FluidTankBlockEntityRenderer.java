@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
-import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -9,24 +8,18 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.WaterFluid;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
     public FluidTankBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
@@ -87,11 +80,11 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
     }
 
     private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
-        builder.addVertex(poseStack.last().pose(), x, y, z)
-                .setColor(color)
-                .setUv(u, v)
-                .setLight(packedLight)
-                .setNormal(1, 0, 0);
+        builder.vertex(poseStack.last().pose(), x, y, z)
+                .color(color)
+                .uv(u, v)
+                .uv2(packedLight)
+                .normal(1, 0, 0);
     }
     private static void drawQuad(VertexConsumer builder, PoseStack poseStack, float x0, float y0, float z0, float x1, float y1, float z1, float u0, float v0, float u1, float v1, int packedLight, int color) {
         drawVertex(builder, poseStack, x0, y0, z0, u0, v0, packedLight, color);

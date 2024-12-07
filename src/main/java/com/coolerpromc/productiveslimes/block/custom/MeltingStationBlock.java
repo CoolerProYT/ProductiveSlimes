@@ -2,15 +2,16 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
-import com.mojang.serialization.MapCodec;
+import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -46,23 +48,18 @@ public class MeltingStationBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(MeltingStationBlock::new);
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return Block.box(0, 0, 0, 16, 16, 16);
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof MeltingStationBlockEntity){
@@ -74,7 +71,7 @@ public class MeltingStationBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         List<ItemStack> drops = super.getDrops(pState, pParams);
         BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 
@@ -82,7 +79,9 @@ public class MeltingStationBlock extends BaseEntityBlock {
             ItemStack stack = new ItemStack(this);
             MeltingStationBlockEntity meltingStationBlockEntity = (MeltingStationBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), meltingStationBlockEntity.getEnergyHandler().getEnergyStored());
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putInt("energy", meltingStationBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.setTag(tag);
 
             drops.clear();
             drops.add(stack);
@@ -92,18 +91,17 @@ public class MeltingStationBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof MeltingStationBlockEntity) {
-                MenuProvider containerProvider = (MeltingStationBlockEntity) entity;
-                pPlayer.openMenu(containerProvider, pPos);
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (MeltingStationBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Nullable
@@ -149,20 +147,20 @@ public class MeltingStationBlock extends BaseEntityBlock {
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof MeltingStationBlockEntity meltingStationBlockEntity) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-
-            meltingStationBlockEntity.getEnergyHandler().setEnergy(energy);
+            if (pStack.hasTag() && pStack.getTag().contains("energy")) {
+                meltingStationBlockEntity.getEnergyHandler().setEnergy(pStack.getOrCreateTag().getInt("energy"));
+            }
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
-        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
-        if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
+        if (pStack.hasTag() && pStack.getTag().getInt("energy") != 0) {
+            int energy = pStack.getTag().getInt("energy");
             pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
                     .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)

@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.item.custom;
 
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BucketItem extends net.minecraft.world.item.BucketItem {
     public final int color;

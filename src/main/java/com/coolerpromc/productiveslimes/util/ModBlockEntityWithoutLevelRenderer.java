@@ -1,8 +1,6 @@
 package com.coolerpromc.productiveslimes.util;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
-import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -10,6 +8,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -39,8 +38,12 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
             Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
             pPoseStack.popPose();
 
-            ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
-            FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
+            FluidStack fluidStack = FluidStack.EMPTY;
+
+            if (pStack.hasTag() && pStack.getTag().contains("fluid")) {
+                CompoundTag fluidTag = pStack.getTag().getCompound("fluid");
+                fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
+            }
 
             if (!fluidStack.isEmpty()) {
                 float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;

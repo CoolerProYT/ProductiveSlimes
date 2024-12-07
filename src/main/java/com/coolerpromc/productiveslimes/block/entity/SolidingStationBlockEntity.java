@@ -20,13 +20,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -134,35 +131,35 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.put("InputInventory", inputHandler.serializeNBT());
+        pTag.put("OutputInventory", outputHandler.serializeNBT());
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
         pTag.putInt("soliding_station.progress", progress);
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(pTag);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
+        inputHandler.deserializeNBT(pTag.getCompound("InputInventory"));
+        outputHandler.deserializeNBT(pTag.getCompound("OutputInventory"));
         energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
         progress = pTag.getInt("soliding_station.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()) {
+        Optional<SolidingRecipe> recipe = getCurrentRecipe();
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
             }
@@ -176,12 +173,12 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
+        Optional<SolidingRecipe> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutputs();
+            List<ItemStack> results = recipe.get().getOutputs();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
+            this.inputHandler.extractItem(0, recipe.get().getInputCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -211,17 +208,17 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
+        Optional<SolidingRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().getInputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().getInputCount()) {
             return false;
         }
 
-        List<ItemStack> results = recipe.get().value().getOutputs();
+        List<ItemStack> results = recipe.get().getOutputs();
 
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {
@@ -258,8 +255,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+    private Optional<SolidingRecipe> getCurrentRecipe(){
+        return this.level.getRecipeManager().getRecipeFor(SolidingRecipe.Type.INSTANCE, new SimpleContainer(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -302,8 +299,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 
     public ItemStack getRenderStack() {

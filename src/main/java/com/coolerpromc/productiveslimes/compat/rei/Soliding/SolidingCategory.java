@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> {
     public static final CategoryIdentifier<? extends SolidingRecipeDisplay> SOLIDING = CategoryIdentifier.of(ProductiveSlimes.MODID, "soliding");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/soliding_station_gui.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/rei/soliding_station_gui.png");
 
     private int tickCount = 0;
 
@@ -86,6 +87,27 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
             @Override
             public List<? extends GuiEventListener> children() {
                 return new ArrayList<>();
+            }
+
+            @Override
+            public boolean isDragging() {
+                return false;
+            }
+
+            @Override
+            public void setDragging(boolean b) {
+
+            }
+
+            @Nullable
+            @Override
+            public GuiEventListener getFocused() {
+                return null;
+            }
+
+            @Override
+            public void setFocused(@Nullable GuiEventListener guiEventListener) {
+
             }
         });
 

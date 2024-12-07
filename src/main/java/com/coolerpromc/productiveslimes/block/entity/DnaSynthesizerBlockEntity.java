@@ -1,12 +1,8 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.custom.MultipleRecipeInput;
-import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
@@ -23,22 +19,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.EggItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
-import org.jline.utils.Log;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvider {
     private float rotation;
@@ -169,36 +160,36 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.put("InputSlot", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputSlot", outputHandler.serializeNBT(pRegistries));
-        pTag.put("EggSlot", eggHandler.serializeNBT(pRegistries));
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        pTag.put("InputSlot", inputHandler.serializeNBT());
+        pTag.put("OutputSlot", outputHandler.serializeNBT());
+        pTag.put("EggSlot", eggHandler.serializeNBT());
         pTag.putInt("Energy", energyHandler.getEnergyStored());
 
         pTag.putInt("dna_synthesizing.progress", progress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputSlot"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputSlot"));
-        eggHandler.deserializeNBT(pRegistries, pTag.getCompound("EggSlot"));
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        inputHandler.deserializeNBT(pTag.getCompound("InputSlot"));
+        outputHandler.deserializeNBT(pTag.getCompound("OutputSlot"));
+        eggHandler.deserializeNBT(pTag.getCompound("EggSlot"));
         energyHandler.setEnergy(pTag.getInt("Energy"));
 
         progress = pTag.getInt("dna_synthesizing.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        Optional<RecipeHolder<DnaSynthesizingRecipe>> recipe = getCurrentRecipe();
+        Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
 
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().value().getInputCount()){
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().getInputCount()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
             }
@@ -212,14 +203,14 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<DnaSynthesizingRecipe>> recipe = getCurrentRecipe();
+        Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutput();
+            List<ItemStack> results = recipe.get().getOutput();
 
             // Extract the input item from the input slot
             this.inputHandler.extractItem(0, 1, false);
             this.inputHandler.extractItem(1, 1, false);
-            this.inputHandler.extractItem(2, recipe.get().value().getInputCount(), false);
+            this.inputHandler.extractItem(2, recipe.get().getInputCount(), false);
             this.eggHandler.extractItem(0, 1, false);
 
             // Loop through each result item and find suitable output slots
@@ -251,13 +242,13 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<DnaSynthesizingRecipe>> recipe = getCurrentRecipe();
+        Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
 
         if (recipe.isEmpty()) {
             return false;
         }
 
-        List<ItemStack> results = recipe.get().value().getOutput();
+        List<ItemStack> results = recipe.get().getOutput();
 
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {
@@ -294,9 +285,9 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         return emptyCount >= count;
     }
 
-    private Optional<RecipeHolder<DnaSynthesizingRecipe>> getCurrentRecipe(){
-        MultipleRecipeInput input = new MultipleRecipeInput(List.of(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2)));
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get(), input, level);
+    private Optional<DnaSynthesizingRecipe> getCurrentRecipe(){
+        SimpleContainer input = new SimpleContainer(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2));
+        return this.level.getRecipeManager().getRecipeFor(DnaSynthesizingRecipe.Type.INSTANCE, input, level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -348,7 +339,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 }

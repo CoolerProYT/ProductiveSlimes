@@ -13,12 +13,11 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 
 public class SlimeModel<T extends BaseSlime> extends HierarchicalModel<T> {
     public final int color;
     public static final ModelLayerLocation SLIME_TEXTURE =
-            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/entity/template_slime_entity.png"), "main");
+            new ModelLayerLocation(new ResourceLocation(ProductiveSlimes.MODID,"textures/entity/template_slime_entity.png"), "main");
 
     private final ModelPart root;
 
@@ -45,8 +44,18 @@ public class SlimeModel<T extends BaseSlime> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int pColor) {
-        super.renderToBuffer(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, color);
+    public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
+        int alpha = (this.color >> 24) & 0xFF;
+        int red = (this.color >> 16) & 0xFF;
+        int green = (this.color >> 8) & 0xFF;
+        int blue = this.color & 0xFF;
+
+        float normalizedAlpha = alpha / 255.0f;
+        float normalizedRed = red / 255.0f;
+        float normalizedGreen = green / 255.0f;
+        float normalizedBlue = blue / 255.0f;
+
+        super.renderToBuffer(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, normalizedRed, normalizedGreen, normalizedBlue, normalizedAlpha);
     }
 
     /**

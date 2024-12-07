@@ -5,8 +5,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.*;
 
@@ -149,37 +150,69 @@ public class EnergyNetwork implements IEnergyStorage {
     public void distributeEnergy(Level level) {
         for (CableBlockEntity cable : cables) {
             BlockPos pos = cable.getBlockPos();
+
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
-                IEnergyStorage neighborEnergy = level.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, direction.getOpposite());
-                if (neighborEnergy != null && neighborEnergy != this && neighborEnergy.canReceive()) {
-                    int energyAvailable = this.extractEnergy(cable.getTransferRate(), true);
-                    int energyReceived = neighborEnergy.receiveEnergy(energyAvailable, true);
-                    int transferAmount = Math.min(energyAvailable, energyReceived);
-                    if (transferAmount > 0) {
-                        this.extractEnergy(transferAmount, false);
-                        neighborEnergy.receiveEnergy(transferAmount, false);
-                    }
+                // Get the block entity at the neighbor position
+                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+
+                if (neighborEntity != null) {
+                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+
+                    neighborEnergy.ifPresent(neighbor -> {
+                        if (neighbor.canReceive()) {
+                            int energyAvailable = this.extractEnergy(cable.getTransferRate(), true);
+                            int energyReceived = neighbor.receiveEnergy(energyAvailable, true);
+
+                            int transferAmount = Math.min(energyAvailable, energyReceived);
+                            if (transferAmount > 0) {
+                                // Perform the actual energy transfer
+                                this.extractEnergy(transferAmount, false);
+                                neighbor.receiveEnergy(transferAmount, false);
+                            }
+                        }
+                    });
                 }
             }
         }
     }
+
+
     public void collectEnergy(Level level) {
         for (CableBlockEntity cable : cables) {
             BlockPos pos = cable.getBlockPos();
+
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
-                IEnergyStorage neighborEnergy = level.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, direction.getOpposite());
-                if (neighborEnergy != null && neighborEnergy != this && neighborEnergy.canExtract()) {
-                    int energyNeeded = this.receiveEnergy(cable.getTransferRate(), true);
-                    int energyExtracted = neighborEnergy.extractEnergy(energyNeeded, true);
-                    int transferAmount = Math.min(energyNeeded, energyExtracted);
-                    if (transferAmount > 0) {
-                        neighborEnergy.extractEnergy(transferAmount, false);
-                        this.receiveEnergy(transferAmount, false);
-                    }
+                // Get the block entity at the neighbor position
+                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+
+                if (neighborEntity != null) {
+                    // Get the energy capability of the neighbor
+                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+
+                    // If the neighbor has energy and can extract
+                    neighborEnergy.ifPresent(neighbor -> {
+                        if (neighbor.canExtract()) {
+                            // Calculate the amount of energy needed
+                            int energyNeeded = this.receiveEnergy(cable.getTransferRate(), true);
+
+                            // Extract energy from the neighbor
+                            int energyExtracted = neighbor.extractEnergy(energyNeeded, true);
+
+                            // Determine the actual transfer amount
+                            int transferAmount = Math.min(energyNeeded, energyExtracted);
+
+                            if (transferAmount > 0) {
+                                // Perform the actual transfer
+                                neighbor.extractEnergy(transferAmount, false);
+                                this.receiveEnergy(transferAmount, false);
+                            }
+                        }
+                    });
                 }
             }
         }
     }
+
 }
