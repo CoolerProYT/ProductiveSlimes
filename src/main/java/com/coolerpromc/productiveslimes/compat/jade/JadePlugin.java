@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jade;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -32,4 +31,3 @@ public class JadePlugin implements IWailaPlugin {
         }
     }
 }
-*/
