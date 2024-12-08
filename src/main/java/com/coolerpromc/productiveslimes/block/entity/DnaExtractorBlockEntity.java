@@ -121,15 +121,15 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ENERGY && side != Direction.DOWN && side != Direction.UP){
+        if (cap == ForgeCapabilities.ENERGY) {
             return energy.cast();
         }
 
-        if (cap == ForgeCapabilities.ITEM_HANDLER && side == Direction.UP){
+        if (cap == ForgeCapabilities.ITEM_HANDLER && side != Direction.DOWN) {
             return input.cast();
         }
 
-        if (cap == ForgeCapabilities.ITEM_HANDLER && side == Direction.DOWN){
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return output.cast();
         }
 

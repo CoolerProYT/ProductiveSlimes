@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +22,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -116,9 +122,35 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         return energyHandler;
     }
 
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
+    private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
+    private LazyOptional<ItemStackHandler> bucket = LazyOptional.of(() -> bucketHandler);
+
     @Override
     public void onLoad() {
         super.onLoad();
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY){
+            return energy.cast();
+        }
+
+        if (cap == ForgeCapabilities.ITEM_HANDLER){
+            if (side == Direction.UP){
+                return bucket.cast();
+            }
+            else if (side == Direction.DOWN){
+                return output.cast();
+            }
+            else{
+                return input.cast();
+            }
+        }
+
+        return super.getCapability(cap, side);
     }
 
     public void drops(){

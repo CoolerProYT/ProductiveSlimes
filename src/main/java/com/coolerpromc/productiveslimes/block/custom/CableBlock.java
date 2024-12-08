@@ -74,6 +74,7 @@ public class CableBlock extends Block implements EntityBlock {
             super.onRemove(state, level, pos, newState, isMoving);
         }
     }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -136,15 +137,14 @@ public class CableBlock extends Block implements EntityBlock {
     private boolean canConnectToBlock(LevelAccessor level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        // Define blocks that the cable can connect to
+
         return block instanceof CableBlock || canConnectBasedOnBlock(block);
     }
     private boolean canConnectBasedOnBlock(Block block) {
         return block instanceof IEnergyStorage;
     }
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor,
-                                  BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
         if (levelAccessor instanceof Level level) {
             boolean canConnect = this.canConnectTo(level, neighborPos, direction);
             return state.setValue(getPropertyForDirection(direction), canConnect);
@@ -164,22 +164,27 @@ public class CableBlock extends Block implements EntityBlock {
         }
     }
     private boolean canConnectTo(Level level, BlockPos pos, Direction direction) {
-        // Access the capability at the neighbor position and side
-        LazyOptional<IEnergyStorage> energyStorage = level.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+        // Get the BlockEntity at the target position
+        BlockEntity blockEntity = level.getBlockEntity(pos);
 
-        if (energyStorage.isPresent()) {
-            return true;
-        } else {
-            // Check if the block is another cable
-            BlockState state = level.getBlockState(pos);
-            return state.getBlock() instanceof CableBlock;
+        // Check if the target BlockEntity has the energy capability on the specified side
+        if (blockEntity != null) {
+            LazyOptional<IEnergyStorage> energyStorage = blockEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+            if (energyStorage.isPresent()) {
+                return true;
+            }
         }
+
+        BlockState state = level.getBlockState(pos);
+        return state.getBlock() instanceof CableBlock || canConnectBasedOnBlock(state.getBlock());
     }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new CableBlockEntity(pPos, pState);
     }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {

@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -25,7 +26,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -132,9 +137,35 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         return eggHandler;
     }
 
+    private LazyOptional<CustomEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
+    private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
+    private LazyOptional<ItemStackHandler> egg = LazyOptional.of(() -> eggHandler);
+
     @Override
     public void onLoad() {
         super.onLoad();
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY){
+            return energy.cast();
+        }
+
+        if (cap == ForgeCapabilities.ITEM_HANDLER){
+            if (side == Direction.UP){
+                return egg.cast();
+            }
+            else if (side == Direction.DOWN){
+                return output.cast();
+            }
+            else{
+                return input.cast();
+            }
+        }
+
+        return super.getCapability(cap, side);
     }
 
     public void drops(){
@@ -204,9 +235,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
 
     private void craftItem() {
         Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
-        System.out.println("Recipe: " + recipe);
         if (recipe.isPresent()) {
-            System.out.println("Crafting item: " + recipe.get().getOutput());
             List<ItemStack> results = recipe.get().getOutput();
 
             // Extract the input item from the input slot
