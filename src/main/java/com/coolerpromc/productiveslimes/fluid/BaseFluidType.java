@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class BaseFluidType extends FluidType {
     private final ResourceLocation stillTexture;
@@ -27,6 +28,11 @@ public class BaseFluidType extends FluidType {
         this.overlayTexture = overlayTexture;
         this.tintColor = tintColor;
         this.fogColor = fogColor;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(getClientFluidTypeExtensions());
     }
 
     public IClientFluidTypeExtensions getClientFluidTypeExtensions() {

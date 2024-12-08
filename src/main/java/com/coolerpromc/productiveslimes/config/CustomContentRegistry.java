@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -82,12 +83,7 @@ public class CustomContentRegistry {
                 resourcePack.packId(),
                 Component.literal("productiveslimes_resourcepack"),
                 true,
-                new Pack.ResourcesSupplier() {
-                    @Override
-                    public PackResources open(String s) {
-                        return resourcePack;
-                    }
-                },
+                s -> resourcePack,
                 PackType.CLIENT_RESOURCES,
                 Pack.Position.TOP,
                 PackSource.BUILT_IN
@@ -195,7 +191,7 @@ public class CustomContentRegistry {
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
         RegistryObject<Item> item = ITEMS.register(itemName,
-                () -> new SpawnEggItem(getSlimeForVariant(variant.getName()).get(), variant.getColor(), variant.getColor(), new Item.Properties()));
+                () -> new ForgeSpawnEggItem(getSlimeForVariant(variant.getName()), variant.getColor(), variant.getColor(), new Item.Properties()));
 
         registeredSpawnEggItems.put(itemId, item);
     }
@@ -287,6 +283,11 @@ public class CustomContentRegistry {
             // Resource paths
             String blockstatePath = "assets/productiveslimes/blockstates/" + id + ".json";
             String modelPath = "assets/productiveslimes/models/block/" + id + ".json";
+            String bucketModelPath = "assets/productiveslimes/models/item/molten_" + variants.getName() + "_bucket.json";
+            String slimeBlockModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_block.json";
+            String dnaModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_dna.json";
+            String spawnEggModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_spawn_egg.json";
+            String slimeballModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slimeball.json";
 
             // Generate formatted name
             String formattedName = Arrays.stream(variants.getName().split("_"))
@@ -317,9 +318,44 @@ public class CustomContentRegistry {
                     "  }\n" +
                     "}";
 
+            String bucketModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/bucket\",\n" +
+                    "    \"layer1\": \"productiveslimes:item/bucket_fluid\"\n" +
+                    "  }\n" +
+                    "}";
+
+            String slimeBlockModelContent = "{\n" +
+                    "  \"parent\": \"productiveslimes:block/template_slime_block\"\n" +
+                    "}";
+
+            String dnaModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/template_dna\"\n" +
+                    "  }\n" +
+                    "}";
+
+            String spawnEggModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/template_spawn_egg\"\n" +
+                    "}";
+
+            String slimeballModelContent = "{\n" +
+                    "  \"parent\": \"minecraft:item/generated\",\n" +
+                    "  \"textures\": {\n" +
+                    "    \"layer0\": \"productiveslimes:item/template_slimeball\"\n" +
+                    "  }\n" +
+                    "}";
+
             // Add to resource data
             resourceData.put(blockstatePath, blockstateContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(modelPath, blockModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(bucketModelPath, bucketModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(slimeBlockModelPath, slimeBlockModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(dnaModelPath, dnaModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(spawnEggModelPath, spawnEggModelContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(slimeballModelPath, slimeballModelContent.getBytes(StandardCharsets.UTF_8));
         }
 
         // Convert langJson map to JSON string
@@ -365,7 +401,7 @@ public class CustomContentRegistry {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonContent = gson.toJson(tagJson);
 
-        String tagPath = "data/c/tags/item/slime_balls.json";
+        String tagPath = "data/forge/tags/items/slimeballs.json";
         dataPackResources.put(tagPath, jsonContent.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -383,13 +419,13 @@ public class CustomContentRegistry {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonContent = gson.toJson(tagJson);
 
-        String tagPath = "data/productiveslimes/tags/item/dna_item.json";
+        String tagPath = "data/productiveslimes/tags/items/dna_item.json";
         dataPackResources.put(tagPath, jsonContent.getBytes(StandardCharsets.UTF_8));
     }
 
     private static void generateSlimeBlockLootTable(){
         for (CustomVariants variants : getLoadedTiers()){
-            String lootTablePath = "data/productiveslimes/loot_table/blocks/" + variants.getName() + "_slime_block.json";
+            String lootTablePath = "data/productiveslimes/loot_tables/blocks/" + variants.getName() + "_slime_block.json";
 
             String lootTable = "{\n" +
                     "  \"type\": \"minecraft:block\",\n" +
@@ -425,7 +461,7 @@ public class CustomContentRegistry {
     }
 
     private static void slimeballToSlimeBlock(String name){
-        String recipePath = "data/minecraft/recipe/" + name + "_slimeball_to_block.json";
+        String recipePath = "data/minecraft/recipes/" + name + "_slimeball_to_block.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shaped\",\n" +
@@ -441,16 +477,16 @@ public class CustomContentRegistry {
                 "    \"AAA\"\n" +
                 "  ],\n" +
                 "  \"result\": {\n" +
-                "    \"count\": 1,\n" +
-                "    \"id\": \"productiveslimes:" + name + "_slime_block\"\n" +
-                "  }\n" +
+                "    \"item\": \"productiveslimes:" + name + "_slime_block\"\n" +
+                "  },\n" +
+                "  \"show_notification\": true\n" +
                 "}";
 
         dataPackResources.put(recipePath, recipe.getBytes(StandardCharsets.UTF_8));
     }
 
     private static void slimeBlockToSlimeball(String name){
-        String recipePath = "data/minecraft/recipe/" + name + "_slime_block_to_ball.json";
+        String recipePath = "data/minecraft/recipes/" + name + "_slime_block_to_ball.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"minecraft:crafting_shapeless\",\n" +
@@ -462,7 +498,7 @@ public class CustomContentRegistry {
                 "  ],\n" +
                 "  \"result\": {\n" +
                 "    \"count\": 9,\n" +
-                "    \"id\": \"productiveslimes:" + name + "_slimeball\"\n" +
+                "    \"item\": \"productiveslimes:" + name + "_slimeball\"\n" +
                 "  }\n" +
                 "}";
 
@@ -481,7 +517,7 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBlock(String name){
-        String recipePath = "data/productiveslimes/recipe/melting/" + name + "_slime_block_melting.json";
+        String recipePath = "data/productiveslimes/recipes/melting/" + name + "_slime_block_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
@@ -495,7 +531,7 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": 5,\n" +
-                "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
+                "      \"item\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -504,7 +540,7 @@ public class CustomContentRegistry {
     }
 
     private static void meltingRecipeBall(String name){
-        String recipePath = "data/productiveslimes/recipe/melting" + name + "_slimeball_melting.json";
+        String recipePath = "data/productiveslimes/recipes/melting" + name + "_slimeball_melting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:melting\",\n" +
@@ -518,7 +554,7 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
+                "      \"item\": \"productiveslimes:molten_" + name + "_bucket\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -527,7 +563,7 @@ public class CustomContentRegistry {
     }
 
     private static void solidingRecipe(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/soliding/molten_" + variant.getName() + "_bucket_soliding.json";
+        String recipePath = "data/productiveslimes/recipes/soliding/molten_" + variant.getName() + "_bucket_soliding.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:soliding\",\n" +
@@ -541,11 +577,11 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": " + variant.getSolidingOutputCount() + ",\n" +
-                "      \"id\": \"" + variant.getSolidingOutput() + "\"\n" +
+                "      \"item\": \"" + variant.getSolidingOutput() + "\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"minecraft:bucket\"\n" +
+                "      \"item\": \"minecraft:bucket\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -554,7 +590,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaExtracting(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/dna_extracting/" + variant.getName() + "_slimeball_dna_extracting.json";
+        String recipePath = "data/productiveslimes/recipes/dna_extracting/" + variant.getName() + "_slimeball_dna_extracting.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_extracting\",\n" +
@@ -568,11 +604,11 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_dna\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"minecraft:slime_ball\"\n" +
+                "      \"item\": \"minecraft:slime_ball\"\n" +
                 "    }\n" +
                 "  ],\n" +
                 "  \"outputChance\": " + variant.getDnaOutputChance() + "\n" +
@@ -582,7 +618,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizingSelf(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
+        String recipePath = "data/productiveslimes/recipes/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing_self.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
@@ -602,7 +638,7 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
@@ -611,7 +647,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizing(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
+        String recipePath = "data/productiveslimes/recipes/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +
@@ -631,7 +667,7 @@ public class CustomContentRegistry {
                 "  \"output\": [\n" +
                 "    {\n" +
                 "      \"count\": 1,\n" +
-                "      \"id\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
+                "      \"item\": \"productiveslimes:" + variant.getName() + "_slime_spawn_egg\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";

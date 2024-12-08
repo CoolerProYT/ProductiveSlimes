@@ -68,9 +68,9 @@ public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
 
-    /*public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProductiveSlimes.MODID);
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);*/
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);
 
     public ProductiveSlimes()
     {
@@ -78,13 +78,13 @@ public class ProductiveSlimes
 
         modEventBus.addListener(this::commonSetup);
 
-//        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
-        /*ITEMS.register(modEventBus);
+        ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
-        ENTITY_TYPES.register(modEventBus);*/
+        ENTITY_TYPES.register(modEventBus);
 
-//        FluidResources.register(modEventBus);
+        FluidResources.register(modEventBus);
 
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
@@ -110,7 +110,7 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-//        CustomContentRegistry.handleDatapack(event.getServer());
+        CustomContentRegistry.handleDatapack(event.getServer());
     }
 
 
@@ -205,34 +205,7 @@ public class ProductiveSlimes
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
 
-//            CustomContentRegistry.handleResourcePack();
-        }
-
-        @SubscribeEvent
-        public static void onModel(ModelEvent.RegisterAdditional event) {
-            ModelResourceLocation slimeballModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slimeball"), "standalone");
-            ModelResourceLocation slimeBlockItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_block"), "standalone");
-            ModelResourceLocation slimeBlockModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "block/template_slime_block"), "standalone");
-            ModelResourceLocation dnaItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_dna"), "standalone");
-            ModelResourceLocation spawnEggItemModelLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_slime_spawn_egg"), "standalone");
-            ModelResourceLocation moltenBucketLocation = new ModelResourceLocation(new ResourceLocation(ProductiveSlimes.MODID, "item/template_bucket"), "standalone");
-
-            event.register(slimeballModelLocation);
-            event.register(slimeBlockItemModelLocation);
-            event.register(slimeBlockModelLocation);
-            event.register(dnaItemModelLocation);
-            event.register(spawnEggItemModelLocation);
-            event.register(moltenBucketLocation);
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                ItemModelShaper itemModelShaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
-
-                itemModelShaper.register(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get(), slimeballModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem(), slimeBlockItemModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get(), dnaItemModelLocation);
-                itemModelShaper.register(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get(), spawnEggItemModelLocation);
-                itemModelShaper.register(BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")), moltenBucketLocation);
-            }
+            CustomContentRegistry.handleResourcePack();
         }
 
         @SubscribeEvent

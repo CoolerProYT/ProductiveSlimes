@@ -204,7 +204,9 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
 
     private void craftItem() {
         Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
+        System.out.println("Recipe: " + recipe);
         if (recipe.isPresent()) {
+            System.out.println("Crafting item: " + recipe.get().getOutput());
             List<ItemStack> results = recipe.get().getOutput();
 
             // Extract the input item from the input slot

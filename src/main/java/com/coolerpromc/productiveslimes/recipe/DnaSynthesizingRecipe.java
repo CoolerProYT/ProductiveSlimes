@@ -29,7 +29,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
     private final int energy;
     private final int inputCount;
 
-    public DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int energy, int inputCount) {
+    public DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
         this.inputItems = inputItems;
         this.output = output;
         this.energy = energy;
