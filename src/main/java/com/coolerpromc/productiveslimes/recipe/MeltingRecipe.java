@@ -27,12 +27,14 @@ public class MeltingRecipe implements Recipe<SimpleContainer>{
     private final List<ItemStack> output;
     private final int inputCount;
     private final int energy;
+    private final ResourceLocation id;
 
-    public MeltingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
-        this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
+    public MeltingRecipe(NonNullList<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, ResourceLocation id) {
+        this.inputItems = inputItems;
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
+        this.id = id;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class MeltingRecipe implements Recipe<SimpleContainer>{
 
     @Override
     public ResourceLocation getId() {
-        return Serializer.ID;
+        return id;
     }
 
     public static class Type implements RecipeType<MeltingRecipe> {
@@ -118,7 +120,7 @@ public class MeltingRecipe implements Recipe<SimpleContainer>{
             int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
             int energy = GsonHelper.getAsInt(jsonObject, "energy");
 
-            return new MeltingRecipe(inputItems, output, inputCount, energy);
+            return new MeltingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override
@@ -140,7 +142,7 @@ public class MeltingRecipe implements Recipe<SimpleContainer>{
 
             int energy = buffer.readInt();
 
-            return new MeltingRecipe(inputItems, output, inputCount, energy);
+            return new MeltingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override

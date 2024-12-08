@@ -236,14 +236,17 @@ public abstract class BaseSlime extends Slime {
 
     @Override
     public void refreshDimensions() {
-        double width = 0.6F * (float)this.getSize();
-        double height = 0.8F * (float)this.getSize();
-        this.setBoundingBox(new AABB(this.getSize(), 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
+        double d0 = this.getX();
+        double d1 = this.getY();
+        double d2 = this.getZ();
+        super.refreshDimensions();
+        this.setBoundingBox(new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + (double)this.getBbWidth(), this.getY() + (double)this.getBbHeight(), this.getZ() + (double)this.getBbWidth()));
+        this.setPos(d0, d1, d2);
     }
 
     @Override
     public EntityDimensions getDimensions(Pose pPose) {
-        return super.getDimensions(pPose).scale(this.getSize(), this.getSize());
+        return super.getDimensions(pPose).scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){

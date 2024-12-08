@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.Nullable;
 
 public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"melting");
@@ -43,9 +44,10 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
         return Component.translatable("block.productiveslimes.melting_station");
     }
 
+    @Nullable
     @Override
     public IDrawable getBackground() {
-        return this.background;
+        return background;
     }
 
     @Override

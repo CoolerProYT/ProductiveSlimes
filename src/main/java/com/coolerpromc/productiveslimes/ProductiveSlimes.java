@@ -7,6 +7,7 @@ import com.coolerpromc.productiveslimes.block.entity.renderer.DnaExtractorBlockE
 import com.coolerpromc.productiveslimes.block.entity.renderer.DnaSynthesizerBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.block.entity.renderer.SolidingStationBlockEntityRenderer;
+import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
@@ -77,6 +78,10 @@ public class ProductiveSlimes
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
+        if (ModList.get().isLoaded("theoneprobe"))
+        {
+            modEventBus.addListener(this::enqueueIMC);
+        }
 
         CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
@@ -113,6 +118,9 @@ public class ProductiveSlimes
         CustomContentRegistry.handleDatapack(event.getServer());
     }
 
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+        InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
+    }
 
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {

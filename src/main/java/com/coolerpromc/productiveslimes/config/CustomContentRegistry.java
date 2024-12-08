@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
+import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
@@ -39,8 +40,10 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -48,6 +51,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -255,9 +259,16 @@ public class CustomContentRegistry {
     }
 
     private static void registerFluid(CustomVariants variants) {
+        ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
+        ResourceLocation WATER_FLOWING_RL = new ResourceLocation("block/water_flow");
+        ResourceLocation WATER_OVERLAY_RL = new ResourceLocation("block/water_overlay");
+
+        Color colorObject = new Color(variants.getColor());
+        Vector3f FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);
+
         FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
                 new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())),
-                ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
+                ((properties, funkyFluidInfo) -> new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, variants.getColor(), FOG_COLOR, properties)),
                 (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
                 properties -> properties.explosionResistance(1000F).tickRate(20),
                 FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));

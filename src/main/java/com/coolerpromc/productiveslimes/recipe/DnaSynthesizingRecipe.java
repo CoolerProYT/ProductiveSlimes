@@ -28,12 +28,14 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
     private final List<ItemStack> output;
     private final int energy;
     private final int inputCount;
+    private final ResourceLocation id;
 
-    public DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
+    public DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, ResourceLocation id) {
         this.inputItems = inputItems;
         this.output = output;
         this.energy = energy;
         this.inputCount = inputCount;
+        this.id = id;
     }
 
     @Override
@@ -110,7 +112,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ResourceLocation getId() {
-        return Serializer.ID;
+        return id;
     }
 
     public static class Type implements RecipeType<DnaSynthesizingRecipe> {
@@ -140,7 +142,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
             int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
             int energy = GsonHelper.getAsInt(jsonObject, "energy");
 
-            return new DnaSynthesizingRecipe(inputItems, output, inputCount, energy);
+            return new DnaSynthesizingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override
@@ -162,7 +164,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
 
             int energy = buffer.readInt();
 
-            return new DnaSynthesizingRecipe(inputItems, output, inputCount, energy);
+            return new DnaSynthesizingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override

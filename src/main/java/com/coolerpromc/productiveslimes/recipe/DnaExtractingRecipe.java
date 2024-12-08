@@ -24,13 +24,15 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     private final int inputCount;
     private final int energy;
     private final float outputChance;
+    private final ResourceLocation id;
 
-    public DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance) {
+    public DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance, ResourceLocation id) {
         this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
         this.outputChance = outputChance;
+        this.id = id;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
 
     @Override
     public ResourceLocation getId() {
-        return Serializer.ID;
+        return id;
     }
 
     public List<ItemStack> getOutputs() {
@@ -122,7 +124,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
             int energy = GsonHelper.getAsInt(jsonObject, "energy");
             float outputChance = GsonHelper.getAsFloat(jsonObject, "outputChance");
 
-            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance);
+            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance, resourceLocation);
         }
 
         @Override
@@ -146,7 +148,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
 
             float outputChance = buffer.readFloat();
 
-            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance);
+            return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance, resourceLocation);
         }
 
         @Override

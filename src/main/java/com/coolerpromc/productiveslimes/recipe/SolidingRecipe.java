@@ -27,12 +27,14 @@ public class SolidingRecipe implements Recipe<SimpleContainer>{
     private final List<ItemStack> output;
     private final int inputCount;
     private final int energy;
+    private final ResourceLocation id;
 
-    public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
+    public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, ResourceLocation id) {
         this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
+        this.id = id;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class SolidingRecipe implements Recipe<SimpleContainer>{
 
     @Override
     public ResourceLocation getId() {
-        return Serializer.ID;
+        return id;
     }
 
     public static class Type implements RecipeType<SolidingRecipe> {
@@ -119,7 +121,7 @@ public class SolidingRecipe implements Recipe<SimpleContainer>{
             int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
             int energy = GsonHelper.getAsInt(jsonObject, "energy");
 
-            return new SolidingRecipe(inputItems, output, inputCount, energy);
+            return new SolidingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override
@@ -141,7 +143,7 @@ public class SolidingRecipe implements Recipe<SimpleContainer>{
 
             int energy = buffer.readInt();
 
-            return new SolidingRecipe(inputItems, output, inputCount, energy);
+            return new SolidingRecipe(inputItems, output, inputCount, energy, resourceLocation);
         }
 
         @Override
