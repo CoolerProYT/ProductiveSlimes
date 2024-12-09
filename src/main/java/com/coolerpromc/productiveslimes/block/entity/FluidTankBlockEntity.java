@@ -8,8 +8,12 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity {
@@ -29,6 +33,8 @@ public class FluidTankBlockEntity extends BlockEntity {
             return super.isFluidValid(stack);
         }
     };
+
+    LazyOptional<FluidTank> fluidTankLazyOptional = LazyOptional.of(() -> fluidTank);
 
     public FluidTankBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.FLUID_TANK_BE.get(), pPos, pBlockState);
@@ -51,6 +57,15 @@ public class FluidTankBlockEntity extends BlockEntity {
 
     }
 
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        if (cap == ForgeCapabilities.FLUID_HANDLER || cap == ForgeCapabilities.FLUID_HANDLER_ITEM){
+            return fluidTankLazyOptional.cast();
+        }
+
+        return super.getCapability(cap);
+    }
+
     public void tick(Level level, BlockPos blockPos, BlockState blockState){
 
     }
@@ -67,6 +82,13 @@ public class FluidTankBlockEntity extends BlockEntity {
         super.saveAdditional(pTag);
     }
 
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+
+        fluidTank.readFromNBT(pTag);
+    }
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -75,6 +97,6 @@ public class FluidTankBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag getUpdateTag() {
-        return super.getUpdateTag();
+        return saveWithoutMetadata();
     }
 }

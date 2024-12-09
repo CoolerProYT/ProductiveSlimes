@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
+import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.core.BlockPos;
@@ -165,8 +166,11 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
             ItemStack stack = new ItemStack(this);
 
             CompoundTag tag = stack.getOrCreateTag();
+
             CompoundTag fluidTag = new CompoundTag();
+            fluidTankBlockEntity.getFluidTank().getFluid().writeToNBT(fluidTag);
             tag.put("fluid", fluidTag);
+
             stack.setTag(tag);
 
             drops.clear();
@@ -180,8 +184,10 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof FluidTankBlockEntity fluidTankBlockEntity) {
-            if (pStack.hasTag() && pStack.getTag().contains("fluid")){
-                CompoundTag fluidTag = pStack.getTag().getCompound("fluid");
+            CompoundTag tag = pStack.getTag();
+
+            if (tag != null && tag.contains("fluid")){
+                CompoundTag fluidTag = tag.getCompound("fluid");
                 FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
                 fluidTankBlockEntity.setFluidStack(fluidStack);
             }
@@ -194,11 +200,16 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
-        if (pStack.hasTag() && pStack.getTag().contains("fluid") && FluidStack.loadFluidStackFromNBT(pStack.getTag().getCompound("fluid")) != FluidStack.EMPTY) {
-            CompoundTag fluidTag = pStack.getTag().getCompound("fluid");
+        CompoundTag tag = pStack.getTag();
+
+        if (tag != null && tag.contains("fluid")){
+            CompoundTag fluidTag = tag.getCompound("fluid");
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
-            pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
-            pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+
+            if (fluidStack != FluidStack.EMPTY) {
+                pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+                pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+            }
         }
     }
 }
