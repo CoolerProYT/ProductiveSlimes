@@ -2,7 +2,9 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -24,5 +26,19 @@ public class ModFlammableBlock extends Block {
     @Override
     public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 5;
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        super.stepOn(level, pos, state, entity);
+
+        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+            return;
+        }
+
+        double slowFactor = 0.05;
+        entity.setDeltaMovement(
+                entity.getDeltaMovement().multiply(slowFactor, 1.0, slowFactor)
+        );
     }
 }
