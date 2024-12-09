@@ -29,6 +29,27 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
                 .add(ModBlocks.SLIMY_DEEPSLATE.get());
 
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(ModBlocks.SLIMY_LOG.get())
+                .add(ModBlocks.SLIMY_WOOD.get())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+
+        this.tag(BlockTags.PLANKS)
+                .add(ModBlocks.SLIMY_PLANKS.get());
+
+        this.tag(BlockTags.SAPLINGS)
+                .add(ModBlocks.SLIMY_SAPLING.get());
+
+        this.tag(BlockTags.LEAVES)
+                .add(ModBlocks.SLIMY_LEAVES.get());
+
+        this.tag(BlockTags.LOGS)
+                .add(ModBlocks.SLIMY_LOG.get())
+                .add(ModBlocks.SLIMY_WOOD.get())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.MELTING_STATION.get())
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())
@@ -42,11 +63,17 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SLIMY_COBBLESTONE.get())
                 .add(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
+        this.tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(ModBlocks.SLIMY_LOG.get())
+                .add(ModBlocks.SLIMY_WOOD.get())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL)
                 .add(ModBlocks.SLIMY_GRASS_BLOCK.get())
                 .add(ModBlocks.SLIMY_DIRT.get());
 
-        this.tag(BlockTags.NEEDS_IRON_TOOL)
+        this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(ModBlocks.MELTING_STATION.get())
                 .add(ModBlocks.LIQUID_SOLIDING_STATION.get())
                 .add(ModBlocks.DNA_EXTRACTOR.get())

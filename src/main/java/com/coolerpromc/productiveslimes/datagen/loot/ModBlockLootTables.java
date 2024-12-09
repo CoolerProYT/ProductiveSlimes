@@ -46,6 +46,15 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
+        dropSelf(ModBlocks.SLIMY_LOG.get());
+        dropSelf(ModBlocks.SLIMY_WOOD.get());
+        dropSelf(ModBlocks.STRIPPED_SLIMY_LOG.get());
+        dropSelf(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+        dropSelf(ModBlocks.SLIMY_PLANKS.get());
+        dropSelf(ModBlocks.SLIMY_SAPLING.get());
+
+        add(ModBlocks.SLIMY_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.SLIMY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COPPER_SLIME_BLOCK.get());
