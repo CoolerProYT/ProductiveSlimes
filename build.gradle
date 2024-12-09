@@ -125,8 +125,8 @@ tasks.withType(ProcessResources).configureEach {
 
 subsystems {
     parchment {
-        minecraftVersion = "1.21"
-        mappingsVersion = "2024.11.10"
+        minecraftVersion = "1.21.4"
+        mappingsVersion = "2024.12.07"
     }
 }
 
