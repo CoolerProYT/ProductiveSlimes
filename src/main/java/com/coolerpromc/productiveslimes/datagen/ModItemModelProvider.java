@@ -29,6 +29,16 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         saplingItem(ModBlocks.SLIMY_SAPLING);
 
+        buttonItem(ModBlocks.SLIMY_BUTTON, ModBlocks.SLIMY_PLANKS);
+        fenceItem(ModBlocks.SLIMY_FENCE, ModBlocks.SLIMY_PLANKS);
+        basicItem(ModBlocks.SLIMY_DOOR.asItem());
+
+        buttonItem(ModBlocks.SLIMY_STONE_BUTTON, ModBlocks.SLIMY_STONE);
+
+        wallItem(ModBlocks.SLIMY_COBBLESTONE_WALL, ModBlocks.SLIMY_COBBLESTONE);
+
+        wallItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL, ModBlocks.SLIMY_COBBLED_DEEPSLATE);
+
         slimeballItem(ModItems.DIRT_SLIME_BALL);
         slimeballItem(ModItems.STONE_SLIME_BALL);
         slimeballItem(ModItems.IRON_SLIME_BALL);
@@ -258,5 +268,21 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.parse("item/generated")).texture("layer0",
                 ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + item.getId().getPath()));
+    }
+
+    public void buttonItem(DeferredBlock<?> block, DeferredBlock<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/button_inventory"))
+                .texture("texture",  ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
+    }
+    public void fenceItem(DeferredBlock<?> block, DeferredBlock<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/fence_inventory"))
+                .texture("texture",  ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
+    }
+    public void wallItem(DeferredBlock<?> block, DeferredBlock<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/wall_inventory"))
+                .texture("wall",  ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
     }
 }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "slimy_stone",
+  "ingredients": [
+    {
+      "item": "productiveslimes:slimy_stone"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "productiveslimes:slimy_stone_button"
+  }
+}

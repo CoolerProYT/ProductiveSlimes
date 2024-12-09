@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -49,6 +50,22 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SLIMY_WOOD.get())
                 .add(ModBlocks.STRIPPED_SLIMY_LOG.get())
                 .add(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+
+        this.tag(ModTags.Blocks.SLIMY_LOGS)
+                .add(ModBlocks.SLIMY_LOG.get())
+                .add(ModBlocks.SLIMY_WOOD.get())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get());
+
+        this.tag(BlockTags.FENCES)
+                .add(ModBlocks.SLIMY_FENCE.get());
+
+        this.tag(BlockTags.FENCE_GATES)
+                .add(ModBlocks.SLIMY_FENCE_GATE.get());
+
+        this.tag(BlockTags.WALLS)
+                .add(ModBlocks.SLIMY_COBBLESTONE_WALL.get())
+                .add(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(ModBlocks.MELTING_STATION.get())

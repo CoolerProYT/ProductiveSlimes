@@ -55,6 +55,28 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         add(ModBlocks.SLIMY_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.SLIMY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
 
+        dropSelf(ModBlocks.SLIMY_STAIRS.get());
+        add(ModBlocks.SLIMY_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_SLAB.get()));
+        dropSelf(ModBlocks.SLIMY_PRESSURE_PLATE.get());
+        dropSelf(ModBlocks.SLIMY_BUTTON.get());
+        dropSelf(ModBlocks.SLIMY_FENCE.get());
+        dropSelf(ModBlocks.SLIMY_FENCE_GATE.get());
+        dropSelf(ModBlocks.SLIMY_TRAPDOOR.get());
+        add(ModBlocks.SLIMY_DOOR.get(), block -> createDoorTable(ModBlocks.SLIMY_DOOR.get()));
+
+        dropSelf(ModBlocks.SLIMY_STONE_STAIRS.get());
+        add(ModBlocks.SLIMY_STONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_STONE_SLAB.get()));
+        dropSelf(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get());
+        dropSelf(ModBlocks.SLIMY_STONE_BUTTON.get());
+
+        dropSelf(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get());
+        add(ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLESTONE_SLAB.get()));
+        dropSelf(ModBlocks.SLIMY_COBBLESTONE_WALL.get());
+
+        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get());
+        add(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get()));
+        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get());
+
         dropSelf(ModBlocks.DIRT_SLIME_BLOCK.get());
         dropSelf(ModBlocks.STONE_SLIME_BLOCK.get());
         dropSelf(ModBlocks.COPPER_SLIME_BLOCK.get());

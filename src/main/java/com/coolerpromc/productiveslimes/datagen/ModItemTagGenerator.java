@@ -120,5 +120,11 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
         tag(ItemTags.PLANKS)
                 .add(ModBlocks.SLIMY_PLANKS.get().asItem());
+
+        tag(ModTags.Items.SLIMY_LOG)
+                .add(ModBlocks.SLIMY_LOG.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get().asItem())
+                .add(ModBlocks.SLIMY_WOOD.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get().asItem());
     }
 }
