@@ -2,10 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.DnaSynthesizingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
+import com.coolerpromc.productiveslimes.datagen.builder.*;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.util.ModTags;
@@ -157,6 +154,24 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', ModItems.SLIMEBALL_FRAGMENT)
                 .unlockedBy(getHasName(ModItems.SLIMEBALL_FRAGMENT), has(ModItems.SLIMEBALL_FRAGMENT))
                 .save(recipeOutput, "slimeball_from_fragment");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SQUEEZER, 1)
+                .pattern(" A ")
+                .pattern(" A ")
+                .pattern("AAA")
+                .define('A', ModBlocks.SLIMY_PLANKS)
+                .unlockedBy(getHasName(ModBlocks.SLIMY_PLANKS), has(ModBlocks.SLIMY_PLANKS))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_SQUEEZER, 1)
+                .pattern("BAB")
+                .pattern("C  ")
+                .pattern("BBB")
+                .define('A', ModBlocks.SQUEEZER)
+                .define('B', ModBlocks.SLIMY_STONE)
+                .define('C', ModItems.ENERGY_SLIME_BALL)
+                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(recipeOutput);
 
         planksFromLogs(recipeOutput, ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
 
@@ -642,6 +657,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         dnaSynthesizingRecipe(recipeOutput, ModItems.RED_MUSHROOM_SLIME_SPAWN_EGG, 4,ModItems.MUD_SLIME_DNA, ModItems.CACTUS_SLIME_DNA, Items.RED_MUSHROOM_BLOCK);
         dnaSynthesizingRecipe(recipeOutput, ModItems.CACTUS_SLIME_SPAWN_EGG, 4,ModItems.SAND_SLIME_DNA, ModItems.SLIME_DNA, Items.CACTUS);
         dnaSynthesizingRecipe(recipeOutput, ModItems.OAK_LEAVES_SLIME_SPAWN_EGG, 4,ModItems.DIRT_SLIME_DNA, ModItems.SLIME_DNA, Items.OAK_LEAVES);
+
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_DIRT, new ItemStack(Items.DIRT, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_GRASS_BLOCK, new ItemStack(Items.GRASS_BLOCK, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_STONE, new ItemStack(Items.STONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_DEEPSLATE, new ItemStack(Items.DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_COBBLESTONE, new ItemStack(Items.COBBLESTONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE, new ItemStack(Items.COBBLED_DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_LOG, new ItemStack(Items.OAK_LOG, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
     }
 
     protected static void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -720,6 +743,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing"));
 
+    }
+
+    protected static void squeezingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemStack pResult1, ItemStack pResult2) {
+        SqueezingRecipeBuilder.squeezingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .addOutput(pResult1)
+                .addOutput(pResult2)
+                .setEnergy(300)
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing"));
     }
 
     protected static void slimeBlockToSlimeBall(RecipeOutput pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {

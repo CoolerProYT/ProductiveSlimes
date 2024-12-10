@@ -40,6 +40,12 @@ public class ModBlocks {
     public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer",
             () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
+    public static final DeferredBlock<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer",
+            () -> new SlimeSqueezerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final DeferredBlock<Block> SQUEEZER = registerBlock("squeezer",
+            () -> new SqueezerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+
     public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank",
             () -> new FluidTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()));
 
