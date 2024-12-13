@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
@@ -50,7 +49,7 @@ public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
             List.of(
                 EntryIngredients.ofIngredient(recipe.value().getInputItems().get(0)),
                 EntryIngredients.ofIngredient(recipe.value().getInputItems().get(1)),
-                EntryIngredients.of(new ItemStack(recipe.value().getInputItems().get(2).items().get(0), recipe.value().getInputCount()))
+                EntryIngredients.of(new ItemStack(recipe.value().getInputItems().get(2).items().toList().getFirst(), recipe.value().getInputCount()))
             ),
             List.of(EntryIngredient.of(EntryStacks.of(recipe.value().getOutput().getFirst())))
         );
@@ -82,4 +81,4 @@ public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
     public @Nullable DisplaySerializer<? extends Display> getSerializer() {
         return SERIALIZER;
     }
-}*/
+}

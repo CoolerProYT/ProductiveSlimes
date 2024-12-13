@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
@@ -34,4 +33,3 @@ public class REIPluginClient implements REIClientPlugin {
         registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), SolidingStationScreen.class, SolidingCategory.SOLIDING);
     }
 }
-*/

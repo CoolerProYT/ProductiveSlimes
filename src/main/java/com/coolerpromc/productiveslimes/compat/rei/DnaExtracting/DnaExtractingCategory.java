@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.DnaExtracting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -102,4 +101,3 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
         return 83;
     }
 }
-*/

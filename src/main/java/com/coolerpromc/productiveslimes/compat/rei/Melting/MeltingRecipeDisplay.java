@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
 import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingRecipeDisplay;
@@ -46,7 +45,7 @@ public class MeltingRecipeDisplay extends BasicDisplay {
     );
 
     public MeltingRecipeDisplay(RecipeHolder<MeltingRecipe> recipe) {
-        super(List.of(EntryIngredients.of(new ItemStack(recipe.value().getInputItems().getFirst().items().getFirst(), recipe.value().getInputCount())),
+        super(List.of(EntryIngredients.of(new ItemStack(recipe.value().getInputItems().getFirst().items().findFirst().get(), recipe.value().getInputCount())),
                         EntryIngredients.of(new ItemStack(Items.BUCKET, recipe.value().getOutputs().getFirst().getCount()))),
                 List.of(EntryIngredient.of(EntryStacks.of(recipe.value().getOutputs().getFirst()))));
 
@@ -78,4 +77,3 @@ public class MeltingRecipeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 }
-*/
