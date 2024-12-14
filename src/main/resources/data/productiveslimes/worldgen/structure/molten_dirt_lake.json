@@ -1,5 +1,5 @@
 {
-  "biomes": "productiveslimes:slime_land",
+  "biomes": "productiveslimes:slimy_land",
   "adapt_noise": false,
   "spawn_overrides": {},
   "type": "minecraft:jigsaw",
