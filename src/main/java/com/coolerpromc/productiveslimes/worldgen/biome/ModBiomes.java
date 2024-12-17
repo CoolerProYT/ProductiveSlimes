@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModBiomes {
-    public static final ResourceKey<Biome> SLIME_LAND = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_land"));
+    public static final ResourceKey<Biome> SLIMY_LAND = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimy_land"));
 
     public static void boostrap(BootstrapContext<Biome> context){
-        context.register(SLIME_LAND, slimeLand(context));
+        context.register(SLIMY_LAND, slimeLand(context));
     }
 
     public static void globalOverworldGeneration(BiomeGenerationSettings.Builder builder) {
