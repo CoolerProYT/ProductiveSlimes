@@ -16,6 +16,23 @@ Official Wiki: [Wiki](https://coolerproyt.github.io/ProductiveSlimes-Wiki/#/Home
 
 ## Version
 ### Neoforge
+- **1.3.0**
+  - Changes
+    - Added `Slimy` Wood Set (Log, Wood, Planks, Sapling, etc.)
+    - Added new block entity `Slime Squeezer`
+    - Added new `Squeezing` recipe type
+    - Added Non-Block Block of `Slimy` Wood Set, `Slimy Stone`, `Slimy Cobblestone` and `Slimy Cobbled Deepslate`
+    - Added `Slimeball Fragment` item
+    - Added back `Molten Stone Lake` and `Molten Dirt Lake` generation in `Slimy Land` biome
+    - Renamed `Slime Land` to `Slimy Land`
+    - Replaced `Slime Tree` in `Slime Land` to `Slimy Tree`
+    - Updated structure in `Slimy Village`
+    - Updated `Slimy Stone` texture
+    - Updated `Slimy Deepslate` texture
+- **1.2.1**
+  - Changes
+    - Added back Jade and Terrablender
+    - Added REI compat
 - **1.2.0**
   - Changes
     - Initial port to 1.21.4
