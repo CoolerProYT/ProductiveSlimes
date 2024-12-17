@@ -28,6 +28,7 @@ public class ModCreativeTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.GUIDEBOOK);
                         pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+                        pOutput.accept(ModItems.SLIMEBALL_FRAGMENT);
 
                         // Use reflection to get all the fields from ModBlocks
                         for (Field field : ModBlocks.class.getFields()) {

@@ -17,6 +17,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> GUIDEBOOK = ITEMS.registerItem("guidebook", GuidebookItem::new, new Item.Properties());
 
+    public static final DeferredItem<Item> SLIMEBALL_FRAGMENT = ITEMS.registerItem("slimeball_fragment", Item::new, new Item.Properties());
+
     public static final DeferredItem<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.registerItem("energy_multiplier_upgrade", EnergyMultiplierUpgrade::new, new Item.Properties());
 
     public static final DeferredItem<Item> DIRT_SLIME_BALL = ITEMS.registerItem("dirt_slimeball", properties -> new SlimeballItem(0xFF866043, properties), new Item.Properties());
