@@ -34,13 +34,10 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -67,10 +64,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import terrablender.api.SurfaceRuleManager;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes

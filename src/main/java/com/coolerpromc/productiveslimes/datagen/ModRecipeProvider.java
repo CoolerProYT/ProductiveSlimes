@@ -2,38 +2,28 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-//import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.DnaSynthesizingRecipeBuilder;
-//import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
-//import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
     private final HolderGetter<Item> items;
@@ -160,6 +150,38 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(Tags.Items.SLIME_BALLS)
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(output);
+
+        planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
+        woodFromLogs(ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
+        woodFromLogs(ModBlocks.STRIPPED_SLIMY_WOOD.get(), ModBlocks.STRIPPED_SLIMY_LOG.get());
+        stairBuilder(ModBlocks.SLIMY_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS)).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_SLAB.get(), ModBlocks.SLIMY_PLANKS.get());
+        buttonBuilder(ModBlocks.SLIMY_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        pressurePlate(ModBlocks.SLIMY_PRESSURE_PLATE.get(), ModBlocks.SLIMY_PLANKS.get());
+        fenceBuilder(ModBlocks.SLIMY_FENCE.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        fenceGateBuilder(ModBlocks.SLIMY_FENCE_GATE.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        doorBuilder(ModBlocks.SLIMY_DOOR.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        trapdoorBuilder(ModBlocks.SLIMY_TRAPDOOR.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        stairBuilder(ModBlocks.SLIMY_STONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_STONE)).group("slimy_stone")
+                .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_STONE_SLAB.get(), ModBlocks.SLIMY_STONE.get());
+        buttonBuilder(ModBlocks.SLIMY_STONE_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_STONE.get())).group("slimy_stone")
+                .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE.get())).save(output);
+        pressurePlate(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), ModBlocks.SLIMY_STONE.get());
+        stairBuilder(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLESTONE)).group("slimy_cobblestone")
+                .unlockedBy("has_slimy_cobblestone", has(ModBlocks.SLIMY_COBBLESTONE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        stairBuilder(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLED_DEEPSLATE)).group("slimy_cobbled_deepslate")
+                .unlockedBy("has_slimy_cobbled_deepslate", has(ModBlocks.SLIMY_COBBLED_DEEPSLATE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
         //Slime Ball Recipe
         slimeBlockToSlimeBall(output, ModBlocks.DIRT_SLIME_BLOCK, ModItems.DIRT_SLIME_BALL);
