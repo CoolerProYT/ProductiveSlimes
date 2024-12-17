@@ -1,13 +1,9 @@
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -24,9 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class SolidingRecipeBuilder implements RecipeBuilder {
+public class SqueezingRecipeBuilder implements RecipeBuilder {
     private final List<Ingredient> ingredients = new ArrayList<>();
-    private int inputCount;
     private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final List<JsonObject> outputJson = new ArrayList<>();
@@ -34,26 +29,17 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
 
     @Nullable
     private String group;
-
-    public static SolidingRecipeBuilder solidingRecipe() {
-        return new SolidingRecipeBuilder();
+    public static SqueezingRecipeBuilder squeezingRecipe() {
+        return new SqueezingRecipeBuilder();
     }
-
-    private SolidingRecipeBuilder() {
-        // Private constructor to enforce the use of the static factory method
+    private SqueezingRecipeBuilder() {
+        // Private constructor to enforce the use of the static method
     }
-
-    public SolidingRecipeBuilder addIngredient(Ingredient ingredient) {
+    public SqueezingRecipeBuilder addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
         return this;
     }
-
-    public SolidingRecipeBuilder setInputCount(int count) {
-        this.inputCount = count;
-        return this;
-    }
-
-    public SolidingRecipeBuilder addOutput(ItemStack output) {
+    public SqueezingRecipeBuilder addOutput(ItemStack output) {
         JsonObject outputJson = new JsonObject();
         outputJson.addProperty("item", output.getDescriptionId().substring(output.getDescriptionId().indexOf(".") + 1).replace('.', ':'));
         outputJson.addProperty("count", output.getCount());
@@ -61,53 +47,46 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
         this.outputJson.add(outputJson);
         return this;
     }
-
-    public SolidingRecipeBuilder setEnergy(int energy) {
+    public SqueezingRecipeBuilder setEnergy(int energy) {
         this.energy = energy;
         return this;
     }
-
     @Override
-    public SolidingRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
+    public SqueezingRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
-
     @Override
-    public SolidingRecipeBuilder group(@Nullable String group) {
+    public SqueezingRecipeBuilder group(@Nullable String group) {
         this.group = group;
         return this;
     }
-
     @Override
     public Item getResult() {
-        // Return the first output item as the representative result
         return this.outputs.isEmpty() ? Items.AIR : this.outputs.get(0).getItem();
     }
 
     @Override
     public void save(Consumer<FinishedRecipe> consumer, ResourceLocation resourceLocation) {
-        consumer.accept(new Result(resourceLocation, ingredients, outputJson, inputCount, energy));
+        consumer.accept(new Result(resourceLocation, ingredients, outputJson, energy));
     }
 
     public static class Result implements FinishedRecipe{
         private final ResourceLocation id;
         private final List<Ingredient> ingredients;
         private final List<JsonObject> outputs;
-        private final int inputCount;
         private final int energy;
 
-        public Result(ResourceLocation id, List<Ingredient> ingredients, List<JsonObject> outputs, int inputCount, int energy) {
+        public Result(ResourceLocation id, List<Ingredient> ingredients, List<JsonObject> outputs, int energy) {
             this.id = id;
             this.ingredients = ingredients;
             this.outputs = outputs;
-            this.inputCount = inputCount;
             this.energy = energy;
         }
 
         @Override
         public void serializeRecipeData(JsonObject jsonObject) {
-            jsonObject.addProperty("type", "productiveslimes:soliding");
+            jsonObject.addProperty("type", "productiveslimes:squeezing");
             jsonObject.addProperty("energy", energy);
 
             JsonArray ingredientArray = new JsonArray();
@@ -115,7 +94,6 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
                 ingredientArray.add(ingredient.toJson());
             }
             jsonObject.add("ingredients", ingredientArray);
-            jsonObject.addProperty("inputCount", inputCount);
 
             JsonArray outputArray = new JsonArray();
             for (JsonObject output : outputs) {
@@ -131,16 +109,16 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getType() {
-            return ModRecipes.SOLIDING_SERIALIZER.get();
+            return ModRecipes.SQUEEZING_SERIALIZER.get();
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public ResourceLocation getAdvancementId() {
             return null;

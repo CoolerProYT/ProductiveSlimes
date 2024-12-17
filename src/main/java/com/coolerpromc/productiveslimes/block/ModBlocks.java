@@ -40,6 +40,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer",
             () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
+    public static final RegistryObject<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer",
+            () -> new SlimeSqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+    public static final RegistryObject<Block> SQUEEZER = registerBlock("squeezer",
+            () -> new SqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+
     public static final RegistryObject<Block> FLUID_TANK = registerBlockWithoutItem("fluid_tank",
             () -> new FluidTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 

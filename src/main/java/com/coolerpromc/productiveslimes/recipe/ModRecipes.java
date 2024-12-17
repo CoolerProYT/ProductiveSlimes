@@ -24,6 +24,9 @@ public class ModRecipes{
     public static final RegistryObject<RecipeSerializer<DnaSynthesizingRecipe>> DNA_SYNTHESIZING_SERIALIZER =
             SERIALIZERS.register("dna_synthesizing", () -> DnaSynthesizingRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<SqueezingRecipe>> SQUEEZING_SERIALIZER =
+            SERIALIZERS.register("squeezing", () -> SqueezingRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus){
         SERIALIZERS.register(eventBus);
     }
