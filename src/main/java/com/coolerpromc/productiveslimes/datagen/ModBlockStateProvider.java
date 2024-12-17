@@ -3,9 +3,11 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -33,6 +35,50 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.SLIMY_DEEPSLATE);
         blockWithItem(ModBlocks.SLIMY_COBBLESTONE);
         blockWithItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE);
+
+        logBlock(((RotatedPillarBlock) ModBlocks.SLIMY_LOG.get()));
+        axisBlock(((RotatedPillarBlock) ModBlocks.SLIMY_WOOD.get()), blockTexture(ModBlocks.SLIMY_LOG.get()), blockTexture(ModBlocks.SLIMY_LOG.get()));
+        logBlock(((RotatedPillarBlock) ModBlocks.STRIPPED_SLIMY_LOG.get()));
+        axisBlock(((RotatedPillarBlock) ModBlocks.STRIPPED_SLIMY_WOOD.get()), blockTexture(ModBlocks.STRIPPED_SLIMY_LOG.get()), blockTexture(ModBlocks.STRIPPED_SLIMY_LOG.get()));
+        blockItem(ModBlocks.SLIMY_LOG);
+        blockItem(ModBlocks.SLIMY_WOOD);
+        blockItem(ModBlocks.STRIPPED_SLIMY_LOG);
+        blockItem(ModBlocks.STRIPPED_SLIMY_WOOD);
+        blockWithItem(ModBlocks.SLIMY_PLANKS);
+        leavesBlock(ModBlocks.SLIMY_LEAVES);
+        saplingBlock(ModBlocks.SLIMY_SAPLING);
+
+        stairsBlock(ModBlocks.SLIMY_STAIRS.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        slabBlock(ModBlocks.SLIMY_SLAB.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        pressurePlateBlock(ModBlocks.SLIMY_PRESSURE_PLATE.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        buttonBlock(ModBlocks.SLIMY_BUTTON.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        fenceBlock(ModBlocks.SLIMY_FENCE.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        fenceGateBlock(ModBlocks.SLIMY_FENCE_GATE.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
+        trapdoorBlockWithRenderType(ModBlocks.SLIMY_TRAPDOOR.get(), modLoc("block/slimy_trapdoor"), true, "cutout");
+        doorBlockWithRenderType(ModBlocks.SLIMY_DOOR.get(), modLoc("block/slimy_door_bottom"), modLoc("block/slimy_door_top"), "cutout");
+        stairsBlock(ModBlocks.SLIMY_STONE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_STONE.get()));
+        slabBlock(ModBlocks.SLIMY_STONE_SLAB.get(), blockTexture(ModBlocks.SLIMY_STONE.get()), blockTexture(ModBlocks.SLIMY_STONE.get()));
+        pressurePlateBlock(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), blockTexture(ModBlocks.SLIMY_STONE.get()));
+        buttonBlock(ModBlocks.SLIMY_STONE_BUTTON.get(), blockTexture(ModBlocks.SLIMY_STONE.get()));
+        stairsBlock(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
+        slabBlock(ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
+        wallBlock(ModBlocks.SLIMY_COBBLESTONE_WALL.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
+        stairsBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
+        slabBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
+        wallBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
+        blockItem(ModBlocks.SLIMY_STAIRS);
+        blockItem(ModBlocks.SLIMY_SLAB);
+        blockItem(ModBlocks.SLIMY_PRESSURE_PLATE);
+        blockItem(ModBlocks.SLIMY_FENCE_GATE);
+        blockItem(ModBlocks.SLIMY_TRAPDOOR, "_bottom");
+        blockItem(ModBlocks.SLIMY_STONE_STAIRS);
+        blockItem(ModBlocks.SLIMY_STONE_SLAB);
+        blockItem(ModBlocks.SLIMY_STONE_PRESSURE_PLATE);
+        blockItem(ModBlocks.SLIMY_COBBLESTONE_STAIRS);
+        blockItem(ModBlocks.SLIMY_COBBLESTONE_SLAB);
+        blockItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS);
+        blockItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB);
+
 
         registerSlimeBlock(ModBlocks.DIRT_SLIME_BLOCK.get(), "dirt_slime_block");
         registerSlimeBlock(ModBlocks.STONE_SLIME_BLOCK.get(), "stone_slime_block");
@@ -123,5 +169,21 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .rotationY(yRotation)
                     .build();
         });
+    }
+
+    private void blockItem(RegistryObject<? extends Block> deferredBlock) {
+        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("productiveslimes:block/" + deferredBlock.getId().getPath()));
+    }
+    private void blockItem(RegistryObject<? extends Block> deferredBlock, String appendix) {
+        simpleBlockItem(deferredBlock.get(), new ModelFile.UncheckedModelFile("productiveslimes:block/" + deferredBlock.getId().getPath() + appendix));
+    }
+    private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlock(blockRegistryObject.get(),
+                models().cross(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+    }
+    private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlockWithItem(blockRegistryObject.get(),
+                models().singleTexture(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                        "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 }

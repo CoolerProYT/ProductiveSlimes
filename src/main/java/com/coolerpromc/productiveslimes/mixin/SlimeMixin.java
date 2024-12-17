@@ -39,7 +39,7 @@ public abstract class SlimeMixin {
     private static void onCheckSpawnRules(EntityType<Slime> slimeType, LevelAccessor level,
                                           MobSpawnType spawnType, BlockPos pos, RandomSource random,
                                           CallbackInfoReturnable<Boolean> cir) {
-        if (level.getBiome(pos).is(ModBiomes.SLIME_LAND)) {
+        if (level.getBiome(pos).is(ModBiomes.SLIMY_LAND)) {
             cir.setReturnValue(true);
         }
     }

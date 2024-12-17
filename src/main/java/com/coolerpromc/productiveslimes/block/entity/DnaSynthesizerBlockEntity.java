@@ -51,10 +51,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             if (slot != 2){
-                return stack.is(ModTags.Items.DNA_ITEM) || stack.is(ModTags.Items.ATM_DNA_ITEM);
+                return stack.is(ModTags.Items.DNA_ITEM);
             }
             else {
-                return !(stack.is(ModTags.Items.DNA_ITEM) || stack.is(ModTags.Items.ATM_DNA_ITEM));
+                return !(stack.is(ModTags.Items.DNA_ITEM));
             }
         }
     };

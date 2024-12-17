@@ -1,11 +1,13 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -109,5 +111,20 @@ public class ModItemTagGenerator extends ItemTagsProvider {
                 .add(ModItems.GRAVEL_SLIME_DNA.get())
                 .add(ModItems.SLIME_DNA.get())
                 .add(ModItems.OAK_LEAVES_SLIME_DNA.get());
+
+        tag(ItemTags.LOGS_THAT_BURN)
+                .add(ModBlocks.SLIMY_LOG.get().asItem())
+                .add(ModBlocks.SLIMY_WOOD.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get().asItem());
+
+        tag(ItemTags.PLANKS)
+                .add(ModBlocks.SLIMY_PLANKS.get().asItem());
+
+        tag(ModTags.Items.SLIMY_LOG)
+                .add(ModBlocks.SLIMY_LOG.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_LOG.get().asItem())
+                .add(ModBlocks.SLIMY_WOOD.get().asItem())
+                .add(ModBlocks.STRIPPED_SLIMY_WOOD.get().asItem());
     }
 }
