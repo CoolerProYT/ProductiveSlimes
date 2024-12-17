@@ -151,6 +151,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.SLIMEBALL_FRAGMENT.get(), 4)
+                .requires(Items.SLIME_BALL)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.SLIME_BALL))
+                .save(output);
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, Items.SLIME_BALL, 1)
+                .pattern("AA ")
+                .pattern("AA ")
+                .pattern("   ")
+                .define('A', ModItems.SLIMEBALL_FRAGMENT)
+                .unlockedBy(getHasName(ModItems.SLIMEBALL_FRAGMENT), has(ModItems.SLIMEBALL_FRAGMENT))
+                .save(output, "slimeball_from_fragment");
+
         planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
         woodFromLogs(ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
         woodFromLogs(ModBlocks.STRIPPED_SLIMY_WOOD.get(), ModBlocks.STRIPPED_SLIMY_LOG.get());
