@@ -1,4 +1,4 @@
-// 1.21.4	2024-12-04T22:53:17.2131433	Item Models: productiveslimes
+// 1.21.4	2024-12-17T18:11:18.8388496	Item Models: productiveslimes
 7310ba773fb016e3a4adb5f2c5bac9aa7ba943b4 assets/productiveslimes/models/item/amethyst_slimeball.json
 7c66cae739c294303cb9bab5243017ee6f0f8c19 assets/productiveslimes/models/item/amethyst_slime_dna.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/amethyst_slime_spawn_egg.json
@@ -156,7 +156,15 @@
 7310ba773fb016e3a4adb5f2c5bac9aa7ba943b4 assets/productiveslimes/models/item/sand_slimeball.json
 7c66cae739c294303cb9bab5243017ee6f0f8c19 assets/productiveslimes/models/item/sand_slime_dna.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/sand_slime_spawn_egg.json
+c4b4ad25b42cd37fad3a8d83164c2e92ebf291b7 assets/productiveslimes/models/item/slimeball_fragment.json
 7c66cae739c294303cb9bab5243017ee6f0f8c19 assets/productiveslimes/models/item/slime_dna.json
+2bf3d6abb7b23c15240b905365005a558d302ad3 assets/productiveslimes/models/item/slimy_button.json
+0fcc6e837b4531b6658065a84d91664d74a1cecc assets/productiveslimes/models/item/slimy_cobbled_deepslate_wall.json
+fa6314caeb7ef415f95fd8d1dfac2191cf46dc65 assets/productiveslimes/models/item/slimy_cobblestone_wall.json
+c5787a72f4e345ec0da5af781fbeb7501fc7aad8 assets/productiveslimes/models/item/slimy_door.json
+8971ccdb767c5618c68dc9fc359058c49d2fdff8 assets/productiveslimes/models/item/slimy_fence.json
+317e644ea6b11332dae5d17f8c57f9ee96a3778f assets/productiveslimes/models/item/slimy_sapling.json
+747ad48892cb0304c3e38b51fbdce3397bc578e6 assets/productiveslimes/models/item/slimy_stone_button.json
 7310ba773fb016e3a4adb5f2c5bac9aa7ba943b4 assets/productiveslimes/models/item/snow_slimeball.json
 7c66cae739c294303cb9bab5243017ee6f0f8c19 assets/productiveslimes/models/item/snow_slime_dna.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/snow_slime_spawn_egg.json

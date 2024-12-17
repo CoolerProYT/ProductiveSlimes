@@ -3,16 +3,14 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 //import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.DnaSynthesizingRecipeBuilder;
+import com.coolerpromc.productiveslimes.datagen.builder.*;
 //import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
 //import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
-import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
+import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -155,6 +153,67 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.SLIMEBALL_FRAGMENT.get(), 4)
+                .requires(Items.SLIME_BALL)
+                .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.SLIME_BALL))
+                .save(output);
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, Items.SLIME_BALL, 1)
+                .pattern("AA ")
+                .pattern("AA ")
+                .pattern("   ")
+                .define('A', ModItems.SLIMEBALL_FRAGMENT)
+                .unlockedBy(getHasName(ModItems.SLIMEBALL_FRAGMENT), has(ModItems.SLIMEBALL_FRAGMENT))
+                .save(output, "slimeball_from_fragment");
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SQUEEZER, 1)
+                .pattern(" A ")
+                .pattern(" A ")
+                .pattern("AAA")
+                .define('A', ModBlocks.SLIMY_PLANKS)
+                .unlockedBy(getHasName(ModBlocks.SLIMY_PLANKS), has(ModBlocks.SLIMY_PLANKS))
+                .save(output);
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_SQUEEZER, 1)
+                .pattern("BAB")
+                .pattern("C  ")
+                .pattern("BBB")
+                .define('A', ModBlocks.SQUEEZER)
+                .define('B', ModBlocks.SLIMY_STONE)
+                .define('C', ModItems.ENERGY_SLIME_BALL)
+                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(output);
+
+        planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
+        woodFromLogs(ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
+        woodFromLogs(ModBlocks.STRIPPED_SLIMY_WOOD.get(), ModBlocks.STRIPPED_SLIMY_LOG.get());
+        stairBuilder(ModBlocks.SLIMY_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS)).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_SLAB.get(), ModBlocks.SLIMY_PLANKS.get());
+        buttonBuilder(ModBlocks.SLIMY_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        pressurePlate(ModBlocks.SLIMY_PRESSURE_PLATE.get(), ModBlocks.SLIMY_PLANKS.get());
+        fenceBuilder(ModBlocks.SLIMY_FENCE.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        fenceGateBuilder(ModBlocks.SLIMY_FENCE_GATE.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        doorBuilder(ModBlocks.SLIMY_DOOR.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        trapdoorBuilder(ModBlocks.SLIMY_TRAPDOOR.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
+                .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(output);
+        stairBuilder(ModBlocks.SLIMY_STONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_STONE)).group("slimy_stone")
+                .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_STONE_SLAB.get(), ModBlocks.SLIMY_STONE.get());
+        buttonBuilder(ModBlocks.SLIMY_STONE_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_STONE.get())).group("slimy_stone")
+                .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE.get())).save(output);
+        pressurePlate(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), ModBlocks.SLIMY_STONE.get());
+        stairBuilder(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLESTONE)).group("slimy_cobblestone")
+                .unlockedBy("has_slimy_cobblestone", has(ModBlocks.SLIMY_COBBLESTONE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        stairBuilder(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLED_DEEPSLATE)).group("slimy_cobbled_deepslate")
+                .unlockedBy("has_slimy_cobbled_deepslate", has(ModBlocks.SLIMY_COBBLED_DEEPSLATE)).save(output);
+        slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+
         //Slime Ball Recipe
         slimeBlockToSlimeBall(output, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
         slimeBallToSlimeBlock(output, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
@@ -175,6 +234,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
             dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), 4, ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey1()), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey2()), ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()));
         }
+
+        squeezingRecipe(output, ModBlocks.SLIMY_DIRT, new ItemStack(Items.DIRT, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_GRASS_BLOCK, new ItemStack(Items.GRASS_BLOCK, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_STONE, new ItemStack(Items.STONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_DEEPSLATE, new ItemStack(Items.DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_COBBLESTONE, new ItemStack(Items.COBBLESTONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_COBBLED_DEEPSLATE, new ItemStack(Items.COBBLED_DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
+        squeezingRecipe(output, ModBlocks.SLIMY_LOG, new ItemStack(Items.OAK_LOG, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
     }
 
     public static final class Runner extends RecipeProvider.Runner {
@@ -286,5 +353,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', pSlimeBall)
                 .unlockedBy(getHasName(pSlimeBall), has(pSlimeBall))
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
+    }
+
+    protected void squeezingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemStack pResult1, ItemStack pResult2) {
+        SqueezingRecipeBuilder.squeezingRecipe()
+                .addIngredient(Ingredient.of(pIngredient))
+                .addOutput(pResult1)
+                .addOutput(pResult2)
+                .setEnergy(300)
+                .unlockedBy(getHasName(pIngredient), has(pIngredient))
+                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing").toString());
     }
 }

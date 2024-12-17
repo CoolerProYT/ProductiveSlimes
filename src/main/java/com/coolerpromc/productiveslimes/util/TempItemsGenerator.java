@@ -21,6 +21,59 @@ public class TempItemsGenerator {
         registerDna();
         registerSpawnEgg();
         registerBucket();
+
+        registerCustomItems("slime_squeezer");
+        registerCustomItems("squeezer");
+        registerCustomItems("slimy_log");
+        registerCustomItems("stripped_slimy_log");
+        registerCustomItems("slimy_wood");
+        registerCustomItems("stripped_slimy_wood");
+        registerCustomItems("slimy_planks");
+        registerCustomItems("slimy_leaves");
+        registerCustomItems("slimy_sapling");
+
+        registerCustomItems("slimy_slab");
+        registerCustomItems("slimy_stairs");
+        registerCustomItems("slimy_pressure_plate");
+        registerCustomItems("slimy_button");
+        registerCustomItems("slimy_fence");
+        registerCustomItems("slimy_fence_gate");
+        registerCustomItems("slimy_door");
+        registerCustomItems("slimy_trapdoor");
+
+        registerCustomItems("slimy_stone_stairs");
+        registerCustomItems("slimy_stone_slab");
+        registerCustomItems("slimy_stone_pressure_plate");
+        registerCustomItems("slimy_stone_button");
+
+        registerCustomItems("slimy_cobblestone_stairs");
+        registerCustomItems("slimy_cobblestone_slab");
+        registerCustomItems("slimy_cobblestone_wall");
+
+        registerCustomItems("slimy_cobbled_deepslate_stairs");
+        registerCustomItems("slimy_cobbled_deepslate_slab");
+        registerCustomItems("slimy_cobbled_deepslate_wall");
+
+        registerCustomItems("slimeball_fragment");
+    }
+
+    private static void registerCustomItems(String id){
+        Path path = Paths.get("assets/productiveslimes/items/" + id + ".json");
+
+        String content = "{\n" +
+                "  \"model\": {\n" +
+                "    \"type\": \"minecraft:model\",\n" +
+                "    \"model\": \"productiveslimes:item/" + id + "\"\n" +
+                "  }\n" +
+                "}\n";
+
+        try{
+            Files.createDirectories(path.getParent());
+            Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+        }
+        catch (IOException e){
+
+        }
     }
 
     private static void registerBlock(){
