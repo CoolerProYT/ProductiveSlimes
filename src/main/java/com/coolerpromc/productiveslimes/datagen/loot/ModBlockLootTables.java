@@ -40,6 +40,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.DNA_EXTRACTOR.get());
         dropSelf(ModBlocks.DNA_SYNTHESIZER.get());
         dropSelf(ModBlocks.FLUID_TANK.get());
+        dropSelf(ModBlocks.SLIME_SQUEEZER.get());
 
         createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK);
         dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT);

@@ -35,6 +35,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlock("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer", DnaSynthesizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer", SlimeSqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> SQUEEZER = registerBlock("squeezer", SqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().noLootTable());
     public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     public static final DeferredBlock<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK));
