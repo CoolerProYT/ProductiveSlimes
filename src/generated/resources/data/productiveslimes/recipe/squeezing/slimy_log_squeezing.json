@@ -1,0 +1,19 @@
+{
+  "type": "productiveslimes:squeezing",
+  "energy": 300,
+  "ingredients": [
+    {
+      "item": "productiveslimes:slimy_log"
+    }
+  ],
+  "output": [
+    {
+      "count": 1,
+      "id": "minecraft:oak_log"
+    },
+    {
+      "count": 1,
+      "id": "productiveslimes:slimeball_fragment"
+    }
+  ]
+}

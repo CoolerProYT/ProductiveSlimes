@@ -3,10 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.*;
-import com.coolerpromc.productiveslimes.screen.DnaExtractorScreen;
-import com.coolerpromc.productiveslimes.screen.DnaSynthesizerScreen;
-import com.coolerpromc.productiveslimes.screen.MeltingStationScreen;
-import com.coolerpromc.productiveslimes.screen.SolidingStationScreen;
+import com.coolerpromc.productiveslimes.screen.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -37,6 +34,7 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new DnaExtractingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new DnaSynthesizingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new SqueezingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -55,10 +53,14 @@ public class JEPlugin implements IModPlugin {
         List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
         List<DnaSynthesizingRecipe> dnaSynthesizingRecipeList = dnaSynthesizingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
+        List<RecipeHolder<SqueezingRecipe>> squeezingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SQUEEZING_TYPE.get());
+        List<SqueezingRecipe> squeezingRecipeList = squeezingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+
         registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
         registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
         registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipeList);
         registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
+        registration.addRecipes(SqueezingCategory.SQUEEZING_TYPE, squeezingRecipeList);
     }
 
     @Override
@@ -67,5 +69,6 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
         registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
+        registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
     }
 }
