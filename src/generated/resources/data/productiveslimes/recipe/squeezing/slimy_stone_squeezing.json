@@ -1,0 +1,15 @@
+{
+  "type": "productiveslimes:squeezing",
+  "energy": 300,
+  "ingredients": [],
+  "output": [
+    {
+      "count": 1,
+      "id": "minecraft:stone"
+    },
+    {
+      "count": 1,
+      "id": "productiveslimes:slimeball_fragment"
+    }
+  ]
+}
