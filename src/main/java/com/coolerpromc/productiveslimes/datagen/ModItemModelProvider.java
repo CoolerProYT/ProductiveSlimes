@@ -1,12 +1,14 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -21,6 +23,16 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         simpleItem(ModItems.GUIDEBOOK);
         simpleItem(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+        simpleItem(ModItems.SLIMEBALL_FRAGMENT);
+
+        saplingItem(ModBlocks.SLIMY_SAPLING);
+
+        buttonItem(ModBlocks.SLIMY_BUTTON, ModBlocks.SLIMY_PLANKS);
+        fenceItem(ModBlocks.SLIMY_FENCE, ModBlocks.SLIMY_PLANKS);
+        basicItem(ModBlocks.SLIMY_DOOR.get().asItem());
+        buttonItem(ModBlocks.SLIMY_STONE_BUTTON, ModBlocks.SLIMY_STONE);
+        wallItem(ModBlocks.SLIMY_COBBLESTONE_WALL, ModBlocks.SLIMY_COBBLESTONE);
+        wallItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL, ModBlocks.SLIMY_COBBLED_DEEPSLATE);
 
         slimeballItem(ModItems.DIRT_SLIME_BALL);
         slimeballItem(ModItems.STONE_SLIME_BALL);
@@ -245,5 +257,27 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.tryParse("item/generated")).texture("layer0",
                 new ResourceLocation(ProductiveSlimes.MODID,"item/" + item.getId().getPath()));
+    }
+
+    private ItemModelBuilder saplingItem(RegistryObject<Block> item) {
+        return withExistingParent(item.getId().getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(ProductiveSlimes.MODID, "block/" + item.getId().getPath()));
+    }
+
+    public void buttonItem(RegistryObject<?> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/button_inventory"))
+                .texture("texture",  new ResourceLocation(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
+    }
+    public void fenceItem(RegistryObject<?> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/fence_inventory"))
+                .texture("texture",  new ResourceLocation(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
+    }
+    public void wallItem(RegistryObject<?> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(block.getId().getPath(), mcLoc("block/wall_inventory"))
+                .texture("wall",  new ResourceLocation(ProductiveSlimes.MODID,
+                        "block/" + baseBlock.getId().getPath()));
     }
 }

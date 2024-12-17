@@ -32,6 +32,9 @@ public class ModMenuTypes {
     public static final Supplier<MenuType<DnaSynthesizerMenu>> DNA_SYNTHESIZER_MENU =
             registerMenuType("dna_synthesizer_menu", DnaSynthesizerMenu::new);
 
+    public static final Supplier<MenuType<SlimeSqueezerMenu>> SLIME_SQUEEZER_MENU =
+            registerMenuType("slime_squeezer_menu", SlimeSqueezerMenu::new);
+
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

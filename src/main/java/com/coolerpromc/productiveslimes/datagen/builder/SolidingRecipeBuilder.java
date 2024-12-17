@@ -31,6 +31,7 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
     private final List<ItemStack> outputs = new ArrayList<>();
     private final List<JsonObject> outputJson = new ArrayList<>();
     private final Map<String, CriterionTriggerInstance> criteria = new LinkedHashMap<>();
+
     @Nullable
     private String group;
 

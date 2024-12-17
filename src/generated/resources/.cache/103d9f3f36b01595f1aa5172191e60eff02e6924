@@ -1,8 +1,4 @@
-// 1.20.1	2024-12-07T23:24:29.7158206	Registries
-4da10ab4ba38f6977cd304e9c589fe626641cd89 data/productiveslimes/worldgen/biome/slime_land.json
-6ef1984d560ef924dd9f69e98848f6ad86b8b15b data/productiveslimes/worldgen/configured_feature/lake_molten_dirt.json
-2934663dda9c982fa3c5ff936f0541b725cafaf3 data/productiveslimes/worldgen/configured_feature/lake_molten_stone.json
-a98e7e63157908cf0bfb0053ee8d77794eaac579 data/productiveslimes/worldgen/configured_feature/slime_tree.json
-f9c449d842202ecc9f921df7ba8ee39857befbea data/productiveslimes/worldgen/placed_feature/lake_molten_dirt.json
-0ccb559b4ff087c4c3657a7f9fd789cb61f31df4 data/productiveslimes/worldgen/placed_feature/lake_molten_stone.json
-ac2d43f98964849a92ec3a8991b5f81271894843 data/productiveslimes/worldgen/placed_feature/slime_tree.json
+// 1.20.1	2024-12-17T13:06:29.4026073	Registries
+acfeb754236ad1086184bf469064b6cb3943aeb8 data/productiveslimes/worldgen/biome/slimy_land.json
+3a5e019e295a95521ef2cdd62264421cc6c873c1 data/productiveslimes/worldgen/configured_feature/slimy_tree.json
+26f8aef9801edd96b158a3da02fc8544a8747614 data/productiveslimes/worldgen/placed_feature/slimy_tree.json
