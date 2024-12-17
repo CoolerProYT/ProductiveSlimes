@@ -21,12 +21,8 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlace
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_DIRT = registerKey("lake_molten_dirt");
-    public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_STONE = registerKey("lake_molten_stone");
     public static final ResourceKey<ConfiguredFeature<?,?>> SLIMY_TREE = registerKey("slimy_tree");
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
-        register(context, ModConfiguredFeatures.LAKE_MOLTEN_DIRT, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("dirt").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
-        register(context, ModConfiguredFeatures.LAKE_MOLTEN_STONE, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("stone").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
         register(context, ModConfiguredFeatures.SLIMY_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(ModBlocks.SLIMY_LOG.get()),
                 new FancyTrunkPlacer(4, 4, 3),
