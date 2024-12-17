@@ -11,12 +11,45 @@
   "block.productiveslimes.cable": "Cable",
   "block.productiveslimes.dna_synthesizer": "DNA Synthesizer",
   "block.productiveslimes.fluid_tank": "Fluid Tank",
+  "block.productiveslimes.slime_squeezer": "Slime Squeezer",
+  "block.productiveslimes.squeezer": "Squeezer",
+
   "block.productiveslimes.slimy_grass_block": "Slimy Grass Block",
   "block.productiveslimes.slimy_dirt": "Slimy Dirt",
   "block.productiveslimes.slimy_stone": "Slimy Stone",
   "block.productiveslimes.slimy_deepslate": "Slimy Deepslate",
   "block.productiveslimes.slimy_cobblestone": "Slimy Cobblestone",
   "block.productiveslimes.slimy_cobbled_deepslate": "Slimy Cobbled Deepslate",
+
+  "block.productiveslimes.slimy_log": "Slimy Log",
+  "block.productiveslimes.slimy_wood": "Slimy Wood",
+  "block.productiveslimes.stripped_slimy_log": "Stripped Slimy Log",
+  "block.productiveslimes.stripped_slimy_wood": "Stripped Slimy Wood",
+  "block.productiveslimes.slimy_planks": "Slimy Planks",
+  "block.productiveslimes.slimy_leaves": "Slimy Leaves",
+  "block.productiveslimes.slimy_sapling": "Slimy Sapling",
+
+  "block.productiveslimes.slimy_stairs": "Slimy Stairs",
+  "block.productiveslimes.slimy_slab": "Slimy Slab",
+  "block.productiveslimes.slimy_pressure_plate": "Slimy Pressure Plate",
+  "block.productiveslimes.slimy_button": "Slimy Button",
+  "block.productiveslimes.slimy_fence": "Slimy Fence",
+  "block.productiveslimes.slimy_fence_gate": "Slimy Fence Gate",
+  "block.productiveslimes.slimy_trapdoor": "Slimy Trapdoor",
+  "block.productiveslimes.slimy_door": "Slimy Door",
+
+  "block.productiveslimes.slimy_stone_stairs": "Slimy Stone Stairs",
+  "block.productiveslimes.slimy_stone_slab": "Slimy Stone Slab",
+  "block.productiveslimes.slimy_stone_pressure_plate": "Slimy Stone Pressure Plate",
+  "block.productiveslimes.slimy_stone_button": "Slimy Stone Button",
+
+  "block.productiveslimes.slimy_cobblestone_stairs": "Slimy Cobblestone Stairs",
+  "block.productiveslimes.slimy_cobblestone_slab": "Slimy Cobblestone Slab",
+  "block.productiveslimes.slimy_cobblestone_wall": "Slimy Cobblestone Wall",
+
+  "block.productiveslimes.slimy_cobbled_deepslate_stairs": "Slimy Cobbled Deepslate Stairs",
+  "block.productiveslimes.slimy_cobbled_deepslate_slab": "Slimy Cobbled Deepslate Slab",
+  "block.productiveslimes.slimy_cobbled_deepslate_wall": "Slimy Cobbled Deepslate Wall",
 
   "block.productiveslimes.dirt_slime_block": "Dirt Slime Block",
   "block.productiveslimes.stone_slime_block": "Stone Slime Block",
@@ -64,6 +97,7 @@
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
   "item.productiveslimes.energy_multiplier_upgrade": "Energy Multiplier Upgrade",
+  "item.productiveslimes.slimeball_fragment": "Slimeball Fragment",
 
   "item.productiveslimes.dirt_slime_spawn_egg": "Dirt Slime Spawn Egg",
   "item.productiveslimes.stone_slime_spawn_egg": "Stone Slime Spawn Egg",

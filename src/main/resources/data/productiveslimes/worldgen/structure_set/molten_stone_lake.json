@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 19011220,
+    "separation": 2,
+    "spacing": 100,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "productiveslimes:molten_stone_lake",
+      "weight": 20
+    }
+  ]
+}
