@@ -23,6 +23,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         simpleItem(ModItems.GUIDEBOOK);
         simpleItem(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+        simpleItem(ModItems.SLIMEBALL_FRAGMENT);
 
         saplingItem(ModBlocks.SLIMY_SAPLING);
 

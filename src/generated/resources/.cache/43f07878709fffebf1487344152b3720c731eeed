@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-17T12:46:48.0548935	Item Models: productiveslimes
+// 1.20.1	2024-12-17T13:01:33.3581321	Item Models: productiveslimes
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/amethyst_slimeball.json
 cf8d30856bcce0c7def6dc0796b1e967ff23fec6 assets/productiveslimes/models/item/amethyst_slime_dna.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/amethyst_slime_spawn_egg.json
@@ -156,6 +156,7 @@ cf8d30856bcce0c7def6dc0796b1e967ff23fec6 assets/productiveslimes/models/item/red
 58dec538c713d753b03fa5a22963aadaec5c22c3 assets/productiveslimes/models/item/sand_slimeball.json
 cf8d30856bcce0c7def6dc0796b1e967ff23fec6 assets/productiveslimes/models/item/sand_slime_dna.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/productiveslimes/models/item/sand_slime_spawn_egg.json
+c4b4ad25b42cd37fad3a8d83164c2e92ebf291b7 assets/productiveslimes/models/item/slimeball_fragment.json
 cf8d30856bcce0c7def6dc0796b1e967ff23fec6 assets/productiveslimes/models/item/slime_dna.json
 2bf3d6abb7b23c15240b905365005a558d302ad3 assets/productiveslimes/models/item/slimy_button.json
 0fcc6e837b4531b6658065a84d91664d74a1cecc assets/productiveslimes/models/item/slimy_cobbled_deepslate_wall.json

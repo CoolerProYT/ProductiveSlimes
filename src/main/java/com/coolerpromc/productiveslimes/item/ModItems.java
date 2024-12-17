@@ -17,6 +17,8 @@ public class ModItems {
     public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", GuidebookItem::new);
     public static final RegistryObject<Item> FLUID_TANK = ITEMS.register("fluid_tank", () -> new FluidTankBlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> SLIMEBALL_FRAGMENT = ITEMS.register("slimeball_fragment", () -> new Item(new Item.Properties()));
+
     public static final RegistryObject<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
     public static final RegistryObject<Item> DIRT_SLIME_BALL = ITEMS.register("dirt_slimeball", () -> new SlimeballItem(0xFF866043));
     public static final RegistryObject<Item> STONE_SLIME_BALL = ITEMS.register("stone_slimeball", () -> new SlimeballItem(0xFF6F6969));
