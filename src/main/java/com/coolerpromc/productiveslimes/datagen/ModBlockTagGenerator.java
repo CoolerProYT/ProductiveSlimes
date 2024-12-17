@@ -71,6 +71,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.DNA_EXTRACTOR.get())
                 .add(ModBlocks.DNA_SYNTHESIZER.get())
                 .add(ModBlocks.FLUID_TANK.get())
+                .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get())
                 .add(ModBlocks.CABLE.get())
                 .add(ModBlocks.SLIMY_STONE.get())
@@ -95,6 +96,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.DNA_SYNTHESIZER.get())
                 .add(ModBlocks.ENERGY_GENERATOR.get())
                 .add(ModBlocks.FLUID_TANK.get())
+                .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get());
 
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL);
