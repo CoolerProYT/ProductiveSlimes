@@ -15,22 +15,24 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_DIRT = registerKey("lake_molten_dirt");
     public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_STONE = registerKey("lake_molten_stone");
-    public static final ResourceKey<ConfiguredFeature<?,?>> SLIME_TREE = registerKey("slime_tree");
+    public static final ResourceKey<ConfiguredFeature<?,?>> SLIMY_TREE = registerKey("slimy_tree");
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
         register(context, ModConfiguredFeatures.LAKE_MOLTEN_DIRT, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("dirt").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
         register(context, ModConfiguredFeatures.LAKE_MOLTEN_STONE, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName("stone").get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
-        register(context, ModConfiguredFeatures.SLIME_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModTierLists.getBlockByName("oak").get()),
-                new DarkOakTrunkPlacer(7, 2, 2),
-                BlockStateProvider.simple(ModTierLists.getBlockByName("oak_leaves").get()),
-                new DarkOakFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0)),
-                new TwoLayersFeatureSize(1, 0, 1)
+        register(context, ModConfiguredFeatures.SLIMY_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(ModBlocks.SLIMY_LOG.get()),
+                new FancyTrunkPlacer(4, 4, 3),
+                BlockStateProvider.simple(ModBlocks.SLIMY_LEAVES.get()),
+                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(3), 3),
+                new TwoLayersFeatureSize(1, 0, 2)
         ).dirt(BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get())).build());
     }
     private static ResourceKey<ConfiguredFeature<?,?>> registerKey(String name){
