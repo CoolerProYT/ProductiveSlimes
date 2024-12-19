@@ -15,6 +15,7 @@ import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.fluid.ModFluidTypes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
@@ -268,6 +269,11 @@ public class ProductiveSlimes
             registerAllSlimeDnaColor(event);
             registerAllBucketColor(event);
             registerAllSlimeBlockColor(event);
+
+            event.register((stack, tintIndex) -> {
+                SlimeData slimeData = stack.get(ModDataComponents.SLIME_DATA.get());
+                return slimeData != null ? slimeData.color() : 0xFFFFFFFF;
+            }, ModItems.SLIME_ITEM.get());
         }
 
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
