@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
+import com.coolerpromc.productiveslimes.block.entity.SlimeSqueezerBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -100,5 +101,17 @@ public class SlimeNestBlock extends BaseEntityBlock {
     @Override
     public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+    }
+
+    @Override
+    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if (pState.getBlock() != pNewState.getBlock()){
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof SlimeNestBlockEntity slimeNestBlockEntity){
+                slimeNestBlockEntity.drops();
+            }
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 }

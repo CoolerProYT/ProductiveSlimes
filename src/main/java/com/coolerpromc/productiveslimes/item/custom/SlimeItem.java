@@ -11,6 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 
+import java.util.Objects;
+
 public class SlimeItem extends Item {
     public SlimeItem(Properties properties) {
         super(properties);
@@ -38,7 +40,6 @@ public class SlimeItem extends Item {
     @Override
     public Component getName(ItemStack stack) {
         SlimeData slimeData = stack.get(ModDataComponents.SLIME_DATA.get());
-        assert slimeData != null;
         return slimeData.slime().getDescription();
     }
 }

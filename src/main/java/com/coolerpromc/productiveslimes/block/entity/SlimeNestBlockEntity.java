@@ -8,7 +8,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,6 +24,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
     private SlimeData slimeData;
@@ -32,6 +40,10 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
 
             ItemStack stack = getStackInSlot(slot);
             counter = 0;
@@ -62,6 +74,10 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
@@ -206,5 +222,45 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
             }
         }
         return -1;
+    }
+
+    public void drops(){
+        SimpleContainer container = new SimpleContainer(10);
+
+        container.addItem(new ItemStack(slimeHandler.getStackInSlot(0).getItem()));
+
+        for (int i = 0; i < outputHandler.getSlots(); i++) {
+            if (!outputHandler.getStackInSlot(i).isEmpty()) {
+                container.addItem(outputHandler.getStackInSlot(i + 1));
+                outputHandler.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
+
+        Containers.dropContents(level, worldPosition, container);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+        return saveWithoutMetadata(pRegistries);
+    }
+
+    public ItemStack getSlime(){
+        return slimeHandler.getStackInSlot(0);
+    }
+
+    public List<ItemStack> getOutput(){
+        List<ItemStack> output = new ArrayList<>();
+
+        for (int i = 0; i < outputHandler.getSlots(); i++) {
+            output.add(outputHandler.getStackInSlot(i));
+        }
+
+        return output;
     }
 }
