@@ -107,5 +107,9 @@ public class ModCapabilities {
                         return be.getInputHandler();
                     }
                 });
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.SLIME_NEST_BE.get(),
+                (be, side) -> be.getOutputHandler());
     }
 }

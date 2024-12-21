@@ -1,4 +1,4 @@
-// 1.21.1	2024-12-09T17:27:54.5600734	Block States: productiveslimes
+// 1.21.1	2024-12-20T20:52:32.4730565	Block States: productiveslimes
 8993c12d6530268c0ea7648f869851d7ba9bd50b assets/productiveslimes/blockstates/amethyst_slime_block.json
 9e8897a64bf96b8119f904b2349ca79f9ecd5fcc assets/productiveslimes/blockstates/andesite_slime_block.json
 cd4b1e6632618084de91fcef11c7a597571ec5c6 assets/productiveslimes/blockstates/basalt_slime_block.json
@@ -42,6 +42,7 @@ ee4014466fb6d48f9039342415bf7c757ae4a79c assets/productiveslimes/blockstates/obs
 ae7a434dacfb6ef44367ee117bca0ec86a9ee121 assets/productiveslimes/blockstates/red_mushroom_slime_block.json
 3462d888fc0f658995cc7aae2f893388089c1044 assets/productiveslimes/blockstates/red_sand_slime_block.json
 c88f7290742c87c3433938c9ada914debe7ed81f assets/productiveslimes/blockstates/sand_slime_block.json
+6361be57dbe76c86f7b8e7afd77908a76eeba444 assets/productiveslimes/blockstates/slime_nest.json
 d9436bb55a04a71d2ea5b9bb4cc929da683e96d3 assets/productiveslimes/blockstates/slimy_button.json
 3ae5727d07f68255b8afdfcd6cda4ce931448dd3 assets/productiveslimes/blockstates/slimy_cobbled_deepslate.json
 010da25d0511dcc2a48c53a0f32ea7942d2ebf68 assets/productiveslimes/blockstates/slimy_cobbled_deepslate_slab.json
