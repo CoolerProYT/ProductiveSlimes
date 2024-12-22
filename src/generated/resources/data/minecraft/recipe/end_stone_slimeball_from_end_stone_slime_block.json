@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "productiveslimes:endstone_slime_block"
+      "item": "productiveslimes:end_stone_slime_block"
     }
   ],
   "result": {
     "count": 9,
-    "id": "productiveslimes:endstone_slimeball"
+    "id": "productiveslimes:end_stone_slimeball"
   }
 }

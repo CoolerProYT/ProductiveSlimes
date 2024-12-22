@@ -5,6 +5,9 @@ import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
 import com.coolerpromc.productiveslimes.entity.slime.*;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,18 +26,11 @@ public class ModEntitiesEvent {
     }
 
     public static void registerAllSlimeEntityAttribute(EntityAttributeCreationEvent event){
-        Field[] fields = ModEntities.class.getFields();
+        for(Tier tier : Tier.values()) {
+            ModTiers modTiers = ModTierLists.getTierByName(tier);
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(modTiers.name());
 
-        for (Field field : fields) {
-            try {
-                Object value = field.get(null);
-
-                if (value instanceof DeferredHolder<?, ?> holder && holder.get() instanceof EntityType<?> entityType) {
-                    event.put((EntityType<? extends BaseSlime>) entityType, BaseSlime.createAttributes().build());
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            event.put(slime.get(), BaseSlime.createAttributes().build());
         }
 
         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

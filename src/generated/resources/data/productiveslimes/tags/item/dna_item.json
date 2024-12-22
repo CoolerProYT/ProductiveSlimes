@@ -6,9 +6,9 @@
     "productiveslimes:iron_slime_dna",
     "productiveslimes:gold_slime_dna",
     "productiveslimes:diamond_slime_dna",
+    "productiveslimes:netherite_slime_dna",
     "productiveslimes:lapis_slime_dna",
     "productiveslimes:redstone_slime_dna",
-    "productiveslimes:netherite_slime_dna",
     "productiveslimes:oak_slime_dna",
     "productiveslimes:sand_slime_dna",
     "productiveslimes:andesite_slime_dna",
@@ -32,7 +32,7 @@
     "productiveslimes:soul_soil_slime_dna",
     "productiveslimes:blackstone_slime_dna",
     "productiveslimes:basalt_slime_dna",
-    "productiveslimes:endstone_slime_dna",
+    "productiveslimes:end_stone_slime_dna",
     "productiveslimes:quartz_slime_dna",
     "productiveslimes:glowstone_slime_dna",
     "productiveslimes:amethyst_slime_dna",
@@ -41,7 +41,6 @@
     "productiveslimes:cactus_slime_dna",
     "productiveslimes:coal_slime_dna",
     "productiveslimes:gravel_slime_dna",
-    "productiveslimes:slime_dna",
     "productiveslimes:oak_leaves_slime_dna"
   ]
 }
