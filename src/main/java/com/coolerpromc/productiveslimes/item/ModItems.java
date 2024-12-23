@@ -24,6 +24,7 @@ public class ModItems {
     public static final DeferredItem<Item> SLIME_ITEM = ITEMS.register("slime_item", () -> new SlimeItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
+    public static final DeferredItem<Item> SLIME_NEST_SPEED_UPGRADE_1 = ITEMS.register("slime_nest_speed_upgrade_1", () -> new NestUpgradeItem(new Item.Properties(), 1.5f));
 
     public static final DeferredItem<Item> ENERGY_SLIME_BALL = ITEMS.register("energy_slimeball", () -> new SlimeballItem(0xFFFFFF70));
 

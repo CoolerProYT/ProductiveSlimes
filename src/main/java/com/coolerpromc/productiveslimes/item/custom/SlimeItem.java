@@ -39,7 +39,9 @@ public class SlimeItem extends Item {
 
     @Override
     public Component getName(ItemStack stack) {
-        SlimeData slimeData = stack.get(ModDataComponents.SLIME_DATA.get());
+        SlimeData slimeData = stack.getOrDefault(ModDataComponents.SLIME_DATA.get(), null);
+        if (slimeData == null)
+            return Component.translatable("item.productiveslimes.slime_item");
         return slimeData.slime().getDescription();
     }
 }

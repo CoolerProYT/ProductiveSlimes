@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,7 +20,7 @@ public class SlimeNestMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public SlimeNestMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(6));
     }
 
     public SlimeNestMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -32,19 +33,25 @@ public class SlimeNestMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
+        IItemHandler upgradeHandler = blockEntity.getUpgradeHandler();
+        this.addSlot(new SlotItemHandler(upgradeHandler, 0, 8, 7));
+        this.addSlot(new SlotItemHandler(upgradeHandler, 1, 8, 25));
+        this.addSlot(new SlotItemHandler(upgradeHandler, 2, 8, 43));
+        this.addSlot(new SlotItemHandler(upgradeHandler, 3, 8, 61));
+
         IItemHandler inputHandler = blockEntity.getSlimeHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 26, 34));
+        this.addSlot(new SlotItemHandler(inputHandler, 0, 33, 34));
 
         IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 97, 16));
-        this.addSlot(new SlotItemHandler(outputHandler, 1, 116, 16));
-        this.addSlot(new SlotItemHandler(outputHandler, 2, 133, 16));
-        this.addSlot(new SlotItemHandler(outputHandler, 3, 97, 34));
-        this.addSlot(new SlotItemHandler(outputHandler, 4, 116, 34));
-        this.addSlot(new SlotItemHandler(outputHandler, 5, 133, 34));
-        this.addSlot(new SlotItemHandler(outputHandler, 6, 97, 52));
-        this.addSlot(new SlotItemHandler(outputHandler, 7, 116, 52));
-        this.addSlot(new SlotItemHandler(outputHandler, 8, 133, 52));
+        this.addSlot(new SlotItemHandler(outputHandler, 0, 116, 16));
+        this.addSlot(new SlotItemHandler(outputHandler, 1, 134, 16));
+        this.addSlot(new SlotItemHandler(outputHandler, 2, 152, 16));
+        this.addSlot(new SlotItemHandler(outputHandler, 3, 116, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 4, 134, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 5, 152, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 6, 116, 52));
+        this.addSlot(new SlotItemHandler(outputHandler, 7, 134, 52));
+        this.addSlot(new SlotItemHandler(outputHandler, 8, 152, 52));
 
         addDataSlots(data);
     }
@@ -57,7 +64,7 @@ public class SlimeNestMenu extends AbstractContainerMenu {
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 10;
+    private static final int TE_INVENTORY_SLOT_COUNT = 14;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
@@ -126,5 +133,20 @@ public class SlimeNestMenu extends AbstractContainerMenu {
 
     public int getSlimeSize(){
         return data.get(3);
+    }
+
+    public int getCooldown(){
+        return data.get(1);
+    }
+
+    public float getMultiplier(){
+        return data.get(5) / 10000f;
+    }
+
+    public ItemStack getDrop(){
+        if (blockEntity.getSlimeHandler().getStackInSlot(0).isEmpty()){
+            return ItemStack.EMPTY;
+        }
+        return blockEntity.getSlime().get(ModDataComponents.SLIME_DATA.get()).dropItem();
     }
 }

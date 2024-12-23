@@ -13,7 +13,7 @@
   "block.productiveslimes.fluid_tank": "Fluid Tank",
   "block.productiveslimes.slime_squeezer": "Slime Squeezer",
   "block.productiveslimes.squeezer": "Squeezer",
-  "block.productiveslimes.slime_nest": "Slime Nest",
+  "block.productiveslimes.slime_nest": "Slime Simulation Chamber",
 
   "block.productiveslimes.slimy_grass_block": "Slimy Grass Block",
   "block.productiveslimes.slimy_dirt": "Slimy Dirt",
@@ -98,6 +98,7 @@
 
   "item.productiveslimes.guidebook": "Productive Slimes Guidebook",
   "item.productiveslimes.energy_multiplier_upgrade": "Energy Multiplier Upgrade",
+  "item.productiveslimes.slime_nest_speed_upgrade_1": "Simulation Chamber Speed Upgrade 1",
   "item.productiveslimes.slimeball_fragment": "Slimeball Fragment",
   "item.productiveslimes.slime_item": "No Slime Data",
 

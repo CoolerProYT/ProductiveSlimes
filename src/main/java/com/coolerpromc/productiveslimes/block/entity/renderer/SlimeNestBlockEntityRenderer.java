@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.entity.renderer;
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,6 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,6 +31,10 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
 
     @Override
     public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+        if (blockEntity.getSlime() == null) return;
+        if (blockEntity.getSlime().isEmpty()) return;
+        if (blockEntity.getSlime().get(ModDataComponents.SLIME_DATA.get()) == null) return;
+
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack slime = blockEntity.getSlime();
         Level level = blockEntity.getLevel();
@@ -39,12 +46,7 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
 
         // Ensure level is not null and is client-side
         if (level == null || !level.isClientSide) return;
-
-        // Squish-related variables (should ideally be in your BlockEntity or Renderer class)
-        if (tick == 0) {
-            tick = 1; // Ensure tickCount starts
-        }
-        tick++;
+        tick = blockEntity.getData().get(4);
 
         // Calculate squishAmount based on tickCount
         float squishAmount = 1.0F + 0.1F * (float) Math.sin(tick * 0.1F);
@@ -81,12 +83,30 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
             }
         }
 
+        Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        int degree = 0;
+
+        switch (direction) {
+            case NORTH:
+                degree = 0;
+                break;
+            case EAST:
+                degree = 270;
+                break;
+            case SOUTH:
+                degree = 180;
+                break;
+            case WEST:
+                degree = 90;
+                break;
+        }
+
         // Render the squishing slime at the center of the block
         poseStack.pushPose();
-        poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX,
-                centerY - blockEntity.getBlockPos().getY() + renderY,
-                centerZ - blockEntity.getBlockPos().getZ() + renderZ);
+        poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX, centerY - blockEntity.getBlockPos().getY() + renderY - 0.05f, centerZ - blockEntity.getBlockPos().getZ() + renderZ);
         poseStack.scale(scaleX, scaleY, scaleZ); // Apply squish scaling
+        poseStack.mulPose(Axis.YP.rotationDegrees(degree));
         itemRenderer.renderStatic(slime, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }

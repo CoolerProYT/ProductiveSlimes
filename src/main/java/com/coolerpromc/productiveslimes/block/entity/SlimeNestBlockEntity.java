@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
 import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -35,6 +38,29 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
     private ItemStack dropItem = ItemStack.EMPTY;
     private final ContainerData data;
     private int hasSlot = 1;
+    private int tick = 0;
+    private float multiplier = 1;
+
+    private final ItemStackHandler upgradeHandler = new ItemStackHandler(4){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.getItem() instanceof NestUpgradeItem;
+        }
+    };
 
     private final ItemStackHandler slimeHandler = new ItemStackHandler(1){
         @Override
@@ -66,7 +92,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
         public boolean isItemValid(int slot, ItemStack stack) {
             counter = 0;
             dropItem = ItemStack.EMPTY;
-            return stack.getItem() == ModItems.SLIME_ITEM.get();
+            return stack.getItem() == ModItems.SLIME_ITEM.get() && stack.has(ModDataComponents.SLIME_DATA.get());
         }
     };
 
@@ -86,6 +112,10 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
         }
     };
 
+    public ItemStackHandler getUpgradeHandler() {
+        return upgradeHandler;
+    }
+
     public ItemStackHandler getSlimeHandler() {
         return slimeHandler;
     }
@@ -102,13 +132,17 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
             public int get(int index) {
                 switch (index) {
                     case 0:
-                        return counter;
+                        return SlimeNestBlockEntity.this.counter;
                     case 1:
-                        return cooldown;
+                        return SlimeNestBlockEntity.this.cooldown;
                     case 2:
-                        return hasSlot;
+                        return SlimeNestBlockEntity.this.hasSlot;
                     case 3:
-                        return slimeData != null ? slimeData.size() : 0;
+                        return SlimeNestBlockEntity.this.slimeData != null ? SlimeNestBlockEntity.this.slimeData.size() : 0;
+                    case 4:
+                        return SlimeNestBlockEntity.this.tick;
+                    case 5:
+                        return (int) (SlimeNestBlockEntity.this.multiplier * 10000);
                     default:
                         return 0;
                 }
@@ -118,20 +152,20 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
             public void set(int index, int value) {
                 switch (index) {
                     case 0:
-                        counter = value;
+                        SlimeNestBlockEntity.this.counter = value;
                         break;
                     case 1:
-                        cooldown = value;
+                        SlimeNestBlockEntity.this.cooldown = value;
                         break;
                     case 2:
-                        hasSlot = value;
+                        SlimeNestBlockEntity.this.hasSlot = value;
                         break;
                 }
             }
 
             @Override
             public int getCount() {
-                return 4;
+                return 6;
             }
         };
     }
@@ -149,14 +183,17 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.put("upgradeHandler", upgradeHandler.serializeNBT(registries));
         tag.put("slimeHandler", slimeHandler.serializeNBT(registries));
         tag.put("outputHandler", outputHandler.serializeNBT(registries));
         tag.putInt("counter", counter);
         tag.putInt("cooldown", cooldown);
-        if (slimeData != null){
+        if (slimeData != null && !dropItem.isEmpty()){
             tag.put("dropItem", dropItem.save(registries));
             tag.put("slimeData", slimeData.toTag(new CompoundTag(), registries));
         }
+        tag.putInt("tick", tick);
+        tag.putFloat("multiplier", multiplier);
 
         super.saveAdditional(tag, registries);
     }
@@ -165,12 +202,15 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
+        upgradeHandler.deserializeNBT(registries, tag.getCompound("upgradeHandler"));
         slimeHandler.deserializeNBT(registries, tag.getCompound("slimeHandler"));
         outputHandler.deserializeNBT(registries, tag.getCompound("outputHandler"));
         counter = tag.getInt("counter");
         cooldown = tag.getInt("cooldown");
         dropItem = ItemStack.parseOptional(registries, tag.getCompound("dropItem"));
         slimeData = SlimeData.fromTag(tag.getCompound("slimeData"), registries);
+        tick = tag.getInt("tick");
+        multiplier = tag.getInt("multiplier");
     }
 
     public void tick(Level level, BlockPos pos, BlockState state){
@@ -181,6 +221,23 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
             cooldown = 0;
             dropItem = ItemStack.EMPTY;
             return;
+        }
+
+        float speed = 1;
+        cooldown = slimeData.cooldown();
+
+        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
+            if (upgradeHandler.getStackInSlot(i).getItem() instanceof NestUpgradeItem nestUpgradeItem) {
+                speed *= nestUpgradeItem.getMultiplier();
+            }
+        }
+
+        multiplier = speed;
+        tick+=3;
+        cooldown = (int) Math.ceil(cooldown / speed);
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
 
         if (!hasAvailableSlot(dropItem)) {
@@ -203,6 +260,10 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
                     outputHandler.setStackInSlot(outputSlot, new ItemStack(dropItem.copy().getItem(), stackSize));
                 }
             }
+        }
+
+        if (tick % 20 == 0){
+            level.playSound(null, pos, SoundEvents.SLIME_SQUISH, SoundSource.BLOCKS, 0.5F, 1.0F);
         }
     }
 
@@ -227,12 +288,11 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
     public void drops(){
         SimpleContainer container = new SimpleContainer(10);
 
-        container.addItem(new ItemStack(slimeHandler.getStackInSlot(0).getItem()));
+        container.addItem(slimeHandler.getStackInSlot(0));
 
         for (int i = 0; i < outputHandler.getSlots(); i++) {
             if (!outputHandler.getStackInSlot(i).isEmpty()) {
-                container.addItem(outputHandler.getStackInSlot(i + 1));
-                outputHandler.setStackInSlot(i, ItemStack.EMPTY);
+                container.addItem(outputHandler.getStackInSlot(i));
             }
         }
 
@@ -262,5 +322,9 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider{
         }
 
         return output;
+    }
+
+    public ContainerData getData() {
+        return data;
     }
 }

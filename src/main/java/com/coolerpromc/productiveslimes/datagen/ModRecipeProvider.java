@@ -186,6 +186,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
                 .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_1, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.REDSTONE_BLOCK)
+                .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(recipeOutput);
+
         planksFromLogs(recipeOutput, ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
 
         woodFromLogs(recipeOutput, ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
