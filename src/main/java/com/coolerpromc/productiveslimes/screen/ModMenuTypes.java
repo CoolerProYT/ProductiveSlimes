@@ -38,6 +38,9 @@ public class ModMenuTypes {
     public static final Supplier<MenuType<SlimeNestMenu>> SLIME_NEST_MENU =
             registerMenuType("slime_nest_menu", SlimeNestMenu::new);
 
+    public static final Supplier<MenuType<SlimeballCollectorMenu>> SLIMEBALL_COLLECTOR_MENU =
+            registerMenuType("slimeball_collector_menu", SlimeballCollectorMenu::new);
+
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));
     }

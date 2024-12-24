@@ -111,5 +111,9 @@ public class ModCapabilities {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.SLIME_NEST_BE.get(),
                 (be, side) -> be.getOutputHandler());
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.SLIMEBALL_COLLECTOR_BE.get(),
+                (be, side) -> be.getInventory());
     }
 }
