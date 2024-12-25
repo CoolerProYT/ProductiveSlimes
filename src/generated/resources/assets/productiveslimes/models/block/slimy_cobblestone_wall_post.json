@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_wall_post",
   "textures": {
-    "wall": "productiveslimes:block/slimy_cobblestone"
+    "wall": "productiveslimes:block/block.productiveslimes.slimy_cobblestone"
   }
 }

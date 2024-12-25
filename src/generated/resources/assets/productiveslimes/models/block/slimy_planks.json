@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "productiveslimes:block/slimy_planks"
+    "all": "productiveslimes:block/block.productiveslimes.slimy_planks"
   }
 }

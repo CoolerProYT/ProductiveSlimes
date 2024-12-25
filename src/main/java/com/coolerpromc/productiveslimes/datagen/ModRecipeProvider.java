@@ -2,10 +2,7 @@ package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-//import com.coolerpromc.productiveslimes.datagen.builder.DnaExtractingRecipeBuilder;
 import com.coolerpromc.productiveslimes.datagen.builder.*;
-//import com.coolerpromc.productiveslimes.datagen.builder.MeltingRecipeBuilder;
-//import com.coolerpromc.productiveslimes.datagen.builder.SolidingRecipeBuilder;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
@@ -23,11 +20,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
+public class ModRecipeProvider extends RecipeProvider {
     private final HolderGetter<Item> items;
 
     public ModRecipeProvider(HolderLookup.Provider lookupProvider, RecipeOutput output) {

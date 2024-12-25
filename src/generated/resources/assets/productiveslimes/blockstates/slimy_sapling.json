@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "productiveslimes:block/slimy_sapling"
+      "model": "productiveslimes:block/block.productiveslimes.slimy_sapling"
     }
   }
 }
