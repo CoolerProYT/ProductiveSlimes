@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "productiveslimes:item/item.productiveslimes.energy_multiplier_upgrade"
+    "model": "productiveslimes:item/energy_multiplier_upgrade"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "productiveslimes:block/block.productiveslimes.slimy_dirt"
+    "all": "productiveslimes:block/slimy_dirt"
   }
 }

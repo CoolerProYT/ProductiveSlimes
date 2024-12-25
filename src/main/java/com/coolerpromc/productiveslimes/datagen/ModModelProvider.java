@@ -12,27 +12,19 @@ import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.block.model.MultiVariant;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
-import net.minecraft.client.renderer.item.EmptyModel;
-import net.minecraft.client.renderer.item.ItemModels;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Collections;
@@ -50,7 +42,7 @@ public class ModModelProvider extends ModelProvider {
         simpleBlockWithVariants(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
         simpleBlockWithVariants(blockModels, ModBlocks.DNA_EXTRACTOR.get(), "dna_extractor");
         simpleBlockWithVariants(blockModels, ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
-        simpleBlockWithVariants(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
+        customItemBlockWithVariants(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
         simpleBlockWithVariants(blockModels, ModBlocks.FLUID_TANK.get(), "fluid_tank");
         cableBlock(blockModels, ModBlocks.CABLE.get());
 
@@ -104,14 +96,6 @@ public class ModModelProvider extends ModelProvider {
         simpleItem(itemModels, ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
         simpleItem(itemModels, ModItems.SLIMEBALL_FRAGMENT.get());
 
-        /*saplingItem(ModBlocks.SLIMY_SAPLING);
-        buttonItem(ModBlocks.SLIMY_BUTTON, ModBlocks.SLIMY_PLANKS);
-        fenceItem(ModBlocks.SLIMY_FENCE, ModBlocks.SLIMY_PLANKS);
-        basicItem(ModBlocks.SLIMY_DOOR.asItem());
-        buttonItem(ModBlocks.SLIMY_STONE_BUTTON, ModBlocks.SLIMY_STONE);
-        wallItem(ModBlocks.SLIMY_COBBLESTONE_WALL, ModBlocks.SLIMY_COBBLESTONE);
-        wallItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL, ModBlocks.SLIMY_COBBLED_DEEPSLATE);*/
-
         slimeballItem(itemModels, ModItems.ENERGY_SLIME_BALL);
         dnaItem(itemModels, ModItems.SLIME_DNA);
         spawnEggItem(itemModels, ModItems.ENERGY_SLIME_SPAWN_EGG);
@@ -135,6 +119,18 @@ public class ModModelProvider extends ModelProvider {
                 .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
     }
 
+    private void customItemBlockWithVariants(BlockModelGenerators blockModels, Block block, String modelName) {
+        ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
+                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
+
+        ResourceLocation itemModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
+        blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemModelLoc, Collections.emptyList()));
+    }
+
     private void simpleBlock(BlockModelGenerators blockModels, Block block){
         ResourceLocation model = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId());
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, model)));
@@ -150,7 +146,7 @@ public class ModModelProvider extends ModelProvider {
                 .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
                 .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
                 .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId()))
+                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(block)))
         );
 
         provider.fullBlock(block, ModelTemplates.CUBE_ALL);
@@ -159,7 +155,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void block(BlockModelGenerators blockModels, Block block){
         BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId()))
-                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId())));
+                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(block))));
 
         provider.fullBlock(block, ModelTemplates.CUBE_ALL);
     }
@@ -169,59 +165,41 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void leavesBlock(BlockModelGenerators blockModels, Block block){
-        blockModels.createTintedLeaves(block, TexturedModel.LEAVES, ARGB.opaque(0X00FF00));
+        blockModels.createTintedLeaves(block, TexturedModel.LEAVES, -1);
     }
 
     private void saplingBlock(BlockModelGenerators blockModels, Block block){
         blockModels.registerSimpleItemModel(block.asItem(), BlockModelGenerators.PlantType.NOT_TINTED.createItemModel(blockModels, block));
 
-        ResourceLocation resourcelocation = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId());
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, resourcelocation));
-    }
-
-    private void slabBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-        );
+        blockModels.createCrossBlock(block, BlockModelGenerators.PlantType.NOT_TINTED);
     }
 
     private void cableBlock(BlockModelGenerators blockModels, Block block){
-        // Define the core model
         ResourceLocation coreModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/cable_core");
-
-        // Define the part model
         ResourceLocation partModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/cable_part");
 
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
-                .with(PropertyDispatch.property(CableBlock.UP)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-                        .select(false, Variant.variant())
+        blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
+                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
+                .with(Condition.condition().term(CableBlock.UP, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
                 )
-                .with(PropertyDispatch.property(CableBlock.DOWN)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-                        .select(false, Variant.variant())
+                .with(Condition.condition().term(CableBlock.DOWN, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
                 )
-                .with(PropertyDispatch.property(CableBlock.NORTH)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false))
-                        .select(false, Variant.variant())
+                .with(Condition.condition().term(CableBlock.NORTH, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false)
                 )
-                .with(PropertyDispatch.property(CableBlock.SOUTH)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                        .select(false, Variant.variant())
+                .with(Condition.condition().term(CableBlock.SOUTH, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
                 )
-                .with(PropertyDispatch.property(CableBlock.EAST)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                        .select(false, Variant.variant())
+                .with(Condition.condition().term(CableBlock.EAST, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
                 )
-                .with(PropertyDispatch.property(CableBlock.WEST)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-                        .select(false, Variant.variant())
+                .with(Condition.condition().term(CableBlock.WEST, true),
+                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
                 )
         );
 
-        // Define the item model
         blockModels.registerSimpleItemModel(block, coreModelLoc);
     }
 
@@ -276,19 +254,21 @@ public class ModModelProvider extends ModelProvider {
 
     private void wallBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
         BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock).put(
-                TextureSlot.WALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + materialBlock.getDescriptionId())
+                TextureSlot.WALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(materialBlock))
         ));
 
         provider.wall(block);
     }
 
     private void simpleItem(ItemModelGenerators itemModels, Item item){
-        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + item.getDescriptionId()), Collections.emptyList()));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + getItemName(item)));
+        ResourceLocation model = ModelTemplates.FLAT_ITEM.create(item, textureMapping, itemModels.modelOutput);
+
+        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, Collections.emptyList()));
     }
 
     private void slimeballItem(ItemModelGenerators itemModels, DeferredItem<Item> item){
-        TextureMapping textureMapping = new TextureMapping()
-                .put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"));
 
         ResourceLocation model = ModelTemplates.FLAT_ITEM.create(item.get(), textureMapping, itemModels.modelOutput);
 
@@ -317,5 +297,15 @@ public class ModModelProvider extends ModelProvider {
     private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
         SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
         itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
+    }
+
+    private String getBlockName(Block block){
+        ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+        return location.getPath();
+    }
+
+    private String getItemName(Item item){
+        ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
+        return location.getPath();
     }
 }
