@@ -2,10 +2,7 @@ package com.coolerpromc.productiveslimes.item;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.EnergyMultiplierUpgrade;
-import com.coolerpromc.productiveslimes.item.custom.GuidebookItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.item.custom.*;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
@@ -21,6 +18,8 @@ public class ModItems {
     public static final DeferredItem<Item> GUIDEBOOK = ITEMS.registerItem("guidebook", GuidebookItem::new, new Item.Properties());
 
     public static final DeferredItem<Item> SLIMEBALL_FRAGMENT = ITEMS.registerItem("slimeball_fragment", Item::new, new Item.Properties());
+
+    public static final DeferredItem<Item> SLIME_ITEM = ITEMS.register("slime_item", () -> new SlimeItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.registerItem("energy_multiplier_upgrade", EnergyMultiplierUpgrade::new, new Item.Properties());
 
