@@ -4,7 +4,10 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import java.util.Objects;
@@ -29,6 +32,38 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
                 slime.getEntityType()
         );
     }
+
+    public CompoundTag toTag(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.putInt("size", size);
+        tag.putInt("color", color);
+        tag.putInt("cooldown", cooldown);
+        tag.put("drop", dropItem.save(provider));
+        tag.put("growth_item", growthItem.save(provider));
+        tag.putString("slime", Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(slime).toString()));
+        return tag;
+    }
+
+    public static SlimeData fromTag(CompoundTag tag, HolderLookup.Provider provider) {
+        boolean slime = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getString("slime"))).isPresent();
+        EntityType<BaseSlime> entityType;
+
+        if (!slime){
+            entityType = null;
+        }
+        else{
+            entityType = (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getString("slime"))).get().getDelegate().value();
+        }
+
+        return new SlimeData(
+                tag.getInt("size"),
+                tag.getInt("color"),
+                tag.getInt("cooldown"),
+                ItemStack.parseOptional(provider, tag.getCompound("drop")),
+                ItemStack.parseOptional(provider, tag.getCompound("growth_item")),
+                entityType
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,6 +71,7 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         SlimeData slimeData = (SlimeData) o;
         return size == slimeData.size && color == slimeData.color && cooldown == slimeData.cooldown && Objects.equals(dropItem, slimeData.dropItem) && Objects.equals(growthItem, slimeData.growthItem) && Objects.equals(slime, slimeData.slime);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(size, color, cooldown, dropItem, growthItem, slime);

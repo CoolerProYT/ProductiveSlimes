@@ -180,7 +180,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
                 .save(output);
 
-        /*ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_NEST, 1)
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_NEST, 1)
                 .pattern("BBB")
                 .pattern("BCB")
                 .pattern("AAA")
@@ -188,7 +188,27 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('B', Items.GLASS_PANE)
                 .define('C', Tags.Items.SLIME_BALLS)
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
-                .save(recipeOutput);*/
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.SLIME_NEST_SPEED_UPGRADE_1, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.REDSTONE_BLOCK)
+                .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', ModItems.SLIME_NEST_SPEED_UPGRADE_1)
+                .define('B', ModTierLists.getBlockByName(Tier.GOLD.getTierName()))
+                .define('C', Tags.Items.INGOTS_GOLD)
+                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(output);
 
         planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
         woodFromLogs(ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
