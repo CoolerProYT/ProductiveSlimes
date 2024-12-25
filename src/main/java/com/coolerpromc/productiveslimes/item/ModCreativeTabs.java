@@ -59,6 +59,7 @@ public class ModCreativeTabs {
                             pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()));
                         }
 
+                        pOutput.accept(ModItems.ENERGY_SLIME_BALL);
                         for (Tier tier : Tier.values()){
                             ModTiers modTiers = ModTierLists.getTierByName(tier);
                             pOutput.accept(ModTierLists.getSlimeballItemByName(modTiers.name()).get());
@@ -79,6 +80,7 @@ public class ModCreativeTabs {
                             pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()));
                         }
 
+                        pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG);
                         for (Tier tier : Tier.values()){
                             ModTiers modTiers = ModTierLists.getTierByName(tier);
                             pOutput.accept(ModTierLists.getSpawnEggItemByName(modTiers.name()).get());

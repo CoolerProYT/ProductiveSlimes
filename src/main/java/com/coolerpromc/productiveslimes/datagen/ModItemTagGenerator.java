@@ -29,7 +29,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         var dnaTag = tag(ModTags.Items.DNA_ITEM);
 
         slimeballTag.add(ModItems.ENERGY_SLIME_BALL.get());
-
+        dnaTag.add(ModItems.SLIME_DNA.get());
         for(Tier tier : Tier.values()){
             ModTiers modTiers = ModTierLists.getTierByName(tier);
 
