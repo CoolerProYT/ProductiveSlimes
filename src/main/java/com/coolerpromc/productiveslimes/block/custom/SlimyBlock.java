@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
+import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 import java.util.Optional;
 
-public class SlimyBlock extends Block implements BonemealableBlock {
+public class SlimyBlock extends Block implements BonemealableBlock, TranslucentHighlightFix {
     public SlimyBlock(Properties properties) {
         super(properties);
     }

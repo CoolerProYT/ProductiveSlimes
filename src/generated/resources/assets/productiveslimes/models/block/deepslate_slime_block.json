@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "productiveslimes:block/deepslate_slime_block"
-  }
-}

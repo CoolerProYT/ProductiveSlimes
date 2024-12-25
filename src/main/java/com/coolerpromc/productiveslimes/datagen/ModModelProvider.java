@@ -37,6 +37,11 @@ public class ModModelProvider extends ModelProvider {
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        registerBlockModels(blockModels);
+        registerItemModels(itemModels);
+    }
+
+    private void registerBlockModels(BlockModelGenerators blockModels){
         simpleBlockWithVariants(blockModels, ModBlocks.MELTING_STATION.get(), "melting_station");
         simpleBlockWithVariants(blockModels, ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
         simpleBlockWithVariants(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
@@ -90,8 +95,9 @@ public class ModModelProvider extends ModelProvider {
             registerSlimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get(), textureName);
             fluidBlock(blockModels, ModTierLists.getLiquidBlockByName(tiers.name()).get());
         }
+    }
 
-        // Item
+    private void registerItemModels(ItemModelGenerators itemModels){
         simpleItem(itemModels, ModItems.GUIDEBOOK.get());
         simpleItem(itemModels, ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
         simpleItem(itemModels, ModItems.SLIMEBALL_FRAGMENT.get());
@@ -206,7 +212,7 @@ public class ModModelProvider extends ModelProvider {
     private void registerSlimeBlock(BlockModelGenerators blockModels, SlimeBlock block, String textureName){
         ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block");
 
-        blockModels.createTrivialCube(block);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, modelLoc)));
         blockModels.registerSimpleTintedItemModel(block, modelLoc, ItemModelUtils.constantTint(block.getColor()));
     }
 
@@ -307,5 +313,13 @@ public class ModModelProvider extends ModelProvider {
     private String getItemName(Item item){
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
         return location.getPath();
+    }
+
+    private ResourceLocation blockModelLocation(String modelName){
+        return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
+    }
+
+    private ResourceLocation itemModelLocation(String modelName){
+        return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
     }
 }
