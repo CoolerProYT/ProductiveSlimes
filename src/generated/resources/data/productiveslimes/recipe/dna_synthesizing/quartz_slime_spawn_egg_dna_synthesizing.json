@@ -4,7 +4,7 @@
   "ingredients": [
     "productiveslimes:iron_slime_dna",
     "productiveslimes:netherrack_slime_dna",
-    "minecraft:quartz_block"
+    "minecraft:quartz"
   ],
   "inputCount": 4,
   "output": [

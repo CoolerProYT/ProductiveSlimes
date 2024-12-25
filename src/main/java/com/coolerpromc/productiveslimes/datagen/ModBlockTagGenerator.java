@@ -73,7 +73,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.FLUID_TANK.get())
                 .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get())
-                .add(ModBlocks.CABLE.get())
+//                .add(ModBlocks.SLIME_NEST.get())
                 .add(ModBlocks.SLIMY_STONE.get())
                 .add(ModBlocks.SLIMY_DEEPSLATE.get())
                 .add(ModBlocks.SLIMY_COBBLESTONE.get())
@@ -98,8 +98,8 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.FLUID_TANK.get())
                 .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get());
+//                .add(ModBlocks.SLIME_NEST.get());
 
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL);
-//                .add(ModBlocks.ALUMINUM_BLOCK.get());
     }
 }

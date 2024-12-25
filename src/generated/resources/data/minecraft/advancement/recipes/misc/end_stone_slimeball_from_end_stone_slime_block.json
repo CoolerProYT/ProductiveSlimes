@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_endstone_slimeball": {
+    "has_end_stone_slime_block": {
       "conditions": {
         "items": [
           {
-            "items": "productiveslimes:endstone_slimeball"
+            "items": "productiveslimes:end_stone_slime_block"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:melting/endstone_slimeball_melting"
+        "recipe": "minecraft:end_stone_slimeball_from_end_stone_slime_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_endstone_slimeball"
+      "has_end_stone_slime_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:melting/endstone_slimeball_melting"
+      "minecraft:end_stone_slimeball_from_end_stone_slime_block"
     ]
   }
 }
