@@ -87,11 +87,11 @@ public class ModModelProvider extends ModelProvider {
         stairsBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         wallBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
-        registerSlimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
+        slimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            registerSlimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get());
+            slimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get());
             fluidBlock(blockModels, ModTierLists.getLiquidBlockByName(tiers.name()).get());
         }
     }
@@ -173,7 +173,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.registerSimpleItemModel(block, blockLocation(core));
     }
 
-    private void registerSlimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
+    private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
