@@ -165,8 +165,7 @@ public class ProductiveSlimes
 
                 registerBlockRenderLayer(
                         ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.FLUID_TANK.get(),
-                        ModBlocks.SLIMY_SAPLING.get()
+                        ModBlocks.FLUID_TANK.get()
                 );
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
