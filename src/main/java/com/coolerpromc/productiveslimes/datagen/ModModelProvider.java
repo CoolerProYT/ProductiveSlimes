@@ -56,15 +56,15 @@ public class ModModelProvider extends ModelProvider {
         simpleBlockWithExistingModel(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
 
         block(blockModels, ModBlocks.SLIMY_DIRT.get());
-        blockAndSlab(blockModels, ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_STONE_SLAB.get());
+        blockWithSlab(blockModels, ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_STONE_SLAB.get());
         block(blockModels, ModBlocks.SLIMY_DEEPSLATE.get());
-        blockAndSlab(blockModels, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_COBBLESTONE_SLAB.get());
-        blockAndSlab(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get());
+        blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_COBBLESTONE_SLAB.get());
+        blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get());
 
         logBlock(blockModels, ModBlocks.SLIMY_LOG.get(), ModBlocks.SLIMY_WOOD.get());
         logBlock(blockModels, ModBlocks.STRIPPED_SLIMY_LOG.get(), ModBlocks.STRIPPED_SLIMY_WOOD.get());
 
-        blockAndSlab(blockModels, ModBlocks.SLIMY_PLANKS.get(), ModBlocks.SLIMY_SLAB.get());
+        blockWithSlab(blockModels, ModBlocks.SLIMY_PLANKS.get(), ModBlocks.SLIMY_SLAB.get());
 
         leavesBlock(blockModels, ModBlocks.SLIMY_LEAVES.get());
         saplingBlock(blockModels, ModBlocks.SLIMY_SAPLING.get());
@@ -141,7 +141,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
     }
 
-    private void blockAndSlab(BlockModelGenerators blockModels, Block block, Block slab){
+    private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
         ResourceLocation texture = blockLocation(getBlockName(block));
         blockModels.new BlockFamilyProvider(TextureMapping.cube(texture)
                 .put(TextureSlot.BOTTOM, texture)
