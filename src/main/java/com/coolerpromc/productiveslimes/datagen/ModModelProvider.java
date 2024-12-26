@@ -115,6 +115,15 @@ public class ModModelProvider extends ModelProvider {
         }
     }
 
+    // Block models
+    private void simpleBlock(BlockModelGenerators blockModels, Block block){
+        blockModels.new BlockFamilyProvider(TextureMapping.cube(blockLocation(getBlockName(block)))).fullBlock(block, ModelTemplates.CUBE_ALL);
+    }
+
+    private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation(getBlockName(block)))));
+    }
+
     private void oppositeHorizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
         blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
     }
@@ -133,10 +142,6 @@ public class ModModelProvider extends ModelProvider {
         blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
-    private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation(getBlockName(block)))));
-    }
-
     private void fluidBlock(BlockModelGenerators blockModels, Block block){
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
     }
@@ -148,10 +153,6 @@ public class ModModelProvider extends ModelProvider {
                 .put(TextureSlot.TOP, texture)
                 .put(TextureSlot.SIDE, texture)
         ).fullBlock(block, ModelTemplates.CUBE_ALL).slab(slab);
-    }
-
-    private void simpleBlock(BlockModelGenerators blockModels, Block block){
-        blockModels.new BlockFamilyProvider(TextureMapping.cube(blockLocation(getBlockName(block)))).fullBlock(block, ModelTemplates.CUBE_ALL);
     }
 
     private void logBlock(BlockModelGenerators blockModels, Block block, Block wood){
@@ -244,6 +245,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock).put(TextureSlot.WALL, blockLocation(getBlockName(materialBlock)))).wall(block);
     }
 
+    // Item models
     private void simpleItem(ItemModelGenerators itemModels, Item item){
         TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation(getItemName(item)));
         itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(ModelTemplates.FLAT_ITEM.create(item, textureMapping, itemModels.modelOutput), Collections.emptyList()));
