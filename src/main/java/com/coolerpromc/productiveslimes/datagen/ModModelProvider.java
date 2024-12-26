@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.CableBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.datagen.template.ModModelTemplates;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
@@ -42,18 +43,17 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void registerBlockModels(BlockModelGenerators blockModels){
-        simpleBlockWithVariants(blockModels, ModBlocks.MELTING_STATION.get(), "melting_station");
-        simpleBlockWithVariants(blockModels, ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
-        simpleBlockWithVariants(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
-        simpleBlockWithVariants(blockModels, ModBlocks.DNA_EXTRACTOR.get(), "dna_extractor");
-        simpleBlockWithVariants(blockModels, ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
-        customItemBlockWithVariants(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
-        simpleBlockWithVariants(blockModels, ModBlocks.FLUID_TANK.get(), "fluid_tank");
-        cableBlock(blockModels, ModBlocks.CABLE.get());
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.MELTING_STATION.get(), "melting_station");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.DNA_EXTRACTOR.get(), "dna_extractor");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
+        horizontalBlockWithExistingBlockAndItemModel(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.FLUID_TANK.get(), "fluid_tank");
+        cableBlock(blockModels, ModBlocks.CABLE.get(), "cable_core", "cable_part");
 
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(ModBlocks.SQUEEZER.get(), Variant.variant().with(VariantProperties.MODEL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/squeezer"))));
-
-        simpleBlock(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
+        simpleBlockWithExistingModel(blockModels, ModBlocks.SQUEEZER.get());
+        simpleBlockWithExistingModel(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
 
         block(blockModels, ModBlocks.SLIMY_DIRT.get());
         blockAndSlab(blockModels, ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_STONE_SLAB.get());
@@ -74,8 +74,8 @@ public class ModModelProvider extends ModelProvider {
         buttonBlock(blockModels, ModBlocks.SLIMY_BUTTON.get(), ModBlocks.SLIMY_PLANKS.get());
         fenceBlock(blockModels, ModBlocks.SLIMY_FENCE.get(), ModBlocks.SLIMY_PLANKS.get());
         fenceGateBlock(blockModels, ModBlocks.SLIMY_FENCE_GATE.get(), ModBlocks.SLIMY_PLANKS.get());
-        trapdoorBlockWithRenderType(blockModels, ModBlocks.SLIMY_TRAPDOOR.get(), ModBlocks.SLIMY_PLANKS.get());
-        doorBlockWithRenderType(blockModels, ModBlocks.SLIMY_DOOR.get(), ModBlocks.SLIMY_PLANKS.get());
+        trapdoorBlockWithRenderType(blockModels, ModBlocks.SLIMY_TRAPDOOR.get());
+        doorBlockWithRenderType(blockModels, ModBlocks.SLIMY_DOOR.get());
 
         stairsBlock(blockModels, ModBlocks.SLIMY_STONE_STAIRS.get(), ModBlocks.SLIMY_STONE.get());
         pressurePlateBlock(blockModels, ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), ModBlocks.SLIMY_STONE.get());
@@ -87,12 +87,11 @@ public class ModModelProvider extends ModelProvider {
         stairsBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         wallBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
-        registerSlimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get(), "energy_slime_block");
+        registerSlimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
-            String textureName = tiers.name() + "_slime_block";
-            registerSlimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get(), textureName);
+            registerSlimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get());
             fluidBlock(blockModels, ModTierLists.getLiquidBlockByName(tiers.name()).get());
         }
     }
@@ -116,54 +115,43 @@ public class ModModelProvider extends ModelProvider {
         }
     }
 
-    private void simpleBlockWithVariants(BlockModelGenerators blockModels, Block block, String modelName) {
-        ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
-                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
+    private void oppositeHorizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
+        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
     }
 
-    private void customItemBlockWithVariants(BlockModelGenerators blockModels, Block block, String modelName) {
-        ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
-                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))));
-
-        ResourceLocation itemModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
-        blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemModelLoc, Collections.emptyList()));
+    private void oppositeHorizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
+        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
+        blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
-    private void simpleBlock(BlockModelGenerators blockModels, Block block){
-        ResourceLocation model = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId());
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, model)));
+    private void horizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
+        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
+    }
+
+    private void horizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
+        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
+        blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
+    }
+
+    private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation(getBlockName(block)))));
     }
 
     private void fluidBlock(BlockModelGenerators blockModels, Block block){
-        ResourceLocation model = ResourceLocation.fromNamespaceAndPath("minecraft", "block/water");
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, model)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
     }
 
     private void blockAndSlab(BlockModelGenerators blockModels, Block block, Block slab){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(block)))
-        );
-
-        provider.fullBlock(block, ModelTemplates.CUBE_ALL);
-        provider.slab(slab);
+        ResourceLocation texture = blockLocation(getBlockName(block));
+        blockModels.new BlockFamilyProvider(TextureMapping.cube(texture)
+                .put(TextureSlot.BOTTOM, texture)
+                .put(TextureSlot.TOP, texture)
+                .put(TextureSlot.SIDE, texture)
+        ).fullBlock(block, ModelTemplates.CUBE_ALL).slab(slab);
     }
 
     private void block(BlockModelGenerators blockModels, Block block){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + block.getDescriptionId()))
-                .put(TextureSlot.ALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(block))));
-
-        provider.fullBlock(block, ModelTemplates.CUBE_ALL);
+        blockModels.new BlockFamilyProvider(TextureMapping.cube(blockLocation(getBlockName(block)))).fullBlock(block, ModelTemplates.CUBE_ALL);
     }
 
     private void logBlock(BlockModelGenerators blockModels, Block block, Block wood){
@@ -176,133 +164,141 @@ public class ModModelProvider extends ModelProvider {
 
     private void saplingBlock(BlockModelGenerators blockModels, Block block){
         blockModels.registerSimpleItemModel(block.asItem(), BlockModelGenerators.PlantType.NOT_TINTED.createItemModel(blockModels, block));
-
-        blockModels.createCrossBlock(block, BlockModelGenerators.PlantType.NOT_TINTED);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput)));
     }
 
-    private void cableBlock(BlockModelGenerators blockModels, Block block){
-        ResourceLocation coreModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/cable_core");
-        ResourceLocation partModelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/cable_part");
-
-        blockModels.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
-                .with(Condition.condition().term(CableBlock.UP, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
-                )
-                .with(Condition.condition().term(CableBlock.DOWN, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
-                )
-                .with(Condition.condition().term(CableBlock.NORTH, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false)
-                )
-                .with(Condition.condition().term(CableBlock.SOUTH, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-                )
-                .with(Condition.condition().term(CableBlock.EAST, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                )
-                .with(Condition.condition().term(CableBlock.WEST, true),
-                        Variant.variant().with(VariantProperties.MODEL, partModelLoc).with(VariantProperties.UV_LOCK, false).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-                )
-        );
-
-        blockModels.registerSimpleItemModel(block, coreModelLoc);
+    private void cableBlock(BlockModelGenerators blockModels, Block block, String core, String part){
+        blockModels.blockStateOutput.accept(cablePart(block, blockLocation(core), blockLocation(part)));
+        blockModels.registerSimpleItemModel(block, blockLocation(core));
     }
 
-    private void registerSlimeBlock(BlockModelGenerators blockModels, SlimeBlock block, String textureName){
-        ResourceLocation modelLoc = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/template_slime_block");
-
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, modelLoc)));
-        blockModels.registerSimpleTintedItemModel(block, modelLoc, ItemModelUtils.constantTint(block.getColor()));
+    private void registerSlimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
+        blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
 
     private void pressurePlateBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock));
-
-        provider.pressurePlate(block);
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).pressurePlate(block);
     }
 
     private void stairsBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                        .put(TextureSlot.BOTTOM, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                        .put(TextureSlot.TOP, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-                        .put(TextureSlot.SIDE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/slimy_planks"))
-        );
-
-        provider.stairs(block);
+        ResourceLocation texture = blockLocation(getBlockName(materialBlock));
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(texture)
+                .put(TextureSlot.BOTTOM, texture)
+                .put(TextureSlot.TOP, texture)
+                .put(TextureSlot.SIDE, texture)
+        ).stairs(block);
     }
 
     private void buttonBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock));
-
-        provider.button(block);
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).button(block);
     }
 
     private void fenceBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock));
-
-        provider.fence(block);
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).fence(block);
     }
 
     private void fenceGateBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock));
-
-        provider.fenceGate(block);
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).fenceGate(block);
     }
 
-    private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.createTrapdoor(block);
+    private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
+        TextureMapping texturemapping = TextureMapping.defaultTexture(block);
+        ResourceLocation resourcelocation = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation1 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation2 = ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput);
+
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, resourcelocation, resourcelocation1, resourcelocation2));
+        blockModels.registerSimpleItemModel(block, resourcelocation1);
     }
 
-    private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.createDoor(block);
+    private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
+        TextureMapping texturemapping = TextureMapping.door(block);
+        ResourceLocation resourcelocation = ModelTemplates.DOOR_BOTTOM_LEFT.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation1 = ModelTemplates.DOOR_BOTTOM_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation2 = ModelTemplates.DOOR_BOTTOM_RIGHT.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation3 = ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation4 = ModModelTemplates.DOOR_TOP_LEFT.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation5 = ModModelTemplates.DOOR_TOP_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation6 = ModModelTemplates.DOOR_TOP_RIGHT.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation7 = ModModelTemplates.DOOR_TOP_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+
+        blockModels.registerSimpleFlatItemModel(block.asItem());
+        blockModels.blockStateOutput
+                .accept(
+                        BlockModelGenerators.createDoor(
+                                block,
+                                resourcelocation,
+                                resourcelocation1,
+                                resourcelocation2,
+                                resourcelocation3,
+                                resourcelocation4,
+                                resourcelocation5,
+                                resourcelocation6,
+                                resourcelocation7
+                        )
+                );
     }
 
     private void wallBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        BlockModelGenerators.BlockFamilyProvider provider = blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock).put(
-                TextureSlot.WALL, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + getBlockName(materialBlock))
-        ));
-
-        provider.wall(block);
+        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock).put(TextureSlot.WALL, blockLocation(getBlockName(materialBlock)))).wall(block);
     }
 
     private void simpleItem(ItemModelGenerators itemModels, Item item){
-        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + getItemName(item)));
-        ResourceLocation model = ModelTemplates.FLAT_ITEM.create(item, textureMapping, itemModels.modelOutput);
-
-        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, Collections.emptyList()));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation(getItemName(item)));
+        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(ModelTemplates.FLAT_ITEM.create(item, textureMapping, itemModels.modelOutput), Collections.emptyList()));
     }
 
     private void slimeballItem(ItemModelGenerators itemModels, DeferredItem<Item> item){
-        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_slimeball"));
-
-        ResourceLocation model = ModelTemplates.FLAT_ITEM.create(item.get(), textureMapping, itemModels.modelOutput);
-
-        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(model, List.of(ItemModelUtils.constantTint(((SlimeballItem)item.get()).getColor()))));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation("template_slimeball"));
+        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(ModelTemplates.FLAT_ITEM.create(item.get(), textureMapping, itemModels.modelOutput), List.of(ItemModelUtils.constantTint(((SlimeballItem)item.get()).getColor()))));
     }
 
     private void dnaItem(ItemModelGenerators itemModels, DeferredItem<Item> item){
-        TextureMapping textureMapping = new TextureMapping()
-                .put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/template_dna"));
-
-        ResourceLocation model = ModelTemplates.FLAT_ITEM.create(item.get(), textureMapping, itemModels.modelOutput);
-
-        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(model, List.of(ItemModelUtils.constantTint(((DnaItem)item.get()).getColor()))));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation("template_dna"));
+        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(ModelTemplates.FLAT_ITEM.create(item.get(), textureMapping, itemModels.modelOutput), List.of(ItemModelUtils.constantTint(((DnaItem)item.get()).getColor()))));
     }
 
     private void bucketItem(ItemModelGenerators itemModels, DeferredItem<Item> item){
-        TextureMapping textureMapping = new TextureMapping()
-                .put(TextureSlot.LAYER0, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket"))
-                .put(TextureSlot.LAYER1, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/bucket_fluid"));
-
-        ResourceLocation model = ModelTemplates.TWO_LAYERED_ITEM.create(item.get(), textureMapping, itemModels.modelOutput);
-
-        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(model, List.of(ItemModelUtils.constantTint(-1),ItemModelUtils.constantTint(((BucketItem)item.get()).getColor()))));
+        TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation("bucket")).put(TextureSlot.LAYER1, itemLocation("bucket_fluid"));
+        itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(ModelTemplates.TWO_LAYERED_ITEM.create(item.get(), textureMapping, itemModels.modelOutput), List.of(ItemModelUtils.constantTint(-1), ItemModelUtils.constantTint(((BucketItem)item.get()).getColor()))));
     }
 
     private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
         SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
         itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
+    }
+
+    // Helper methods
+    private MultiVariantGenerator oppositeHorizontalRotation(Block block, ResourceLocation modelLoc){
+        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
+                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
+    }
+
+    private MultiVariantGenerator horizontalRotation(Block block, ResourceLocation modelLoc){
+        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
+                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+    }
+
+    private MultiPartGenerator cablePart(Block block, ResourceLocation coreModelLoc, ResourceLocation partModelLoc){
+        return MultiPartGenerator.multiPart(block)
+                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
+                .with(Condition.condition().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+                .with(Condition.condition().term(CableBlock.DOWN, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(CableBlock.NORTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
+                .with(Condition.condition().term(CableBlock.SOUTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .with(Condition.condition().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+    }
+
+    private Variant variantRotation(ResourceLocation modelLoc, VariantProperty<VariantProperties.Rotation> rot, VariantProperties.Rotation rotation){
+        return Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.UV_LOCK, false).with(rot, rotation);
     }
 
     private String getBlockName(Block block){
@@ -315,11 +311,11 @@ public class ModModelProvider extends ModelProvider {
         return location.getPath();
     }
 
-    private ResourceLocation blockModelLocation(String modelName){
+    private ResourceLocation blockLocation(String modelName){
         return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
     }
 
-    private ResourceLocation itemModelLocation(String modelName){
+    private ResourceLocation itemLocation(String modelName){
         return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
     }
 }

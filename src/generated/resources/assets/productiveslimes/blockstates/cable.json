@@ -28,7 +28,8 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
-        "uvlock": false
+        "uvlock": false,
+        "y": 0
       },
       "when": {
         "north": "true"
