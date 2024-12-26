@@ -55,9 +55,9 @@ public class ModModelProvider extends ModelProvider {
         simpleBlockWithExistingModel(blockModels, ModBlocks.SQUEEZER.get());
         simpleBlockWithExistingModel(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
 
-        block(blockModels, ModBlocks.SLIMY_DIRT.get());
+        simpleBlock(blockModels, ModBlocks.SLIMY_DIRT.get());
         blockWithSlab(blockModels, ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_STONE_SLAB.get());
-        block(blockModels, ModBlocks.SLIMY_DEEPSLATE.get());
+        simpleBlock(blockModels, ModBlocks.SLIMY_DEEPSLATE.get());
         blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_COBBLESTONE_SLAB.get());
         blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get());
 
@@ -150,7 +150,7 @@ public class ModModelProvider extends ModelProvider {
         ).fullBlock(block, ModelTemplates.CUBE_ALL).slab(slab);
     }
 
-    private void block(BlockModelGenerators blockModels, Block block){
+    private void simpleBlock(BlockModelGenerators blockModels, Block block){
         blockModels.new BlockFamilyProvider(TextureMapping.cube(blockLocation(getBlockName(block)))).fullBlock(block, ModelTemplates.CUBE_ALL);
     }
 
