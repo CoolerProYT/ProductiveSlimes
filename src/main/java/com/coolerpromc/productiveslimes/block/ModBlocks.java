@@ -77,13 +77,13 @@ public class ModBlocks {
     public static final DeferredBlock<SlabBlock> SLIMY_COBBLED_DEEPSLATE_SLAB = registerBlock("slimy_cobbled_deepslate_slab", ModSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_SLAB));
     public static final DeferredBlock<WallBlock> SLIMY_COBBLED_DEEPSLATE_WALL = registerBlock("slimy_cobbled_deepslate_wall", ModWallBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_WALL));
 
-    public static final DeferredBlock<Block> ENERGY_SLIME_BLOCK = registerSlimeBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xFFffff70);
+    public static final DeferredBlock<SlimeBlock> ENERGY_SLIME_BLOCK = registerSlimeBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xFFffff70);
 
     public static void registerTierBlocks(){
         for (Tier name : Tier.values()){
             ModTiers tier = ModTierLists.getTierByName(name);
             String blockName = tier.name() + "_slime_block";
-            DeferredBlock<Block> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.mapColorId()), tier.color());
+            DeferredBlock<SlimeBlock> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.mapColorId()), tier.color());
             ModTierLists.addRegisteredBlock(tier.name(), registeredSlimeBlock);
         }
     }
@@ -94,7 +94,7 @@ public class ModBlocks {
         return toReturn;
     }
 
-    private static DeferredBlock<Block> registerSlimeBlock(String name, MapColor mapColor, int color){
+    private static DeferredBlock<SlimeBlock> registerSlimeBlock(String name, MapColor mapColor, int color){
         return registerBlock(name, properties -> new SlimeBlock(properties, mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
     }
 

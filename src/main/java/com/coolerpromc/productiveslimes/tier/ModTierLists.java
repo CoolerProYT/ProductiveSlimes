@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.tier;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,7 @@ import java.util.function.Supplier;
 
 public class ModTierLists {
     private static final Map<Tier , ModTiers> TIERS = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredBlock<Block>> registeredBlock = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredBlock<SlimeBlock>> registeredBlock = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredSlimeballItem = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredDnaItem = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItem = new HashMap<>();
@@ -79,7 +80,7 @@ public class ModTierLists {
         TIERS.put(Tier.OAK_LEAVES, new ModTiers("oak_leaves", 0xFF48b518, 27, 1500, "minecraft:oak_leaves", "minecraft:oak_leaves", 2, "minecraft:oak_leaves", "productiveslimes:dirt_slime_dna", "productiveslimes:slime_dna", 0.7f));
     }
 
-    public static void addRegisteredBlock(String name, DeferredBlock<Block> block){
+    public static void addRegisteredBlock(String name, DeferredBlock<SlimeBlock> block){
         registeredBlock.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"), block);
     }
 
@@ -122,7 +123,7 @@ public class ModTierLists {
         return TIERS.get(tier);
     }
 
-    public static DeferredBlock<Block> getBlockByName(String name){
+    public static DeferredBlock<SlimeBlock> getBlockByName(String name){
         return registeredBlock.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"));
     }
 

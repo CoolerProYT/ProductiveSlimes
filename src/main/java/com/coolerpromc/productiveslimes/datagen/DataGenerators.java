@@ -7,7 +7,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -19,19 +18,17 @@ public class DataGenerators {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
 
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         event.addProvider(new ModRecipeProvider.Runner(packOutput, event.getLookupProvider()));
         event.addProvider(new ModLootTableProvider(packOutput, lookupProvider));
 
-        event.addProvider(new ModBlockStateProvider(packOutput, existingFileHelper));
-        event.addProvider(new ModItemModelProvider(packOutput, existingFileHelper));
+        event.addProvider(new ModModelProvider(packOutput));
 
-        ModBlockTagGenerator blockTagGenerator = event.addProvider(new ModBlockTagGenerator(packOutput, lookupProvider, existingFileHelper));
-        event.addProvider(new ModItemTagGenerator(packOutput, lookupProvider, blockTagGenerator.contentsGetter(), existingFileHelper));
+        ModBlockTagGenerator blockTagGenerator = event.addProvider(new ModBlockTagGenerator(packOutput, lookupProvider));
+        event.addProvider(new ModItemTagGenerator(packOutput, lookupProvider, blockTagGenerator.contentsGetter()));
 
-        event.addProvider(new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        event.addProvider(new ModFluidTagsProvider(packOutput, lookupProvider));
         event.addProvider(new ModWorldGenProvider(packOutput, lookupProvider));
 
         TempItemsGenerator.init();
