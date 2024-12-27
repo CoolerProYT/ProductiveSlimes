@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.datagen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.util.TempItemsGenerator;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -30,7 +29,5 @@ public class DataGenerators {
 
         event.addProvider(new ModFluidTagsProvider(packOutput, lookupProvider));
         event.addProvider(new ModWorldGenProvider(packOutput, lookupProvider));
-
-        TempItemsGenerator.init();
     }
 }
