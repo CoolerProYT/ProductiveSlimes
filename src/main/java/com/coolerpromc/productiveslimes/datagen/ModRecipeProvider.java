@@ -183,7 +183,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', ModBlocks.SLIMY_GRASS_BLOCK)
                 .define('B', Items.GLASS_PANE)
                 .define('C', Tags.Items.SLIME_BALLS)
-                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .unlockedBy(getHasName(ModBlocks.SLIMY_GRASS_BLOCK), has(Items.GLASS_PANE))
+                .save(recipeOutput);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMEBALL_COLLECTOR, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.HOPPER)
+                .define('C', Tags.Items.CHESTS)
+                .unlockedBy(getHasName(Items.HOPPER), has(Tags.Items.CHESTS))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_1, 1)
@@ -193,7 +203,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', Items.REDSTONE_BLOCK)
                 .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
                 .define('C', Tags.Items.INGOTS_IRON)
-                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTierLists.getBlockByName(Tier.IRON.getTierName())))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2, 1)
@@ -203,7 +213,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', ModItems.SLIME_NEST_SPEED_UPGRADE_1)
                 .define('B', ModTierLists.getBlockByName(Tier.GOLD.getTierName()))
                 .define('C', Tags.Items.INGOTS_GOLD)
-                .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1), has(ModTierLists.getBlockByName(Tier.GOLD.getTierName())))
                 .save(recipeOutput);
 
         planksFromLogs(recipeOutput, ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);

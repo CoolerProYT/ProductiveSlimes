@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_squeezer": {
+    "has_slime_nest_speed_upgrade_1": {
       "conditions": {
         "items": [
           {
-            "items": "productiveslimes:squeezer"
+            "items": "productiveslimes:gold_slime_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_squeezer"
+      "has_slime_nest_speed_upgrade_1"
     ]
   ],
   "rewards": {
