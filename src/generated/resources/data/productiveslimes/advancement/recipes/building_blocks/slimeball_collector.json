@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slimy_grass_block": {
+    "has_hopper": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:glass_pane"
+            "items": "#c:chests"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slime_nest"
+        "recipe": "productiveslimes:slimeball_collector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_slimy_grass_block"
+      "has_hopper"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slime_nest"
+      "productiveslimes:slimeball_collector"
     ]
   }
 }
