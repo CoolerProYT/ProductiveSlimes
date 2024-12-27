@@ -3,14 +3,14 @@
   "energy": 200,
   "ingredients": [
     {
-      "item": "productiveslimes:endstone_slime_block"
+      "item": "productiveslimes:end_stone_slime_block"
     }
   ],
   "inputCount": 2,
   "output": [
     {
       "count": 5,
-      "item": "productiveslimes:molten_endstone_bucket"
+      "item": "productiveslimes:molten_end_stone_bucket"
     }
   ]
 }

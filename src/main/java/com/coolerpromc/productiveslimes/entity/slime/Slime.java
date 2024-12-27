@@ -14,18 +14,20 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 public class Slime extends BaseSlime {
-    private final ItemLike item;
+    private final RegistryObject<Item> item;
     private final ItemLike growthItem;
 
-    public Slime(EntityType<? extends net.minecraft.world.entity.monster.Slime> entityType, Level level, int cooldown, int color, ItemLike item, ItemLike growthItem) {
+    public Slime(EntityType<? extends net.minecraft.world.entity.monster.Slime> entityType, Level level, int cooldown, int color, RegistryObject<Item> item, ItemLike growthItem) {
         super(entityType, level, cooldown, growthItem);
         this.item = item;
         this.growthItem = growthItem;
@@ -33,7 +35,7 @@ public class Slime extends BaseSlime {
 
     @Override
     public void dropResource() {
-        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(this.item, this.getSize()));
+        ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(this.item.get(), this.getSize()));
         this.level().addFreshEntity(itemEntity);
     }
 

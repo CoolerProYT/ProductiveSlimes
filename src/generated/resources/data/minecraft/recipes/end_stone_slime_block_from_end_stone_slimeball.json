@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "A": {
-      "item": "productiveslimes:endstone_slimeball"
+      "item": "productiveslimes:end_stone_slimeball"
     }
   },
   "pattern": [
@@ -12,7 +12,7 @@
     "AAA"
   ],
   "result": {
-    "item": "productiveslimes:endstone_slime_block"
+    "item": "productiveslimes:end_stone_slime_block"
   },
   "show_notification": true
 }
