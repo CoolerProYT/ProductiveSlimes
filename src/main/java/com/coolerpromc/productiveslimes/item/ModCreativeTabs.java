@@ -27,6 +27,8 @@ public class ModCreativeTabs {
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
+                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_1);
+                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_2);
                         pOutput.accept(ModItems.SLIMEBALL_FRAGMENT);
 
                         // Use reflection to get all the fields from ModBlocks

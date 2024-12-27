@@ -53,6 +53,8 @@ public class ModModelProvider extends ModelProvider {
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.DNA_EXTRACTOR.get(), "dna_extractor");
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.DNA_SYNTHESIZER.get(), "dna_synthesizer");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.SLIME_NEST.get(), "slime_nest");
+        oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.SLIMEBALL_COLLECTOR.get(), "slimeball_collector");
         horizontalBlockWithExistingBlockAndItemModel(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
         fluidTank(blockModels, ModBlocks.FLUID_TANK.get());
         cableBlock(blockModels, ModBlocks.CABLE.get(), "cable_core", "cable_part");
@@ -105,6 +107,8 @@ public class ModModelProvider extends ModelProvider {
         simpleItem(itemModels, ModItems.GUIDEBOOK.get());
         simpleItem(itemModels, ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
         simpleItem(itemModels, ModItems.SLIMEBALL_FRAGMENT.get());
+        simpleItem(itemModels, ModItems.SLIME_NEST_SPEED_UPGRADE_1.get());
+        simpleItem(itemModels, ModItems.SLIME_NEST_SPEED_UPGRADE_2.get());
 
         slimeballItem(itemModels, ModItems.ENERGY_SLIME_BALL);
         dnaItem(itemModels, ModItems.SLIME_DNA);

@@ -168,6 +168,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('A', ModBlocks.SLIMY_PLANKS)
                 .unlockedBy(getHasName(ModBlocks.SLIMY_PLANKS), has(ModBlocks.SLIMY_PLANKS))
                 .save(output);
+
         ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_SQUEEZER, 1)
                 .pattern("BAB")
                 .pattern("C  ")
@@ -176,6 +177,46 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('B', ModBlocks.SLIMY_STONE)
                 .define('C', ModItems.ENERGY_SLIME_BALL)
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_NEST, 1)
+                .pattern("BBB")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', ModBlocks.SLIMY_GRASS_BLOCK)
+                .define('B', Items.GLASS_PANE)
+                .define('C', Tags.Items.SLIME_BALLS)
+                .unlockedBy(getHasName(ModBlocks.SLIMY_GRASS_BLOCK), has(Items.GLASS_PANE))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMEBALL_COLLECTOR, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.HOPPER)
+                .define('C', Tags.Items.CHESTS)
+                .unlockedBy(getHasName(Items.HOPPER), has(Tags.Items.CHESTS))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.SLIME_NEST_SPEED_UPGRADE_1, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.REDSTONE_BLOCK)
+                .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTierLists.getBlockByName(Tier.IRON.getTierName())))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', ModItems.SLIME_NEST_SPEED_UPGRADE_1)
+                .define('B', ModTierLists.getBlockByName(Tier.GOLD.getTierName()))
+                .define('C', Tags.Items.INGOTS_GOLD)
+                .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1), has(ModTierLists.getBlockByName(Tier.GOLD.getTierName())))
                 .save(output);
 
         planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
