@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.CableBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datagen.template.ModModelTemplates;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
@@ -14,6 +15,7 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.FluidTankTint;
+import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.coolerpromc.productiveslimes.util.property.*;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -107,6 +109,8 @@ public class ModModelProvider extends ModelProvider {
         slimeballItem(itemModels, ModItems.ENERGY_SLIME_BALL);
         dnaItem(itemModels, ModItems.SLIME_DNA);
         spawnEggItem(itemModels, ModItems.ENERGY_SLIME_SPAWN_EGG);
+
+        slimeItem(itemModels, ModItems.SLIME_ITEM.get());
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
@@ -357,6 +361,11 @@ public class ModModelProvider extends ModelProvider {
     private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
         SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
         itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
+    }
+
+    private void slimeItem(ItemModelGenerators itemModels, Item item){
+        ResourceLocation model = itemLocation("slime_item");
+        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
     }
 
     // Helper methods

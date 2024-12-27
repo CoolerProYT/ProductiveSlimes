@@ -187,6 +187,7 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
             event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_tint"), FluidTankTint.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item_tint"), SlimeItemTint.MAP_CODEC);
         }
 
         @SubscribeEvent
