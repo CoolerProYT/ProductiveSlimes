@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.*;
+import com.coolerpromc.productiveslimes.commands.ModCommands;
 import com.coolerpromc.productiveslimes.compat.top.GetTheOneProbe;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
@@ -40,6 +41,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -120,6 +122,11 @@ public class ProductiveSlimes
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent
