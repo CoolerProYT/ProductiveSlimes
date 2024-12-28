@@ -1,16 +1,14 @@
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModRecipes{
-    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, ProductiveSlimes.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, ProductiveSlimes.MODID);
 
     public static final RegistryObject<RecipeSerializer<MeltingRecipe>> MELTING_SERIALIZER =
             SERIALIZERS.register("melting", () -> MeltingRecipe.Serializer.INSTANCE);

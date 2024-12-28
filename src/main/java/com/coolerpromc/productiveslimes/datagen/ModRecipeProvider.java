@@ -3,14 +3,12 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.datagen.builder.*;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -20,30 +18,29 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
-    public ModRecipeProvider(PackOutput p_248933_, CompletableFuture<HolderLookup.Provider> pRegistries) {
-        super(p_248933_);
+    public ModRecipeProvider(DataGenerator generator) {
+        super(generator);
     }
-    
+
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> recipeOutput) {
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipeOutput) {
         //Override vanilla recipes
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STICKY_PISTON, 1)
+        ShapelessRecipeBuilder.shapeless(Items.STICKY_PISTON, 1)
                 .requires(Tags.Items.SLIMEBALLS)
                 .requires(Items.PISTON)
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.PISTON))
                 .save(recipeOutput);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.MAGMA_CREAM, 1)
+        ShapelessRecipeBuilder.shapeless(Items.MAGMA_CREAM, 1)
                 .requires(Tags.Items.SLIMEBALLS)
                 .requires(Items.BLAZE_POWDER)
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.BLAZE_POWDER))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.LEAD,2)
+        ShapedRecipeBuilder.shaped(Items.LEAD,2)
                 .pattern("AA ")
                 .pattern("AB ")
                 .pattern("  A")
@@ -53,7 +50,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         //Mod Recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MELTING_STATION.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.MELTING_STATION.get(),1)
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
@@ -62,7 +59,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LIQUID_SOLIDING_STATION.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.LIQUID_SOLIDING_STATION.get(),1)
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
@@ -71,7 +68,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENERGY_SLIME_SPAWN_EGG.get(),1)
+        ShapedRecipeBuilder.shaped(ModItems.ENERGY_SLIME_SPAWN_EGG.get(),1)
                 .pattern("CAC")
                 .pattern("ABA")
                 .pattern("CAC")
@@ -81,7 +78,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ENERGY_GENERATOR.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.ENERGY_GENERATOR.get(),1)
                 .pattern("CAC")
                 .pattern("ABA")
                 .pattern("CAC")
@@ -91,7 +88,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CABLE.get(),8)
+        ShapedRecipeBuilder.shaped(ModBlocks.CABLE.get(),8)
                 .pattern(" A ")
                 .pattern("ABA")
                 .pattern(" A ")
@@ -100,7 +97,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DNA_EXTRACTOR.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.DNA_EXTRACTOR.get(),1)
                 .pattern("AAA")
                 .pattern("ACA")
                 .pattern("ABA")
@@ -110,7 +107,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.DNA_SYNTHESIZER.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.DNA_SYNTHESIZER.get(),1)
                 .pattern("AAA")
                 .pattern("CCC")
                 .pattern("ABA")
@@ -120,7 +117,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENERGY_MULTIPLIER_UPGRADE.get(),1)
+        ShapedRecipeBuilder.shaped(ModItems.ENERGY_MULTIPLIER_UPGRADE.get(),1)
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
@@ -130,7 +127,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.FLUID_TANK.get(),1)
+        ShapedRecipeBuilder.shaped(ModBlocks.FLUID_TANK.get(),1)
                 .pattern("AAA")
                 .pattern("BCB")
                 .pattern("AAA")
@@ -140,18 +137,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.GLASS))
                 .save(recipeOutput);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GUIDEBOOK.get(), 1)
+        ShapelessRecipeBuilder.shapeless(ModItems.GUIDEBOOK.get(), 1)
                 .requires(Items.BOOK)
                 .requires(Tags.Items.SLIMEBALLS)
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(recipeOutput);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SLIMEBALL_FRAGMENT.get(), 4)
+        ShapelessRecipeBuilder.shapeless(ModItems.SLIMEBALL_FRAGMENT.get(), 4)
                 .requires(Items.SLIME_BALL)
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.SLIME_BALL))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.SLIME_BALL, 1)
+        ShapedRecipeBuilder.shaped(Items.SLIME_BALL, 1)
                 .pattern("AA ")
                 .pattern("AA ")
                 .pattern("   ")
@@ -159,7 +156,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.SLIMEBALL_FRAGMENT.get()), has(ModItems.SLIMEBALL_FRAGMENT.get()))
                 .save(recipeOutput, "slimeball_from_fragment");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SQUEEZER.get(), 1)
+        ShapedRecipeBuilder.shaped(ModBlocks.SQUEEZER.get(), 1)
                 .pattern(" A ")
                 .pattern(" A ")
                 .pattern("AAA")
@@ -167,7 +164,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.SLIMY_PLANKS.get()), has(ModBlocks.SLIMY_PLANKS.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_SQUEEZER.get(), 1)
+        ShapedRecipeBuilder.shaped(ModBlocks.SLIME_SQUEEZER.get(), 1)
                 .pattern("BAB")
                 .pattern("C  ")
                 .pattern("BBB")
@@ -177,7 +174,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER.get()), has(ModBlocks.SQUEEZER.get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_NEST.get(), 1)
+        ShapedRecipeBuilder.shaped(ModBlocks.SLIME_NEST.get(), 1)
                 .pattern("BBB")
                 .pattern("BCB")
                 .pattern("AAA")
@@ -187,7 +184,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.SLIMY_GRASS_BLOCK.get()), has(Items.GLASS_PANE))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMEBALL_COLLECTOR.get(), 1)
+        ShapedRecipeBuilder.shaped(ModBlocks.SLIMEBALL_COLLECTOR.get(), 1)
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
@@ -197,7 +194,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.HOPPER), has(Tags.Items.CHESTS))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SLIME_NEST_SPEED_UPGRADE_1.get(), 1)
+        ShapedRecipeBuilder.shaped(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get(), 1)
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
@@ -207,7 +204,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTierLists.getBlockByName(Tier.IRON.getTierName()).get()))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2.get(), 1)
+        ShapedRecipeBuilder.shaped(ModItems.SLIME_NEST_SPEED_UPGRADE_2.get(), 1)
                 .pattern("ABA")
                 .pattern("BCB")
                 .pattern("ABA")
@@ -217,7 +214,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get()), has(ModTierLists.getBlockByName(Tier.GOLD.getTierName()).get()))
                 .save(recipeOutput);
 
-        planksFromLogs(recipeOutput, ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
+        planksFromLogs(recipeOutput, ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG);
 
         woodFromLogs(recipeOutput, ModBlocks.SLIMY_WOOD.get(), ModBlocks.SLIMY_LOG.get());
 
@@ -226,7 +223,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         stairBuilder(ModBlocks.SLIMY_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
                 .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(recipeOutput);
 
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_SLAB.get(), ModBlocks.SLIMY_PLANKS.get());
+        slab(recipeOutput, ModBlocks.SLIMY_SLAB.get(), ModBlocks.SLIMY_PLANKS.get());
         buttonBuilder(ModBlocks.SLIMY_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_PLANKS.get())).group("slimy")
                 .unlockedBy("has_slimy", has(ModBlocks.SLIMY_PLANKS.get())).save(recipeOutput);
 
@@ -247,7 +244,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         stairBuilder(ModBlocks.SLIMY_STONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_STONE.get())).group("slimy_stone")
                 .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE.get())).save(recipeOutput);
 
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_STONE_SLAB.get(), ModBlocks.SLIMY_STONE.get());
+        slab(recipeOutput, ModBlocks.SLIMY_STONE_SLAB.get(), ModBlocks.SLIMY_STONE.get());
 
         buttonBuilder(ModBlocks.SLIMY_STONE_BUTTON.get(), Ingredient.of(ModBlocks.SLIMY_STONE.get())).group("slimy_stone")
                 .unlockedBy("has_slimy_stone", has(ModBlocks.SLIMY_STONE.get())).save(recipeOutput);
@@ -257,16 +254,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         stairBuilder(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLESTONE.get())).group("slimy_cobblestone")
                 .unlockedBy("has_slimy_cobblestone", has(ModBlocks.SLIMY_COBBLESTONE.get())).save(recipeOutput);
 
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        slab(recipeOutput, ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), ModBlocks.SLIMY_COBBLESTONE.get());
 
-        wall(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
+        wall(recipeOutput, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
 
         stairBuilder(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get())).group("slimy_cobbled_deepslate")
                 .unlockedBy("has_slimy_cobbled_deepslate", has(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get())).save(recipeOutput);
 
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        slab(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
-        wall(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        wall(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
         //Slime Ball Recipe
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.ENERGY_SLIME_BLOCK.get(), ModItems.ENERGY_SLIME_BALL.get());
@@ -397,14 +394,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     protected static void slimeBlockToSlimeBall(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, pSlimeBall, 9)
+        ShapelessRecipeBuilder.shapeless(pSlimeBall, 9)
                 .requires(pSlimeBlock)
                 .unlockedBy(getHasName(pSlimeBlock), has(pSlimeBlock))
                 .save(pRecipeOutput, getItemName(pSlimeBall) + "_from_" + getItemName(pSlimeBlock));
     }
 
     protected static void slimeBallToSlimeBlock(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pSlimeBall, ItemLike pSlimeBlock) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, pSlimeBlock, 1)
+        ShapedRecipeBuilder.shaped(pSlimeBlock, 1)
                 .pattern("AAA")
                 .pattern("AAA")
                 .pattern("AAA")

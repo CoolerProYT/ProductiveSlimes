@@ -18,7 +18,6 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ProductiveSlimes.MODID);
 
     public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", GuidebookItem::new);
-    public static final RegistryObject<Item> FLUID_TANK = ITEMS.register("fluid_tank", () -> new FluidTankBlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> SLIMEBALL_FRAGMENT = ITEMS.register("slimeball_fragment", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> SLIME_ITEM  = ITEMS.register("slime_item", () -> new SlimeItem(new Item.Properties().stacksTo(1)));

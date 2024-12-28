@@ -149,7 +149,7 @@ public abstract class BaseSlime extends Slime {
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
-        return new Vec3(0.0, (double)this.level().getHeight() - 0.015625 * (double)this.getSize(), 0.0);
+        return new Vec3(0.0, (double)this.level.getHeight() - 0.015625 * (double)this.getSize(), 0.0);
     }
 
     @Override
@@ -343,7 +343,7 @@ public abstract class BaseSlime extends Slime {
                 this.mob.setZza(0.0F);
             } else {
                 this.operation = MoveControl.Operation.WAIT;
-                if (this.mob.onGround()) {
+                if (this.mob.isOnGround()) {
                     this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                     if (this.jumpDelay-- <= 0) {
                         this.jumpDelay = this.slime.getJumpDelay();
@@ -383,7 +383,7 @@ public abstract class BaseSlime extends Slime {
          * method as well.
          */
         public boolean canUse() {
-            return this.slime.getTarget() == null && (this.slime.onGround() || this.slime.isInWater() || this.slime.isInLava() ||
+            return this.slime.getTarget() == null && (this.slime.isOnGround() || this.slime.isInWater() || this.slime.isInLava() ||
                     this.slime.hasEffect(MobEffects.LEVITATION)) && this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
         }
 
@@ -420,7 +420,7 @@ public abstract class BaseSlime extends Slime {
         }
 
         private Player findNearestPlayerWithItem() {
-            return this.slime.level().getNearestPlayer(
+            return this.slime.level.getNearestPlayer(
                     TargetingConditions.forNonCombat().selector(livingEntity -> {
                         if (livingEntity instanceof Player player) {
                             return isPlayerHoldingTargetItem(player) && this.slime.getSize() < 4 && isInRange(player);

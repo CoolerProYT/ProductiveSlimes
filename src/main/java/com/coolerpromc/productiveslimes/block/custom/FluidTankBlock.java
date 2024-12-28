@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
-import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -30,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -57,18 +54,6 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()){
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof FluidTankBlockEntity){
-                ((FluidTankBlockEntity) blockEntity).drops();
-            }
-        }
-
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     @Override
@@ -158,26 +143,27 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
-        List<ItemStack> drops = super.getDrops(pState, pParams);
-        BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if (pState.getBlock() != pNewState.getBlock()){
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity){
+                fluidTankBlockEntity.drops();
 
-        if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
-            ItemStack stack = new ItemStack(this);
+                ItemStack stack = new ItemStack(this);
 
-            CompoundTag tag = stack.getOrCreateTag();
+                CompoundTag tag = stack.getOrCreateTag();
 
-            CompoundTag fluidTag = new CompoundTag();
-            fluidTankBlockEntity.getFluidTank().getFluid().writeToNBT(fluidTag);
-            tag.put("fluid", fluidTag);
+                CompoundTag fluidTag = new CompoundTag();
+                fluidTankBlockEntity.getFluidTank().getFluid().writeToNBT(fluidTag);
+                tag.put("fluid", fluidTag);
 
-            stack.setTag(tag);
+                stack.setTag(tag);
 
-            drops.clear();
-            drops.add(stack);
+                Block.popResource(pLevel, pPos, stack);
+            }
         }
 
-        return drops;
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     @Override

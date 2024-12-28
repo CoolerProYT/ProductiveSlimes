@@ -4,11 +4,12 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeSqueezerBlock;
 import com.coolerpromc.productiveslimes.block.entity.SlimeSqueezerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -17,7 +18,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -47,8 +47,8 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.09, 0.5f);
         poseStack.scale(0.35f, 0.35f, 0.35f);
-        poseStack.mulPose(Axis.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(inputItem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
+        itemRenderer.renderStatic(inputItem, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
         poseStack.popPose();
         switch (facing){
             case SOUTH:
@@ -68,15 +68,15 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.pushPose();
         poseStack.translate(x1, y1, z1);
         poseStack.scale(0.15f, 0.15f, 0.15f);
-        poseStack.mulPose(Axis.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(outputItem1, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
+        itemRenderer.renderStatic(outputItem1, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
         poseStack.popPose();
         // Render the output item 2
         poseStack.pushPose();
         poseStack.translate(x2, y2, z2);
         poseStack.scale(0.15f, 0.15f, 0.15f);
-        poseStack.mulPose(Axis.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(outputItem2, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
+        itemRenderer.renderStatic(outputItem2, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
         poseStack.popPose();
     }
     private void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {

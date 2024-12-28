@@ -2,13 +2,10 @@ package com.coolerpromc.productiveslimes.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.server.packs.resources.IoSupplier;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
@@ -17,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class InMemoryDataPack implements PackResources {
     private final Map<String, byte[]> resources;
@@ -27,42 +25,51 @@ public class InMemoryDataPack implements PackResources {
 
     @Nullable
     @Override
-    public IoSupplier<InputStream> getRootResource(String... elements) {
-        String path = String.join("/", elements);
-        byte[] data = resources.get(path);
+    public InputStream getRootResource(String s) throws IOException {
+        byte[] data = resources.get(s);
         if (data != null) {
-            return () -> new ByteArrayInputStream(data);
+            return new ByteArrayInputStream(data);
         }
         return null;
     }
 
-    @Nullable
     @Override
-    public IoSupplier<InputStream> getResource(PackType packType, ResourceLocation location) {
+    public InputStream getResource(PackType packType, ResourceLocation resourceLocation) throws IOException {
         if (packType != PackType.SERVER_DATA) {
             return null;
         }
-        String path = "data/" + location.getNamespace() + "/" + location.getPath();
+        String path = "data/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
         byte[] data = resources.get(path);
         if (data != null) {
-            return () -> new ByteArrayInputStream(data);
+            return new ByteArrayInputStream(data);
         }
         return null;
     }
 
     @Override
-    public void listResources(PackType packType, String namespace, String path, ResourceOutput resourceOutput) {
-        if (packType != PackType.SERVER_DATA) {
-            return;
-        }
+    public Collection<ResourceLocation> getResources(PackType packType, String namespace, String path, Predicate<ResourceLocation> filter) {
+        Set<ResourceLocation> matchingResources = new HashSet<>();
         String prefix = "data/" + namespace + "/" + path;
+
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
                 String resourcePath = key.substring(("data/" + namespace + "/").length());
-                ResourceLocation location = new ResourceLocation(namespace, resourcePath);
-                resourceOutput.accept(location, () -> new ByteArrayInputStream(data));
+
+                ResourceLocation resourceLocation = new ResourceLocation(namespace, resourcePath);
+
+                if (filter.test(resourceLocation)) {
+                    matchingResources.add(resourceLocation);
+                }
             }
         });
+
+        return matchingResources;
+    }
+
+    @Override
+    public boolean hasResource(PackType packType, ResourceLocation resourceLocation) {
+        String fullPath = "data/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
+        return resources.containsKey(fullPath);
     }
 
     @Override
@@ -90,9 +97,9 @@ public class InMemoryDataPack implements PackResources {
     @Override
     public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
         if ("pack".equals(serializer.getMetadataSectionName())) {
-            IoSupplier<InputStream> supplier = getRootResource("pack.mcmeta");
+            InputStream supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {
-                try (InputStream stream = supplier.get()) {
+                try (InputStream stream = supplier) {
                     JsonObject json = new Gson().fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class);
                     return serializer.fromJson(json.getAsJsonObject("pack"));
                 }
@@ -102,7 +109,7 @@ public class InMemoryDataPack implements PackResources {
     }
 
     @Override
-    public String packId() {
+    public String getName() {
         return "productiveslimes_datapack";
     }
 

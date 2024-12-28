@@ -28,7 +28,7 @@ public class ModFlammableBlock extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
-        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+        if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }
         double slowFactor = 0.05;

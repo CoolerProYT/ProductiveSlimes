@@ -3,105 +3,102 @@ package com.coolerpromc.productiveslimes.item;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
 public class ModCreativeTabs {
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MOD_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ProductiveSlimes.MODID);
+    public static final CreativeModeTab PRODUCTIVE_SLIMES_TAB = new CreativeModeTab("productive_slimes") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(Items.SLIME_BLOCK);
+        }
 
-    public static final RegistryObject<CreativeModeTab> PRODUCTIVE_SLIMES_TAB = CREATIVE_MOD_TABS.register("productive_slimes",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
-                    .title(Component.translatable("creativetab.productiveslimes"))
-                    .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.GUIDEBOOK.get());
-                        pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
-                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get());
-                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_2.get());
-                        pOutput.accept(ModItems.SLIMEBALL_FRAGMENT.get());
+        @Override
+        public void fillItemList(NonNullList<ItemStack> items) {
+            // Add custom items to the creative tab
+            items.add(ModItems.GUIDEBOOK.get().getDefaultInstance());
+            items.add(ModItems.ENERGY_MULTIPLIER_UPGRADE.get().getDefaultInstance());
+            items.add(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get().getDefaultInstance());
+            items.add(ModItems.SLIME_NEST_SPEED_UPGRADE_2.get().getDefaultInstance());
+            items.add(ModItems.SLIMEBALL_FRAGMENT.get().getDefaultInstance());
 
-                        // Use reflection to get all the fields from ModBlocks
-                        for (Field field : ModBlocks.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Block (for blocks)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Block) {
-                                        pOutput.accept((Block) supplier.get()); // Add block to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+            // Reflectively add blocks from ModBlocks
+            for (Field field : ModBlocks.class.getFields()) {
+                try {
+                    if (Supplier.class.isAssignableFrom(field.getType())) {
+                        Supplier<?> supplier = (Supplier<?>) field.get(null);
+                        if (supplier.get() instanceof Block block) {
+                            items.add(new ItemStack(block));
                         }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                        for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBlockByName(modTiers.name()).get());
-                        }
+            // Add items and blocks dynamically
+            for (Tier tier : Tier.values()) {
+                ModTiers modTiers = ModTierLists.getTierByName(tier);
+                items.add(ModTierLists.getBlockByName(modTiers.name()).get().asItem().getDefaultInstance());
+            }
 
-                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get());
-                        }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
+                items.add(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get().asItem().getDefaultInstance());
+            }
 
-                        pOutput.accept(ModItems.ENERGY_SLIME_BALL.get());
-                        for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSlimeballItemByName(modTiers.name()).get());
-                        }
+            items.add(ModItems.ENERGY_SLIME_BALL.get().getDefaultInstance());
+            for (Tier tier : Tier.values()) {
+                ModTiers modTiers = ModTierLists.getTierByName(tier);
+                items.add(ModTierLists.getSlimeballItemByName(modTiers.name()).get().getDefaultInstance());
+            }
 
-                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get());
-                        }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
+                items.add(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get().getDefaultInstance());
+            }
 
-                        pOutput.accept(ModItems.SLIME_DNA.get());
-                        for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getDnaItemByName(modTiers.name()).get());
-                        }
+            items.add(ModItems.SLIME_DNA.get().getDefaultInstance());
+            for (Tier tier : Tier.values()) {
+                ModTiers modTiers = ModTierLists.getTierByName(tier);
+                items.add(ModTierLists.getDnaItemByName(modTiers.name()).get().getDefaultInstance());
+            }
 
-                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get());
-                        }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
+                items.add(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get().getDefaultInstance());
+            }
 
-                        pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG.get());
-                        for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSpawnEggItemByName(modTiers.name()).get());
-                        }
+            items.add(ModItems.ENERGY_SLIME_SPAWN_EGG.get().getDefaultInstance());
+            for (Tier tier : Tier.values()) {
+                ModTiers modTiers = ModTierLists.getTierByName(tier);
+                items.add(ModTierLists.getSpawnEggItemByName(modTiers.name()).get().getDefaultInstance());
+            }
 
-                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get());
-                        }
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
+                items.add(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get().getDefaultInstance());
+            }
 
-                        for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBucketItemByName(modTiers.name()).get());
-                        }
+            for (Tier tier : Tier.values()) {
+                ModTiers modTiers = ModTierLists.getTierByName(tier);
+                items.add(ModTierLists.getBucketItemByName(modTiers.name()).get().getDefaultInstance());
+            }
 
-                        for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")));
-                        }
-                    }).build());
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
+                items.add(ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value().getDefaultInstance());
+            }
+        }
+    };
 
-    public static void register(IEventBus eventBus) {
-        CREATIVE_MOD_TABS.register(eventBus);
+    public static void register() {
+        // Nothing needs to be registered explicitly for CreativeModeTab in 1.19.2
     }
 }

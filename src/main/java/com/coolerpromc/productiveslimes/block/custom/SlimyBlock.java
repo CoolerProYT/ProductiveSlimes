@@ -2,7 +2,6 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -10,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
-import java.util.Optional;
 
 public class SlimyBlock extends Block implements BonemealableBlock {
     public SlimyBlock(Properties properties) {
@@ -41,7 +40,7 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
 
-        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+        if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }
 
@@ -52,8 +51,8 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean b) {
-        return levelReader.getBlockState(blockPos.above()).isAir();
+    public boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pPos, BlockState blockState, boolean b) {
+        return blockGetter.getBlockState(pPos.above()).isAir();
     }
 
     @Override
@@ -62,47 +61,40 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        BlockPos blockpos = pos.above();
-        BlockState blockstate = Blocks.GRASS.defaultBlockState();
-        Optional<Holder.Reference<PlacedFeature>> optional = level.registryAccess()
-                .registryOrThrow(Registries.PLACED_FEATURE)
-                .getHolder(VegetationPlacements.GRASS_BONEMEAL);
+    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState state) {
+        BlockPos $$4 = pPos.above();
+        BlockState $$5 = Blocks.GRASS.defaultBlockState();
 
-        label49:
-        for (int i = 0; i < 128; i++) {
-            BlockPos blockpos1 = blockpos;
+        label46:
+        for(int $$6 = 0; $$6 < 128; ++$$6) {
+            BlockPos $$7 = $$4;
 
-            for (int j = 0; j < i / 16; j++) {
-                blockpos1 = blockpos1.offset(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
-                if (!level.getBlockState(blockpos1.below()).is(this) || level.getBlockState(blockpos1).isCollisionShapeFullBlock(level, blockpos1)) {
-                    continue label49;
+            for(int $$8 = 0; $$8 < $$6 / 16; ++$$8) {
+                $$7 = $$7.offset(pRandom.nextInt(3) - 1, (pRandom.nextInt(3) - 1) * pRandom.nextInt(3) / 2, pRandom.nextInt(3) - 1);
+                if (!pLevel.getBlockState($$7.below()).is(this) || pLevel.getBlockState($$7).isCollisionShapeFullBlock(pLevel, $$7)) {
+                    continue label46;
                 }
             }
 
-            BlockState blockstate1 = level.getBlockState(blockpos1);
-            if (blockstate1.is(blockstate.getBlock()) && random.nextInt(10) == 0) {
-                ((BonemealableBlock)blockstate.getBlock()).performBonemeal(level, random, blockpos1, blockstate1);
+            BlockState $$9 = pLevel.getBlockState($$7);
+            if ($$9.is($$5.getBlock()) && pRandom.nextInt(10) == 0) {
+                ((BonemealableBlock)$$5.getBlock()).performBonemeal(pLevel, pRandom, $$7, $$9);
             }
 
-            if (blockstate1.isAir()) {
-                Holder<PlacedFeature> holder;
-                if (random.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> list = level.getBiome(blockpos1).value().getGenerationSettings().getFlowerFeatures();
-                    if (list.isEmpty()) {
+            if ($$9.isAir()) {
+                Holder $$12;
+                if (pRandom.nextInt(8) == 0) {
+                    List<ConfiguredFeature<?, ?>> $$10 = ((Biome)pLevel.getBiome($$7).value()).getGenerationSettings().getFlowerFeatures();
+                    if ($$10.isEmpty()) {
                         continue;
                     }
 
-                    holder = ((RandomPatchConfiguration)list.get(0).config()).feature();
+                    $$12 = ((RandomPatchConfiguration)((ConfiguredFeature)$$10.get(0)).config()).feature();
                 } else {
-                    if (!optional.isPresent()) {
-                        continue;
-                    }
-
-                    holder = optional.get();
+                    $$12 = VegetationPlacements.GRASS_BONEMEAL;
                 }
 
-                holder.value().place(level, level.getChunkSource().getGenerator(), random, blockpos1);
+                ((PlacedFeature)$$12.value()).place(pLevel, pLevel.getChunkSource().getGenerator(), pRandom, $$7);
             }
         }
     }

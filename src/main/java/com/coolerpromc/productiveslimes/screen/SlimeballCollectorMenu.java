@@ -18,14 +18,14 @@ public class SlimeballCollectorMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public SlimeballCollectorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public SlimeballCollectorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.SLIMEBALL_COLLECTOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
         blockEntity = (SlimeballCollectorBlockEntity) entity;
-        this.level = inv.player.level();
+        this.level = inv.player.level;
         this.data = data;
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

@@ -2,35 +2,23 @@ package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
 public class ModPlacedFeatures {
-    public static ResourceKey<PlacedFeature> SLIMY_TREE = registerKey("slimy_tree");
+    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, ProductiveSlimes.MODID);
 
-    public static void bootstrap(BootstapContext<PlacedFeature> context){
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatureGetter = context.lookup(Registries.CONFIGURED_FEATURE);
+    public static final RegistryObject<PlacedFeature> SLIMY_TREE = PLACED_FEATURES.register("slimy_tree",
+            () -> new PlacedFeature(ModConfiguredFeatures.SLIMY_TREE.getHolder().get(), VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.005f, 1), ModBlocks.SLIMY_SAPLING.get())));
 
-        register(context, ModPlacedFeatures.SLIMY_TREE, configuredFeatureGetter.getOrThrow(ModConfiguredFeatures.SLIMY_TREE), VegetationPlacements.treePlacement(PlacementUtils.countExtra(1, 0.005f, 1), ModBlocks.SLIMY_SAPLING.get()));
-    }
-
-    private static ResourceKey<PlacedFeature> registerKey(String name){
-        return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(ProductiveSlimes.MODID, name));
-    }
-
-    protected static void register(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> placedFeatureKey, Holder<ConfiguredFeature<?, ?>> configuredFeature, List<PlacementModifier> modifiers)
-    {
-        context.register(placedFeatureKey, new PlacedFeature(configuredFeature, modifiers));
+    public static void register(IEventBus eventBus) {
+        PLACED_FEATURES.register(eventBus);
     }
 }

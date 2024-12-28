@@ -2,7 +2,6 @@ package com.coolerpromc.productiveslimes.tier;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
@@ -161,6 +161,6 @@ public class ModTierLists {
     }
 
     public static ItemLike getItemByKey(String key){
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(key));
+        return ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(key)).get().get();
     }
 }

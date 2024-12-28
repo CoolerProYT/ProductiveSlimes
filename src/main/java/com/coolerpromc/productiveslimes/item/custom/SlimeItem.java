@@ -20,7 +20,7 @@ public class SlimeItem extends Item {
             ItemStack itemStack = context.getItemInHand();
             SlimeData slimeData = SlimeData.fromTag(itemStack.getTag().getCompound("slime_data"));
             assert slimeData != null;
-            BaseSlime entity = slimeData.slime().create((ServerLevel) context.getLevel(), null, null, context.getClickedPos().above(), MobSpawnType.MOB_SUMMONED, true, false);
+            BaseSlime entity = slimeData.slime().create((ServerLevel) context.getLevel(), null, null, context.getPlayer(), context.getClickedPos(), MobSpawnType.SPAWN_EGG, true, true);
             assert entity != null;
             entity.setSize(slimeData.size(), true);
             context.getLevel().addFreshEntity(entity);

@@ -5,18 +5,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class ModDoorBlock extends DoorBlock {
-    public ModDoorBlock(BlockSetType type, Properties properties) {
-        super(properties, type);
+    public ModDoorBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
 
-        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+        if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }
 

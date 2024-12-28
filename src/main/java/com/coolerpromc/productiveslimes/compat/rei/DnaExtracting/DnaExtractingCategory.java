@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.DnaExtracting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -11,7 +12,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -67,24 +68,23 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
 
         widgets.add(new Widget() {
             @Override
-            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+            public void render(PoseStack stack, int i, int i1, float v) {
+                Minecraft minecraft = Minecraft.getInstance();
+                minecraft.getTextureManager().bindForSetup(TEXTURE);
 
-                // Arrow
                 tickCount++;
                 int arrowWidth = (tickCount % 600) * 26 / 600;
 
-                guiGraphics.blit(TEXTURE, startPoint.x + 70, startPoint.y + 38, 153, 0, arrowWidth, 8);
+                GuiComponent.blit(stack, startPoint.x + 70, startPoint.y + 38, 153, 0, arrowWidth, 8, 256, 256);
 
-                // Energy bar
                 int energyScaled = (int) Math.ceil((double) display.getEnergy() / 10000 * 57);
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-                guiGraphics.blit(TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled);
+                GuiComponent.blit(stack, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
 
                 Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", display.getOutputChance() * 100) + "%");
 
-                guiGraphics.drawString(Minecraft.getInstance().font, outputChance, startPoint.x + 7, startPoint.y + 71, 0xFFFFFF);
+                minecraft.font.draw(stack, outputChance, startPoint.x + 7, startPoint.y + 71, 0xFFFFFF);
             }
 
             @Override

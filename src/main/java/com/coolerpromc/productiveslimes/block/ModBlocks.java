@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.*;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.FluidTankBlockItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
@@ -12,9 +13,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -98,17 +97,17 @@ public class ModBlocks {
     public static final RegistryObject<StairBlock> SLIMY_STAIRS = registerBlock("slimy_stairs",
             () -> new ModStairBlock(ModBlocks.SLIMY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.OAK_STAIRS)));
     public static final RegistryObject<PressurePlateBlock> SLIMY_PRESSURE_PLATE = registerBlock("slimy_pressure_plate",
-            () -> new ModPressurePlateBlock(BlockSetType.OAK, BlockBehaviour.Properties.copy(Blocks.OAK_PRESSURE_PLATE)));
+            () -> new ModPressurePlateBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PRESSURE_PLATE)));
     public static final RegistryObject<ButtonBlock> SLIMY_BUTTON = registerBlock("slimy_button",
-            () -> new ModButtonBlock(BlockSetType.OAK, 20, BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON)));
+            () -> new ModButtonBlock(BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON)));
     public static final RegistryObject<FenceBlock> SLIMY_FENCE = registerBlock("slimy_fence",
             () -> new ModFenceBlock(BlockBehaviour.Properties.copy(Blocks.OAK_FENCE)));
     public static final RegistryObject<FenceGateBlock> SLIMY_FENCE_GATE = registerBlock("slimy_fence_gate",
-            () -> new ModFenceGateBlock(WoodType.OAK, BlockBehaviour.Properties.copy(Blocks.OAK_FENCE_GATE)));
+            () -> new ModFenceGateBlock(BlockBehaviour.Properties.copy(Blocks.OAK_FENCE_GATE)));
     public static final RegistryObject<DoorBlock> SLIMY_DOOR = registerBlock("slimy_door",
-            () -> new ModDoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
+            () -> new ModDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
     public static final RegistryObject<TrapDoorBlock> SLIMY_TRAPDOOR = registerBlock("slimy_trapdoor",
-            () -> new ModTrapDoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)));
+            () -> new ModTrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)));
 
     // Stone
     public static final RegistryObject<StairBlock> SLIMY_STONE_STAIRS = registerBlock("slimy_stone_stairs",
@@ -116,9 +115,9 @@ public class ModBlocks {
     public static final RegistryObject<SlabBlock> SLIMY_STONE_SLAB = registerBlock("slimy_stone_slab",
             () -> new ModSlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE_SLAB)));
     public static final RegistryObject<PressurePlateBlock> SLIMY_STONE_PRESSURE_PLATE = registerBlock("slimy_stone_pressure_plate",
-            () -> new ModPressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties.copy(Blocks.STONE_PRESSURE_PLATE)));
+            () -> new ModPressurePlateBlock(BlockBehaviour.Properties.copy(Blocks.STONE_PRESSURE_PLATE)));
     public static final RegistryObject<ButtonBlock> SLIMY_STONE_BUTTON = registerBlock("slimy_stone_button",
-            () -> new ModButtonBlock(BlockSetType.STONE, 20, BlockBehaviour.Properties.copy(Blocks.STONE_BUTTON)));
+            () -> new ModButtonBlock(BlockBehaviour.Properties.copy(Blocks.STONE_BUTTON)));
 
     // Cobblestone
     public static final RegistryObject<StairBlock> SLIMY_COBBLESTONE_STAIRS = registerBlock("slimy_cobblestone_stairs",
@@ -138,13 +137,13 @@ public class ModBlocks {
 
     // Slime Block
     public static final RegistryObject<Block> ENERGY_SLIME_BLOCK = registerBlock("energy_slime_block",
-            () -> new SlimeBlock(MapColor.COLOR_YELLOW, 0xFFffff70));
+            () -> new SlimeBlock(0xFFffff70));
 
     public static void registerTierBlock(){
         for(Tier tier : Tier.values()){
             ModTiers modTiers = ModTierLists.getTierByName(tier);
             String blockName = modTiers.name() + "_slime_block";
-            RegistryObject<Block> registeredBlock = registerBlock(blockName, () -> new SlimeBlock(MapColor.byId(modTiers.mapColorId()), modTiers.color()));
+            RegistryObject<Block> registeredBlock = registerBlock(blockName, () -> new SlimeBlock(modTiers.color()));
             ModTierLists.addRegisteredBlock(modTiers.name(), registeredBlock);
         }
     }
@@ -165,5 +164,6 @@ public class ModBlocks {
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+        ModItems.ITEMS.register("fluid_tank", () -> new FluidTankBlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
     }
 }

@@ -2,12 +2,16 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.Collections;
+import java.util.List;
 
 public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu>{
     private static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/dna_extractor_gui.png");
@@ -25,7 +29,7 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
     }
 
     @Override
-    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float v, int i, int i1) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -33,32 +37,33 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+       blit(poseStack, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         int energyScaled = this.menu.getEnergyStoredScaled();
 
-        pGuiGraphics.blit(TEXTURE, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
+        blit(poseStack, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
-        renderProgressArrow(pGuiGraphics, x, y);
+        renderProgressArrow(poseStack, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
+    private void renderProgressArrow(PoseStack poseStack, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(TEXTURE, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8);
+            blit(poseStack, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8, 256, 256);
         }
     }
 
     @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pGuiGraphics);
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        renderTooltip(pPoseStack, pMouseX, pMouseY);
 
         int energyStored = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
 
         Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
-            pGuiGraphics.renderTooltip(this.font, text, pMouseX, pMouseY);
+            List<Component> tooltip = Collections.singletonList(text);
+            this.renderComponentTooltip(pPoseStack, tooltip, pMouseY, pMouseY);
         }
     }
 }

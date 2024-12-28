@@ -2,44 +2,33 @@ package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.LakeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.DarkOakFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 public class ModConfiguredFeatures {
 
-    public static final ResourceKey<ConfiguredFeature<?,?>> SLIMY_TREE = registerKey("slimy_tree");
+    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURE = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, ProductiveSlimes.MODID);
 
-    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context){
-        register(context, ModConfiguredFeatures.SLIMY_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(ModBlocks.SLIMY_LOG.get()),
-                new FancyTrunkPlacer(4, 4, 3),
-                BlockStateProvider.simple(ModBlocks.SLIMY_LEAVES.get()),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(3), 3),
-                new TwoLayersFeatureSize(1, 0, 2)
-        ).dirt(BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get())).build());
-    }
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SLIMY_TREE = CONFIGURED_FEATURE.register("slimy_tree", () ->
+            new ConfiguredFeature<>(Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                    BlockStateProvider.simple(ModBlocks.SLIMY_LOG.get()),
+                    new FancyTrunkPlacer(4, 4, 3),
+                    BlockStateProvider.simple(ModBlocks.SLIMY_LEAVES.get()),
+                    new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(3), 3),
+                    new TwoLayersFeatureSize(1, 0, 2)
+            ).dirt(BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get())).build()));
 
-    private static ResourceKey<ConfiguredFeature<?,?>> registerKey(String name){
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(ProductiveSlimes.MODID, name));
-    }
-
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, F feature, FC configuration)
-    {
-        context.register(configuredFeatureKey, new ConfiguredFeature<>(feature, configuration));
+    public static void register(IEventBus eventBus) {
+        CONFIGURED_FEATURE.register(eventBus);
     }
 }

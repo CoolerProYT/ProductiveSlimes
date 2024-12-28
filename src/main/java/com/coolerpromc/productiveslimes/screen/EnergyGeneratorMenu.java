@@ -20,14 +20,14 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
     private final Inventory playerInventory;
 
     public EnergyGeneratorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public EnergyGeneratorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 4);
         blockEntity = ((EnergyGeneratorBlockEntity) entity);
-        this.level = inv.player.level();
+        this.level = inv.player.level;
         this.data = data;
         this.playerInventory = inv;
 

@@ -4,12 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "productiveslimes.refmap.json",
   "mixins": [
-  ],
-  "client": [
-    "LevelRendererAccess",
     "SlimeMixin",
     "CustomMeleeAttackGoalMixin",
     "CustomMoveTowardsTargetGoalMixin"
+  ],
+  "client": [
+    "LevelRendererAccess"
   ],
   "injectors": {
     "defaultRequire": 1

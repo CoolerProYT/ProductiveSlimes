@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -13,7 +14,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -54,25 +55,23 @@ public class DnaSynthesizingCategory implements IRecipeCategory<DnaSynthesizingR
     }
 
     @Override
-    public void draw(DnaSynthesizingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+    public void draw(DnaSynthesizingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+        Minecraft minecraft = Minecraft.getInstance();
+        minecraft.getTextureManager().bindForSetup(TEXTURE);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
-        int dnaHeight = (tickCount % 600) * 23 / 600;
 
-        guiGraphics.blit(TEXTURE, 72, 33, 176, 0, arrowWidth, 8);
+        GuiComponent.blit(stack, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
-        guiGraphics.blit(TEXTURE, 31, 25, 176, 66, 6, dnaHeight);
-
+        GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
+            minecraft.font.draw(stack, text, (float) mouseX, (float) mouseY, 0xFFFFFF);
         }
     }
 

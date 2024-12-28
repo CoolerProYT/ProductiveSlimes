@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -72,27 +71,19 @@ public class SlimeSqueezerBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof SlimeSqueezerBlockEntity){
-                ((SlimeSqueezerBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof SlimeSqueezerBlockEntity slimeSqueezerBlockEntity){
+                slimeSqueezerBlockEntity.drops();
+
+                ItemStack stack = new ItemStack(this);
+
+                CompoundTag tag = stack.getOrCreateTag();
+                tag.putInt("energy", slimeSqueezerBlockEntity.getEnergyHandler().getEnergyStored());
+                stack.setTag(tag);
+
+                Block.popResource(pLevel, pPos, stack);
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-    }
-    @Override
-    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
-        List<ItemStack> drops = super.getDrops(pState, pParams);
-        BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof SlimeSqueezerBlockEntity slimeSqueezerBlockEntity) {
-            ItemStack stack = new ItemStack(this);
-
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putInt("energy", slimeSqueezerBlockEntity.getEnergyHandler().getEnergyStored());
-            stack.setTag(tag);
-
-            drops.clear();
-            drops.add(stack);
-        }
-        return drops;
     }
 
     @Override

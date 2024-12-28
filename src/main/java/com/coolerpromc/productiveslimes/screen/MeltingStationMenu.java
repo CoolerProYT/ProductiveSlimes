@@ -18,14 +18,14 @@ public class MeltingStationMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public MeltingStationMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public MeltingStationMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.MELTING_STATION_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
         blockEntity = (MeltingStationBlockEntity) entity;
-        this.level = inv.player.level();
+        this.level = inv.player.level;
         this.data = data;
 
         addPlayerInventory(inv);

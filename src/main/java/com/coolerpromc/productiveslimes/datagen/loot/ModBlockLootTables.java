@@ -1,38 +1,19 @@
 package com.coolerpromc.productiveslimes.datagen.loot;
 
-import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-public class ModBlockLootTables extends BlockLootSubProvider {
+public class ModBlockLootTables extends BlockLoot {
     public ModBlockLootTables() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
-    protected void generate() {
+    protected void addTables() {
         dropSelf(ModBlocks.MELTING_STATION.get());
         dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
         dropSelf(ModBlocks.ENERGY_GENERATOR.get());
@@ -59,7 +40,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.SLIMY_PLANKS.get());
         dropSelf(ModBlocks.SLIMY_SAPLING.get());
 
-        add(ModBlocks.SLIMY_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.SLIMY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+        add(ModBlocks.SLIMY_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.SLIMY_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
 
         dropSelf(ModBlocks.SLIMY_STAIRS.get());
         add(ModBlocks.SLIMY_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_SLAB.get()));
@@ -90,8 +71,9 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return BuiltInRegistries.BLOCK.stream()
-                .filter(block -> Optional.of(BuiltInRegistries.BLOCK.getKey(block))
-                .filter(key -> key.getNamespace().equals(ProductiveSlimes.MODID)).isPresent()).collect(Collectors.toSet());
+        return ModBlocks.BLOCKS.getEntries() // Get all registered entries
+                .stream() // Stream the wrapped objects
+                .flatMap(RegistryObject::stream) // Get the object if available
+                ::iterator; // Create the iterable
     }
 }

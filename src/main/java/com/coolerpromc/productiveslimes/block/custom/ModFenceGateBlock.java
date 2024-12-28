@@ -8,15 +8,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class ModFenceGateBlock extends FenceGateBlock {
-    public ModFenceGateBlock(WoodType type, Properties properties) {
-        super(properties, type);
+    public ModFenceGateBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
 
-        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+        if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }
 

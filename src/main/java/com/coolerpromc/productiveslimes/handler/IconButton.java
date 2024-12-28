@@ -1,8 +1,12 @@
 package com.coolerpromc.productiveslimes.handler;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -15,7 +19,7 @@ public class IconButton extends Button {
     private boolean isOpen;
 
     public IconButton(int x, int y, int width, int height, int closedTextureX, int closedTextureY, int openTextureX, int openTextureY, OnPress onPress) {
-        super(x, y, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
+        super(x, y, width, height, Component.empty(), onPress);
         this.closedTextureX = closedTextureX;
         this.closedTextureY = closedTextureY;
         this.openTextureX = openTextureX;
@@ -24,13 +28,15 @@ public class IconButton extends Button {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         int textureX = isOpen ? closedTextureX : openTextureX;
         int textureY = isOpen ? closedTextureY : openTextureY;
-        pGuiGraphics.blit(iconTexture, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);
 
-        if (this.isHovered()) {
-            pGuiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0x80FFFFFF);
+        Minecraft.getInstance().getTextureManager().bindForSetup(iconTexture);
+        GuiComponent.blit(pPoseStack, this.x, this.y, textureX, textureY, this.width, this.height, 256, 256);
+
+        if (this.isHovered) {
+            GuiComponent.fill(pPoseStack, this.x, this.y, this.x + this.width, this.y + this.height, 0x80FFFFFF);
         }
     }
 

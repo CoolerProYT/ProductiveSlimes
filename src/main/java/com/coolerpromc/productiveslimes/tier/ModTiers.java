@@ -1,11 +1,9 @@
 package com.coolerpromc.productiveslimes.tier;
 
-import net.minecraft.world.level.material.MapColor;
 
 /**
  * @param name                     Name of the tier
  * @param color                    Color of the tier (For items,block and entity)
- * @param mapColorId               Color on the map (ID reference to {@link MapColor})
  * @param cooldown                 Cooldown for slime to drop slimeball (in ticks)
  * @param growthItemKey            Resource key of the item that can be used to grow the slime
  * @param solidingOutputKey        Resource key of the output item for soliding recipe

@@ -20,7 +20,7 @@ public class ModOverworldRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry, Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
         this.addModifiedVanillaOverworldBiomes(mapper, modifiedVanillaOverworldBuilder -> {
-            modifiedVanillaOverworldBuilder.replaceBiome(Biomes.DESERT, ModBiomes.SLIMY_LAND);
+            modifiedVanillaOverworldBuilder.replaceBiome(Biomes.DESERT, ModBiomes.SLIMY_LAND.getKey());
         });
     }
 }

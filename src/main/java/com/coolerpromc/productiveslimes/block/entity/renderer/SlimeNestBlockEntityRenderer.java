@@ -3,10 +3,11 @@ package com.coolerpromc.productiveslimes.block.entity.renderer;
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -14,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -89,8 +89,8 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
         poseStack.pushPose();
         poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX, centerY - blockEntity.getBlockPos().getY() + renderY - 0.05f, centerZ - blockEntity.getBlockPos().getZ() + renderZ);
         poseStack.scale(scaleX, scaleY, scaleZ); // Apply squish scaling
-        poseStack.mulPose(Axis.YP.rotationDegrees(degree));
-        itemRenderer.renderStatic(slime, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 1);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(degree));
+        itemRenderer.renderStatic(slime, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, bufferSource, 1);
         poseStack.popPose();
     }
 

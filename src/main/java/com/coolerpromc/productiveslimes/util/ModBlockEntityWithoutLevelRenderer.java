@@ -4,14 +4,14 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -25,7 +25,7 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
     }
 
     @Override
-    public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         if (isRendering) {
             return;
         }
@@ -64,17 +64,17 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
 
                 drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.pushPose();
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+                pPoseStack.mulPose(Vector3f.YP.rotationDegrees(180));
                 pPoseStack.translate(-1f, 0, -1.6f);
                 drawQuad(builder, pPoseStack, 0.15f, 0, 0.75f, 0.85f, height, 0.75f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.popPose();
                 pPoseStack.pushPose();
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+                pPoseStack.mulPose(Vector3f.YP.rotationDegrees(90));
                 pPoseStack.translate(-1f, 0, 0);
                 drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.popPose();
                 pPoseStack.pushPose();
-                pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+                pPoseStack.mulPose(Vector3f.YN.rotationDegrees(90));
                 pPoseStack.translate(0, 0, -1f);
                 drawQuad(builder, pPoseStack, 0.15f, 0, 0.15f, 0.85f, height, 0.15f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, fluidColor);
                 pPoseStack.popPose();

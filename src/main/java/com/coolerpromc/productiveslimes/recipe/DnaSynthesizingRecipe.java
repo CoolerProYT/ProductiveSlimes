@@ -70,7 +70,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
+    public ItemStack assemble(SimpleContainer simpleContainer) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -80,7 +80,7 @@ public class DnaSynthesizingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem() {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 

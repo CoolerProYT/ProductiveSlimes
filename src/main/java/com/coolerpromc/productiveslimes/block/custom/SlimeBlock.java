@@ -2,27 +2,23 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 
 public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighlightFix {
     public final int color;
 
-    public SlimeBlock(Properties p_56402_) {
-        super(p_56402_);
-        this.color = 0x7F7F7F;
-    }
-
-    public SlimeBlock(MapColor mapColor, int color) {
-        super(BlockBehaviour.Properties.of().mapColor(mapColor).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+    public SlimeBlock(int color) {
+        super(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
         this.color = color;
     }
 
@@ -35,7 +31,7 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
         if (pEntity.isSuppressingBounce()) {
             super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance);
         } else {
-            pEntity.causeFallDamage(pFallDistance, 0.0F, pLevel.damageSources().fall());
+            pEntity.causeFallDamage(pFallDistance, 0.0F, DamageSource.FALL);
         }
     }
 

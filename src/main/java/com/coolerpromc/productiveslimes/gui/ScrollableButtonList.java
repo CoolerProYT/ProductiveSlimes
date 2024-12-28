@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.gui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -42,16 +42,6 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
     }
 
     @Override
-    protected void renderDecorations(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-
-    }
-
-    @Override
-    protected void renderSelection(GuiGraphics pGuiGraphics, int pTop, int pWidth, int pHeight, int pOuterColor, int pInnerColor) {
-
-    }
-
-    @Override
     public void updateNarration(NarrationElementOutput narrationElementOutput) {
 
     }
@@ -64,17 +54,6 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float partialTick) {
-            this.button.setY(y - 4);
-            this.button.render(guiGraphics, mouseX, mouseY, partialTick);
-        }
-
-        @Override
-        public void renderBack(GuiGraphics pGuiGraphics, int pIndex, int pTop, int pLeft, int pWidth, int pHeight, int pMouseX, int pMouseY, boolean pIsMouseOver, float pPartialTick) {
-
-        }
-
-        @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             return this.button.mouseClicked(mouseX, mouseY, button);
         }
@@ -82,6 +61,12 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
         @Override
         public boolean mouseReleased(double mouseX, double mouseY, int button) {
             return this.button.mouseReleased(mouseX, mouseY, button);
+        }
+
+        @Override
+        public void render(PoseStack poseStack, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float partialTick) {
+            this.button.y = (y - 4);
+            this.button.render(poseStack, mouseX, mouseY, partialTick);
         }
     }
 }

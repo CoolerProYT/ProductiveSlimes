@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -45,7 +44,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer, RegistryAccess registryAccess) {
+    public ItemStack assemble(SimpleContainer simpleContainer) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -55,7 +54,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem() {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 

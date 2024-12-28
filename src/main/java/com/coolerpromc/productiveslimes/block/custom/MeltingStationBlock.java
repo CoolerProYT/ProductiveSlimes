@@ -2,7 +2,6 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
-import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,10 +11,8 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,8 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -62,32 +57,20 @@ public class MeltingStationBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof MeltingStationBlockEntity){
-                ((MeltingStationBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof MeltingStationBlockEntity meltingStationBlockEntity){
+                meltingStationBlockEntity.drops();
+
+                ItemStack stack = new ItemStack(this);
+
+                CompoundTag tag = stack.getOrCreateTag();
+                tag.putInt("energy", meltingStationBlockEntity.getEnergyHandler().getEnergyStored());
+                stack.setTag(tag);
+
+                Block.popResource(pLevel, pPos, stack);
             }
         }
 
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
-        List<ItemStack> drops = super.getDrops(pState, pParams);
-        BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-
-        if (blockEntity instanceof MeltingStationBlockEntity) {
-            ItemStack stack = new ItemStack(this);
-            MeltingStationBlockEntity meltingStationBlockEntity = (MeltingStationBlockEntity) blockEntity;
-
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putInt("energy", meltingStationBlockEntity.getEnergyHandler().getEnergyStored());
-            stack.setTag(tag);
-
-            drops.clear();
-            drops.add(stack);
-        }
-
-        return drops;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class ModSurfaceRules {
                         BEDROCK
                 ),
                 SurfaceRules.ifTrue(
-                        SurfaceRules.isBiome(ModBiomes.SLIMY_LAND),
+                        SurfaceRules.isBiome(ModBiomes.SLIMY_LAND.getKey()),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.abovePreliminarySurface(),

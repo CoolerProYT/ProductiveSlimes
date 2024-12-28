@@ -3,14 +3,12 @@ package com.coolerpromc.productiveslimes.screen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.gui.CustomButton;
 import com.coolerpromc.productiveslimes.gui.ScrollableButtonList;
-import com.coolerpromc.productiveslimes.item.ModItems;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -56,41 +54,44 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (this.width - imageWidth) / 2;
         int y = (this.height - imageHeight) / 2;
-        pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
     }
 
     @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        renderBackground(pGuiGraphics);
+    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        renderBackground(poseStack);
 
         int x = (this.width - imageWidth) / 2;
         int y = (this.height - imageHeight) / 2;
 
+        Minecraft minecraft = Minecraft.getInstance();
+        ItemRenderer itemRenderer = minecraft.getItemRenderer();
+
         if (this.description != null && this.displayItem != null){
             if (this.displayItem.getItem() == Items.SLIME_BALL){
-                pGuiGraphics.drawCenteredString(this.font, "Productive Slimes", x + (imageWidth / 2) + 15, y + 10, 0x404040);
+                drawCenteredString(poseStack, this.font, "Productive Slimes", x + (imageWidth / 2) + 15, y + 10, 0x404040);
             } else {
-                pGuiGraphics.drawCenteredString(this.font, displayItem.getHoverName(), x + (imageWidth / 2) + 15, y + 10, 0x404040);
+                drawCenteredString(poseStack, this.font, displayItem.getHoverName(), x + (imageWidth / 2) + 15, y + 10, 0x404040);
             }
 
-            pGuiGraphics.renderItem(displayItem, x + (imageWidth) / 2 + 5, y + 25);
+            itemRenderer.renderAndDecorateItem(displayItem, x + (imageWidth) / 2 + 5, y + 25);
 
             if (pMouseX >= x + (imageWidth) / 2 + 5 && pMouseX < x + 26 + imageWidth/2 && pMouseY >= y + 25 && pMouseY < y + 41) {
-                pGuiGraphics.renderTooltip(this.font, displayItem, pMouseX, pMouseY);
+                renderTooltip(poseStack, displayItem, pMouseX, pMouseY);
             }
 
             List<String> lines = wrapText(description, 25);
 
             for (int i = 0; i < lines.size(); i++){
-                pGuiGraphics.drawCenteredString(this.font, lines.get(i), x + (imageWidth / 2) + 15, y + 50 + (i * 10), 0x404040);
+                drawCenteredString(poseStack, this.font, lines.get(i), x + (imageWidth / 2) + 15, y + 50 + (i * 10), 0x404040);
             }
         }
 
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        super.render(poseStack, pMouseX, pMouseY, pPartialTick);
     }
 
     public static List<String> wrapText(String description, int maxLineLength) {

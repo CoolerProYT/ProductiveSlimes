@@ -2,9 +2,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.DnaSynthesizerBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
-import com.coolerpromc.productiveslimes.block.entity.SolidingStationBlockEntity;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +12,8 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -32,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -65,31 +60,19 @@ public class DnaSynthesizerBlock extends BaseEntityBlock implements TranslucentH
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof DnaSynthesizerBlockEntity){
-                ((DnaSynthesizerBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof DnaSynthesizerBlockEntity dnaSynthesizerBlockEntity){
+                dnaSynthesizerBlockEntity.drops();
+                ItemStack stack = new ItemStack(this);
+
+                CompoundTag energyTag = stack.getOrCreateTag();
+                energyTag.putInt("energy", dnaSynthesizerBlockEntity.getEnergyHandler().getEnergyStored());
+                stack.setTag(energyTag);
+
+                Block.popResource(pLevel, pPos, stack);
             }
         }
 
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
-        List<ItemStack> drops = super.getDrops(pState, pParams);
-        BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-
-        if (blockEntity instanceof DnaSynthesizerBlockEntity dnaSynthesizerBlockEntity) {
-            ItemStack stack = new ItemStack(this);
-
-            CompoundTag energyTag = stack.getOrCreateTag();
-            energyTag.putInt("energy", dnaSynthesizerBlockEntity.getEnergyHandler().getEnergyStored());
-            stack.setTag(energyTag);
-
-            drops.clear();
-            drops.add(stack);
-        }
-
-        return drops;
     }
 
     @Override

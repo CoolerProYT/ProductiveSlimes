@@ -6,8 +6,7 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -16,11 +15,12 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, ProductiveSlimes.MODID, exFileHelper);
+    public ModBlockStateProvider(DataGenerator generator, ExistingFileHelper exFileHelper) {
+        super(generator, ProductiveSlimes.MODID, exFileHelper);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithVariants(ModBlocks.SLIME_NEST.get(), "slime_nest");
         simpleBlockWithVariants(ModBlocks.SLIMEBALL_COLLECTOR.get(), "slimeball_collector");
 
-        simpleBlockWithItem(ModBlocks.SLIMY_GRASS_BLOCK.get(), new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
+        simpleBlock(ModBlocks.SLIMY_GRASS_BLOCK.get(), new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
         blockWithItem(ModBlocks.SLIMY_DIRT);
         blockWithItem(ModBlocks.SLIMY_STONE);
         blockWithItem(ModBlocks.SLIMY_DEEPSLATE);
@@ -121,7 +121,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject){
-        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+        simpleBlock(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
     }
 
     private void simpleBlockWithVariants(Block block, String modelName) {
@@ -147,11 +147,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
     private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
-                models().cross(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
     private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
-        simpleBlockWithItem(blockRegistryObject.get(),
-                models().singleTexture(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+        simpleBlock(blockRegistryObject.get(),
+                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
                         "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 }

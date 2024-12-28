@@ -3,15 +3,14 @@ package com.coolerpromc.productiveslimes.fluid;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
+import com.mojang.math.Vector3f;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
-import org.joml.Vector3f;
 
 import java.awt.*;
 
@@ -28,9 +27,9 @@ public class ModFluids {
             Vector3f FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);
 
             ModFluidResources.FluidStuff fluidStuff = ModFluidResources.register(() -> ModFluidResources.addFluid(
-                    new ModBaseFluidType.FunkyFluidInfo(tiers.name(), tiers.color(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.byId(tiers.mapColorId())),
+                    new ModBaseFluidType.FunkyFluidInfo(tiers.name(), tiers.color(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER),
                     ((properties, funkyFluidInfo) -> new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, tiers.color(), FOG_COLOR, properties)),
-                    (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
+                    LiquidBlock::new,
                     properties -> properties.explosionResistance(1000F).tickRate(20),
                     FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
             ModTierLists.addRegisteredFluidType(name, fluidStuff.getType());

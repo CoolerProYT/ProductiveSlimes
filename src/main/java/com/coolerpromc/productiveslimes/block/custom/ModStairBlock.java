@@ -15,7 +15,7 @@ public class ModStairBlock extends StairBlock {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
 
-        if (!entity.onGround() || entity.isSpectator() || entity.isVehicle()) {
+        if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }
 

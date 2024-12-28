@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingRecipeDisplay;
+import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -12,12 +12,10 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,6 +66,22 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
 
         widgets.add(new Widget() {
             @Override
+            public void render(PoseStack stack, int i, int i1, float v) {
+                Minecraft minecraft = Minecraft.getInstance();
+                minecraft.getTextureManager().bindForSetup(TEXTURE);
+
+                tickCount++;
+                int arrowWidth = (tickCount % 600) * 26 / 600;
+
+                GuiComponent.blit(stack, startPoint.x + 70, startPoint.y + 38, 153, 0, arrowWidth, 8, 256, 256);
+
+                int energyScaled = (int) Math.ceil((double) display.getEnergy() / 10000 * 57);
+                energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
+
+                GuiComponent.blit(stack, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
+            }
+
+            /*@Override
             public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
                 Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
 
@@ -82,7 +96,7 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
                 guiGraphics.blit(TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled);
-            }
+            }*/
 
             @Override
             public List<? extends GuiEventListener> children() {

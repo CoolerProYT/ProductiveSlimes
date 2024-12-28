@@ -15,12 +15,13 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
@@ -32,13 +33,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.joml.Vector3f;
 import org.slf4j.Logger;
 
 import java.awt.*;
@@ -81,19 +81,18 @@ public class CustomContentRegistry {
         InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
         PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
 
-        Pack pack = Pack.readMetaAndCreate(
-                resourcePack.packId(),
-                Component.literal("productiveslimes_resourcepack"),
+        Pack pack = new Pack(
+                resourcePack.getName(),
+                Component.literal("productiveslimes_resources"),
                 true,
-                s -> resourcePack,
+                () -> resourcePack,
+                new PackMetadataSection(Component.literal("productiveslimes_resources"), 9),
                 PackType.CLIENT_RESOURCES,
                 Pack.Position.TOP,
                 PackSource.BUILT_IN
         );
 
-        packRepository.addPackFinder((consumer) -> {
-            consumer.accept(pack);
-        });
+        packRepository.addPackFinder((packConsumer, packConstructor) -> packConsumer.accept(pack));
 
         Minecraft.getInstance().reloadResourcePacks();
     }
@@ -101,18 +100,19 @@ public class CustomContentRegistry {
     public static void handleDatapack(MinecraftServer server) {
         InMemoryDataPack dataPack = new InMemoryDataPack(dataPackResources);
 
-        Pack pack = Pack.readMetaAndCreate(
-                dataPack.packId(),
+        Pack pack = new Pack(
+                dataPack.getName(),
                 Component.literal("productiveslimes_datapack"),
                 true,
-                s -> dataPack,
+                () -> dataPack,
+                new PackMetadataSection(Component.literal("productiveslimes_datapack"), 10),
                 PackType.SERVER_DATA,
                 Pack.Position.TOP,
                 PackSource.BUILT_IN
         );
 
         // Add your pack to the pack repository
-        server.getPackRepository().addPackFinder((consumer) -> consumer.accept(pack));
+        server.getPackRepository().addPackFinder((packConsumer, packConstructor) -> packConsumer.accept(pack));
 
         // Reload data packs to include your new pack
         List<Pack> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
@@ -203,7 +203,7 @@ public class CustomContentRegistry {
         ResourceLocation slimeId = new ResourceLocation(ProductiveSlimes.MODID, slimeName);
 
         RegistryObject<EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()), BuiltInRegistries.ITEM.get(new ResourceLocation(variant.getGrowthItem()))),
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()), ForgeRegistries.ITEMS.getValue(new ResourceLocation(variant.getGrowthItem()))),
                 MobCategory.CREATURE).build(slimeName));
 
         registeredSlimes.put(slimeId, slime);
@@ -212,7 +212,7 @@ public class CustomContentRegistry {
     private static void registerSlimeBlock(DeferredRegister<Block> BLOCKS, CustomVariants variant, DeferredRegister<Item> ITEMS){
         String blockName = variant.getName() + "_slime_block";
         ResourceLocation blockId = new ResourceLocation(ProductiveSlimes.MODID, blockName);
-        RegistryObject<Block> block = registerBlock(blockName, () -> new SlimeBlock(MapColor.byId(variant.getMapColorId()), variant.getColor()), BLOCKS, ITEMS, variant.getName());
+        RegistryObject<Block> block = registerBlock(blockName, () -> new SlimeBlock(variant.getColor()), BLOCKS, ITEMS, variant.getName());
 
         registeredBlocks.put(blockId, block);
     }
@@ -265,9 +265,9 @@ public class CustomContentRegistry {
         Vector3f FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);
 
         FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
-                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())),
+                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER),
                 ((properties, funkyFluidInfo) -> new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, variants.getColor(), FOG_COLOR, properties)),
-                (supplier, properties) -> new LiquidBlock(supplier.get(), properties),
+                LiquidBlock::new,
                 properties -> properties.explosionResistance(1000F).tickRate(20),
                 FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
     }
@@ -278,7 +278,7 @@ public class CustomContentRegistry {
         // Prepare pack.mcmeta content
         String packMcmetaContent = "{\n" +
                 "  \"pack\": {\n" +
-                "    \"pack_format\": 34,\n" +
+                "    \"pack_format\": 9,\n" +
                 "    \"description\": \"Custom variants resources\"\n" +
                 "  }\n" +
                 "}";

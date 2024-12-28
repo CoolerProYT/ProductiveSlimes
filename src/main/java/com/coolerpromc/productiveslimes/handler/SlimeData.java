@@ -2,29 +2,16 @@ package com.coolerpromc.productiveslimes.handler;
 
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime){
-    public static final Codec<SlimeData> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    Codec.INT.fieldOf("size").forGetter(SlimeData::size),
-                    Codec.INT.fieldOf("color").forGetter(SlimeData::color),
-                    Codec.INT.fieldOf("cooldown").forGetter(SlimeData::cooldown),
-                    ItemStack.CODEC.fieldOf("drop").forGetter(SlimeData::dropItem),
-                    ItemStack.CODEC.fieldOf("growth_item").forGetter(SlimeData::growthItem),
-                    BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("slime").forGetter(SlimeData::slime)
-            ).apply(instance, (size, color, cooldown, dropItem, growthItem, slime) -> new SlimeData(size, color, cooldown, dropItem, growthItem, (EntityType<BaseSlime>) slime))
-    );
-
     public static SlimeData fromSlime(Slime slime) {
         return new SlimeData(
                 slime.getSize(),
@@ -43,7 +30,7 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         tag.put("drop", dropItem.save(new CompoundTag()));
         tag.put("growth_item", growthItem.save(new CompoundTag()));
         if (slime != null) {
-            tag.putString("slime", BuiltInRegistries.ENTITY_TYPE.getKey(slime).toString());
+            tag.putString("slime", ForgeRegistries.ENTITY_TYPES.getKey(slime).toString());
         }
         return tag;
     }
@@ -51,7 +38,7 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
     public static SlimeData fromTag(CompoundTag tag) {
         EntityType<BaseSlime> entityType = null;
         if (tag.contains("slime")) {
-            entityType = (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(tag.getString("slime")));
+            entityType = (EntityType<BaseSlime>) ForgeRegistries.ENTITY_TYPES.getDelegate(new ResourceLocation(tag.getString("slime"))).get().value();
         }
         return new SlimeData(
                 tag.getInt("size"),

@@ -24,13 +24,15 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModConfiguredFeatures;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModPlacedFeatures;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.BlockItem;
@@ -96,11 +98,15 @@ public class ProductiveSlimes
         ModFluids.registerTierFluids();
         ModFluidResources.register(modEventBus);
 
-        ModCreativeTabs.register(modEventBus);
+        ModCreativeTabs.register();
         ModRecipes.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModVillagers.register(modEventBus);
+
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
+        ModBiomes.register(modEventBus);
 
         ModTerrablender.registerBiomes();
 
@@ -173,13 +179,6 @@ public class ProductiveSlimes
             event.enqueueWork(() -> {
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
-
-                registerBlockRenderLayer(
-                        ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.FLUID_TANK.get()
-                );
-
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
 
             CustomContentRegistry.handleResourcePack();
@@ -310,7 +309,7 @@ public class ProductiveSlimes
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (BuiltInRegistries.ITEM.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")) instanceof BucketItem bucketItem){
+                if (ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value() instanceof BucketItem bucketItem){
                     event.register((itemStack, pTintIndex) -> pTintIndex == 1 ? bucketItem.getColor() : 0xFFFFFFFF, bucketItem);
                 }
             }
@@ -331,12 +330,6 @@ public class ProductiveSlimes
                         ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), RenderType.translucent());
                         ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), RenderType.translucent());
                     });
-        }
-
-        private static void registerBlockRenderLayer(Block... blocks) {
-            for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
-            }
         }
 
         public static void registerAllSlimeBlockRenderLayer() {

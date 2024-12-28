@@ -1,18 +1,18 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, ProductiveSlimes.MODID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ProductiveSlimes.MODID);
 
     public static final Supplier<MenuType<MeltingStationMenu>> MELTING_STATION_MENU =
             registerMenuType("melting_station_menu", MeltingStationMenu::new);
