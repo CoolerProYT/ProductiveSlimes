@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-17T14:41:55.8529185	Tags for minecraft:block mod id productiveslimes
+// 1.20.1	2024-12-28T12:59:58.7389459	Tags for minecraft:block mod id productiveslimes
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/forge/tags/blocks/needs_netherite_tool.json
 789ec8f42e079a48a9e7e0c3fd1ff3ca0a0a7579 data/minecraft/tags/blocks/deepslate_ore_replaceables.json
 c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/blocks/dirt.json
@@ -8,9 +8,9 @@ c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/blocks/dirt.json
 7714699fa19d75c6fcf72328a2206421c806f245 data/minecraft/tags/blocks/logs.json
 7714699fa19d75c6fcf72328a2206421c806f245 data/minecraft/tags/blocks/logs_that_burn.json
 7714699fa19d75c6fcf72328a2206421c806f245 data/minecraft/tags/blocks/mineable/axe.json
-6ea3f266666fd02a5d8a6873b24d752b27ae5786 data/minecraft/tags/blocks/mineable/pickaxe.json
+a06e875be28e75ea19a0bf774635d4085d957a24 data/minecraft/tags/blocks/mineable/pickaxe.json
 c3355c0f268b4aab130336c7232ffe92ecfb095f data/minecraft/tags/blocks/mineable/shovel.json
-996df5e16c090a7c099d07bc26cffa80d3fecc02 data/minecraft/tags/blocks/needs_stone_tool.json
+2ff5d64e0949b6a434856e7f1542bcdc090ed72c data/minecraft/tags/blocks/needs_stone_tool.json
 32c236b5ef67be78fd8c72c6660d39c761939a58 data/minecraft/tags/blocks/planks.json
 9212e131be6142ef14d02662c8eea2508b15a871 data/minecraft/tags/blocks/saplings.json
 4f14ddc0c347cc8fdbdabdb10f95eb6878c9f60e data/minecraft/tags/blocks/stone_ore_replaceables.json

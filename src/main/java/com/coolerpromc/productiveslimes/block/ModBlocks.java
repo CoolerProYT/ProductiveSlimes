@@ -48,8 +48,14 @@ public class ModBlocks {
     public static final RegistryObject<Block> SQUEEZER = registerBlock("squeezer",
             () -> new SqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
 
+    public static final RegistryObject<Block> SLIME_NEST = registerBlock("slime_nest",
+            () -> new SlimeNestBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+
     public static final RegistryObject<Block> FLUID_TANK = registerBlockWithoutItem("fluid_tank",
             () -> new FluidTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+
+    public static final RegistryObject<Block> SLIMEBALL_COLLECTOR = registerBlock("slimeball_collector",
+            () -> new SlimeballCollectorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block",
             () -> new SlimyBlock(BlockBehaviour.Properties.copy(Blocks.GRASS_BLOCK)));

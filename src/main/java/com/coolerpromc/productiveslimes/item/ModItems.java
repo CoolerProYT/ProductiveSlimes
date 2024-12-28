@@ -25,6 +25,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
 
+    public static final RegistryObject<Item> SLIME_NEST_SPEED_UPGRADE_1 = ITEMS.register("slime_nest_speed_upgrade_1", () -> new NestUpgradeItem(new Item.Properties(), 1.5f));
+    public static final RegistryObject<Item> SLIME_NEST_SPEED_UPGRADE_2 = ITEMS.register("slime_nest_speed_upgrade_2", () -> new NestUpgradeItem(new Item.Properties(), 2f));
+
     public static final RegistryObject<Item> ENERGY_SLIME_BALL = ITEMS.register("energy_slimeball", () -> new SlimeballItem(0xFFFFFF70));
 
     public static final RegistryObject<Item> SLIME_DNA = ITEMS.register("slime_dna", () -> new DnaItem(0xFF7BC35C));
