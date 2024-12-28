@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
 public class ModCreativeTabs {
-    public static final CreativeModeTab PRODUCTIVE_SLIMES_TAB = new CreativeModeTab("productive_slimes") {
+    public static final CreativeModeTab PRODUCTIVE_SLIMES_TAB = new CreativeModeTab("productiveslimes") {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(Items.SLIME_BLOCK);
