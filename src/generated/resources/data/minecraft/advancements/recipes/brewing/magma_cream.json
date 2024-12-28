@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slimy": {
+    "has_slime_ball": {
       "conditions": {
         "items": [
           {
             "items": [
-              "productiveslimes:slimy_planks"
+              "minecraft:blaze_powder"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slimy_trapdoor"
+        "recipe": "minecraft:magma_cream"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_slimy",
+      "has_slime_ball",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slimy_trapdoor"
+      "minecraft:magma_cream"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

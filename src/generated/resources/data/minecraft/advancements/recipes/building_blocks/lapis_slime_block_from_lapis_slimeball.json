@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:lapis_slime_block_from_lapis_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

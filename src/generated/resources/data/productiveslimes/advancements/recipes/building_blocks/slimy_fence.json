@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slimy_stone": {
+    "has_slimy": {
       "conditions": {
         "items": [
           {
             "items": [
-              "productiveslimes:slimy_stone"
+              "productiveslimes:slimy_planks"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slimy_stone_button"
+        "recipe": "productiveslimes:slimy_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_slimy_stone",
+      "has_slimy",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slimy_stone_button"
+      "productiveslimes:slimy_fence"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

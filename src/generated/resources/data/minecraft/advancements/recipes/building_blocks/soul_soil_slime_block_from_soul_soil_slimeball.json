@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:soul_soil_slime_block_from_soul_soil_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

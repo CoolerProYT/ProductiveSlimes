@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:soul_sand_slimeball_from_soul_sand_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

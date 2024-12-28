@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:diorite_slimeball_from_diorite_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

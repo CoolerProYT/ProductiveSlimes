@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:slime_nest_speed_upgrade_1"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

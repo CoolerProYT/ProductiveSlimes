@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:glowstone_slimeball_from_glowstone_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

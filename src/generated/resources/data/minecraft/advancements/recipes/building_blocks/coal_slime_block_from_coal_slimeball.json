@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:coal_slime_block_from_coal_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

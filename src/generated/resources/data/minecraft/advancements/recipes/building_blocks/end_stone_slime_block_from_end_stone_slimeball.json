@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:end_stone_slime_block_from_end_stone_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

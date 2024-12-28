@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:slimy_wood"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

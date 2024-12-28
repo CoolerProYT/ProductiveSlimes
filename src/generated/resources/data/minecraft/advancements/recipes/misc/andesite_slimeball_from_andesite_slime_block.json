@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:andesite_slimeball_from_andesite_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

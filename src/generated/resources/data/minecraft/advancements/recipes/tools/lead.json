@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slimy_stone": {
+    "has_deepslate": {
       "conditions": {
         "items": [
           {
             "items": [
-              "productiveslimes:slimy_stone"
+              "minecraft:lava_bucket"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slimy_stone_pressure_plate"
+        "recipe": "minecraft:lead"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_slimy_stone",
+      "has_deepslate",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slimy_stone_pressure_plate"
+      "minecraft:lead"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

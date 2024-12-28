@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +35,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithVariants(ModBlocks.SLIME_NEST.get(), "slime_nest");
         simpleBlockWithVariants(ModBlocks.SLIMEBALL_COLLECTOR.get(), "slimeball_collector");
 
-        simpleBlock(ModBlocks.SLIMY_GRASS_BLOCK.get(), new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
+        blockWithItem(ModBlocks.SLIMY_GRASS_BLOCK, new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
         blockWithItem(ModBlocks.SLIMY_DIRT);
         blockWithItem(ModBlocks.SLIMY_STONE);
         blockWithItem(ModBlocks.SLIMY_DEEPSLATE);
@@ -95,6 +96,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void registerSlimeBlock(Block block, String textureName){
         ModelFile customModel = models().withExistingParent("block/" + textureName, mcLoc("block/block"))
+                .renderType("translucent")
                 .texture("particle", modLoc("block/template_slime_block"))
                 .texture("texture", modLoc("block/template_slime_block"))
                 .element().from(0, 0, 0).to(16, 16, 16)
@@ -122,6 +124,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject){
         simpleBlock(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+        simpleBlockItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
+    }
+
+    private void blockWithItem(RegistryObject<Block> blockRegistryObject, ModelFile model){
+        simpleBlock(blockRegistryObject.get(), model);
+        simpleBlockItem(blockRegistryObject.get(), model);
     }
 
     private void simpleBlockWithVariants(Block block, String modelName) {
@@ -153,5 +161,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(blockRegistryObject.get(),
                 models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
                         "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
+        simpleBlockItem(blockRegistryObject.get(), models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                "all", blockTexture(blockRegistryObject.get())));
     }
 }

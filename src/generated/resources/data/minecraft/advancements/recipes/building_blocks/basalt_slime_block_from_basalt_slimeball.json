@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:basalt_slime_block_from_basalt_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:magma_slimeball_from_magma_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

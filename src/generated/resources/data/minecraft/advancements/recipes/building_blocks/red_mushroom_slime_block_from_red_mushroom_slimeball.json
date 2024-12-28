@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:red_mushroom_slime_block_from_red_mushroom_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

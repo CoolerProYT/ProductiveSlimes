@@ -28,6 +28,5 @@
     "recipes": [
       "productiveslimes:slimy_planks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

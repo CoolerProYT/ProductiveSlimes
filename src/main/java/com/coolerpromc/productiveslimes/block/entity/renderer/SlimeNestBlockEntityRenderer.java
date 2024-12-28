@@ -30,7 +30,8 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
     public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if (blockEntity.getSlime() == null) return;
         if (blockEntity.getSlime().isEmpty()) return;
-        if (blockEntity.getSlime().getTag().contains("slime_data")) return;
+        if (!blockEntity.getSlime().getTag().contains("slime_data")) return;
+
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack slime = blockEntity.getSlime();
         Level level = blockEntity.getLevel();

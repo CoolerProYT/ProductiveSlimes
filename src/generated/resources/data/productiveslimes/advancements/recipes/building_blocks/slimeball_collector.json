@@ -28,6 +28,5 @@
     "recipes": [
       "productiveslimes:slimeball_collector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:slimeball_fragment"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:gravel_slime_block_from_gravel_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

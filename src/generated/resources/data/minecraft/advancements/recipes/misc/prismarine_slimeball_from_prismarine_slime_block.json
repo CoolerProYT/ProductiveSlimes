@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:prismarine_slimeball_from_prismarine_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

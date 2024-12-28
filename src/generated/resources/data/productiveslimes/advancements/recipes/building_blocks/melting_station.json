@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:melting_station"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

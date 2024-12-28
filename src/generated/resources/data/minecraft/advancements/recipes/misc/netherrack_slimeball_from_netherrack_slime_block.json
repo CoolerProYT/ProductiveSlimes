@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:netherrack_slimeball_from_netherrack_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

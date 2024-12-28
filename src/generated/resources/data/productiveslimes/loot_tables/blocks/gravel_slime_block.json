@@ -1,5 +1,4 @@
 {
-  "type": "minecraft:block",
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -16,6 +15,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "productiveslimes:blocks/gravel_slime_block"
+  ]
 }

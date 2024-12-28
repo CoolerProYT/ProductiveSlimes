@@ -80,8 +80,6 @@ public class ModTierLists {
     }
 
     public static void addRegisteredSlimeballItem(String name, RegistryObject<Item> item){
-        System.out.println("Adding slimeball item: " + name + "_slimeball");
-        System.out.println("Location: " + new ResourceLocation(ProductiveSlimes.MODID, name + "_slimeball"));
         registeredSlimeballItem.put(new ResourceLocation(ProductiveSlimes.MODID, name + "_slimeball"), item);
     }
 

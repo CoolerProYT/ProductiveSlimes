@@ -74,13 +74,13 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
                 drawString(poseStack, Minecraft.getInstance().font, multiplier, x + 123, y + 64, 0xFFFFFF);
             }
             poseStack.popPose();
-            poseStack.pushPose();
-            poseStack.scale(0.75f, 0.75f, 0.75f);
             List<FormattedCharSequence> lines = font.split(dropItem, 85);
             for (int i = 0; i < lines.size(); i++) {
-                font.draw(new PoseStack(), lines.get(i), x + 123, y + 76 + (i * font.lineHeight), 0xFFFFFF);
+                poseStack.pushPose();
+                poseStack.scale(0.75f, 0.75f, 0.75f);
+                font.draw(poseStack, lines.get(i), x + 123, y + 76 + (i * font.lineHeight), 0xFFFFFF);
+                poseStack.popPose();
             }
-            poseStack.popPose();
         }
     }
 }

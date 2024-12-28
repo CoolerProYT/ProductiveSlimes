@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:copper_slimeball_from_copper_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:slimy_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:gold_slimeball_from_gold_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

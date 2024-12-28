@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:snow_slimeball_from_snow_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

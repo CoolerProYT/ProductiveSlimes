@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:quartz_slimeball_from_quartz_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

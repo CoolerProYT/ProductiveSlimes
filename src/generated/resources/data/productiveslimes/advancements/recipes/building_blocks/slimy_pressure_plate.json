@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slime_ball": {
+    "has_slimy_planks": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:piston"
+              "productiveslimes:slimy_planks"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:sticky_piston"
+        "recipe": "productiveslimes:slimy_pressure_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_slime_ball",
+      "has_slimy_planks",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:sticky_piston"
+      "productiveslimes:slimy_pressure_plate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

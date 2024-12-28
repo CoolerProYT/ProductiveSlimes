@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:fluid_tank"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

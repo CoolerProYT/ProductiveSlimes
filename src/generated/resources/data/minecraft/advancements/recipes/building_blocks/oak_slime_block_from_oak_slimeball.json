@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:oak_slime_block_from_oak_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:cactus_slime_block_from_cactus_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

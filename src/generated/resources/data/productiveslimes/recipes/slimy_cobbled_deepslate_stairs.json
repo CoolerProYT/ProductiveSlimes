@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "group": "slimy_cobbled_deepslate",
   "key": {
     "#": {
@@ -15,6 +14,5 @@
   "result": {
     "count": 4,
     "item": "productiveslimes:slimy_cobbled_deepslate_stairs"
-  },
-  "show_notification": true
+  }
 }

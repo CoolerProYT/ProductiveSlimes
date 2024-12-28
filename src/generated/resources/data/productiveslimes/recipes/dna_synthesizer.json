@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "A": {
       "item": "minecraft:iron_ingot"
@@ -19,6 +18,5 @@
   ],
   "result": {
     "item": "productiveslimes:dna_synthesizer"
-  },
-  "show_notification": true
+  }
 }

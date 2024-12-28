@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:mud_slime_block_from_mud_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

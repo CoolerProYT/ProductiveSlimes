@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:moss_slimeball_from_moss_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

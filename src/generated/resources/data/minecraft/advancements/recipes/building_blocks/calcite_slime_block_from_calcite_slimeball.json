@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:calcite_slime_block_from_calcite_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

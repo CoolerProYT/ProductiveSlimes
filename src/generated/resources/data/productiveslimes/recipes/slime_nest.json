@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "A": {
       "item": "productiveslimes:slimy_grass_block"
@@ -19,6 +18,5 @@
   ],
   "result": {
     "item": "productiveslimes:slime_nest"
-  },
-  "show_notification": true
+  }
 }

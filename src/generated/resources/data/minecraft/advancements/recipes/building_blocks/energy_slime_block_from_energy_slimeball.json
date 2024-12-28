@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:energy_slime_block_from_energy_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.fluid;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -81,7 +82,7 @@ public class ModFluidResources {
             FLUID_BLOCK = BLOCKS.register(fluidBlockName, () -> block.apply(FLUID, properties.lightLevel((state) -> {
                 return type.getLightLevel();
             }).randomTicks().strength(100.0F).noLootTable()));
-            FLUID_BUCKET = ITEMS.register(fluidBucketName, () -> new BucketItem(FLUID.get(), new BucketItem.Properties().craftRemainder(Items.BUCKET).stacksTo(64), color));
+            FLUID_BUCKET = ITEMS.register(fluidBucketName, () -> new BucketItem(FLUID.get(), new BucketItem.Properties().craftRemainder(Items.BUCKET).stacksTo(64).tab(CreativeModeTab.TAB_MISC), color));
             PROPERTIES.bucket(FLUID_BUCKET).block(FLUID_BLOCK);
         }
 

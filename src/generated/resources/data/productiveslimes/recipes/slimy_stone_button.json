@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "redstone",
   "group": "slimy_stone",
   "ingredients": [
     {

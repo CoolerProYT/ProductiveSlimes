@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:dripstone_slimeball_from_dripstone_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

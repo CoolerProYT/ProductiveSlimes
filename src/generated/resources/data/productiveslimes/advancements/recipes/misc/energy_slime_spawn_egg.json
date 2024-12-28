@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:energy_slime_spawn_egg"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

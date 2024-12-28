@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:slimy_cobblestone_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -193,7 +193,7 @@ public class CustomContentRegistry {
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
         RegistryObject<Item> item = ITEMS.register(itemName,
-                () -> new ForgeSpawnEggItem(getSlimeForVariant(variant.getName()), variant.getColor(), variant.getColor(), new Item.Properties()));
+                () -> new ForgeSpawnEggItem(getSlimeForVariant(variant.getName()), variant.getColor(), variant.getColor(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
         registeredSpawnEggItems.put(itemId, item);
     }
@@ -253,7 +253,7 @@ public class CustomContentRegistry {
     }
 
     private static RegistryObject<BlockItem> registerBlockItem(String name, RegistryObject<Block> block, DeferredRegister<Item> ITEMS, String variantName){
-        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
     }
 
     private static void registerFluid(CustomVariants variants) {

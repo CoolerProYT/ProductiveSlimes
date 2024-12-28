@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_deepslate": {
+    "has_slime_ball": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:lava_bucket"
+              "minecraft:piston"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lead"
+        "recipe": "minecraft:sticky_piston"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_deepslate",
+      "has_slime_ball",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lead"
+      "minecraft:sticky_piston"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

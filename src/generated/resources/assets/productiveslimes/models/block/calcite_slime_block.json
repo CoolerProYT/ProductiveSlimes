@@ -84,6 +84,7 @@
       ]
     }
   ],
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "productiveslimes:block/template_slime_block",
     "texture": "productiveslimes:block/template_slime_block"

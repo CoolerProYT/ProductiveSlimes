@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:tuff_slime_block_from_tuff_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

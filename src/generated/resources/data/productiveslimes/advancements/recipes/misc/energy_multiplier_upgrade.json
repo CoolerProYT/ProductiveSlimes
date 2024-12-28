@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:energy_multiplier_upgrade"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

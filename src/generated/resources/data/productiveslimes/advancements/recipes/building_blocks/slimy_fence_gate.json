@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slimy_button"
+        "recipe": "productiveslimes:slimy_fence_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slimy_button"
+      "productiveslimes:slimy_fence_gate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

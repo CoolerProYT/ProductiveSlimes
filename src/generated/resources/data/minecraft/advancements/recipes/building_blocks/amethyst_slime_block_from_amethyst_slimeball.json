@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:amethyst_slime_block_from_amethyst_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

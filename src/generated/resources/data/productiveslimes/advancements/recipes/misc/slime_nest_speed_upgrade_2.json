@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_slimy": {
+    "has_slime_nest_speed_upgrade_1": {
       "conditions": {
         "items": [
           {
             "items": [
-              "productiveslimes:slimy_planks"
+              "productiveslimes:gold_slime_block"
             ]
           }
         ]
@@ -15,21 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "productiveslimes:slimy_fence_gate"
+        "recipe": "productiveslimes:slime_nest_speed_upgrade_2"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_slimy",
+      "has_slime_nest_speed_upgrade_1",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "productiveslimes:slimy_fence_gate"
+      "productiveslimes:slime_nest_speed_upgrade_2"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

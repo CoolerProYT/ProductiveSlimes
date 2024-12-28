@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:stone_slime_block_from_stone_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

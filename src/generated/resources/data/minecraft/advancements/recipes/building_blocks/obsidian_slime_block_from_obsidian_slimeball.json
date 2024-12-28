@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:obsidian_slime_block_from_obsidian_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
   "key": {
     "A": {
       "item": "minecraft:deepslate"
@@ -16,6 +15,5 @@
   ],
   "result": {
     "item": "productiveslimes:soliding_station"
-  },
-  "show_notification": true
+  }
 }

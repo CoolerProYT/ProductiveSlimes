@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:cable"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

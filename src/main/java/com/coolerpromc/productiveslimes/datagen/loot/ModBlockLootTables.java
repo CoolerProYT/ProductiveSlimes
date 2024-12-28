@@ -14,14 +14,7 @@ public class ModBlockLootTables extends BlockLoot {
 
     @Override
     protected void addTables() {
-        dropSelf(ModBlocks.MELTING_STATION.get());
-        dropSelf(ModBlocks.LIQUID_SOLIDING_STATION.get());
-        dropSelf(ModBlocks.ENERGY_GENERATOR.get());
         dropSelf(ModBlocks.CABLE.get());
-        dropSelf(ModBlocks.DNA_EXTRACTOR.get());
-        dropSelf(ModBlocks.DNA_SYNTHESIZER.get());
-        dropSelf(ModBlocks.FLUID_TANK.get());
-        dropSelf(ModBlocks.SLIME_SQUEEZER.get());
         dropSelf(ModBlocks.SLIME_NEST.get());
         dropSelf(ModBlocks.SLIMEBALL_COLLECTOR.get());
 

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "slimy",
   "key": {
     "#": {
@@ -17,6 +16,5 @@
   "result": {
     "count": 3,
     "item": "productiveslimes:slimy_fence"
-  },
-  "show_notification": true
+  }
 }

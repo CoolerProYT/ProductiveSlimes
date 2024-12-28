@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:blackstone_slimeball_from_blackstone_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

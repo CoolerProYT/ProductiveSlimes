@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": {
       "item": "minecraft:slime_ball"
@@ -19,6 +18,5 @@
   ],
   "result": {
     "item": "productiveslimes:energy_slime_spawn_egg"
-  },
-  "show_notification": true
+  }
 }

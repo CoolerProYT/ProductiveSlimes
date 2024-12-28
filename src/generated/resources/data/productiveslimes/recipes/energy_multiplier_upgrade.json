@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": {
       "item": "minecraft:iron_ingot"
@@ -19,6 +18,5 @@
   ],
   "result": {
     "item": "productiveslimes:energy_multiplier_upgrade"
-  },
-  "show_notification": true
+  }
 }

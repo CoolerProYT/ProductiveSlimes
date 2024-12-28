@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:red_sand_slimeball_from_red_sand_slime_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

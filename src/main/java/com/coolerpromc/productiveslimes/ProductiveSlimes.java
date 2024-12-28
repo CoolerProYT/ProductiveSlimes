@@ -333,6 +333,10 @@ public class ProductiveSlimes
         }
 
         public static void registerAllSlimeBlockRenderLayer() {
+            if (ModBlocks.ENERGY_SLIME_BLOCK.get() instanceof SlimeBlock block){
+                ItemBlockRenderTypes.setRenderLayer(block, RenderType.translucent());
+            }
+
             for (Tier tier : Tier.values()) {
                 ModTiers modTiers = ModTierLists.getTierByName(tier);
 

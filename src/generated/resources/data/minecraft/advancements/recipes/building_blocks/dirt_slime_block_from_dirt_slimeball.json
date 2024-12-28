@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:dirt_slime_block_from_dirt_slimeball"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

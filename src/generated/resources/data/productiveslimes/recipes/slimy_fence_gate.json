@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "redstone",
   "group": "slimy",
   "key": {
     "#": {
@@ -16,6 +15,5 @@
   ],
   "result": {
     "item": "productiveslimes:slimy_fence_gate"
-  },
-  "show_notification": true
+  }
 }

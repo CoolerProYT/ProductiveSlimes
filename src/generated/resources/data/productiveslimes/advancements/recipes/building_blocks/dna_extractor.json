@@ -30,6 +30,5 @@
     "recipes": [
       "productiveslimes:dna_extractor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
