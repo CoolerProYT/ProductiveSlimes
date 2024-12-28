@@ -21,6 +21,7 @@ public class ModItems {
     public static final RegistryObject<Item> FLUID_TANK = ITEMS.register("fluid_tank", () -> new FluidTankBlockItem(ModBlocks.FLUID_TANK.get(), new Item.Properties()));
 
     public static final RegistryObject<Item> SLIMEBALL_FRAGMENT = ITEMS.register("slimeball_fragment", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SLIME_ITEM  = ITEMS.register("slime_item", () -> new SlimeItem(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> ENERGY_MULTIPLIER_UPGRADE = ITEMS.register("energy_multiplier_upgrade", () -> new EnergyMultiplierUpgrade(new Item.Properties()));
 

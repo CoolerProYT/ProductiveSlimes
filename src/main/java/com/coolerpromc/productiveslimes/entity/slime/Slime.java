@@ -26,11 +26,33 @@ import net.minecraftforge.registries.RegistryObject;
 public class Slime extends BaseSlime {
     private final RegistryObject<Item> item;
     private final ItemLike growthItem;
+    private final int color;
+    private final int cooldown;
+    private final EntityType<BaseSlime> entityType;
 
-    public Slime(EntityType<? extends net.minecraft.world.entity.monster.Slime> entityType, Level level, int cooldown, int color, RegistryObject<Item> item, ItemLike growthItem) {
+    public Slime(EntityType<BaseSlime> entityType, Level level, int cooldown, int color, RegistryObject<Item> item, ItemLike growthItem) {
         super(entityType, level, cooldown, growthItem);
         this.item = item;
         this.growthItem = growthItem;
+        this.color = color;
+        this.cooldown = cooldown;
+        this.entityType = entityType;
+    }
+
+    public ItemStack getItem() {
+        return item.get().asItem().getDefaultInstance();
+    }
+    public ItemStack getGrowthItem() {
+        return growthItem.asItem().getDefaultInstance();
+    }
+    public EntityType<BaseSlime> getEntityType() {
+        return entityType;
+    }
+    public int getColor() {
+        return color;
+    }
+    public int getCooldown() {
+        return cooldown;
     }
 
     @Override
