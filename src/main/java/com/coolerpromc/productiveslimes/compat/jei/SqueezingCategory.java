@@ -19,6 +19,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
+
 public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID, "squeezing");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/slime_squeezer_gui.png");
@@ -66,11 +68,17 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
         GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(SqueezingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            minecraft.font.draw(stack, text, (float) mouseX, (float) mouseY, 0xFFFFFF);
+            return List.of(text);
         }
+
+        return List.of();
     }
 
     @Override

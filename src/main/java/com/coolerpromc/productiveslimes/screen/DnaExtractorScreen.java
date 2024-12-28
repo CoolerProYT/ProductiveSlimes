@@ -37,7 +37,7 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-       blit(poseStack, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        blit(poseStack, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         int energyScaled = this.menu.getEnergyStoredScaled();
 
         blit(poseStack, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
@@ -63,7 +63,7 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
         Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
             List<Component> tooltip = Collections.singletonList(text);
-            this.renderComponentTooltip(pPoseStack, tooltip, pMouseY, pMouseY);
+            renderComponentTooltip(pPoseStack, tooltip, pMouseX, pMouseY);
         }
     }
 }

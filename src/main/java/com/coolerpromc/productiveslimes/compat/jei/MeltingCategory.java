@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"melting");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/melting_station_gui.png");
@@ -70,11 +72,17 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
         GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(MeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            minecraft.font.draw(stack, text, (float) mouseX, (float) mouseY, 0xFFFFFF);
+            return List.of(text);
         }
+
+        return List.of();
     }
 
     @Override

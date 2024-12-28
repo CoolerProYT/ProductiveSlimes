@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.DnaExtracting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -70,7 +71,8 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
             @Override
             public void render(PoseStack stack, int i, int i1, float v) {
                 Minecraft minecraft = Minecraft.getInstance();
-                minecraft.getTextureManager().bindForSetup(TEXTURE);
+                RenderSystem.setShaderTexture(0, TEXTURE);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
                 tickCount++;
                 int arrowWidth = (tickCount % 600) * 26 / 600;
@@ -84,7 +86,7 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
 
                 Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", display.getOutputChance() * 100) + "%");
 
-                minecraft.font.draw(stack, outputChance, startPoint.x + 7, startPoint.y + 71, 0xFFFFFF);
+                minecraft.font.draw(stack, outputChance, startPoint.x + 7, startPoint.y + 72, 0xFFFFFF);
             }
 
             @Override

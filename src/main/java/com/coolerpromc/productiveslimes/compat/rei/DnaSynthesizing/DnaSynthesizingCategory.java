@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -74,38 +75,19 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
         widgets.add(new Widget() {
             @Override
             public void render(PoseStack stack, int i, int i1, float v) {
-                Minecraft minecraft = Minecraft.getInstance();
-                minecraft.getTextureManager().bindForSetup(TEXTURE);
+                RenderSystem.setShaderTexture(0, TEXTURE);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
                 tickCount++;
                 int arrowWidth = (tickCount % 600) * 26 / 600;
 
-                GuiComponent.blit(stack, startPoint.x + 70, startPoint.y + 38, 153, 0, arrowWidth, 8, 256, 256);
+                GuiComponent.blit(stack, startPoint.x + 77, startPoint.y + 38, 153, 0, arrowWidth, 8, 256, 256);
 
                 int energyScaled = (int) Math.ceil((double) display.getEnergy() / 10000 * 57);
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
                 GuiComponent.blit(stack, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
             }
-
-            /*@Override
-            public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
-
-                // Arrow
-                tickCount++;
-                int arrowWidth = (tickCount % 600) * 26 / 600;
-                int dnaHeight = (tickCount % 600) * 23 / 600;
-
-                guiGraphics.blit(TEXTURE, startPoint.x + 77, startPoint.y + 38, 153, 0, arrowWidth, 8);
-
-                // Energy bar
-                int energyScaled = (int) Math.ceil((double) display.getEnergy() / 10000 * 57);
-                energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
-
-                guiGraphics.blit(TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled);
-                guiGraphics.blit(TEXTURE, startPoint.x + 36, startPoint.y + 30, 153, 66, 6, dnaHeight);
-            }*/
 
             @Override
             public List<? extends GuiEventListener> children() {

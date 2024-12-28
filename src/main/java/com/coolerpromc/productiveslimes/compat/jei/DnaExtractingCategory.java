@@ -19,6 +19,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
+
 public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"dna_extracting");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/dna_extractor_gui.png");
@@ -67,13 +69,20 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
         GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+
+        Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
+        minecraft.font.draw(stack, outputChance, 3, 68, 0xFFFFFF);
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(DnaExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            minecraft.font.draw(stack, text, (float) mouseX, (float) mouseY, 0xFFFFFF);
+            return List.of(text);
         }
-        Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
-        minecraft.font.draw(stack, outputChance, 3, 68, 0xFFFFFF);
+
+        return List.of();
     }
 
     @Override
