@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -24,9 +25,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -111,15 +113,15 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ENERGY) return energy.cast();
-        if (cap == ForgeCapabilities.ITEM_HANDLER) return items.cast();
+        if (cap == CapabilityEnergy.ENERGY) return energy.cast();
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return items.cast();
 
         return super.getCapability(cap, side);
     }
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.productiveslimes.energy_generator");
+        return new TranslatableComponent("block.productiveslimes.energy_generator");
     }
 
     @Nullable
@@ -169,9 +171,8 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         if (!this.level.isClientSide) {
             for (Direction direction : Direction.values()) {
                 Level level = this.level;
-                BlockPos neighborPos = this.getBlockPos().relative(direction);
 
-                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()));
+                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()));
 
                 if (neighborEnergy.get().isPresent()) {
                     LazyOptional<IEnergyStorage> neighborStorage = neighborEnergy.get();

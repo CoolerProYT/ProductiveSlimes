@@ -12,7 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ProductiveSlimes.MODID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS, ProductiveSlimes.MODID);
 
     public static final Supplier<MenuType<MeltingStationMenu>> MELTING_STATION_MENU =
             registerMenuType("melting_station_menu", MeltingStationMenu::new);

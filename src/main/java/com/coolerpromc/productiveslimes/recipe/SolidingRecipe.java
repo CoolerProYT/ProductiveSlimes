@@ -4,12 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -164,6 +159,27 @@ public class SolidingRecipe implements Recipe<SimpleContainer>{
             buffer.writeInt(recipe.inputCount);
 
             buffer.writeInt(recipe.energy);
+        }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
         }
     }
 }

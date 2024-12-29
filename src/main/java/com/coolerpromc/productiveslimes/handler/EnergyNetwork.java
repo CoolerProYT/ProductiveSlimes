@@ -5,8 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.*;
@@ -157,7 +157,7 @@ public class EnergyNetwork implements IEnergyStorage {
                 BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
 
                 if (neighborEntity != null) {
-                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
 
                     neighborEnergy.ifPresent(neighbor -> {
                         if (neighbor.canReceive()) {
@@ -189,7 +189,7 @@ public class EnergyNetwork implements IEnergyStorage {
 
                 if (neighborEntity != null) {
                     // Get the energy capability of the neighbor
-                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+                    LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
 
                     // If the neighbor has energy and can extract
                     neighborEnergy.ifPresent(neighbor -> {

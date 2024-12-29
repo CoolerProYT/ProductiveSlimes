@@ -24,33 +24,33 @@ public class ModBlocks {
     public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ProductiveSlimes.MODID);
 
     public static final RegistryObject<Block> MELTING_STATION = registerBlock("melting_station",
-            () -> new MeltingStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new MeltingStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station",
-            () -> new SolidingStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new SolidingStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> ENERGY_GENERATOR = registerBlock("energy_generator",
-            () -> new EnergyGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new EnergyGeneratorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> CABLE = registerBlock("cable",
             () -> new CableBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> DNA_EXTRACTOR = registerBlock("dna_extractor",
-            () -> new DnaExtractorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new DnaExtractorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer",
-            () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new DnaSynthesizerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer",
-            () -> new SlimeSqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new SlimeSqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
     public static final RegistryObject<Block> SQUEEZER = registerBlock("squeezer",
-            () -> new SqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new SqueezerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> SLIME_NEST = registerBlock("slime_nest",
             () -> new SlimeNestBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
 
     public static final RegistryObject<Block> FLUID_TANK = registerBlockWithoutItem("fluid_tank",
-            () -> new FluidTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noLootTable()));
+            () -> new FluidTankBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().noDrops()));
 
     public static final RegistryObject<Block> SLIMEBALL_COLLECTOR = registerBlock("slimeball_collector",
             () -> new SlimeballCollectorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));

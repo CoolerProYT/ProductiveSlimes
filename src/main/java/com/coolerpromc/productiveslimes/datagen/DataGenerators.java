@@ -3,9 +3,9 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod.EventBusSubscriber(modid = ProductiveSlimes.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
@@ -15,16 +15,16 @@ public class DataGenerators {
 
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeServer(), new ModRecipeProvider(generator));
-        generator.addProvider(event.includeServer(), new ModLootTableProvider(generator));
+        generator.addProvider(new ModRecipeProvider(generator));
+        generator.addProvider(new ModLootTableProvider(generator));
 
-        generator.addProvider(event.includeClient(), new ModBlockStateProvider(generator, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ModItemModelProvider(generator, existingFileHelper));
+        generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
+        generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
 
         ModBlockTagGenerator blockTagGenerator = new ModBlockTagGenerator(generator, existingFileHelper);
-        generator.addProvider(event.includeClient(), new ModBlockTagGenerator(generator, existingFileHelper));
-        generator.addProvider(event.includeServer(), new ModItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
+        generator.addProvider(blockTagGenerator);
+        generator.addProvider(new ModItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
 
-        generator.addProvider(event.includeServer(), new ModFluidTagsProvider(generator, existingFileHelper));
+        generator.addProvider(new ModFluidTagsProvider(generator, existingFileHelper));
     }
 }

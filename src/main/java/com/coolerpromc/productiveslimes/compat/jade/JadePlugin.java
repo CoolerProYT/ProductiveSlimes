@@ -1,17 +1,15 @@
 package com.coolerpromc.productiveslimes.compat.jade;
 
-import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import snownee.jade.api.*;
-import snownee.jade.api.config.IPluginConfig;
+import mcp.mobius.waila.api.*;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.network.chat.TranslatableComponent;
 
 @WailaPlugin
 public class JadePlugin implements IWailaPlugin {
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerEntityComponent(EntityInfoProvider.INSTANCE, BaseSlime.class);
+        registration.registerComponentProvider(EntityInfoProvider.INSTANCE, TooltipPosition.BODY,BaseSlime.class);
     }
 
     public enum EntityInfoProvider implements IEntityComponentProvider {
@@ -21,13 +19,8 @@ public class JadePlugin implements IWailaPlugin {
         public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
             if (entityAccessor.getEntity() instanceof BaseSlime slime) {
                 int nextDrop = slime.getNextDropTime();
-                iTooltip.add(Component.translatable("tooltip.productiveslimes.next_drop" , (int) Math.ceil(nextDrop / 20) + "s"));
+                iTooltip.add(new TranslatableComponent("tooltip.productiveslimes.next_drop" , (int) Math.ceil(nextDrop / 20) + "s"));
             }
-        }
-
-        @Override
-        public ResourceLocation getUid() {
-            return new ResourceLocation(ProductiveSlimes.MODID, "slime_info");
         }
     }
 }

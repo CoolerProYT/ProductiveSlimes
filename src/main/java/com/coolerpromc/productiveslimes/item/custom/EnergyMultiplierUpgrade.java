@@ -3,6 +3,8 @@ package com.coolerpromc.productiveslimes.item.custom;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,14 +27,14 @@ public class EnergyMultiplierUpgrade extends Item {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 
         pTooltipComponents.add(
-                Component.translatable("tooltip.productiveslimes.energy_multiplier_upgrade_desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+                new TranslatableComponent("tooltip.productiveslimes.energy_multiplier_upgrade_desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 
-        pTooltipComponents.add(Component.translatable(""));
+        pTooltipComponents.add(new TranslatableComponent(""));
 
-        pTooltipComponents.add(Component.translatable("tooltip.productiveslimes.stack_count").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
-                .append(Component.literal("1 / 2 / 3 / 4").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
+        pTooltipComponents.add(new TranslatableComponent("tooltip.productiveslimes.stack_count").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
+                .append(new TextComponent("1 / 2 / 3 / 4").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
 
-        pTooltipComponents.add(Component.translatable("tooltip.productiveslimes.multiplier").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
-                .append(Component.literal("x5 / x10 / x20 / x40").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
+        pTooltipComponents.add(new TranslatableComponent("tooltip.productiveslimes.multiplier").setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GREEN))
+                .append(new TextComponent("x5 / x10 / x20 / x40").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))));
     }
 }

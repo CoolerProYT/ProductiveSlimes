@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -80,7 +81,7 @@ public class SolidingStationBlock extends BaseEntityBlock implements Translucent
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof SolidingStationBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (SolidingStationBlockEntity)entity, pPos);
+                NetworkHooks.openGui(((ServerPlayer)pPlayer), (SolidingStationBlockEntity)entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -146,9 +147,9 @@ public class SolidingStationBlock extends BaseEntityBlock implements Translucent
 
         if (pStack.hasTag() && pStack.getTag().getInt("energy") != 0) {
             int energy = pStack.getTag().getInt("energy");
-            pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
+            pTooltip.add(new TranslatableComponent("tooltip.productiveslimes.energy_stored")
                     .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
-                    .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)
+                    .append(new TranslatableComponent("tooltip.productiveslimes.energy_amount", energy)
                             .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
         }
     }

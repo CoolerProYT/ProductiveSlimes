@@ -3,6 +3,8 @@ package com.coolerpromc.productiveslimes.item.custom;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
@@ -30,9 +32,12 @@ public class SlimeItem extends Item {
     }
     @Override
     public Component getName(ItemStack stack) {
+        if (!stack.hasTag() || !stack.getTag().contains("slime_data"))
+            return new TextComponent("Invalid Slime Item");
+
         SlimeData slimeData = SlimeData.fromTag(stack.getTag().getCompound("slime_data"));
         if (slimeData == null)
-            return Component.translatable("item.productiveslimes.slime_item");
-        return Component.translatable(slimeData.slime().getDescriptionId());
+            return new TranslatableComponent("item.productiveslimes.slime_item");
+        return new TranslatableComponent(slimeData.slime().getDescriptionId());
     }
 }

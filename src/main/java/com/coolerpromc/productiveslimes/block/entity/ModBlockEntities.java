@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ProductiveSlimes.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, ProductiveSlimes.MODID);
 
     public static final Supplier<BlockEntityType<MeltingStationBlockEntity>> MELTING_STATION_BE = BLOCK_ENTITIES.register("melting_station_be",
             () -> BlockEntityType.Builder.of(MeltingStationBlockEntity::new, ModBlocks.MELTING_STATION.get()).build(null));

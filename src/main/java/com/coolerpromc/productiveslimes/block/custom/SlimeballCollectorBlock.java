@@ -98,7 +98,7 @@ public class SlimeballCollectorBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof SlimeballCollectorBlockEntity slimeballCollectorBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)player), slimeballCollectorBlockEntity, pos);
+                NetworkHooks.openGui(((ServerPlayer)player), slimeballCollectorBlockEntity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

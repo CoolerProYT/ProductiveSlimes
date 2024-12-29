@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,7 +43,7 @@ public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.liquid_soliding_station");
+        return new TranslatableComponent("block.productiveslimes.liquid_soliding_station");
     }
 
     @Override
@@ -73,13 +74,23 @@ public class SolidingCategory implements IRecipeCategory<SolidingRecipe> {
 
     @Override
     public List<Component> getTooltipStrings(SolidingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
             return List.of(text);
         }
 
         return List.of();
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return UID;
+    }
+
+    @Override
+    public Class<? extends SolidingRecipe> getRecipeClass() {
+        return SolidingRecipe.class;
     }
 
     @Override

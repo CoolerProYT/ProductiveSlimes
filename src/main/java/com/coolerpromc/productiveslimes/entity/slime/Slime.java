@@ -74,7 +74,7 @@ public class Slime extends BaseSlime {
         super.remove(pReason);
         this.setRemoved(pReason);
         if (pReason == Entity.RemovalReason.KILLED) {
-            this.gameEvent(GameEvent.ENTITY_DIE);
+            this.gameEvent(GameEvent.ENTITY_KILLED);
 
             if(this.getSize() == 1){
                 this.dropResource();

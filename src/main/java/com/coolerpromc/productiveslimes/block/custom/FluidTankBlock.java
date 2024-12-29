@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,7 +70,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
         if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
             if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof net.minecraft.world.item.BucketItem bucketItem && bucketItem != Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
-                    if (bucketItem.getFluid().getFluidType() == fluidTankBlockEntity.getFluidStack().getFluid().getFluidType()) {
+                    if (bucketItem.getFluid() == fluidTankBlockEntity.getFluidStack().getFluid()) {
                         if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
                             FluidStack fluidToAdd = new FluidStack(bucketItem.getFluid(), 1000);
                             int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
@@ -193,8 +194,8 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
             if (fluidStack != FluidStack.EMPTY) {
-                pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
-                pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+                pTooltip.add(new TranslatableComponent("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(new TranslatableComponent(fluidStack.getDisplayName().getString()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+                pTooltip.add(new TranslatableComponent("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(new TranslatableComponent("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
             }
         }
     }

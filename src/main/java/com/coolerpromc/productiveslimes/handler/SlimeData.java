@@ -30,7 +30,7 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         tag.put("drop", dropItem.save(new CompoundTag()));
         tag.put("growth_item", growthItem.save(new CompoundTag()));
         if (slime != null) {
-            tag.putString("slime", ForgeRegistries.ENTITY_TYPES.getKey(slime).toString());
+            tag.putString("slime", ForgeRegistries.ENTITIES.getKey(slime).toString());
         }
         return tag;
     }
@@ -38,7 +38,7 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
     public static SlimeData fromTag(CompoundTag tag) {
         EntityType<BaseSlime> entityType = null;
         if (tag.contains("slime")) {
-            entityType = (EntityType<BaseSlime>) ForgeRegistries.ENTITY_TYPES.getDelegate(new ResourceLocation(tag.getString("slime"))).get().value();
+            entityType = (EntityType<BaseSlime>) ForgeRegistries.ENTITIES.getValue(new ResourceLocation(tag.getString("slime")));
         }
         return new SlimeData(
                 tag.getInt("size"),

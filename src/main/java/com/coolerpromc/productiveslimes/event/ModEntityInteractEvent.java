@@ -20,14 +20,14 @@ public class ModEntityInteractEvent {
         if (!(event.getTarget() instanceof Slime slime)) return;
         if (event.getHand() != InteractionHand.MAIN_HAND) return;
         if (!event.getEntity().isCrouching()) return;
-        if (event.getEntity().getItemInHand(event.getHand()).getItem() != Items.AIR) return;
+        if (event.getPlayer().getItemInHand(event.getHand()).getItem() != Items.AIR) return;
 
         ItemStack itemStack = new ItemStack(ModItems.SLIME_ITEM.get());
         CompoundTag tag = new CompoundTag();
         tag.put("slime_data", SlimeData.fromSlime(slime).toTag(new CompoundTag()));
         itemStack.setTag(tag);
 
-        event.getEntity().setItemInHand(event.getHand(), itemStack);
+        event.getPlayer().setItemInHand(event.getHand(), itemStack);
         event.getTarget().remove(Entity.RemovalReason.UNLOADED_WITH_PLAYER);
     }
 }

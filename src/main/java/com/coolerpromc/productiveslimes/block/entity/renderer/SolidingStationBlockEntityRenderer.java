@@ -17,7 +17,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<SolidingStationBlockEntity> {
@@ -46,9 +45,7 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
 
         BlockPos pos = pBlockEntity.getBlockPos();
 
-        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
-        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
-        if (stillTexture == null) return;
+        ResourceLocation stillTexture = new ResourceLocation("block/water_still");
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 

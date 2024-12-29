@@ -8,7 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -24,7 +23,6 @@ public class ModTierLists {
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredDnaItem = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredSpawnEggItem = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<FluidType>> registeredFluidType = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredBucketItem = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<ForgeFlowingFluid.Source>> registeredSource = new HashMap<>();
@@ -45,8 +43,7 @@ public class ModTierLists {
         TIERS.put(Tier.ANDESITE, new ModTiers("andesite", 0xFF9d9e9a, 11, 1500, "minecraft:andesite", "minecraft:andesite", 2, "minecraft:andesite", "productiveslimes:stone_slime_dna", "productiveslimes:stone_slime_dna", 0.7f));
         TIERS.put(Tier.SNOW, new ModTiers("snow", 0xFFf2fcfc, 8, 1800, "minecraft:snow_block", "minecraft:snow_block", 2, "minecraft:snow", "productiveslimes:slime_dna", "productiveslimes:slime_dna", 0.65f));
         TIERS.put(Tier.ICE, new ModTiers("ice", 0xFF89b1fc, 5, 1800, "minecraft:ice", "minecraft:ice", 2, "minecraft:ice", "productiveslimes:snow_slime_dna", "productiveslimes:snow_slime_dna", 0.6f));
-        TIERS.put(Tier.MUD, new ModTiers("mud", 0xFF363339, 10, 1500, "minecraft:mud", "minecraft:mud", 2, "minecraft:mud", "productiveslimes:dirt_slime_dna", "productiveslimes:dirt_slime_dna", 0.8f));
-        TIERS.put(Tier.CLAY, new ModTiers("clay", 0xFF9ca2ac, 9, 1500, "minecraft:clay", "minecraft:clay", 2, "minecraft:clay", "productiveslimes:mud_slime_dna", "productiveslimes:mud_slime_dna", 0.75f));
+        TIERS.put(Tier.CLAY, new ModTiers("clay", 0xFF9ca2ac, 9, 1500, "minecraft:clay", "minecraft:clay", 2, "minecraft:clay", "productiveslimes:dirt_slime_dna", "productiveslimes:dirt_slime_dna", 0.75f));
         TIERS.put(Tier.RED_SAND, new ModTiers("red_sand", 0xFFbb6520, 28, 1500, "minecraft:red_sand", "minecraft:red_sand", 2, "minecraft:red_sand", "productiveslimes:sand_slime_dna", "productiveslimes:sand_slime_dna", 0.7f));
         TIERS.put(Tier.MOSS, new ModTiers("moss", 0xFF4a6029, 1, 1500, "minecraft:moss_block", "minecraft:moss_block", 2, "minecraft:moss_block", "productiveslimes:dirt_slime_dna", "productiveslimes:dirt_slime_dna", 0.7f));
         TIERS.put(Tier.DEEPSLATE, new ModTiers("deepslate", 0xFF3c3c42, 59, 1500, "minecraft:deepslate", "minecraft:deepslate", 2, "minecraft:deepslate", "productiveslimes:stone_slime_dna", "productiveslimes:stone_slime_dna", 0.7f));
@@ -67,8 +64,8 @@ public class ModTierLists {
         TIERS.put(Tier.GLOWSTONE, new ModTiers("glowstone", 0xFF784e27, 18, 3000, "minecraft:glowstone", "minecraft:glowstone", 2, "minecraft:glowstone_dust", "productiveslimes:gold_slime_dna", "productiveslimes:netherrack_slime_dna", 0.5f));
         TIERS.put(Tier.END_STONE, new ModTiers("end_stone", 0xFFcece8e, 2, 2000, "minecraft:end_stone", "minecraft:end_stone", 2, "minecraft:end_stone", "productiveslimes:deepslate_slime_dna", "productiveslimes:netherrack_slime_dna", 0.6f));
         TIERS.put(Tier.AMETHYST, new ModTiers("amethyst", 0xFF6b4da5, 20, 3000, "minecraft:amethyst_shard", "minecraft:amethyst_shard", 2, "minecraft:amethyst_shard", "productiveslimes:calcite_slime_dna", "productiveslimes:glowstone_slime_dna", 0.4f));
-        TIERS.put(Tier.BROWN_MUSHROOM, new ModTiers("brown_mushroom", 0xFF967251, 26, 3500, "minecraft:brown_mushroom_block", "minecraft:brown_mushroom", 2, "minecraft:brown_mushroom", "productiveslimes:mud_slime_dna", "productiveslimes:cactus_slime_dna", 0.3f));
-        TIERS.put(Tier.RED_MUSHROOM, new ModTiers("red_mushroom", 0xFFc02624, 28, 3500, "minecraft:red_mushroom_block", "minecraft:red_mushroom", 2, "minecraft:red_mushroom", "productiveslimes:mud_slime_dna", "productiveslimes:cactus_slime_dna", 0.3f));
+        TIERS.put(Tier.BROWN_MUSHROOM, new ModTiers("brown_mushroom", 0xFF967251, 26, 3500, "minecraft:brown_mushroom_block", "minecraft:brown_mushroom", 2, "minecraft:brown_mushroom", "productiveslimes:dirt_slime_dna", "productiveslimes:cactus_slime_dna", 0.3f));
+        TIERS.put(Tier.RED_MUSHROOM, new ModTiers("red_mushroom", 0xFFc02624, 28, 3500, "minecraft:red_mushroom_block", "minecraft:red_mushroom", 2, "minecraft:red_mushroom", "productiveslimes:dirt_slime_dna", "productiveslimes:cactus_slime_dna", 0.3f));
         TIERS.put(Tier.CACTUS, new ModTiers("cactus", 0xFF476d21, 27, 2000, "minecraft:cactus", "minecraft:cactus", 2, "minecraft:cactus", "productiveslimes:sand_slime_dna", "productiveslimes:slime_dna", 0.6f));
         TIERS.put(Tier.COAL, new ModTiers("coal", 0xFF3b3d3b, 29, 1800, "minecraft:coal_block", "minecraft:coal", 2, "minecraft:coal_block", "productiveslimes:stone_slime_dna", "productiveslimes:stone_slime_dna", 0.65f));
         TIERS.put(Tier.GRAVEL, new ModTiers("gravel", 0xFF4a444b, 21, 1500, "minecraft:gravel", "minecraft:gravel", 2, "minecraft:gravel", "productiveslimes:sand_slime_dna", "productiveslimes:stone_slime_dna", 0.6f));
@@ -92,10 +89,6 @@ public class ModTierLists {
 
     public static void addRegisteredSlime(String name, RegistryObject<EntityType<BaseSlime>> entity){
         registeredSlimes.put(new ResourceLocation(ProductiveSlimes.MODID, name + "_slime"), entity);
-    }
-
-    public static void addRegisteredFluidType(String name, Supplier<FluidType> fluidType){
-        registeredFluidType.put(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + name + "_fluid"), fluidType);
     }
 
     public static void addRegisteredLiquidBlock(String name, Supplier<LiquidBlock> liquidBlock){
@@ -138,10 +131,6 @@ public class ModTierLists {
         return registeredSlimes.get(new ResourceLocation(ProductiveSlimes.MODID, name + "_slime"));
     }
 
-    public static Supplier<FluidType> getFluidTypeByName(String name){
-        return registeredFluidType.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + name + "_fluid"));
-    }
-
     public static Supplier<LiquidBlock> getLiquidBlockByName(String name){
         return registeredLiquidBlock.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + name + "_block"));
     }
@@ -159,6 +148,6 @@ public class ModTierLists {
     }
 
     public static ItemLike getItemByKey(String key){
-        return ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(key)).get().get();
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
     }
 }

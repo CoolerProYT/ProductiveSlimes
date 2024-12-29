@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -59,7 +60,7 @@ public class SolidingStationScreen extends AbstractContainerScreen<SolidingStati
         int energyStored = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
 
-        Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
+        Component text = new TranslatableComponent("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
             List<Component> tooltip = Collections.singletonList(text);
             renderComponentTooltip(poseStack, tooltip, pMouseX, pMouseY);

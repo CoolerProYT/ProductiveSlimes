@@ -2,13 +2,12 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
-import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -23,9 +22,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -134,11 +134,11 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ENERGY){
+        if (cap == CapabilityEnergy.ENERGY){
             return energy.cast();
         }
 
-        if (cap == ForgeCapabilities.ITEM_HANDLER){
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
             if (side == Direction.UP){
                 return bucket.cast();
             }
@@ -164,7 +164,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.productiveslimes.melting_station");
+        return new TranslatableComponent("block.productiveslimes.melting_station");
     }
 
     @Nullable

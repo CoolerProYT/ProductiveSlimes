@@ -60,8 +60,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         buttonBlock(ModBlocks.SLIMY_BUTTON.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
         fenceBlock(ModBlocks.SLIMY_FENCE.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
         fenceGateBlock(ModBlocks.SLIMY_FENCE_GATE.get(), blockTexture(ModBlocks.SLIMY_PLANKS.get()));
-        trapdoorBlockWithRenderType(ModBlocks.SLIMY_TRAPDOOR.get(), modLoc("block/slimy_trapdoor"), true, "cutout");
-        doorBlockWithRenderType(ModBlocks.SLIMY_DOOR.get(), modLoc("block/slimy_door_bottom"), modLoc("block/slimy_door_top"), "cutout");
+        trapdoorBlock(ModBlocks.SLIMY_TRAPDOOR.get(), modLoc("block/slimy_trapdoor"), true);
+        doorBlock(ModBlocks.SLIMY_DOOR.get(), modLoc("block/slimy_door_bottom"), modLoc("block/slimy_door_top"));
         stairsBlock(ModBlocks.SLIMY_STONE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_STONE.get()));
         slabBlock(ModBlocks.SLIMY_STONE_SLAB.get(), blockTexture(ModBlocks.SLIMY_STONE.get()), blockTexture(ModBlocks.SLIMY_STONE.get()));
         pressurePlateBlock(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), blockTexture(ModBlocks.SLIMY_STONE.get()));
@@ -96,7 +96,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void registerSlimeBlock(Block block, String textureName){
         ModelFile customModel = models().withExistingParent("block/" + textureName, mcLoc("block/block"))
-                .renderType("translucent")
                 .texture("particle", modLoc("block/template_slime_block"))
                 .texture("texture", modLoc("block/template_slime_block"))
                 .element().from(0, 0, 0).to(16, 16, 16)
@@ -155,12 +154,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
     private void saplingBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
-                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())));
     }
     private void leavesBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
                 models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
-                        "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
+                        "all", blockTexture(blockRegistryObject.get())));
         simpleBlockItem(blockRegistryObject.get(), models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
                 "all", blockTexture(blockRegistryObject.get())));
     }

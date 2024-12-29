@@ -171,5 +171,26 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
 
             buffer.writeFloat(recipe.outputChance);
         }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
+        }
     }
 }

@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,7 +43,7 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.dna_extractor");
+        return new TranslatableComponent("block.productiveslimes.dna_extractor");
     }
 
     @Override
@@ -70,19 +71,29 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
 
         GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
-        Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
+        Component outputChance = new TranslatableComponent("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
         minecraft.font.draw(stack, outputChance, 3, 68, 0xFFFFFF);
     }
 
     @Override
     public List<Component> getTooltipStrings(DnaExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
             return List.of(text);
         }
 
         return List.of();
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return UID;
+    }
+
+    @Override
+    public Class<? extends DnaExtractingRecipe> getRecipeClass() {
+        return DnaExtractingRecipe.class;
     }
 
     @Override

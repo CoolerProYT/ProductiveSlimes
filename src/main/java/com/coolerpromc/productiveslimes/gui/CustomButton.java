@@ -6,13 +6,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 
 public class CustomButton extends Button {
     private final ItemStack icon;
 
     public CustomButton(int pX, int pY, int pWidth, int pHeight, OnPress pOnPress, ItemStack icon) {
-        super(pX, pY, pWidth, pHeight, Component.empty(), pOnPress);
+        super(pX, pY, pWidth, pHeight, new TextComponent(""), pOnPress);
         this.icon = icon;
     }
 

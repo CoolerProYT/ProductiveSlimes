@@ -5,9 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -44,17 +42,17 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
         super.render(poseStack, pMouseX, pMouseY, pPartialTick);
         renderTooltip(poseStack, pMouseX, pMouseY);
         int countdown = menu.getCountdown();
-        Component cd = Component.literal("Cooldown: " + countdown + "s").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component size = Component.literal("Slime Size: " + menu.getSlimeSize()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component multiplier = Component.literal("Multiplier: " + menu.getMultiplier()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component dropItem = Component.literal("Drop Item: ").append(Component.translatable(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component cd = new TextComponent("Cooldown: " + countdown + "s").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component size = new TextComponent("Slime Size: " + menu.getSlimeSize()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component multiplier = new TextComponent("Multiplier: " + menu.getMultiplier()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component dropItem = new TextComponent("Drop Item: ").append(new TranslatableComponent(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         if (!(menu.hasSlime() && menu.hasOutputSlot())) {
             if (!menu.hasOutputSlot()) {
-                cd = Component.literal("No Output Slot").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xd59c20)));
+                cd = new TextComponent("No Output Slot").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xd59c20)));
             } else {
-                cd = Component.literal("No Slime Found").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xc70d0d)));
+                cd = new TextComponent("No Slime Found").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xc70d0d)));
             }
         }
         poseStack.pushPose();

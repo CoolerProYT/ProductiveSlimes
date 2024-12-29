@@ -1,14 +1,17 @@
 package com.coolerpromc.productiveslimes.item.custom;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.function.Supplier;
+
 public class BucketItem extends net.minecraft.world.item.BucketItem {
     public final int color;
-    private final Fluid fluid;
+    private final Supplier<? extends Fluid> fluid;
     private final int amount = 1000;
 
-    public BucketItem(Fluid pContent, Properties pProperties, int color) {
+    public BucketItem(Supplier<? extends Fluid> pContent, Properties pProperties, int color) {
         super(pContent, pProperties);
         this.color = color;
         this.fluid = pContent;
@@ -19,7 +22,7 @@ public class BucketItem extends net.minecraft.world.item.BucketItem {
     }
 
     public FluidStack getFluidStack() {
-        return new FluidStack(fluid, amount);
+        return new FluidStack(fluid.get(), amount);
     }
 
     public int getAmount() {

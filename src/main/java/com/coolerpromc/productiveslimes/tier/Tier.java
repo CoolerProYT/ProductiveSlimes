@@ -15,7 +15,6 @@ public enum Tier {
     ANDESITE,
     SNOW,
     ICE,
-    MUD,
     CLAY,
     RED_SAND,
     MOSS,

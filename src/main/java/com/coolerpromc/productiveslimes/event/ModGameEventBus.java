@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderHighlightEvent;
+import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +30,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = ProductiveSlimes.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModGameEventBus {
     @SubscribeEvent
-    public static void onRenderHighlight(RenderHighlightEvent.Block event) {
+    public void onDrawSelectionHighlightBlock(DrawSelectionEvent.HighlightBlock event) {
         if (event.getCamera().getEntity() instanceof LivingEntity living) {
             Level world = living.level;
             BlockHitResult rtr = event.getTarget();

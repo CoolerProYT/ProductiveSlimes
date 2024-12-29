@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelRenderer {
@@ -48,14 +47,16 @@ public class ModBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLevelR
             if (!fluidStack.isEmpty()) {
                 float height = ((float) fluidStack.getAmount() / 50000) * 0.95f;
 
-                IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
-                ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+                ResourceLocation stillTexture = new ResourceLocation("block/water_still");
 
                 TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
                 int fluidColor = 0xFFFFFFFF;
 
                 if (fluidStack.getFluid().getBucket() instanceof BucketItem bucketItem) {
                     fluidColor = bucketItem.getColor();
+                }
+                else{
+                    fluidColor = fluidStack.getFluid().getAttributes().getColor();
                 }
 
                 VertexConsumer builder = pBuffer.getBuffer(ItemBlockRenderTypes.getRenderLayer(fluidStack.getFluid().defaultFluidState()));

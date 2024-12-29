@@ -18,7 +18,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
@@ -36,7 +35,7 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
             color = bucketItem.getColor();
         }
         else if (itemStack instanceof net.minecraft.world.item.BucketItem bucketItem){
-            color = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor();
+            color = fluidStack.getFluid().getAttributes().getColor();
         }
 
         Level level = pBlockEntity.getLevel();
@@ -44,8 +43,7 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
 
         BlockPos pos = pBlockEntity.getBlockPos();
 
-        IClientFluidTypeExtensions fluidTypeExtensions = fluidStack.isEmpty() ? IClientFluidTypeExtensions.of(Fluids.WATER.getFluidType()) : IClientFluidTypeExtensions.of(fluidStack.getFluid());
-        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+        ResourceLocation stillTexture = new ResourceLocation("block/water_still");
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 

@@ -42,7 +42,7 @@ public class InMemoryResourcePack implements PackResources {
     }
 
     @Override
-    public Collection<ResourceLocation> getResources(PackType packType, String namespace, String path, Predicate<ResourceLocation> filter) {
+    public Collection<ResourceLocation> getResources(PackType packType, String namespace, String path, int i, Predicate<String> filter) {
         Set<ResourceLocation> matchingResources = new HashSet<>();
         String prefix = packType.getDirectory() + "/" + namespace + "/" + path;
 
@@ -52,7 +52,7 @@ public class InMemoryResourcePack implements PackResources {
 
                 ResourceLocation resourceLocation = new ResourceLocation(namespace, resourcePath);
 
-                if (filter.test(resourceLocation)) {
+                if (filter.test(resourcePath)) {
                     matchingResources.add(resourceLocation);
                 }
             }

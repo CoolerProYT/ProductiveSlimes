@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
@@ -169,7 +169,7 @@ public class CableBlock extends Block implements EntityBlock {
 
         // Check if the target BlockEntity has the energy capability on the specified side
         if (blockEntity != null) {
-            LazyOptional<IEnergyStorage> energyStorage = blockEntity.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite());
+            LazyOptional<IEnergyStorage> energyStorage = blockEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
             if (energyStorage.isPresent()) {
                 return true;
             }

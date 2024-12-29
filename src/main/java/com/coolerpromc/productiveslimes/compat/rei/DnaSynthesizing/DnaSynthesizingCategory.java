@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.dna_synthesizer");
+        return new TranslatableComponent("block.productiveslimes.dna_synthesizer");
     }
 
     @Override
@@ -68,7 +69,7 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 125, startPoint.y + 34))
                 .entries(display.getOutputEntries().get(0)).markOutput());
 
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", display.getEnergy());
 
         widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 8, startPoint.y + 12, 10, 58), text));
 

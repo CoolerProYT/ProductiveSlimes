@@ -1,0 +1,10 @@
+{
+  "biomes": "productiveslimes:slimy_land",
+  "adapt_noise": true,
+  "spawn_overrides": {},
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "productiveslimes:lake/molten_stone_lake",
+    "size": 1
+  }
+}

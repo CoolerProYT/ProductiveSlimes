@@ -2,6 +2,8 @@ package com.coolerpromc.productiveslimes.item.custom;
 
 import me.shedaniel.rei.api.client.gui.widgets.TooltipContext;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,6 +27,6 @@ public class NestUpgradeItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(Component.literal("Increases the speed of the slime nest by " + String.format("%.2f", multiplier) + "x"));
+        pTooltipComponents.add(new TextComponent("Increases the speed of the slime nest by " + String.format("%.2f", multiplier) + "x"));
     }
 }

@@ -6,7 +6,6 @@ import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
-import com.coolerpromc.productiveslimes.fluid.BaseFluidType;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
@@ -15,9 +14,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackType;
@@ -25,7 +23,6 @@ import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.*;
@@ -34,14 +31,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -83,10 +77,10 @@ public class CustomContentRegistry {
 
         Pack pack = new Pack(
                 resourcePack.getName(),
-                Component.literal("productiveslimes_resources"),
+                new TextComponent("productiveslimes_resources"),
                 true,
                 () -> resourcePack,
-                new PackMetadataSection(Component.literal("productiveslimes_resources"), 9),
+                new PackMetadataSection(new TextComponent("productiveslimes_resources"), 9),
                 PackType.CLIENT_RESOURCES,
                 Pack.Position.TOP,
                 PackSource.BUILT_IN
@@ -102,10 +96,10 @@ public class CustomContentRegistry {
 
         Pack pack = new Pack(
                 dataPack.getName(),
-                Component.literal("productiveslimes_datapack"),
+                new TextComponent("productiveslimes_datapack"),
                 true,
                 () -> dataPack,
-                new PackMetadataSection(Component.literal("productiveslimes_datapack"), 10),
+                new PackMetadataSection(new TextComponent("productiveslimes_datapack"), 10),
                 PackType.SERVER_DATA,
                 Pack.Position.TOP,
                 PackSource.BUILT_IN
@@ -257,19 +251,12 @@ public class CustomContentRegistry {
     }
 
     private static void registerFluid(CustomVariants variants) {
-        ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
-        ResourceLocation WATER_FLOWING_RL = new ResourceLocation("block/water_flow");
-        ResourceLocation WATER_OVERLAY_RL = new ResourceLocation("block/water_overlay");
-
-        Color colorObject = new Color(variants.getColor());
-        Vector3f FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);
-
-        FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
-                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.copy(Blocks.WATER),
-                ((properties, funkyFluidInfo) -> new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL, variants.getColor(), FOG_COLOR, properties)),
+        FluidResources.register(() -> FluidResources.addFluid(
+                variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
+                new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true),
+                BlockBehaviour.Properties.copy(Blocks.WATER),
                 LiquidBlock::new,
-                properties -> properties.explosionResistance(1000F).tickRate(20),
-                FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
+                properties -> properties.explosionResistance(1000F).tickRate(20)));
     }
 
     private static void generateResourcePackInMemory() {

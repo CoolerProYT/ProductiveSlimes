@@ -93,7 +93,7 @@ public class ModCreativeTabs {
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()) {
-                items.add(ForgeRegistries.ITEMS.getDelegate(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value().getDefaultInstance());
+                items.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).getDefaultInstance());
             }
         }
     };

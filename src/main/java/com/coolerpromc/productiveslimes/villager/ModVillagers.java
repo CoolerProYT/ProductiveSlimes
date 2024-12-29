@@ -13,13 +13,13 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModVillagers {
     public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, ProductiveSlimes.MODID);
-    public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, ProductiveSlimes.MODID);
+    public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, ProductiveSlimes.MODID);
 
     public static final RegistryObject<PoiType> SLIMY_POI = POI_TYPES.register("slimy_poi",
-            () -> new PoiType(ImmutableSet.copyOf(ModBlocks.DNA_EXTRACTOR.get().getStateDefinition().getPossibleStates()), 1, 1));
+            () -> new PoiType("slimy_poi", ImmutableSet.copyOf(ModBlocks.DNA_EXTRACTOR.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     public static final RegistryObject<VillagerProfession> SCIENTIST = VILLAGER_PROFESSIONS.register("scientist",
-            () -> new VillagerProfession("scientist", holder -> holder.value() == SLIMY_POI.get(), holder -> holder.value() == SLIMY_POI.get(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_MASON));
+            () -> new VillagerProfession("scientist", SLIMY_POI.get(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_MASON));
 
     public static void register(IEventBus eventBus) {
         POI_TYPES.register(eventBus);

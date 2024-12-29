@@ -1,0 +1,10 @@
+{
+  "biomes": "productiveslimes:slimy_land",
+  "adapt_noise": false,
+  "spawn_overrides": {},
+  "type": "minecraft:village",
+  "config": {
+    "start_pool": "productiveslimes:slimy_village/village_center",
+    "size": 7
+  }
+}

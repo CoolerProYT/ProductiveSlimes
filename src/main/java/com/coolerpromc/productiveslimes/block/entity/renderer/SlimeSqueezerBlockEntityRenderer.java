@@ -17,10 +17,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+
+import java.util.Random;
 
 public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<SlimeSqueezerBlockEntity> {
     public SlimeSqueezerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
@@ -80,7 +81,7 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.popPose();
     }
     private void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        RandomSource rand = RandomSource.create();
+        Random rand = new Random();
         for (Direction direction : Direction.values()) {
             rand.setSeed(42L);
             Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(

@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -41,7 +42,7 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.slime_squeezer");
+        return new TranslatableComponent("block.productiveslimes.slime_squeezer");
     }
 
     @Override
@@ -72,13 +73,23 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
 
     @Override
     public List<Component> getTooltipStrings(SqueezingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
             return List.of(text);
         }
 
         return List.of();
+    }
+
+    @Override
+    public ResourceLocation getUid() {
+        return UID;
+    }
+
+    @Override
+    public Class<? extends SqueezingRecipe> getRecipeClass() {
+        return SqueezingRecipe.class;
     }
 
     @Override

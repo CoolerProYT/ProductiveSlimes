@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,7 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.dna_extractor");
+        return new TranslatableComponent("block.productiveslimes.dna_extractor");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
                     .entries(display.getOutputEntries().get(1)).markOutput());
         }
 
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", display.getEnergy());
 
         widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 8, startPoint.y + 12, 10, 58), text));
 
@@ -84,7 +85,7 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
 
                 GuiComponent.blit(stack, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
 
-                Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", display.getOutputChance() * 100) + "%");
+                Component outputChance = new TranslatableComponent("gui.productiveslimes.output_chance", String.format("%.1f", display.getOutputChance() * 100) + "%");
 
                 minecraft.font.draw(stack, outputChance, startPoint.x + 7, startPoint.y + 72, 0xFFFFFF);
             }

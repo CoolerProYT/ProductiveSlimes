@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ProductiveSlimes.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, ProductiveSlimes.MODID);
 
     public static final RegistryObject<EntityType<BaseSlime>> ENERGY_SLIME =
             ENTITY_TYPES.register("energy_slime", () -> EntityType.Builder.<BaseSlime>of(

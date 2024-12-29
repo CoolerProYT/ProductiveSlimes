@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -24,7 +26,7 @@ public class SlimeballCollectorScreen extends AbstractContainerScreen<SlimeballC
         this.titleLabelY = 5;
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        this.addRenderableWidget(new Button(x + 88, y + 65, 80, 16, Component.literal("Toggle Area"), button -> {
+        this.addRenderableWidget(new Button(x + 88, y + 65, 80, 16, new TextComponent("Toggle Area"), button -> {
             this.menu.blockEntity.setEnableOutline(this.menu.blockEntity.getData().get(0) == 0 ? 1 : 0);
         }));
     }

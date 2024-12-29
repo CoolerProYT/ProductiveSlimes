@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class IconButton extends Button {
@@ -19,7 +20,7 @@ public class IconButton extends Button {
     private boolean isOpen;
 
     public IconButton(int x, int y, int width, int height, int closedTextureX, int closedTextureY, int openTextureX, int openTextureY, OnPress onPress) {
-        super(x, y, width, height, Component.empty(), onPress);
+        super(x, y, width, height, new TextComponent(""), onPress);
         this.closedTextureX = closedTextureX;
         this.closedTextureY = closedTextureY;
         this.openTextureX = openTextureX;

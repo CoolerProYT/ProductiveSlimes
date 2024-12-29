@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +38,7 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.productiveslimes.soliding_station");
+        return new TranslatableComponent("block.productiveslimes.soliding_station");
     }
 
     @Override
@@ -61,7 +62,7 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 127, startPoint.y + 34))
                 .entries(display.getOutputEntries().get(1)).markOutput());
 
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.getEnergy());
+        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", display.getEnergy());
 
         widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 8, startPoint.y + 12, 10, 58), text));
 

@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.item.custom;
 
 import com.coolerpromc.productiveslimes.screen.GuidebookMenu;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -21,7 +22,7 @@ public class GuidebookItem extends Item {
         if (!pLevel.isClientSide) {
             pPlayer.openMenu(new SimpleMenuProvider(
                     (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory),
-                    Component.translatable("item.productiveslimes.guidebook")
+                    new TranslatableComponent("item.productiveslimes.guidebook")
             ));
         }
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));

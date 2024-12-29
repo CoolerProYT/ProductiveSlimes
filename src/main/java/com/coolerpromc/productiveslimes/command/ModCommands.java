@@ -15,6 +15,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class ModCommands {
         CommandSourceStack source = context.getSource();
         // Ensure the command is executed by a player
         if (!(source.getEntity() instanceof ServerPlayer player)) {
-            source.sendFailure(Component.literal("This command can only be used by a player."));
+            source.sendFailure(new TextComponent("This command can only be used by a player."));
             return 0;
         }
         // Get arguments
@@ -68,10 +69,10 @@ public class ModCommands {
         slimeItem.setTag(tag);
         // Give the item to the player
         if (player.addItem(slimeItem)) {
-            source.sendSuccess(Component.literal("Gave custom slime item!"), true);
+            source.sendSuccess(new TextComponent("Gave custom slime item!"), true);
             return Command.SINGLE_SUCCESS;
         } else {
-            source.sendFailure(Component.literal("Failed to give item. Is your inventory full?"));
+            source.sendFailure(new TextComponent("Failed to give item. Is your inventory full?"));
             return 0;
         }
     }
@@ -80,7 +81,7 @@ public class ModCommands {
             ModTiers tier = ModTierLists.getTierByName(Tier.valueOf(slimeId.toUpperCase()));
             return new SlimeData(size, tier.color(), tier.cooldown(), new ItemStack(ModTierLists.getSlimeballItemByName(slimeId).get()), new ItemStack(ModTierLists.getItemByKey(tier.growthItemKey())), ModTierLists.getEntityByName(slimeId).get());
         } catch (IllegalArgumentException e) {
-            source.sendFailure(Component.literal("Invalid slime ID. To get an id, pres f3+h and point on target slime in JEI/Inventory, for example, for productiveslimes:dirt_slime, the id in command is dirt"));
+            source.sendFailure(new TextComponent("Invalid slime ID. To get an id, pres f3+h and point on target slime in JEI/Inventory, for example, for productiveslimes:dirt_slime, the id in command is dirt"));
             return null;
         }
     }

@@ -40,16 +40,19 @@ public class ModBiomes {
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-                .downfall(0.4f)
+                .biomeCategory(Biome.BiomeCategory.DESERT)
                 .temperature(0.8f)
-                .generationSettings(biomeBuilder.build())
-                .mobSpawnSettings(spawnBuilder.build())
+                .downfall(0.4f)
                 .specialEffects((new BiomeSpecialEffects.Builder())
                         .fogColor(0xFFFFFF)
                         .waterColor(0x254788)
                         .waterFogColor(0x2b1b05)
                         .skyColor(0x6EB1FF)
+                        .foliageColorOverride(0x00FF00)
+                        .grassColorOverride(0x00FF00)
                         .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build())
+                .mobSpawnSettings(spawnBuilder.build())
+                .generationSettings(biomeBuilder.build())
                 .build();
     }
 
