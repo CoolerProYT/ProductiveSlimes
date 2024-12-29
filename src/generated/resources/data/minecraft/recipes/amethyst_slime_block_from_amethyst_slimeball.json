@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": {
-      "item": "productiveslimes:amethyst_slimeball"
-    }
-  },
   "pattern": [
     "AAA",
     "AAA",
     "AAA"
   ],
+  "key": {
+    "A": {
+      "item": "productiveslimes:amethyst_slimeball"
+    }
+  },
   "result": {
     "item": "productiveslimes:amethyst_slime_block"
   }

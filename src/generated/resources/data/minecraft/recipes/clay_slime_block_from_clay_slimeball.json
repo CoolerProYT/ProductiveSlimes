@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": {
-      "item": "productiveslimes:clay_slimeball"
-    }
-  },
   "pattern": [
     "AAA",
     "AAA",
     "AAA"
   ],
+  "key": {
+    "A": {
+      "item": "productiveslimes:clay_slimeball"
+    }
+  },
   "result": {
     "item": "productiveslimes:clay_slime_block"
   }

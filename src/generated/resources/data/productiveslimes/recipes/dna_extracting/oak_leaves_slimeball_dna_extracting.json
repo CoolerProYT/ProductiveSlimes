@@ -9,12 +9,12 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 1,
-      "item": "productiveslimes:oak_leaves_slime_dna"
+      "item": "productiveslimes:oak_leaves_slime_dna",
+      "count": 1
     },
     {
-      "count": 1,
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:slime_ball",
+      "count": 1
     }
   ],
   "outputChance": 0.7

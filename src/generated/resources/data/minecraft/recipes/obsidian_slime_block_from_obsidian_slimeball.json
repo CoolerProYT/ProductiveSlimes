@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": {
-      "item": "productiveslimes:obsidian_slimeball"
-    }
-  },
   "pattern": [
     "AAA",
     "AAA",
     "AAA"
   ],
+  "key": {
+    "A": {
+      "item": "productiveslimes:obsidian_slimeball"
+    }
+  },
   "result": {
     "item": "productiveslimes:obsidian_slime_block"
   }

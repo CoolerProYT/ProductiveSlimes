@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "productiveslimes:slime_dna",
     "productiveslimes:dirt_slime_dna",
@@ -15,7 +16,6 @@
     "productiveslimes:andesite_slime_dna",
     "productiveslimes:snow_slime_dna",
     "productiveslimes:ice_slime_dna",
-    "productiveslimes:mud_slime_dna",
     "productiveslimes:clay_slime_dna",
     "productiveslimes:red_sand_slime_dna",
     "productiveslimes:moss_slime_dna",

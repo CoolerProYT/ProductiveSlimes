@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##"
+  ],
   "key": {
     "#": {
       "item": "productiveslimes:slimy_stone"
     }
   },
-  "pattern": [
-    "##"
-  ],
   "result": {
     "item": "productiveslimes:slimy_stone_pressure_plate"
   }

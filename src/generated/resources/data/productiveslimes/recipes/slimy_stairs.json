@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "slimy",
-  "key": {
-    "#": {
-      "item": "productiveslimes:slimy_planks"
-    }
-  },
   "pattern": [
     "#  ",
     "## ",
     "###"
   ],
+  "key": {
+    "#": {
+      "item": "productiveslimes:slimy_planks"
+    }
+  },
   "result": {
-    "count": 4,
-    "item": "productiveslimes:slimy_stairs"
+    "item": "productiveslimes:slimy_stairs",
+    "count": 4
   }
 }

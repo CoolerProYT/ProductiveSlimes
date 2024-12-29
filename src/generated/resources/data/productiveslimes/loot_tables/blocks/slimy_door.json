@@ -1,19 +1,15 @@
 {
   "pools": [
     {
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "conditions": [
             {
-              "block": "productiveslimes:slimy_door",
               "condition": "minecraft:block_state_property",
+              "block": "productiveslimes:slimy_door",
               "properties": {
                 "half": "lower"
               }
@@ -22,7 +18,11 @@
           "name": "productiveslimes:slimy_door"
         }
       ],
-      "rolls": 1.0
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
     }
   ]
 }

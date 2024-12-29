@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
   "key": {
     "#": {
       "item": "productiveslimes:slimy_planks"
     }
   },
-  "pattern": [
-    "###"
-  ],
   "result": {
-    "count": 6,
-    "item": "productiveslimes:slimy_slab"
+    "item": "productiveslimes:slimy_slab",
+    "count": 6
   }
 }

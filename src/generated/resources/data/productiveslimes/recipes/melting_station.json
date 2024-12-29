@@ -1,5 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
   "key": {
     "A": {
       "item": "minecraft:deepslate"
@@ -8,11 +13,6 @@
       "item": "minecraft:lava_bucket"
     }
   },
-  "pattern": [
-    "AAA",
-    "ABA",
-    "AAA"
-  ],
   "result": {
     "item": "productiveslimes:melting_station"
   }

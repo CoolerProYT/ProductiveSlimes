@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "slimy_cobblestone",
-  "key": {
-    "#": {
-      "item": "productiveslimes:slimy_cobblestone"
-    }
-  },
   "pattern": [
     "#  ",
     "## ",
     "###"
   ],
+  "key": {
+    "#": {
+      "item": "productiveslimes:slimy_cobblestone"
+    }
+  },
   "result": {
-    "count": 4,
-    "item": "productiveslimes:slimy_cobblestone_stairs"
+    "item": "productiveslimes:slimy_cobblestone_stairs",
+    "count": 4
   }
 }

@@ -1,9 +1,5 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "productiveslimes:block/dna_extractor",
-      "y": 270
-    },
     "facing=north": {
       "model": "productiveslimes:block/dna_extractor",
       "y": 180
@@ -14,6 +10,10 @@
     "facing=west": {
       "model": "productiveslimes:block/dna_extractor",
       "y": 90
+    },
+    "facing=east": {
+      "model": "productiveslimes:block/dna_extractor",
+      "y": 270
     }
   }
 }

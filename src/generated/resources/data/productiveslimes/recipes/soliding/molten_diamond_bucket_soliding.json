@@ -9,12 +9,12 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 1,
-      "item": "minecraft:diamond_block"
+      "item": "minecraft:diamond_block",
+      "count": 1
     },
     {
-      "count": 1,
-      "item": "minecraft:bucket"
+      "item": "minecraft:bucket",
+      "count": 1
     }
   ]
 }

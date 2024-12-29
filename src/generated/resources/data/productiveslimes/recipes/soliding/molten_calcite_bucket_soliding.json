@@ -9,12 +9,12 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 2,
-      "item": "minecraft:calcite"
+      "item": "minecraft:calcite",
+      "count": 2
     },
     {
-      "count": 1,
-      "item": "minecraft:bucket"
+      "item": "minecraft:bucket",
+      "count": 1
     }
   ]
 }

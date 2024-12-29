@@ -1,6 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "slimy",
+  "pattern": [
+    "#W#",
+    "#W#"
+  ],
   "key": {
     "#": {
       "item": "minecraft:stick"
@@ -9,10 +13,6 @@
       "item": "productiveslimes:slimy_planks"
     }
   },
-  "pattern": [
-    "#W#",
-    "#W#"
-  ],
   "result": {
     "item": "productiveslimes:slimy_fence_gate"
   }

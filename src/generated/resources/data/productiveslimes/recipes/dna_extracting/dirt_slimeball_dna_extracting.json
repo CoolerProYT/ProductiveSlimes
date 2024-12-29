@@ -9,13 +9,13 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 1,
-      "item": "productiveslimes:dirt_slime_dna"
+      "item": "productiveslimes:dirt_slime_dna",
+      "count": 1
     },
     {
-      "count": 1,
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:slime_ball",
+      "count": 1
     }
   ],
-  "outputChance": 0.85
+  "outputChance": 0.75
 }

@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": {
-      "item": "productiveslimes:coal_slimeball"
-    }
-  },
   "pattern": [
     "AAA",
     "AAA",
     "AAA"
   ],
+  "key": {
+    "A": {
+      "item": "productiveslimes:coal_slimeball"
+    }
+  },
   "result": {
     "item": "productiveslimes:coal_slime_block"
   }

@@ -8,12 +8,12 @@
   ],
   "output": [
     {
-      "count": 1,
-      "item": "minecraft:deepslate"
+      "item": "minecraft:deepslate",
+      "count": 1
     },
     {
-      "count": 1,
-      "item": "productiveslimes:slimeball_fragment"
+      "item": "productiveslimes:slimeball_fragment",
+      "count": 1
     }
   ]
 }

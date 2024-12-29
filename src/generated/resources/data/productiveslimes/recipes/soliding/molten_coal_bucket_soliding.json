@@ -9,12 +9,12 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 2,
-      "item": "minecraft:coal_block"
+      "item": "minecraft:coal_block",
+      "count": 2
     },
     {
-      "count": 1,
-      "item": "minecraft:bucket"
+      "item": "minecraft:bucket",
+      "count": 1
     }
   ]
 }

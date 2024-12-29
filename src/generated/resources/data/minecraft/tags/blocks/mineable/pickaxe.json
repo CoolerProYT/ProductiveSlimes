@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "productiveslimes:melting_station",
     "productiveslimes:soliding_station",

@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "productiveslimes:source_molten_dirt",
     "productiveslimes:flowing_molten_dirt",
@@ -28,8 +29,6 @@
     "productiveslimes:flowing_molten_snow",
     "productiveslimes:source_molten_ice",
     "productiveslimes:flowing_molten_ice",
-    "productiveslimes:source_molten_mud",
-    "productiveslimes:flowing_molten_mud",
     "productiveslimes:source_molten_clay",
     "productiveslimes:flowing_molten_clay",
     "productiveslimes:source_molten_red_sand",

@@ -9,8 +9,8 @@
   "inputCount": 4,
   "output": [
     {
-      "count": 1,
-      "item": "productiveslimes:molten_red_sand_bucket"
+      "item": "productiveslimes:molten_red_sand_bucket",
+      "count": 1
     }
   ]
 }

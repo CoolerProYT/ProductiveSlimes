@@ -1,6 +1,5 @@
 {
-  "parent": "minecraft:block/door_bottom_right_open",
-  "render_type": "minecraft:cutout",
+  "parent": "minecraft:block/door_top_rh",
   "textures": {
     "bottom": "productiveslimes:block/slimy_door_bottom",
     "top": "productiveslimes:block/slimy_door_top"

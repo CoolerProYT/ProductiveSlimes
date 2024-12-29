@@ -8,12 +8,12 @@
   ],
   "output": [
     {
-      "count": 1,
-      "item": "minecraft:dirt"
+      "item": "minecraft:dirt",
+      "count": 1
     },
     {
-      "count": 1,
-      "item": "productiveslimes:slimeball_fragment"
+      "item": "productiveslimes:slimeball_fragment",
+      "count": 1
     }
   ]
 }

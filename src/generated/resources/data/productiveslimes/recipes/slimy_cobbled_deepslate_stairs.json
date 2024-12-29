@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "slimy_cobbled_deepslate",
-  "key": {
-    "#": {
-      "item": "productiveslimes:slimy_cobbled_deepslate"
-    }
-  },
   "pattern": [
     "#  ",
     "## ",
     "###"
   ],
+  "key": {
+    "#": {
+      "item": "productiveslimes:slimy_cobbled_deepslate"
+    }
+  },
   "result": {
-    "count": 4,
-    "item": "productiveslimes:slimy_cobbled_deepslate_stairs"
+    "item": "productiveslimes:slimy_cobbled_deepslate_stairs",
+    "count": 4
   }
 }

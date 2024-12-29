@@ -9,8 +9,8 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 1,
-      "item": "productiveslimes:slime_dna"
+      "item": "productiveslimes:slime_dna",
+      "count": 1
     }
   ],
   "outputChance": 0.9

@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
   "key": {
     "#": {
       "item": "productiveslimes:slimy_cobbled_deepslate"
     }
   },
-  "pattern": [
-    "###",
-    "###"
-  ],
   "result": {
-    "count": 6,
-    "item": "productiveslimes:slimy_cobbled_deepslate_wall"
+    "item": "productiveslimes:slimy_cobbled_deepslate_wall",
+    "count": 6
   }
 }

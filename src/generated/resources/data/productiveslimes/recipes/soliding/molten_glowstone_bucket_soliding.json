@@ -9,12 +9,12 @@
   "inputCount": 1,
   "output": [
     {
-      "count": 2,
-      "item": "minecraft:glowstone"
+      "item": "minecraft:glowstone",
+      "count": 2
     },
     {
-      "count": 1,
-      "item": "minecraft:bucket"
+      "item": "minecraft:bucket",
+      "count": 1
     }
   ]
 }

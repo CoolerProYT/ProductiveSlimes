@@ -1,13 +1,13 @@
 {
   "variants": {
+    "type=top": {
+      "model": "productiveslimes:block/slimy_slab_top"
+    },
     "type=bottom": {
       "model": "productiveslimes:block/slimy_slab"
     },
     "type=double": {
       "model": "productiveslimes:block/slimy_planks"
-    },
-    "type=top": {
-      "model": "productiveslimes:block/slimy_slab_top"
     }
   }
 }

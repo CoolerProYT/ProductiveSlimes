@@ -15,8 +15,8 @@
   "inputCount": 2,
   "output": [
     {
-      "count": 1,
-      "item": "productiveslimes:glowstone_slime_spawn_egg"
+      "item": "productiveslimes:glowstone_slime_spawn_egg",
+      "count": 1
     }
   ]
 }

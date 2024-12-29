@@ -1,5 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CAC",
+    "ABA",
+    "CAC"
+  ],
   "key": {
     "A": {
       "item": "minecraft:slime_ball"
@@ -11,11 +16,6 @@
       "item": "minecraft:redstone"
     }
   },
-  "pattern": [
-    "CAC",
-    "ABA",
-    "CAC"
-  ],
   "result": {
     "item": "productiveslimes:energy_slime_spawn_egg"
   }
