@@ -27,9 +27,9 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -174,7 +174,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
+    public CompoundTag save(CompoundTag pTag) {
         pTag.put("BucketInventory", bucketHandler.serializeNBT());
         pTag.put("InputInventory", inputHandler.serializeNBT());
         pTag.put("OutputInventory", outputHandler.serializeNBT());
@@ -182,7 +182,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
         pTag.putInt("melting_station.progress", progress);
 
-        super.saveAdditional(pTag);
+        return super.save(pTag);
     }
 
     @Override

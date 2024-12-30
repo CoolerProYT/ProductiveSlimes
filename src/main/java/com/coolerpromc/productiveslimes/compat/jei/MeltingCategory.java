@@ -5,13 +5,10 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -20,14 +17,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.crafting.Ingredient;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"melting");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/melting_station_gui.png");
-    public static final RecipeType<MeltingRecipe> MELTING_TYPE = new RecipeType<>(UID, MeltingRecipe.class);
     private int tickCount = 0;
 
     private final IDrawable background;
@@ -35,12 +32,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
 
     public MeltingCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE,5,5,168,77);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.MELTING_STATION.get()));
-    }
-
-    @Override
-    public RecipeType<MeltingRecipe> getRecipeType() {
-        return MELTING_TYPE;
+        this.icon = helper.createDrawableIngredient(new ItemStack(ModBlocks.MELTING_STATION.get()));
     }
 
     @Override
@@ -60,7 +52,23 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     }
 
     @Override
-    public void draw(MeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void setIngredients(MeltingRecipe meltingRecipe, IIngredients iIngredients) {
+        List<Ingredient> input = List.of(Ingredient.of(Items.BUCKET), meltingRecipe.getIngredients().get(0));
+        iIngredients.setInputIngredients(input);
+        iIngredients.setOutput(VanillaTypes.ITEM, meltingRecipe.getOutputs().get(0));
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout iRecipeLayout, MeltingRecipe meltingRecipe, IIngredients iIngredients) {
+        iRecipeLayout.getItemStacks().init(0, true,19,28);
+        iRecipeLayout.getItemStacks().init(1, true,39,28);
+        iRecipeLayout.getItemStacks().init(2, false,128,28);
+
+        iRecipeLayout.getItemStacks().set(iIngredients);
+    }
+
+    @Override
+    public void draw(MeltingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindForSetup(TEXTURE);
 
@@ -76,7 +84,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     }
 
     @Override
-    public List<Component> getTooltipStrings(MeltingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(MeltingRecipe recipe, double mouseX, double mouseY) {
         Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
@@ -94,12 +102,5 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     @Override
     public Class<? extends MeltingRecipe> getRecipeClass() {
         return MeltingRecipe.class;
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MeltingRecipe meltingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,20,29).addItemStack(new ItemStack(Items.BUCKET, meltingRecipe.getOutputs().get(0).getCount()));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,40,29).addItemStack(new ItemStack(meltingRecipe.getIngredients().get(0).getItems()[0].getItem(), meltingRecipe.getInputCount()));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).addItemStack(meltingRecipe.getOutputs().get(0));
     }
 }

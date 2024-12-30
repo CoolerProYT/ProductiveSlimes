@@ -5,13 +5,10 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -25,7 +22,6 @@ import java.util.List;
 public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID,"dna_extracting");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID,"textures/gui/dna_extractor_gui.png");
-    public static final RecipeType<DnaExtractingRecipe> DNA_EXTRACTING_TYPE = new RecipeType<>(UID, DnaExtractingRecipe.class);
     private int tickCount = 0;
 
     private final IDrawable background;
@@ -33,12 +29,7 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
 
     public DnaExtractingCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE,5,5,168,77);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DNA_EXTRACTOR.get()));
-    }
-
-    @Override
-    public RecipeType<DnaExtractingRecipe> getRecipeType() {
-        return DNA_EXTRACTING_TYPE;
+        this.icon = helper.createDrawableIngredient(new ItemStack(ModBlocks.DNA_EXTRACTOR.get()));
     }
 
     @Override
@@ -57,7 +48,24 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     }
 
     @Override
-    public void draw(DnaExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void setIngredients(DnaExtractingRecipe dnaExtractingRecipe, IIngredients iIngredients) {
+        iIngredients.setInputIngredients(dnaExtractingRecipe.getIngredients());
+        iIngredients.setOutputs(VanillaTypes.ITEM, dnaExtractingRecipe.getOutputs());
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout iRecipeLayoutBuilder, DnaExtractingRecipe dnaExtractingRecipe, IIngredients iIngredients) {
+        iRecipeLayoutBuilder.getItemStacks().init(0, true, 28, 28);
+        iRecipeLayoutBuilder.getItemStacks().init(1, false, 109, 28);
+
+        if (dnaExtractingRecipe.getOutputs().size() > 1) {
+            iRecipeLayoutBuilder.getItemStacks().init(2, false, 129, 28);
+        }
+        iRecipeLayoutBuilder.getItemStacks().set(iIngredients);
+    }
+
+    @Override
+    public void draw(DnaExtractingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindForSetup(TEXTURE);
 
@@ -76,7 +84,7 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     }
 
     @Override
-    public List<Component> getTooltipStrings(DnaExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(DnaExtractingRecipe recipe, double mouseX, double mouseY) {
         Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
@@ -94,14 +102,5 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     @Override
     public Class<? extends DnaExtractingRecipe> getRecipeClass() {
         return DnaExtractingRecipe.class;
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, DnaExtractingRecipe DnaExtractingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,29,29).addIngredients(DnaExtractingRecipe.getIngredients().get(0));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,110,29).addItemStack(DnaExtractingRecipe.getOutputs().get(0));
-        if (DnaExtractingRecipe.getOutputs().size() > 1) {
-            iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).addItemStack(DnaExtractingRecipe.getOutputs().get(1));
-        }
     }
 }

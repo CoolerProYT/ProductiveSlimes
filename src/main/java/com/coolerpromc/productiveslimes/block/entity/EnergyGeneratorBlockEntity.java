@@ -2,11 +2,13 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.screen.EnergyGeneratorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
@@ -30,9 +32,9 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -199,14 +201,14 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-
+    public CompoundTag save(CompoundTag pTag) {
         pTag.put("Inventory", itemHandler.serializeNBT());
         pTag.put("Energy", energyHandler.serializeNBT());
         pTag.putInt("Progress", progress);
         pTag.putInt("MaxProgress", maxProgress);
         pTag.put("Upgrades", upgradeHandler.serializeNBT());
+
+        return super.save(pTag);
     }
 
     @Override
@@ -218,12 +220,6 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         this.progress = pTag.getInt("Progress");
         this.maxProgress = pTag.getInt("MaxProgress");
         this.upgradeHandler.deserializeNBT(pTag.getCompound("Upgrades"));
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public void drops() {
@@ -254,5 +250,30 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
     public boolean canBurn(ItemStack stack) {
         return getBurnTime(stack) > 0;
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+        return ModClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag compoundTag = new CompoundTag();
+        this.save(compoundTag);
+        return compoundTag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 }

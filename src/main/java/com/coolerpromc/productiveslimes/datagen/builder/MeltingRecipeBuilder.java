@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -128,13 +128,13 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
             return ModRecipes.MELTING_SERIALIZER.get();
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public ResourceLocation getAdvancementId() {
             return null;

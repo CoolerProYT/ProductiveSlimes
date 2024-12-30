@@ -6,7 +6,7 @@ import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModBlockLootTables extends BlockLoot {
     public ModBlockLootTables() {

@@ -13,7 +13,6 @@ import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -31,10 +30,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -48,7 +46,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class CustomContentRegistry {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private static final String CONFIG_PATH = "config/productiveslimes/variants.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -154,7 +151,7 @@ public class CustomContentRegistry {
                     GSON.toJson(defaultTiers, writer);
                 }
             } catch (IOException e) {
-                LOGGER.error("Failed to create default tier config", e);
+
             }
         }
     }
@@ -175,10 +172,8 @@ public class CustomContentRegistry {
                     registerSpawnEggItem(ITEMS, variant);
                     registerFluid(variant);
                 }
-
-                LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
             } catch (IOException e) {
-                LOGGER.error("Failed to load tier config", e);
+
             }
         }
     }
@@ -232,7 +227,6 @@ public class CustomContentRegistry {
                 .filter(tier -> {
                     // Validate name (no spaces, special characters, etc.)
                     if (!tier.name.matches("^[a-z0-9_]+$")) {
-                        LOGGER.error("Invalid name format for tier: " + tier.name);
                         return false;
                     }
                     return true;
@@ -298,7 +292,7 @@ public class CustomContentRegistry {
             langJson.put("entity.productiveslimes." + variants.getName()  + "_slime", formattedName + " Slime");
             langJson.put("block.productiveslimes." + "molten_" + variants.getName() + "_block", "Molten " + formattedName);
             langJson.put("item.productiveslimes." + "molten_" + variants.getName() + "_bucket", "Molten " + formattedName + " Bucket");
-            langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
+            langJson.put("fluid.productiveslimes." + variants.getName(), "Molten " + formattedName);
 
             // Create block model content
             String blockModelContent = "{\n" +

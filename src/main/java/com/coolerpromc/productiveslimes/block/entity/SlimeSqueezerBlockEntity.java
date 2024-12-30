@@ -1,15 +1,15 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.coolerpromc.productiveslimes.screen.SlimeSqueezerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -106,7 +106,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     }
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @org.jetbrains.annotations.Nullable Direction side) {
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityEnergy.ENERGY){
             return energy.cast();
         }
@@ -140,14 +140,17 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
         return new SlimeSqueezerMenu(containerId, playerInventory, this, this.data);
     }
+
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
+    public CompoundTag save(CompoundTag pTag) {
         pTag.put("InputInventory", inputHandler.serializeNBT());
         pTag.put("OutputInventory", outputHandler.serializeNBT());
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
         pTag.putInt("slime_squeezer.progress", progress);
-        super.saveAdditional(pTag);
+
+        return super.save(pTag);
     }
+
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
@@ -280,14 +283,29 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     public ContainerData getData() {
         return data;
     }
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+        return ModClientboundBlockEntityDataPacket.create(this);
     }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
+    }
+
     @Override
     public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+        CompoundTag compoundTag = new CompoundTag();
+        this.save(compoundTag);
+        return compoundTag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
     public ItemStack getInputStack() {
         return inputHandler.getStackInSlot(0);

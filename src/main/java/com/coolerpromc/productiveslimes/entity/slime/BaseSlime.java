@@ -23,8 +23,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public abstract class BaseSlime extends Slime {
@@ -392,7 +392,7 @@ public abstract class BaseSlime extends Slime {
          */
         public void tick() {
             if (--this.nextRandomizeTime <= 0) {
-                this.nextRandomizeTime = this.adjustedTickDelay(40 + this.slime.getRandom().nextInt(60));
+                this.nextRandomizeTime = (40 + this.slime.getRandom().nextInt(60)) * 20;
                 this.chosenDegrees = (float)this.slime.getRandom().nextInt(360);
             }
 
@@ -445,7 +445,7 @@ public abstract class BaseSlime extends Slime {
 
         @Override
         public void start() {
-            this.growTiredTimer = reducedTickDelay(300);
+            this.growTiredTimer = 300;
             super.start();
         }
 
@@ -457,11 +457,6 @@ public abstract class BaseSlime extends Slime {
             }
             this.slime.setTarget(player);
             return --this.growTiredTimer > 0;
-        }
-
-        @Override
-        public boolean requiresUpdateEveryTick() {
-            return true;
         }
 
         @Override

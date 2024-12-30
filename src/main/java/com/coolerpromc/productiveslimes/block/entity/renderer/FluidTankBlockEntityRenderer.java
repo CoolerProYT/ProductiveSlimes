@@ -17,7 +17,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
@@ -78,8 +77,13 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
     }
 
     private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
         builder.vertex(poseStack.last().pose(), x, y, z)
-                .color(color)
+                .color(red, green, blue, alpha)
                 .uv(u, v)
                 .uv2(packedLight)
                 .normal(1, 0, 0)

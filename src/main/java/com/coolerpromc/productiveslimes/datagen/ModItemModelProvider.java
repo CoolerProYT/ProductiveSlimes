@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -33,7 +33,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         buttonItem(ModBlocks.SLIMY_BUTTON, ModBlocks.SLIMY_PLANKS);
         fenceItem(ModBlocks.SLIMY_FENCE, ModBlocks.SLIMY_PLANKS);
-        basicItem(ModBlocks.SLIMY_DOOR.get().asItem());
+        simpleItem("slimy_door");
         buttonItem(ModBlocks.SLIMY_STONE_BUTTON, ModBlocks.SLIMY_STONE);
         wallItem(ModBlocks.SLIMY_COBBLESTONE_WALL, ModBlocks.SLIMY_COBBLESTONE);
         wallItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL, ModBlocks.SLIMY_COBBLED_DEEPSLATE);
@@ -99,6 +99,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         return withExistingParent(item.getId().getPath(),
                 ResourceLocation.tryParse("item/generated")).texture("layer0",
                 new ResourceLocation(ProductiveSlimes.MODID,"item/" + item.getId().getPath()));
+    }
+
+    private ItemModelBuilder simpleItem(String name){
+        return withExistingParent(name,
+                ResourceLocation.tryParse("item/generated")).texture("layer0",
+                new ResourceLocation(ProductiveSlimes.MODID,"item/" + name));
     }
 
     private ItemModelBuilder saplingItem(RegistryObject<Block> item) {

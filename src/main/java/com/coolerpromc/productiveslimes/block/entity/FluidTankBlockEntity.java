@@ -1,9 +1,9 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
+import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,8 +13,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
+
+import javax.annotation.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity {
     public final int capacity = 50000;
@@ -67,7 +68,10 @@ public class FluidTankBlockEntity extends BlockEntity {
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState){
-
+        setChanged();
+        if (!level.isClientSide()){
+            level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+        }
     }
 
     @Override
@@ -76,10 +80,17 @@ public class FluidTankBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
+    public void invalidateCaps() {
+        super.invalidateCaps();
+
+        fluidTankLazyOptional.invalidate();
+    }
+
+    @Override
+    public CompoundTag save(CompoundTag pTag) {
         pTag = fluidTank.writeToNBT(pTag);
 
-        super.saveAdditional(pTag);
+        return super.save(pTag);
     }
 
     @Override
@@ -89,14 +100,28 @@ public class FluidTankBlockEntity extends BlockEntity {
         fluidTank.readFromNBT(pTag);
     }
 
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+        return ModClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+        CompoundTag compoundTag = new CompoundTag();
+        this.save(compoundTag);
+        return compoundTag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 }

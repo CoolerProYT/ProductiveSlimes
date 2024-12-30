@@ -29,13 +29,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class DnaSynthesizerBlock extends BaseEntityBlock implements TranslucentHighlightFix {

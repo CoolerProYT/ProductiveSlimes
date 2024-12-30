@@ -1,12 +1,14 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
@@ -30,9 +32,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -191,14 +193,15 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    public CompoundTag save(CompoundTag pTag) {
         pTag.put("InputSlot", inputHandler.serializeNBT());
         pTag.put("OutputSlot", outputHandler.serializeNBT());
         pTag.put("EggSlot", eggHandler.serializeNBT());
         pTag.putInt("Energy", energyHandler.getEnergyStored());
 
         pTag.putInt("dna_synthesizing.progress", progress);
+
+        return super.save(pTag);
     }
 
     @Override
@@ -362,15 +365,28 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         return rotation;
     }
 
-
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+        return ModClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+        CompoundTag compoundTag = new CompoundTag();
+        this.save(compoundTag);
+        return compoundTag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 }

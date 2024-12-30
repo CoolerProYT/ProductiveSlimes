@@ -1,14 +1,9 @@
 package com.coolerpromc.productiveslimes.datagen.builder;
 
-import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -17,8 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -147,13 +140,13 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
             return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public ResourceLocation getAdvancementId() {
             return null;

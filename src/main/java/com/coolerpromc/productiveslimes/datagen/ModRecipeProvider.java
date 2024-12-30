@@ -8,13 +8,17 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
@@ -408,5 +412,63 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', pSlimeBall)
                 .unlockedBy(getHasName(pSlimeBall), has(pSlimeBall))
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
+    }
+
+    private static String getHasName(ItemLike pItemLike) {
+        return "has_" + getItemName(pItemLike);
+    }
+
+    private static String getItemName(ItemLike pItemLike) {
+        return Registry.ITEM.getKey(pItemLike.asItem()).getPath();
+    }
+
+    private static void planksFromLogs(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pPlanks, Tag<Item> pLogs) {
+        ShapelessRecipeBuilder.shapeless(pPlanks, 4).requires(pLogs).group("planks").unlockedBy("has_logs", has(pLogs)).save(pFinishedRecipeConsumer);
+    }
+
+    private static void woodFromLogs(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pWood, ItemLike pLog) {
+        ShapedRecipeBuilder.shaped(pWood, 3).define('#', pLog).pattern("##").pattern("##").group("bark").unlockedBy("has_log", has(pLog)).save(pFinishedRecipeConsumer);
+    }
+
+    private static RecipeBuilder buttonBuilder(ItemLike pButton, Ingredient pMaterial) {
+        return ShapelessRecipeBuilder.shapeless(pButton).requires(pMaterial);
+    }
+
+    private static RecipeBuilder doorBuilder(ItemLike pDoor, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pDoor, 3).define('#', pMaterial).pattern("##").pattern("##").pattern("##");
+    }
+
+    private static RecipeBuilder fenceBuilder(ItemLike pFence, Ingredient pMaterial) {
+        int i = pFence == Blocks.NETHER_BRICK_FENCE ? 6 : 3;
+        Item item = pFence == Blocks.NETHER_BRICK_FENCE ? Items.NETHER_BRICK : Items.STICK;
+        return ShapedRecipeBuilder.shaped(pFence, i).define('W', pMaterial).define('#', item).pattern("W#W").pattern("W#W");
+    }
+
+    private static RecipeBuilder fenceGateBuilder(ItemLike pFenceGate, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pFenceGate).define('#', Items.STICK).define('W', pMaterial).pattern("#W#").pattern("#W#");
+    }
+
+    private static void pressurePlate(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pPressurePlate, ItemLike pMaterial) {
+        pressurePlateBuilder(pPressurePlate, Ingredient.of(new ItemLike[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
+    }
+
+    private static RecipeBuilder pressurePlateBuilder(ItemLike pPressurePlate, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pPressurePlate).define('#', pMaterial).pattern("##");
+    }
+
+    private static void slab(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pSlab, ItemLike pMaterial) {
+        slabBuilder(pSlab, Ingredient.of(new ItemLike[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
+    }
+
+    private static RecipeBuilder slabBuilder(ItemLike pSlab, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pSlab, 6).define('#', pMaterial).pattern("###");
+    }
+
+    private static RecipeBuilder stairBuilder(ItemLike pStairs, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pStairs, 4).define('#', pMaterial).pattern("#  ").pattern("## ").pattern("###");
+    }
+
+    private static RecipeBuilder trapdoorBuilder(ItemLike pTrapdoor, Ingredient pMaterial) {
+        return ShapedRecipeBuilder.shaped(pTrapdoor, 2).define('#', pMaterial).pattern("###").pattern("###");
     }
 }

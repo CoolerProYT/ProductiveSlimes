@@ -25,18 +25,18 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomeGeneration;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModConfiguredFeatures;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModPlacedFeatures;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
+import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModConfiguredSurfaceBuilders;
+import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceBuilders;
+import com.coolerpromc.productiveslimes.worldgen.structure.SlimyVillagePools;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -47,7 +47,6 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -57,9 +56,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import terrablender.api.SurfaceRuleManager;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -74,7 +73,6 @@ public class ProductiveSlimes
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addListener(this::commonSetup);
         if (ModList.get().isLoaded("theoneprobe"))
         {
             modEventBus.addListener(this::enqueueIMC);
@@ -108,22 +106,23 @@ public class ProductiveSlimes
         ModMenuTypes.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModConfiguredFeatures.register(modEventBus);
-        ModPlacedFeatures.register(modEventBus);
+        SlimyVillagePools.bootstrap();
         ModBiomes.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
+        modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+        event.enqueueWork(() -> {
+            ModBiomeGeneration.generateBiomes();
+        });
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
+    public void onServerStarting(FMLServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
     }

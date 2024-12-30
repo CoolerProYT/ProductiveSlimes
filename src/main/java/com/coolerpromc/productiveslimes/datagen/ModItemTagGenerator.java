@@ -13,7 +13,8 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
     public ModItemTagGenerator(DataGenerator p_275343_, BlockTagsProvider p_275322_, @Nullable ExistingFileHelper existingFileHelper) {

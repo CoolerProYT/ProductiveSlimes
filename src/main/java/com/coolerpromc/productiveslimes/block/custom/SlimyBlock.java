@@ -1,8 +1,6 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -13,9 +11,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
 import java.util.Random;
@@ -59,42 +58,49 @@ public class SlimyBlock extends Block implements BonemealableBlock {
         return true;
     }
 
+    @Override
     public void performBonemeal(ServerLevel pLevel, Random pRand, BlockPos pPos, BlockState pState) {
-        BlockPos $$4 = pPos.above();
-        BlockState $$5 = Blocks.GRASS.defaultBlockState();
+        BlockPos var5 = pPos.above();
+        BlockState var6 = Blocks.GRASS.defaultBlockState();
 
-        label46:
-        for(int $$6 = 0; $$6 < 128; ++$$6) {
-            BlockPos $$7 = $$4;
+        label48:
+        for(int var7 = 0; var7 < 128; ++var7) {
+            BlockPos var8 = var5;
 
-            for(int $$8 = 0; $$8 < $$6 / 16; ++$$8) {
-                $$7 = $$7.offset(pRand.nextInt(3) - 1, (pRand.nextInt(3) - 1) * pRand.nextInt(3) / 2, pRand.nextInt(3) - 1);
-                if (!pLevel.getBlockState($$7.below()).is(this) || pLevel.getBlockState($$7).isCollisionShapeFullBlock(pLevel, $$7)) {
-                    continue label46;
+            for(int var9 = 0; var9 < var7 / 16; ++var9) {
+                var8 = var8.offset(pRand.nextInt(3) - 1, (pRand.nextInt(3) - 1) * pRand.nextInt(3) / 2, pRand.nextInt(3) - 1);
+                if (!pLevel.getBlockState(var8.below()).is(this) || pLevel.getBlockState(var8).isCollisionShapeFullBlock(pLevel, var8)) {
+                    continue label48;
                 }
             }
 
-            BlockState $$9 = pLevel.getBlockState($$7);
-            if ($$9.is($$5.getBlock()) && pRand.nextInt(10) == 0) {
-                ((BonemealableBlock)$$5.getBlock()).performBonemeal(pLevel, pRand, $$7, $$9);
+            BlockState var12 = pLevel.getBlockState(var8);
+            if (var12.is(var6.getBlock()) && pRand.nextInt(10) == 0) {
+                ((BonemealableBlock)var6.getBlock()).performBonemeal(pLevel, pRand, var8, var12);
             }
 
-            if ($$9.isAir()) {
-                Holder $$12;
+            if (var12.isAir()) {
+                BlockState var10;
                 if (pRand.nextInt(8) == 0) {
-                    List<ConfiguredFeature<?, ?>> $$10 = ((Biome)pLevel.getBiome($$7).value()).getGenerationSettings().getFlowerFeatures();
-                    if ($$10.isEmpty()) {
+                    List<ConfiguredFeature<?, ?>> var11 = pLevel.getBiome(var8).getGenerationSettings().getFlowerFeatures();
+                    if (var11.isEmpty()) {
                         continue;
                     }
 
-                    $$12 = ((RandomPatchConfiguration)((ConfiguredFeature)$$10.get(0)).config()).feature();
+                    var10 = getBlockState(pRand, var8, (ConfiguredFeature)var11.get(0));
                 } else {
-                    $$12 = VegetationPlacements.GRASS_BONEMEAL;
+                    var10 = var6;
                 }
 
-                ((PlacedFeature)$$12.value()).place(pLevel, pLevel.getChunkSource().getGenerator(), pRand, $$7);
+                if (var10.canSurvive(pLevel, var8)) {
+                    pLevel.setBlock(var8, var10, 3);
+                }
             }
         }
+    }
 
+    private static <U extends FeatureConfiguration> BlockState getBlockState(Random pRandom, BlockPos pPos, ConfiguredFeature<U, ?> pFlowerFeature) {
+        AbstractFlowerFeature<U> var3 = (AbstractFlowerFeature)pFlowerFeature.feature;
+        return var3.getRandomFlower(pRandom, pPos, pFlowerFeature.config());
     }
 }

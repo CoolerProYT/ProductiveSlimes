@@ -5,13 +5,10 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -25,19 +22,13 @@ import java.util.List;
 public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(ProductiveSlimes.MODID, "squeezing");
     public static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/slime_squeezer_gui.png");
-    public static final RecipeType<SqueezingRecipe> SQUEEZING_TYPE = new RecipeType<>(UID, SqueezingRecipe.class);
     private int tickCount = 0;
     private final IDrawable background;
     private final IDrawable icon;
 
     public SqueezingCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 5, 5, 168, 77);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SLIME_SQUEEZER.get()));
-    }
-
-    @Override
-    public RecipeType<SqueezingRecipe> getRecipeType() {
-        return SQUEEZING_TYPE;
+        this.icon = helper.createDrawableIngredient(new ItemStack(ModBlocks.SLIME_SQUEEZER.get()));
     }
 
     @Override
@@ -56,7 +47,22 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
     }
 
     @Override
-    public void draw(SqueezingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+    public void setIngredients(SqueezingRecipe squeezingRecipe, IIngredients iIngredients) {
+        iIngredients.setInputIngredients(squeezingRecipe.getIngredients());
+        iIngredients.setOutputs(VanillaTypes.ITEM, squeezingRecipe.getOutputs());
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout iRecipeLayout, SqueezingRecipe squeezingRecipe, IIngredients iIngredients) {
+        iRecipeLayout.getItemStacks().init(0, true, 28, 28);
+        iRecipeLayout.getItemStacks().init(1, false, 109, 28);
+        iRecipeLayout.getItemStacks().init(2, false, 129, 28);
+
+        iRecipeLayout.getItemStacks().set(iIngredients);
+    }
+
+    @Override
+    public void draw(SqueezingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindForSetup(TEXTURE);
 
@@ -72,7 +78,7 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
     }
 
     @Override
-    public List<Component> getTooltipStrings(SqueezingRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(SqueezingRecipe recipe, double mouseX, double mouseY) {
         Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
@@ -92,10 +98,4 @@ public class SqueezingCategory implements IRecipeCategory<SqueezingRecipe> {
         return SqueezingRecipe.class;
     }
 
-    @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, SqueezingRecipe squeezingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 29, 29).addIngredients(squeezingRecipe.getIngredients().get(0));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 110, 29).addItemStack(squeezingRecipe.getOutputs().get(0));
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).addItemStack(squeezingRecipe.getOutputs().get(1));
-    }
 }

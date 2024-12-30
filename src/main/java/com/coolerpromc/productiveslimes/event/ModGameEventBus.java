@@ -31,16 +31,16 @@ import java.util.List;
 public class ModGameEventBus {
     @SubscribeEvent
     public void onDrawSelectionHighlightBlock(DrawSelectionEvent.HighlightBlock event) {
-        if (event.getCamera().getEntity() instanceof LivingEntity living) {
+        if (event.getInfo().getEntity() instanceof LivingEntity living) {
             Level world = living.level;
             BlockHitResult rtr = event.getTarget();
             BlockPos pos = rtr.getBlockPos();
-            Vec3 renderView = event.getCamera().getPosition();
+            Vec3 renderView = event.getInfo().getPosition();
 
             BlockState targetBlock = world.getBlockState(rtr.getBlockPos());
             if (targetBlock.getBlock() instanceof TranslucentHighlightFix) {
-                ((LevelRendererAccess) event.getLevelRenderer()).callRenderHitOutline(
-                        event.getPoseStack(), event.getMultiBufferSource().getBuffer(ModRenderTypes.LINES_NONTRANSLUCENT),
+                ((LevelRendererAccess) event.getContext()).callRenderHitOutline(
+                        event.getMatrix(), event.getBuffers().getBuffer(ModRenderTypes.LINES_NONTRANSLUCENT),
                         living, renderView.x, renderView.y, renderView.z,
                         pos, targetBlock
                 );

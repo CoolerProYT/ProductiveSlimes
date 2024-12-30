@@ -3,9 +3,9 @@ package com.coolerpromc.productiveslimes.screen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.network.IContainerFactory;
+import net.minecraftforge.fmllegacy.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -41,7 +41,7 @@ public class ModMenuTypes {
             registerMenuType("slimeball_collector_menu", SlimeballCollectorMenu::new);
 
     private static <T extends AbstractContainerMenu> Supplier<MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
-        return MENUS.register(name, () -> IForgeMenuType.create(factory));
+        return MENUS.register(name, () -> IForgeContainerType.create(factory));
     }
 
     public static void register(IEventBus eventBus) {

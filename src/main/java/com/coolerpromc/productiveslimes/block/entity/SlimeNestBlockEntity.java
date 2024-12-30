@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
+import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
@@ -7,10 +8,9 @@ import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -29,9 +29,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,7 +191,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    public CompoundTag save(CompoundTag tag) {
         tag.put("upgradeHandler", upgradeHandler.serializeNBT());
         tag.put("slimeHandler", slimeHandler.serializeNBT());
         tag.put("outputHandler", outputHandler.serializeNBT());
@@ -203,7 +203,8 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         }
         tag.putInt("tick", tick);
         tag.putFloat("multiplier", multiplier);
-        super.saveAdditional(tag);
+
+        return super.save(tag);
     }
 
     @Override
@@ -294,15 +295,29 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(level, worldPosition, container);
     }
 
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+        return ModClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        this.load(tag);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+        CompoundTag compoundTag = new CompoundTag();
+        this.save(compoundTag);
+        return compoundTag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 
     public ItemStack getSlime() {

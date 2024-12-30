@@ -11,9 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
-
-import java.lang.reflect.Field;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 @Mod.EventBusSubscriber(modid = ProductiveSlimes.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntitiesEvent {
@@ -23,6 +21,8 @@ public class ModEntitiesEvent {
     }
 
     public static void registerAllSlimeEntityAttribute(EntityAttributeCreationEvent event){
+        event.put(ModEntities.ENERGY_SLIME.get(), BaseSlime.createAttributes().build());
+
         for(Tier tier : Tier.values()) {
             ModTiers modTiers = ModTierLists.getTierByName(tier);
             RegistryObject<EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(modTiers.name());

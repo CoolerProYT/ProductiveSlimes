@@ -77,8 +77,13 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
     }
 
     private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+
         builder.vertex(poseStack.last().pose(), x, y, z)
-                .color(color)
+                .color(red, green, blue, alpha)
                 .uv(u, v)
                 .uv2(packedLight)
                 .normal(1, 0, 0);

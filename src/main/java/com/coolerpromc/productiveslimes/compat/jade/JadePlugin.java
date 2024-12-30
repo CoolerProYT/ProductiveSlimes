@@ -8,8 +8,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 @WailaPlugin
 public class JadePlugin implements IWailaPlugin {
     @Override
-    public void registerClient(IWailaClientRegistration registration) {
-        registration.registerComponentProvider(EntityInfoProvider.INSTANCE, TooltipPosition.BODY,BaseSlime.class);
+    public void register(IRegistrar iRegistrar) {
+        iRegistrar.registerComponentProvider(EntityInfoProvider.INSTANCE, TooltipPosition.BODY, BaseSlime.class);
     }
 
     public enum EntityInfoProvider implements IEntityComponentProvider {

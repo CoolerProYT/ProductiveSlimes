@@ -3,30 +3,35 @@ package com.coolerpromc.productiveslimes.worldgen.biome;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.core.Registry;
+import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModConfiguredSurfaceBuilders;
+import com.coolerpromc.productiveslimes.worldgen.structure.ModConfiguredStructures;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModBiomes {
-    public static final DeferredRegister<Biome> BIOME = DeferredRegister.create(Registry.BIOME_REGISTRY, ProductiveSlimes.MODID);
+    public static final DeferredRegister<Biome> BIOME = DeferredRegister.create(ForgeRegistries.BIOMES, ProductiveSlimes.MODID);
 
     public static final RegistryObject<Biome> SLIMY_LAND = BIOME.register("slimy_land", ModBiomes::slimeLand);
 
     public static void globalOverworldGeneration(BiomeGenerationSettings.Builder builder) {
         BiomeDefaultFeatures.addSurfaceFreezing(builder);
         BiomeDefaultFeatures.addDefaultOres(builder);
+        BiomeDefaultFeatures.addDefaultCarvers(builder);
+        BiomeDefaultFeatures.addDefaultMonsterRoom(builder);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(builder);
     }
 
     private static Biome slimeLand(){
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 
-        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 1, 1));
+        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 2, 1, 1));
         spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.BAT, 100, 1, 1));
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModTierLists.getEntityByName(Tier.DIRT.getTierName()).get(), 100, 1, 1));
         spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModTierLists.getEntityByName(Tier.STONE.getTierName()).get(), 65, 1, 1));
@@ -34,13 +39,17 @@ public class ModBiomes {
 
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder();
 
-        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.SLIMY_TREE.getHolder().get());
+        biomeBuilder.surfaceBuilder(ModConfiguredSurfaceBuilders.SLIMY_LAND);
+        biomeBuilder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModConfiguredFeatures.SLIMY_TREE);
+        biomeBuilder.addStructureStart(ModConfiguredStructures.SLIMY_VILLAGE);
 
         globalOverworldGeneration(biomeBuilder);
 
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-                .biomeCategory(Biome.BiomeCategory.DESERT)
+                .biomeCategory(Biome.BiomeCategory.PLAINS)
+                .depth(0.125F)
+                .scale(0.05F)
                 .temperature(0.8f)
                 .downfall(0.4f)
                 .specialEffects((new BiomeSpecialEffects.Builder())

@@ -41,19 +41,19 @@ public class JEPlugin implements IModPlugin {
         List<DnaSynthesizingRecipe> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(DnaSynthesizingRecipe.Type.INSTANCE);
         List<SqueezingRecipe> squeezingRecipes = recipeManager.getAllRecipesFor(SqueezingRecipe.Type.INSTANCE);
 
-        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipes);
-        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipes);
-        registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipes);
-        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipes);
-        registration.addRecipes(SqueezingCategory.SQUEEZING_TYPE, squeezingRecipes);
+        registration.addRecipes(meltingRecipes, MeltingCategory.UID);
+        registration.addRecipes(solidingRecipes, SolidingCategory.UID);
+        registration.addRecipes(dnaExtractingRecipes, DnaExtractingCategory.UID);
+        registration.addRecipes(dnaSynthesizingRecipes, DnaSynthesizingCategory.UID);
+        registration.addRecipes(squeezingRecipes, SqueezingCategory.UID);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
-        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
-        registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
-        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
-        registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
+        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.UID);
+        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.UID);
+        registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.UID);
+        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.UID);
+        registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.UID);
     }
 }

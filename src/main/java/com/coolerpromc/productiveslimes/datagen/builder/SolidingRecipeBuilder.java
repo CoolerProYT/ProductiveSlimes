@@ -1,13 +1,9 @@
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -134,13 +130,13 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
             return ModRecipes.SOLIDING_SERIALIZER.get();
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public ResourceLocation getAdvancementId() {
             return null;

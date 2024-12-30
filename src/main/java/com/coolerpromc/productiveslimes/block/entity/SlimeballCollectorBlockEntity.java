@@ -24,9 +24,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuProvider {
@@ -110,10 +110,11 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        tag.put("inventory", inventory.serializeNBT());
-        tag.putInt("enableOutline", enableOutline);
-        super.saveAdditional(tag);
+    public CompoundTag save(CompoundTag pTag) {
+        pTag.put("inventory", inventory.serializeNBT());
+        pTag.putInt("enableOutline", enableOutline);
+
+        return super.save(pTag);
     }
 
     @Override

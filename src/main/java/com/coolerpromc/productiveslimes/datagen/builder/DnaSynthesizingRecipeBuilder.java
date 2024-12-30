@@ -129,13 +129,13 @@ public class DnaSynthesizingRecipeBuilder implements RecipeBuilder {
             return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public JsonObject serializeAdvancement() {
             return null;
         }
 
-        @org.jetbrains.annotations.Nullable
+        @Nullable
         @Override
         public ResourceLocation getAdvancementId() {
             return null;

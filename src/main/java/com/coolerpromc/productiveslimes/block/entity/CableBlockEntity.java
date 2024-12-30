@@ -11,7 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -123,11 +123,12 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
         }
     }
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    public CompoundTag save(CompoundTag pTag) {
         int energyStored = network != null ? network.getEnergyStored() : 0;
         pTag.putInt("EnergyStored", energyStored);
+        return super.save(pTag);
     }
+
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
