@@ -374,6 +374,7 @@ public class ProductiveSlimes
         }
 
         public static void registerAllSlimeBlockRenderLayer() {
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENERGY_SLIME_BLOCK.get(), RenderType.TRANSLUCENT);
             for (Tier tier : Tier.values()) {
                 ModTiers modTiers = ModTierLists.getTierByName(tier);
 
