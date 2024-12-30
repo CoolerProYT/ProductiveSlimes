@@ -32,6 +32,8 @@ public class IconButton extends Button {
         int textureX = isOpen ? closedTextureX : openTextureX;
         int textureY = isOpen ? closedTextureY : openTextureY;
 
+        RenderSystem.setShaderTexture(0, iconTexture);
+
         Minecraft.getInstance().getTextureManager().bindForSetup(iconTexture);
         GuiComponent.blit(pPoseStack, this.x, this.y, textureX, textureY, this.width, this.height, 256, 256);
 
