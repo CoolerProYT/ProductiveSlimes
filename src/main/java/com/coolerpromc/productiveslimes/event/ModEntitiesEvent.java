@@ -23,6 +23,7 @@ public class ModEntitiesEvent {
     }
 
     public static void registerAllSlimeEntityAttribute(EntityAttributeCreationEvent event){
+        event.put(ModEntities.ENERGY_SLIME.get(), BaseSlime.createAttributes().build());
         for(Tier tier : Tier.values()) {
             ModTiers modTiers = ModTierLists.getTierByName(tier);
             DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(modTiers.name());
