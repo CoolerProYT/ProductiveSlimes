@@ -1,12 +1,13 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.EnergyNetwork;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -16,7 +17,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
+public class CableBlockEntity extends TileEntity implements IEnergyStorage {
     private int energyStoredToLoad = -1;
     private EnergyNetwork network;
     private final int capacity = 10000; // Example capacity
@@ -24,8 +25,8 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
 
     private LazyOptional<IEnergyStorage> storageLazyOptional = LazyOptional.of(() -> this);
 
-    public CableBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.CABLE_BE.get(), pos, state);
+    public CableBlockEntity(BlockState state, IBlockReader world) {
+        super(ModBlockEntities.CABLE_BE.get());
     }
     public void setNetwork(EnergyNetwork network) {
         this.network = network;
@@ -95,8 +96,9 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
         }
         Set<EnergyNetwork> adjacentNetworks = new HashSet<>();
         for (Direction direction : Direction.values()) {
-            BlockEntity neighborBE = level.getBlockEntity(worldPosition.relative(direction));
-            if (neighborBE instanceof CableBlockEntity neighborCable) {
+            TileEntity neighborBE = level.getBlockEntity(worldPosition.relative(direction));
+            if (neighborBE instanceof CableBlockEntity) {
+                CableBlockEntity neighborCable = (CableBlockEntity) neighborBE;
                 if (neighborCable.network != null) {
                     adjacentNetworks.add(neighborCable.network);
                 }
@@ -116,24 +118,25 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
             }
         }
     }
-    public static void tick(Level level, BlockPos pos, BlockState state, CableBlockEntity cable) {
+    public static void tick(World level, BlockPos pos, BlockState state, CableBlockEntity cable) {
         if (!level.isClientSide && cable.network != null) {
             cable.network.collectEnergy(level);
             cable.network.distributeEnergy(level);
         }
     }
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    public CompoundNBT save(CompoundNBT pTag) {
         int energyStored = network != null ? network.getEnergyStored() : 0;
         pTag.putInt("EnergyStored", energyStored);
         return super.save(pTag);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void load(BlockState p_230337_1_, CompoundNBT pTag) {
+        super.load(p_230337_1_, pTag);
         energyStoredToLoad = pTag.getInt("EnergyStored");
     }
+
     public void onRemoved() {
         if (network != null) {
             network.removeCable(this);

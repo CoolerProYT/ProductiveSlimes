@@ -1,33 +1,32 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.CableBlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.Property;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
+import java.util.Properties;
+import java.util.Random;
 
-public class CableBlock extends Block implements EntityBlock {
+public class CableBlock extends Block {
     public static final BooleanProperty UP = BooleanProperty.create("up");
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
@@ -52,33 +51,37 @@ public class CableBlock extends Block implements EntityBlock {
                 .setValue(EAST, false)
                 .setValue(WEST, false));
     }
+
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
+        super.createBlockStateDefinition(pBuilder);
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof CableBlockEntity cableBE) {
+            TileEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof CableBlockEntity) {
+                CableBlockEntity cableBE = (CableBlockEntity) blockEntity;
                 cableBE.onRemoved();
             }
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
-                BlockEntity neighborBE = level.getBlockEntity(neighborPos);
-                if (neighborBE instanceof CableBlockEntity neighborCable) {
+                TileEntity neighborBE = level.getBlockEntity(neighborPos);
+                if (neighborBE instanceof CableBlockEntity) {
+                    CableBlockEntity neighborCable = (CableBlockEntity) blockEntity;
                     neighborCable.reinitializeNetwork();
                 }
             }
-            super.onRemove(state, level, pos, newState, isMoving);
         }
+
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
-    @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        LevelAccessor level = pContext.getLevel();
+    public BlockState getStateForPlacement(BlockItemUseContext pContext) {
+        World level = pContext.getLevel();
         BlockPos pos = pContext.getClickedPos();
         return this.defaultBlockState()
                 .setValue(UP, this.canConnectToBlock(level, pos.above()))
@@ -90,39 +93,36 @@ public class CableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
         VoxelShape shape = CORE_SHAPE;
         if (state.getValue(UP)) {
-            shape = Shapes.or(shape, UP_SHAPE);
+            shape = VoxelShapes.or(shape, UP_SHAPE);
         }
         if (state.getValue(DOWN)) {
-            shape = Shapes.or(shape, DOWN_SHAPE);
+            shape = VoxelShapes.or(shape, DOWN_SHAPE);
         }
         if (state.getValue(NORTH)) {
-            shape = Shapes.or(shape, NORTH_SHAPE);
+            shape = VoxelShapes.or(shape, NORTH_SHAPE);
         }
         if (state.getValue(SOUTH)) {
-            shape = Shapes.or(shape, SOUTH_SHAPE);
+            shape = VoxelShapes.or(shape, SOUTH_SHAPE);
         }
         if (state.getValue(EAST)) {
-            shape = Shapes.or(shape, EAST_SHAPE);
+            shape = VoxelShapes.or(shape, EAST_SHAPE);
         }
         if (state.getValue(WEST)) {
-            shape = Shapes.or(shape, WEST_SHAPE);
+            shape = VoxelShapes.or(shape, WEST_SHAPE);
         }
         return shape;
     }
+
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+    public void setPlacedBy(World pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         updateConnections(pLevel, pPos, pState);
     }
-    private void updateConnections(Level level, BlockPos pos, BlockState state) {
+
+    private void updateConnections(World level, BlockPos pos, BlockState state) {
         if (!level.isClientSide) {
             BlockState newState = state;
             for (Direction direction : Direction.values()) {
@@ -134,7 +134,7 @@ public class CableBlock extends Block implements EntityBlock {
             level.setBlock(pos, newState, 2);
         }
     }
-    private boolean canConnectToBlock(LevelAccessor level, BlockPos pos) {
+    private boolean canConnectToBlock(World level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
 
@@ -144,14 +144,16 @@ public class CableBlock extends Block implements EntityBlock {
         return block instanceof IEnergyStorage;
     }
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
-        if (levelAccessor instanceof Level level) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, IWorld levelAccessor, BlockPos pos, BlockPos neighborPos) {
+        if (levelAccessor instanceof World) {
+            World level = (World) levelAccessor;
             boolean canConnect = this.canConnectTo(level, neighborPos, direction);
             return state.setValue(getPropertyForDirection(direction), canConnect);
         } else {
             return state;
         }
     }
+
     private BooleanProperty getPropertyForDirection(Direction direction) {
         switch (direction) {
             case UP: return UP;
@@ -163,9 +165,9 @@ public class CableBlock extends Block implements EntityBlock {
             default: throw new IllegalArgumentException("Invalid direction: " + direction);
         }
     }
-    private boolean canConnectTo(Level level, BlockPos pos, Direction direction) {
+    private boolean canConnectTo(World level, BlockPos pos, Direction direction) {
         // Get the BlockEntity at the target position
-        BlockEntity blockEntity = level.getBlockEntity(pos);
+        TileEntity blockEntity = level.getBlockEntity(pos);
 
         // Check if the target BlockEntity has the energy capability on the specified side
         if (blockEntity != null) {
@@ -179,19 +181,18 @@ public class CableBlock extends Block implements EntityBlock {
         return state.getBlock() instanceof CableBlock || canConnectBasedOnBlock(state.getBlock());
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new CableBlockEntity(pPos, pState);
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
 
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return (lvl, pos, blockState, t) -> {
-            if (t instanceof CableBlockEntity blockEntity) {
-                CableBlockEntity.tick(lvl, pos, blockState, blockEntity);
-            }
-        };
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new CableBlockEntity(state, world);
+    }
+
+    @Override
+    public void tick(BlockState blockState, ServerWorld serverLevel, BlockPos blockPos, Random random) {
+        CableBlockEntity.tick(serverLevel, blockPos, blockState, (CableBlockEntity) serverLevel.getBlockEntity(blockPos));
     }
 }

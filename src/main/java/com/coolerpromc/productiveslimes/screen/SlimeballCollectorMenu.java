@@ -2,7 +2,13 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.SlimeballCollectorBlockEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -12,16 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class SlimeballCollectorMenu extends AbstractContainerMenu {
+public class SlimeballCollectorMenu extends Container {
     public final SlimeballCollectorBlockEntity blockEntity;
-    private final Level level;
+    private final World level;
     private final ContainerData data;
 
-    public SlimeballCollectorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+    public SlimeballCollectorMenu(int pContainerId, PlayerInventory playerInventory, PacketBuffer packetBuffer) {
+        this(pContainerId, playerInventory, playerInventory.player.level.getBlockEntity(packetBuffer.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public SlimeballCollectorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public SlimeballCollectorMenu(int pContainerId, PlayerInventory inv, TileEntity entity, ContainerData data) {
         super(ModMenuTypes.SLIMEBALL_COLLECTOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
         blockEntity = (SlimeballCollectorBlockEntity) entity;

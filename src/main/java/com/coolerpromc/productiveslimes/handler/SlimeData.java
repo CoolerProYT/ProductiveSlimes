@@ -2,16 +2,56 @@ package com.coolerpromc.productiveslimes.handler;
 
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime){
+public class SlimeData{
+    public final int size;
+    public final int color;
+    public final int cooldown;
+    public final ItemStack dropItem;
+    public final ItemStack growthItem;
+    public final EntityType<BaseSlime> slime;
+
+    public SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime){
+        this.size = size;
+        this.color = color;
+        this.cooldown = cooldown;
+        this.dropItem = dropItem;
+        this.growthItem = growthItem;
+        this.slime = slime;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public int color() {
+        return color;
+    }
+
+    public int cooldown() {
+        return cooldown;
+    }
+
+    public ItemStack dropItem() {
+        return dropItem;
+    }
+
+    public ItemStack growthItem() {
+        return growthItem;
+    }
+
+    public EntityType<BaseSlime> slime() {
+        return slime;
+    }
+
     public static SlimeData fromSlime(Slime slime) {
         return new SlimeData(
                 slime.getSize(),
@@ -23,19 +63,19 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         );
     }
 
-    public CompoundTag toTag(CompoundTag tag) {
+    public CompoundNBT toTag(CompoundNBT tag) {
         tag.putInt("size", size);
         tag.putInt("color", color);
         tag.putInt("cooldown", cooldown);
-        tag.put("drop", dropItem.save(new CompoundTag()));
-        tag.put("growth_item", growthItem.save(new CompoundTag()));
+        tag.put("drop", dropItem.save(new CompoundNBT()));
+        tag.put("growth_item", growthItem.save(new CompoundNBT()));
         if (slime != null) {
             tag.putString("slime", ForgeRegistries.ENTITIES.getKey(slime).toString());
         }
         return tag;
     }
 
-    public static SlimeData fromTag(CompoundTag tag) {
+    public static SlimeData fromTag(CompoundNBT tag) {
         EntityType<BaseSlime> entityType = null;
         if (tag.contains("slime")) {
             entityType = (EntityType<BaseSlime>) ForgeRegistries.ENTITIES.getValue(new ResourceLocation(tag.getString("slime")));

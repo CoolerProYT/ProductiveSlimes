@@ -1,29 +1,20 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.RegistryObject;
 
 public class Slime extends BaseSlime {
     private final RegistryObject<Item> item;
-    private final ItemLike growthItem;
+    private final Item growthItem;
     private final int color;
     private final int cooldown;
     private final EntityType<BaseSlime> entityType;
 
-    public Slime(EntityType<BaseSlime> entityType, Level level, int cooldown, int color, RegistryObject<Item> item, ItemLike growthItem) {
+    public Slime(EntityType<BaseSlime> entityType, World level, int cooldown, int color, RegistryObject<Item> item, Item growthItem) {
         super(entityType, level, cooldown, growthItem);
         this.item = item;
         this.growthItem = growthItem;

@@ -1,10 +1,10 @@
 package com.coolerpromc.productiveslimes.handler;
 
 import com.coolerpromc.productiveslimes.block.entity.CableBlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -33,7 +33,7 @@ public class EnergyNetwork implements IEnergyStorage {
     // Update the primary cable if necessary
     private void updatePrimaryCable() {
         primaryCable = cables.stream()
-                .min(Comparator.comparing(BlockEntity::getBlockPos))
+                .min(Comparator.comparing(TileEntity::getBlockPos))
                 .orElse(null);
     }
     // Remove a cable from the network
@@ -87,8 +87,9 @@ public class EnergyNetwork implements IEnergyStorage {
         visited.add(cable);
         subNetworkCables.add(cable);
         for (Direction direction : Direction.values()) {
-            BlockEntity neighborBE = cable.getLevel().getBlockEntity(cable.getBlockPos().relative(direction));
-            if (neighborBE instanceof CableBlockEntity neighborCable) {
+            TileEntity neighborBE = cable.getLevel().getBlockEntity(cable.getBlockPos().relative(direction));
+            if (neighborBE instanceof CableBlockEntity) {
+                CableBlockEntity neighborCable = (CableBlockEntity) neighborBE;
                 if (cables.contains(neighborCable) && !visited.contains(neighborCable)) {
                     exploreNetwork(neighborCable, subNetworkCables, visited);
                 }
@@ -147,14 +148,14 @@ public class EnergyNetwork implements IEnergyStorage {
         energyStored = 0;
         maxEnergyStored = 0;
     }
-    public void distributeEnergy(Level level) {
+    public void distributeEnergy(World level) {
         for (CableBlockEntity cable : cables) {
             BlockPos pos = cable.getBlockPos();
 
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
                 // Get the block entity at the neighbor position
-                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+                TileEntity neighborEntity = level.getBlockEntity(neighborPos);
 
                 if (neighborEntity != null) {
                     LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
@@ -178,14 +179,14 @@ public class EnergyNetwork implements IEnergyStorage {
     }
 
 
-    public void collectEnergy(Level level) {
+    public void collectEnergy(World level) {
         for (CableBlockEntity cable : cables) {
             BlockPos pos = cable.getBlockPos();
 
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
                 // Get the block entity at the neighbor position
-                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+                TileEntity neighborEntity = level.getBlockEntity(neighborPos);
 
                 if (neighborEntity != null) {
                     // Get the energy capability of the neighbor

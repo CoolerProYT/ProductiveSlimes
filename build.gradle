@@ -25,7 +25,7 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
 minecraft {
@@ -94,10 +94,9 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-//    implementation(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
-    implementation fg.deobf("curse.maven:jei-238222:4351306")
+    implementation fg.deobf("curse.maven:jei-238222:5846870")
 
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3752096")
 
     implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
 }

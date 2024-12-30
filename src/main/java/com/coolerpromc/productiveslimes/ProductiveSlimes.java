@@ -27,23 +27,14 @@ import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomeGeneration;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModConfiguredFeatures;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModConfiguredSurfaceBuilders;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceBuilders;
 import com.coolerpromc.productiveslimes.worldgen.structure.SlimyVillagePools;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -55,8 +46,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -78,7 +69,7 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+//        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
@@ -163,15 +154,15 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            MenuScreens.register(ModMenuTypes.MELTING_STATION_MENU.get(), MeltingStationScreen::new);
-            MenuScreens.register(ModMenuTypes.SOLIDING_STATION_MENU.get(), SolidingStationScreen::new);
-            MenuScreens.register(ModMenuTypes.GUIDEBOOK_MENU.get(), GuidebookScreen::new);
-            MenuScreens.register(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), EnergyGeneratorScreen::new);
-            MenuScreens.register(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), DnaExtractorScreen::new);
-            MenuScreens.register(ModMenuTypes.DNA_SYNTHESIZER_MENU.get(), DnaSynthesizerScreen::new);
-            MenuScreens.register(ModMenuTypes.SLIME_SQUEEZER_MENU.get(), SlimeSqueezerScreen::new);
-            MenuScreens.register(ModMenuTypes.SLIME_NEST_MENU.get(), SlimeNestScreen::new);
-            MenuScreens.register(ModMenuTypes.SLIMEBALL_COLLECTOR_MENU.get(), SlimeballCollectorScreen::new);
+            ScreenManager.register(ModMenuTypes.MELTING_STATION_MENU.get(), MeltingStationScreen::new);
+            ScreenManager.register(ModMenuTypes.SOLIDING_STATION_MENU.get(), SolidingStationScreen::new);
+            ScreenManager.register(ModMenuTypes.GUIDEBOOK_MENU.get(), GuidebookScreen::new);
+            ScreenManager.register(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), EnergyGeneratorScreen::new);
+            ScreenManager.register(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), DnaExtractorScreen::new);
+            ScreenManager.register(ModMenuTypes.DNA_SYNTHESIZER_MENU.get(), DnaSynthesizerScreen::new);
+            ScreenManager.register(ModMenuTypes.SLIME_SQUEEZER_MENU.get(), SlimeSqueezerScreen::new);
+            ScreenManager.register(ModMenuTypes.SLIME_NEST_MENU.get(), SlimeNestScreen::new);
+            ScreenManager.register(ModMenuTypes.SLIMEBALL_COLLECTOR_MENU.get(), SlimeballCollectorScreen::new);
 
             EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFffff70));
 

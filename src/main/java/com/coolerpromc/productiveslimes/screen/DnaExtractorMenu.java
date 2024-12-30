@@ -2,7 +2,12 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -12,21 +17,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class DnaExtractorMenu extends AbstractContainerMenu {
+public class DnaExtractorMenu extends Container {
     public final DnaExtractorBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+    private final World level;
 
-    public DnaExtractorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
-    }
-
-    public DnaExtractorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public DnaExtractorMenu(int pContainerId, World level, BlockPos pos, PlayerInventory inv, PlayerEntity entity) {
         super(ModMenuTypes.DNA_EXTRACTOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
-        blockEntity = (DnaExtractorBlockEntity) entity;
-        this.level = inv.player.level;
-        this.data = data;
+        blockEntity = (DnaExtractorBlockEntity) level.getBlockEntity(pos);
+        this.level = level;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

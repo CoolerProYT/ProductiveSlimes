@@ -1,33 +1,16 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.command.impl.data.EntityDataAccessor;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public abstract class BaseSlime extends Slime {
+public abstract class BaseSlime extends SlimeEntity {
     private static final EntityDataAccessor<ItemStack> RESOURCE =
             SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Integer> ID_SIZE =
@@ -38,7 +21,7 @@ public abstract class BaseSlime extends Slime {
     public final int growthTime;
     public final Item growthItem;
 
-    public BaseSlime(EntityType<? extends Slime> entityType, Level level, int cooldown, ItemLike growthItem) {
+    public BaseSlime(EntityType<BaseSlime> entityType, World level, int cooldown, Item growthItem) {
         super(entityType, level);
         this.moveControl = new BaseSlime.SlimeMoveControl(this);
         growthTime = cooldown;
@@ -313,7 +296,7 @@ public abstract class BaseSlime extends Slime {
         }
     }
 
-    static class SlimeMoveControl extends MoveControl {
+    static class SlimeMoveControl extends MovementController {
         private float yRot;
         private int jumpDelay;
         private final BaseSlime slime;

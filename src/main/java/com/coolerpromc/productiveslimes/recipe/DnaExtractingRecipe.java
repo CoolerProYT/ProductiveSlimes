@@ -4,20 +4,20 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
+import com.sun.istack.internal.Nullable;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.*;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
+public class DnaExtractingRecipe implements IRecipe<IInventory> {
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int inputCount;
@@ -35,16 +35,16 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     }
 
     @Override
-    public boolean matches(SimpleContainer pInput, Level pLevel) {
-        if (pLevel.isClientSide()){
+    public boolean matches(IInventory iInventory, World world) {
+        if (world.isClientSide()){
             return false;
         }
 
-        return inputItems.get(0).test(pInput.getItem(0));
+        return inputItems.get(0).test(iInventory.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer) {
+    public ItemStack assemble(IInventory iInventory) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -59,12 +59,12 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public IRecipeSerializer<?> getSerializer() {
         return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public IRecipeType<?> getType() {
         return Type.INSTANCE;
     }
 
@@ -81,7 +81,6 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
     public List<ItemStack> getOutputs() {
         return output;
     }
-
     public int getInputCount() {
         return inputCount;
     }
@@ -94,40 +93,40 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
         return outputChance;
     }
 
-    public static class Type implements RecipeType<DnaExtractingRecipe> {
+    public static class Type implements IRecipeType<DnaExtractingRecipe> {
         public static final DnaExtractingRecipe.Type INSTANCE = new DnaExtractingRecipe.Type();
         public static final String ID = "dna_extracting";
     }
 
-    public static class Serializer implements RecipeSerializer<DnaExtractingRecipe>{
+    public static class Serializer implements IRecipeSerializer<DnaExtractingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ProductiveSlimes.MODID, "dna_extracting");
 
         @Override
         public DnaExtractingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
+            JsonArray ingredients = JSONUtils.getAsJsonArray(jsonObject, "ingredients");
             NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 
             for (int i = 0; i < ingredients.size(); i++) {
                 inputItems.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            JsonArray outputs = GsonHelper.getAsJsonArray(jsonObject, "output");
+            JsonArray outputs = JSONUtils.getAsJsonArray(jsonObject, "output");
             List<ItemStack> output = new ArrayList<>();
 
             for(JsonElement element : outputs) {
-                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()).getDefaultInstance());
+                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()));
             }
 
-            int inputCount = GsonHelper.getAsInt(jsonObject, "inputCount");
-            int energy = GsonHelper.getAsInt(jsonObject, "energy");
-            float outputChance = GsonHelper.getAsFloat(jsonObject, "outputChance");
+            int inputCount = JSONUtils.getAsInt(jsonObject, "inputCount");
+            int energy = JSONUtils.getAsInt(jsonObject, "energy");
+            float outputChance = JSONUtils.getAsFloat(jsonObject, "outputChance");
 
             return new DnaExtractingRecipe(inputItems, output, inputCount, energy, outputChance, resourceLocation);
         }
 
         @Override
-        public @Nullable DnaExtractingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+        public @Nullable DnaExtractingRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
             NonNullList<Ingredient> inputItems = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             for (int i = 0; i < inputItems.size(); i++) {
@@ -151,7 +150,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, DnaExtractingRecipe recipe) {
+        public void toNetwork(PacketBuffer buffer, DnaExtractingRecipe recipe) {
             buffer.writeInt(recipe.inputItems.size());
 
             for (Ingredient ingredient : recipe.inputItems) {
@@ -173,7 +172,7 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
         }
 
         @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
+        public IRecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
             return INSTANCE;
         }
 
@@ -184,8 +183,8 @@ public class DnaExtractingRecipe implements Recipe<SimpleContainer>{
         }
 
         @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
+        public Class<IRecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(IRecipeSerializer.class);
         }
 
         @SuppressWarnings("unchecked") // Need this wrapper, because generics

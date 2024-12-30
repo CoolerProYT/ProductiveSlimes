@@ -2,42 +2,35 @@ package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
+import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import com.sun.istack.internal.Nullable;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHighlightFix {
+public class DnaExtractorBlock extends Block implements TranslucentHighlightFix {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public DnaExtractorBlock(Properties pProperties) {
@@ -45,26 +38,22 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, IBlockReader pLevel, BlockPos pPos, ISelectionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return Block.box(0, 0, 0, 16, 16, 16);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, World pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()){
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof DnaExtractorBlockEntity dnaExtractorBlockEntity){
+            TileEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof DnaExtractorBlockEntity){
+                DnaExtractorBlockEntity dnaExtractorBlockEntity = (DnaExtractorBlockEntity) blockEntity;
                 dnaExtractorBlockEntity.drops();
 
                 ItemStack stack = new ItemStack(this);
 
-                CompoundTag energyTag = stack.getOrCreateTag();
+                CompoundNBT energyTag = stack.getOrCreateTag();
                 energyTag.putInt("energy", dnaExtractorBlockEntity.getEnergyHandler().getEnergyStored());
                 stack.setTag(energyTag);
 
@@ -76,17 +65,34 @@ public class DnaExtractorBlock extends BaseEntityBlock implements TranslucentHig
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public ActionResultType use(BlockState pState, World pLevel, BlockPos pPos, PlayerEntity pPlayer, Hand pHand, BlockRayTraceResult pHit) {
         if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
+            TileEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof DnaExtractorBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (DnaExtractorBlockEntity)entity, pPos);
+                INamedContainerProvider containerProvider = createContainerProvider(pLevel, pPos);
+
+                NetworkHooks.openGui(((ServerPlayerEntity)pPlayer), containerProvider, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return ActionResultType.sidedSuccess(pLevel.isClientSide());
+    }
+
+    private INamedContainerProvider createContainerProvider(World worldIn, BlockPos pos) {
+        return new INamedContainerProvider() {
+            @Override
+            public ITextComponent getDisplayName() {
+                return new TranslationTextComponent("block.productiveslimes.dna_extractor");
+            }
+
+            @Nullable
+            @Override
+            public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                return new DnaExtractorMenu(i, worldIn, pos, playerInventory, playerEntity);
+            }
+        };
     }
 
     @Nullable
