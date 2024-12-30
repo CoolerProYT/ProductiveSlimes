@@ -298,7 +298,7 @@ public class CustomContentRegistry {
             langJson.put("entity.productiveslimes." + variants.getName()  + "_slime", formattedName + " Slime");
             langJson.put("block.productiveslimes." + "molten_" + variants.getName() + "_block", "Molten " + formattedName);
             langJson.put("item.productiveslimes." + "molten_" + variants.getName() + "_bucket", "Molten " + formattedName + " Bucket");
-            langJson.put("fluid_type.productiveslimes." + variants.getName(), "Molten " + formattedName);
+            langJson.put("fluid.productiveslimes." + variants.getName(), "Molten " + formattedName);
 
             // Create block model content
             String blockModelContent = "{\n" +
