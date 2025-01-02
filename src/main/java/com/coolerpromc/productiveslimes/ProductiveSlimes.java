@@ -27,9 +27,6 @@ import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomeGeneration;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModConfiguredFeatures;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModConfiguredSurfaceBuilders;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceBuilders;
 import com.coolerpromc.productiveslimes.worldgen.structure.SlimyVillagePools;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -220,10 +217,10 @@ public class ProductiveSlimes
             registerAllSlimeBlockColor(event);
 
             event.getItemColors().register((stack, tintIndex) -> {
-                assert stack.getTag() != null;
                 if (!stack.hasTag())
                     return 0xFFFFFFFF;
 
+                assert stack.getTag() != null;
                 SlimeData slimeData = SlimeData.fromTag(stack.getTag().getCompound("slime_data"));
                 return slimeData.color();
             }, ModItems.SLIME_ITEM.get());
