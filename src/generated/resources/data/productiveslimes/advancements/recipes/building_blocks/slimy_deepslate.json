@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "productiveslimes:slimy_deepslate"
+    ]
+  },
+  "criteria": {
+    "has_slimy_cobbled_deepslate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "productiveslimes:slimy_cobbled_deepslate"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "productiveslimes:slimy_deepslate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_slimy_cobbled_deepslate",
+      "has_the_recipe"
+    ]
+  ]
+}
