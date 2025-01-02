@@ -164,18 +164,19 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
-
-            for (Tier name : Tier.values()){
-                ModTiers tiers = ModTierLists.getTierByName(name);
-                EntityRenderers.register(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
-            }
-
             event.enqueueWork(() -> {
+                EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
+
+                for (Tier name : Tier.values()){
+                    ModTiers tiers = ModTierLists.getTierByName(name);
+                    EntityRenderers.register(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
+                }
+
+                for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                    EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
+                }
+
+
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
 
