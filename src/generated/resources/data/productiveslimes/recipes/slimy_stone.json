@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "productiveslimes:slimy_cobblestone"
+  },
+  "result": "productiveslimes:slimy_stone"
+}

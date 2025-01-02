@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "productiveslimes:slimy_cobbled_deepslate"
+  },
+  "result": "productiveslimes:slimy_deepslate"
+}
