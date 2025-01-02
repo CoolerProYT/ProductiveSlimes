@@ -251,6 +251,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
+        smeltingRecipe(output, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_STONE.get(), 0.1f, 200);
+        smeltingRecipe(output, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_DEEPSLATE.get(), 0.1f, 200);
+
         //Slime Ball Recipe
         slimeBlockToSlimeBall(output, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
         slimeBallToSlimeBlock(output, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
@@ -410,5 +413,9 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', pSlimeBall)
                 .unlockedBy(getHasName(pSlimeBall), has(pSlimeBall))
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
+    }
+
+    private void smeltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, float pExperience, int pCookingTime) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(pIngredient), RecipeCategory.BUILDING_BLOCKS, pResult, pExperience, pCookingTime).unlockedBy(getHasName(pIngredient), has(pIngredient)).save(pRecipeOutput);
     }
 }
