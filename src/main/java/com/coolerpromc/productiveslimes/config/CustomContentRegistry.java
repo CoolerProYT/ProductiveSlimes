@@ -18,10 +18,8 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
@@ -205,7 +203,7 @@ public class CustomContentRegistry {
         ResourceLocation slimeId = new ResourceLocation(ProductiveSlimes.MODID, slimeName);
 
         RegistryObject<EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(new ResourceLocation(variant.getGrowthItem()))),
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()), BuiltInRegistries.ITEM.get(new ResourceLocation(variant.getGrowthItem()))),
                 MobCategory.CREATURE).build(slimeName));
 
         registeredSlimes.put(slimeId, slime);

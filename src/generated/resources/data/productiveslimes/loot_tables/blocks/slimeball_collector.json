@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "productiveslimes:endstone_slime_block"
+          "name": "productiveslimes:slimeball_collector"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "productiveslimes:blocks/endstone_slime_block"
+  "random_sequence": "productiveslimes:blocks/slimeball_collector"
 }

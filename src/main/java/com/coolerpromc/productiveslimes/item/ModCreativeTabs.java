@@ -6,11 +6,16 @@ import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -28,6 +33,8 @@ public class ModCreativeTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.GUIDEBOOK.get());
                         pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE.get());
+                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get());
+                        pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_2.get());
                         pOutput.accept(ModItems.SLIMEBALL_FRAGMENT.get());
 
                         // Use reflection to get all the fields from ModBlocks
@@ -45,78 +52,48 @@ public class ModCreativeTabs {
                             }
                         }
 
+                        for (Tier tier : Tier.values()){
+                            ModTiers modTiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBlockByName(modTiers.name()).get());
+                        }
+
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get());
                         }
 
-                        // Use reflection to get all the fields from ModItems
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof SlimeballItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.ENERGY_SLIME_BALL.get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers modTiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSlimeballItemByName(modTiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSlimeballItemForVariant(variant.getName()).get());
                         }
 
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof DnaItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.SLIME_DNA.get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers modTiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getDnaItemByName(modTiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getDnaItemForVariant(variant.getName()).get());
                         }
 
-                        for (Field field : ModItems.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof SpawnEggItem) {
-                                        pOutput.accept((Item) supplier.get()); // Add item to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG.get());
+                        for (Tier tier : Tier.values()){
+                            ModTiers modTiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSpawnEggItemByName(modTiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                             pOutput.accept(CustomContentRegistry.getSpawnEggItemForVariant(variant.getName()).get());
                         }
 
-                        // Use reflection to get all the fields from ModFluids
-                        for (Field field : ModFluids.class.getFields()) {
-                            try {
-                                // Ensure the field is a Supplier of Item (for items)
-                                if (Supplier.class.isAssignableFrom(field.getType())) {
-                                    Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Item) {
-                                        pOutput.accept((Item) supplier.get()); // Add items to the output
-                                    }
-                                }
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
+                        for (Tier tier : Tier.values()){
+                            ModTiers modTiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBucketItemByName(modTiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_endstone_slimeball": {
+    "has_slimy_grass_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "productiveslimes:endstone_slimeball"
+              "minecraft:glass_pane"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:endstone_slime_block_from_endstone_slimeball"
+        "recipe": "productiveslimes:slime_nest"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_endstone_slimeball",
+      "has_slimy_grass_block",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:endstone_slime_block_from_endstone_slimeball"
+      "productiveslimes:slime_nest"
     ]
   },
   "sends_telemetry_event": false
