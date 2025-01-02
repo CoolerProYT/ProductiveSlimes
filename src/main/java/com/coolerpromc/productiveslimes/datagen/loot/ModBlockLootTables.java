@@ -4,8 +4,25 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraftforge.common.loot.LootTableIdCondition;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class ModBlockLootTables extends BlockLoot {
@@ -18,11 +35,10 @@ public class ModBlockLootTables extends BlockLoot {
         dropSelf(ModBlocks.SLIME_NEST.get());
         dropSelf(ModBlocks.SLIMEBALL_COLLECTOR.get());
 
-        createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK.get());
-        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT.get());
+        add(ModBlocks.SLIMY_GRASS_BLOCK.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_DIRT.get()));
         dropSelf(ModBlocks.SLIMY_DIRT.get());
-        dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE.get());
-        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        add(ModBlocks.SLIMY_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_COBBLESTONE.get()));
+        add(ModBlocks.SLIMY_DEEPSLATE.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
         dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
