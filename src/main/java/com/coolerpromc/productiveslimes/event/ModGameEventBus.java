@@ -4,6 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.mixin.LevelRendererAccess;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModRenderTypes;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
@@ -57,11 +59,11 @@ public class ModGameEventBus {
 
             //Novice
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModItems.DIRT_SLIME_BALL, 10),
+                    new ItemCost(ModTierLists.getSlimeballItemByName(Tier.DIRT.getTierName()), 10),
                     new ItemStack(Items.EMERALD, 1), 8, 2, 0.05f
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModItems.STONE_SLIME_BALL, 10),
+                    new ItemCost(ModTierLists.getSlimeballItemByName(Tier.STONE.getTierName()), 10),
                     new ItemStack(Items.EMERALD, 1), 8, 2, 0.05f
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
@@ -70,9 +72,8 @@ public class ModGameEventBus {
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModItems.COPPER_SLIME_BALL.get(), 4), 8, 1, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.COPPER.getTierName()).get(), 4), 8, 1, 0.05f
             ));
-
             //Apprentice
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
@@ -80,60 +81,57 @@ public class ModGameEventBus {
             ));
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModItems.IRON_SLIME_BALL.get(), 4), 4, 10, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.IRON.getTierName()).get(), 4), 4, 10, 0.05f
             ));
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModItems.STONE_SLIME_BALL.get(), 6), 4, 10, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.STONE.getTierName()).get(), 6), 4, 10, 0.05f
             ));
-
             //Journeyman
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModFluids.MOLTEN_DIRT_BUCKET.get(), 16),
+                    new ItemCost(ModTierLists.getBucketItemByName(Tier.DIRT.getTierName()).get(), 16),
                     new ItemStack(Items.EMERALD, 1), 4, 15, 0.05f
             ));
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModFluids.MOLTEN_STONE_BUCKET.get(), 12),
+                    new ItemCost(ModTierLists.getBucketItemByName(Tier.STONE.getTierName()).get(), 12),
                     new ItemStack(Items.EMERALD, 1), 4, 15, 0.05f
             ));
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 20),
                     new ItemStack(ModItems.ENERGY_SLIME_SPAWN_EGG.get(), 1), 4, 15, 0.05f
             ));
-
             //Expert
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 32),
-                    new ItemStack(ModItems.IRON_SLIME_DNA.get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName(Tier.IRON.getTierName()).get(), 1), 4, 20, 0.05f
             ));
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 28),
-                    new ItemStack(ModItems.GOLD_SLIME_DNA.get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName(Tier.GOLD.getTierName()).get(), 1), 4, 20, 0.05f
             ));
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 48),
-                    new ItemStack(ModItems.DIAMOND_SLIME_DNA.get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName(Tier.DIAMOND.getTierName()).get(), 1), 4, 20, 0.05f
             ));
-
             //Master
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 64),
-                    new ItemStack(ModItems.DIAMOND_SLIME_SPAWN_EGG.get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.DIAMOND.getTierName()).get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 40),
-                    new ItemStack(ModItems.GOLD_SLIME_SPAWN_EGG.get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.GOLD.getTierName()).get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 48),
-                    new ItemStack(ModItems.IRON_SLIME_SPAWN_EGG.get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.IRON.getTierName()).get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 32),
-                    new ItemStack(ModItems.COPPER_SLIME_SPAWN_EGG.get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.COPPER.getTierName()).get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModItems.DIRT_SLIME_SPAWN_EGG.get(), 1),
+                    new ItemCost(ModTierLists.getSpawnEggItemByName(Tier.DIRT.getTierName()).get(), 1),
                     new ItemStack(Items.EMERALD, 12), 2, 30, 0.05f
             ));
         }
