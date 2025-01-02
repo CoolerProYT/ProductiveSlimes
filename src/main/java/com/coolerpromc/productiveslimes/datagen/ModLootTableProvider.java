@@ -26,7 +26,7 @@ public class ModLootTableProvider extends LootTableProvider {
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         ImmutableList.Builder<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> builder = new ImmutableList.Builder<>();
-        builder.add(Pair.of(ModBlockLootTables::new, LootContextParamSets.ALL_PARAMS));
+        builder.add(Pair.of(ModBlockLootTables::new, LootContextParamSets.BLOCK));
 
         return builder.build();
     }
