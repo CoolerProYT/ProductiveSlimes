@@ -18,11 +18,10 @@ public class ModBlockLootTables extends BlockLoot {
         dropSelf(ModBlocks.SLIME_NEST.get());
         dropSelf(ModBlocks.SLIMEBALL_COLLECTOR.get());
 
-        createSingleItemTableWithSilkTouch(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_GRASS_BLOCK.get());
-        dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT.get());
+        add(ModBlocks.SLIMY_GRASS_BLOCK.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_DIRT.get()));
         dropSelf(ModBlocks.SLIMY_DIRT.get());
-        dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE.get());
-        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+        add(ModBlocks.SLIMY_STONE.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_COBBLESTONE.get()));
+        add(ModBlocks.SLIMY_DEEPSLATE.get(), block -> createSingleItemTableWithSilkTouch(block, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
         dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
@@ -64,9 +63,6 @@ public class ModBlockLootTables extends BlockLoot {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries() // Get all registered entries
-                .stream() // Stream the wrapped objects
-                .flatMap(RegistryObject::stream) // Get the object if available
-                ::iterator; // Create the iterable
+        return ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
     }
 }
