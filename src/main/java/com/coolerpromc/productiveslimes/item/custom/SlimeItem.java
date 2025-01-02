@@ -30,6 +30,8 @@ public class SlimeItem extends Item {
     }
     @Override
     public Component getName(ItemStack stack) {
+        if (!stack.hasTag() || !stack.getTag().contains("slime_data")) return Component.translatable("item.productiveslimes.slime_item");
+
         SlimeData slimeData = SlimeData.fromTag(stack.getTag().getCompound("slime_data"));
         if (slimeData == null)
             return Component.translatable("item.productiveslimes.slime_item");
