@@ -168,6 +168,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('A', ModBlocks.SLIMY_PLANKS)
                 .unlockedBy(getHasName(ModBlocks.SLIMY_PLANKS), has(ModBlocks.SLIMY_PLANKS))
                 .save(output);
+
         ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_SQUEEZER, 1)
                 .pattern("BAB")
                 .pattern("C  ")
@@ -176,6 +177,46 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('B', ModBlocks.SLIMY_STONE)
                 .define('C', ModItems.ENERGY_SLIME_BALL)
                 .unlockedBy(getHasName(ModBlocks.SQUEEZER), has(ModBlocks.SQUEEZER))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIME_NEST, 1)
+                .pattern("BBB")
+                .pattern("BCB")
+                .pattern("AAA")
+                .define('A', ModBlocks.SLIMY_GRASS_BLOCK)
+                .define('B', Items.GLASS_PANE)
+                .define('C', Tags.Items.SLIME_BALLS)
+                .unlockedBy(getHasName(ModBlocks.SLIMY_GRASS_BLOCK), has(Items.GLASS_PANE))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMEBALL_COLLECTOR, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.HOPPER)
+                .define('C', Tags.Items.CHESTS)
+                .unlockedBy(getHasName(Items.HOPPER), has(Tags.Items.CHESTS))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, ModItems.SLIME_NEST_SPEED_UPGRADE_1, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', Items.REDSTONE_BLOCK)
+                .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
+                .define('C', Tags.Items.INGOTS_IRON)
+                .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTierLists.getBlockByName(Tier.IRON.getTierName())))
+                .save(output);
+
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2, 1)
+                .pattern("ABA")
+                .pattern("BCB")
+                .pattern("ABA")
+                .define('A', ModItems.SLIME_NEST_SPEED_UPGRADE_1)
+                .define('B', ModTierLists.getBlockByName(Tier.GOLD.getTierName()))
+                .define('C', Tags.Items.INGOTS_GOLD)
+                .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1), has(ModTierLists.getBlockByName(Tier.GOLD.getTierName())))
                 .save(output);
 
         planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
@@ -209,6 +250,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_slimy_cobbled_deepslate", has(ModBlocks.SLIMY_COBBLED_DEEPSLATE)).save(output);
         slab(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         wall(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+
+        smeltingRecipe(output, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_STONE.get(), 0.1f, 200);
+        smeltingRecipe(output, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_DEEPSLATE.get(), 0.1f, 200);
 
         //Slime Ball Recipe
         slimeBlockToSlimeBall(output, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
@@ -359,5 +403,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .setEnergy(300)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing").toString());
+    }
+
+    private void smeltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, float pExperience, int pCookingTime) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(pIngredient), RecipeCategory.BUILDING_BLOCKS, pResult, pExperience, pCookingTime).unlockedBy(getHasName(pIngredient), has(pIngredient)).save(pRecipeOutput);
     }
 }

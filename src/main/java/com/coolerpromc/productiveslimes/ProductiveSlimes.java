@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.*;
+import com.coolerpromc.productiveslimes.command.ModCommands;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
@@ -50,6 +51,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -124,6 +126,11 @@ public class ProductiveSlimes
     }
 
     @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
     }
@@ -143,23 +150,25 @@ public class ProductiveSlimes
             event.registerBlockEntityRenderer(ModBlockEntities.DNA_SYNTHESIZER_BE.get(), DnaSynthesizerBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.FLUID_TANK_BE.get(), FluidTankBlockEntityRenderer::new);
             event.registerBlockEntityRenderer(ModBlockEntities.SLIME_SQUEEZER_BE.get(), SlimeSqueezerBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.SLIME_NEST_BE.get(), SlimeNestBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.SLIMEBALL_COLLECTOR_BE.get(), SlimeballCollectorBlockEntityRenderer::new);
         }
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
-
-            for (Tier name : Tier.values()){
-                ModTiers tiers = ModTierLists.getTierByName(name);
-                EntityRenderers.register(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
-            }
-
             event.enqueueWork(() -> {
+                EntityRenderers.register(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xF0ffff70));
+
+                for (Tier name : Tier.values()){
+                    ModTiers tiers = ModTierLists.getTierByName(name);
+                    EntityRenderers.register(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
+                }
+
+                for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                    EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
+                }
+
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
 
@@ -187,6 +196,7 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
             event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_tint"), FluidTankTint.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item_tint"), SlimeItemTint.MAP_CODEC);
         }
 
         @SubscribeEvent

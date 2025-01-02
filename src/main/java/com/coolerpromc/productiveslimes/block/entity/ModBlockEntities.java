@@ -36,6 +36,12 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<SlimeSqueezerBlockEntity>> SLIME_SQUEEZER_BE = BLOCK_ENTITIES.register("slime_squeezer_be",
             () -> new BlockEntityType<>(SlimeSqueezerBlockEntity::new, ModBlocks.SLIME_SQUEEZER.get()));
 
+    public static final Supplier<BlockEntityType<SlimeNestBlockEntity>> SLIME_NEST_BE = BLOCK_ENTITIES.register("slime_nest_be",
+            () -> new BlockEntityType<>(SlimeNestBlockEntity::new, ModBlocks.SLIME_NEST.get()));
+
+    public static final Supplier<BlockEntityType<SlimeballCollectorBlockEntity>> SLIMEBALL_COLLECTOR_BE = BLOCK_ENTITIES.register("slimeball_collector_be",
+            () -> new BlockEntityType<>(SlimeballCollectorBlockEntity::new, ModBlocks.SLIMEBALL_COLLECTOR.get()));
+
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
