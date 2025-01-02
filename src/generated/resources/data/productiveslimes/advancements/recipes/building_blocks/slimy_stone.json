@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "productiveslimes:slimy_stone"
+    ]
+  },
+  "criteria": {
+    "has_slimy_cobblestone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "productiveslimes:slimy_cobblestone"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "productiveslimes:slimy_stone"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_slimy_cobblestone",
+      "has_the_recipe"
+    ]
+  ]
+}
