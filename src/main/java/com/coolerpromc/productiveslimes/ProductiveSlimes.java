@@ -222,9 +222,10 @@ public class ProductiveSlimes
             registerAllSlimeBlockColor(event);
 
             event.getItemColors().register((stack, tintIndex) -> {
-                assert stack.getTag() != null;
                 if (!stack.hasTag())
                     return 0xFFFFFFFF;
+
+                assert stack.getTag() != null;
 
                 SlimeData slimeData = SlimeData.fromTag(stack.getTag().getCompound("slime_data"));
                 return slimeData.color();
