@@ -342,6 +342,7 @@ public class ProductiveSlimes
                     });
         }
 
+        @SuppressWarnings("removal")
         public static void registerAllSlimeBlockRenderLayer() {
             if (ModBlocks.ENERGY_SLIME_BLOCK.get() instanceof SlimeBlock block){
                 ItemBlockRenderTypes.setRenderLayer(block, RenderType.translucent());
