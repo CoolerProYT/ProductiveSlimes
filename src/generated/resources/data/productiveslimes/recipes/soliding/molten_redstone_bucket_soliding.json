@@ -9,7 +9,7 @@
   "inputCount": 1,
   "output": [
     {
-      "item": "minecraft:redstone_block",
+      "item": "minecraft:redstone",
       "count": 2
     },
     {
