@@ -56,37 +56,38 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
 
         VertexConsumer builder = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(state));
 
-        drawQuad(builder, pPoseStack, 0.2f, height, 0.2f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.2f, height, 0.2f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor, pPackedOverlay);
 
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor, pPackedOverlay);
         pPoseStack.pushPose();
         pPoseStack.mulPose(Vector3f.YP.rotationDegrees(180));
         pPoseStack.translate(-1f, 0, -1.5f);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.8f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.2f, 0, 0.8f, 0.8f, height, 0.8f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor, pPackedOverlay);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Vector3f.YP.rotationDegrees(90));
         pPoseStack.translate(-1f, 0, 0);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor, pPackedOverlay);
         pPoseStack.popPose();
         pPoseStack.pushPose();
         pPoseStack.mulPose(Vector3f.YN.rotationDegrees(90));
         pPoseStack.translate(0, 0, -1f);
-        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor);
+        drawQuad(builder, pPoseStack, 0.2f, 0, 0.2f, 0.8f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, tintColor, pPackedOverlay);
         pPoseStack.popPose();
     }
 
-    private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color) {
+    private static void drawVertex(VertexConsumer builder, PoseStack poseStack, float x, float y, float z, float u, float v, int packedLight, int color, int overlay) {
         builder.vertex(poseStack.last().pose(), x, y, z)
                 .color(color)
                 .uv(u, v)
                 .uv2(packedLight)
-                .normal(1, 0, 0);
+                .normal(1, 0, 0).overlayCoords(overlay)
+                .endVertex();
     }
-    private static void drawQuad(VertexConsumer builder, PoseStack poseStack, float x0, float y0, float z0, float x1, float y1, float z1, float u0, float v0, float u1, float v1, int packedLight, int color) {
-        drawVertex(builder, poseStack, x0, y0, z0, u0, v0, packedLight, color);
-        drawVertex(builder, poseStack, x0, y1, z1, u0, v1, packedLight, color);
-        drawVertex(builder, poseStack, x1, y1, z1, u1, v1, packedLight, color);
-        drawVertex(builder, poseStack, x1, y0, z0, u1, v0, packedLight, color);
+    private static void drawQuad(VertexConsumer builder, PoseStack poseStack, float x0, float y0, float z0, float x1, float y1, float z1, float u0, float v0, float u1, float v1, int packedLight, int color, int overlay) {
+        drawVertex(builder, poseStack, x0, y0, z0, u0, v0, packedLight, color, overlay);
+        drawVertex(builder, poseStack, x0, y1, z1, u0, v1, packedLight, color, overlay);
+        drawVertex(builder, poseStack, x1, y1, z1, u1, v1, packedLight, color, overlay);
+        drawVertex(builder, poseStack, x1, y0, z0, u1, v0, packedLight, color, overlay);
     }
 }
