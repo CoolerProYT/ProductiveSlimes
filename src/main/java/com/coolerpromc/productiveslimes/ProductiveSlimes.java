@@ -107,7 +107,7 @@ public class ProductiveSlimes
         ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
