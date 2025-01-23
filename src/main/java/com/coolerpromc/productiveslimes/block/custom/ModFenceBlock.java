@@ -1,10 +1,9 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class ModFenceBlock extends FenceBlock {
     public ModFenceBlock(Properties p_53302_) {
@@ -12,8 +11,8 @@ public class ModFenceBlock extends FenceBlock {
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        super.stepOn(level, pos, state, entity);
+    public void stepOn(World level, BlockPos pos, Entity entity) {
+        super.stepOn(level, pos, entity);
 
         if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;

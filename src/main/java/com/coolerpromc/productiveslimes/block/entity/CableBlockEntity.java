@@ -25,45 +25,56 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
 
     private LazyOptional<IEnergyStorage> storageLazyOptional = LazyOptional.of(() -> this);
 
-    public CableBlockEntity(BlockState state, IBlockReader world) {
+    public CableBlockEntity() {
         super(ModBlockEntities.CABLE_BE.get());
     }
+
     public void setNetwork(EnergyNetwork network) {
         this.network = network;
     }
+
     public EnergyNetwork getNetwork() {
         return network;
     }
+
     public int getCapacity() {
         return capacity;
     }
+
     public int getTransferRate() {
         return transferRate;
     }
+
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         return network != null ? network.receiveEnergy(maxReceive, simulate) : 0;
     }
+
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         return network != null ? network.extractEnergy(maxExtract, simulate) : 0;
     }
+
     @Override
     public int getEnergyStored() {
         return network != null ? network.getEnergyStored() : 0;
     }
+
     @Override
     public int getMaxEnergyStored() {
         return network != null ? network.getMaxEnergyStored() : capacity;
     }
+
     @Override
     public boolean canExtract() {
         return network != null && network.canExtract();
     }
+
     @Override
     public boolean canReceive() {
         return network != null && network.canReceive();
     }
+
     // Initialize or join a network when the block entity is loaded
     @Override
     public void onLoad() {
@@ -77,10 +88,12 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
             }
         }
     }
+
     private boolean isPrimaryCable() {
         // For example, the cable with the lowest position
         return network != null && this.equals(network.getPrimaryCable());
     }
+
     // Clean up when the block entity is removed
     @Override
     public void setRemoved() {
@@ -90,6 +103,7 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
             network = null;
         }
     }
+
     private void initializeNetwork() {
         if (network != null) {
             return; // Already initialized
@@ -118,12 +132,14 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
             }
         }
     }
+
     public static void tick(World level, BlockPos pos, BlockState state, CableBlockEntity cable) {
         if (!level.isClientSide && cable.network != null) {
             cable.network.collectEnergy(level);
             cable.network.distributeEnergy(level);
         }
     }
+
     @Override
     public CompoundNBT save(CompoundNBT pTag) {
         int energyStored = network != null ? network.getEnergyStored() : 0;
@@ -143,6 +159,7 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
             network = null;
         }
     }
+
     public void reinitializeNetwork() {
         if (!level.isClientSide) {
             if (network != null) {

@@ -8,17 +8,16 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.block.Blocks;
+import net.minecraft.data.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
@@ -30,7 +29,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipeOutput) {
+    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> recipeOutput) {
         //Override vanilla recipes
         ShapelessRecipeBuilder.shapeless(Items.STICKY_PISTON, 1)
                 .requires(Tags.Items.SLIMEBALLS)
@@ -50,7 +49,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("  A")
                 .define('A', Items.STRING)
                 .define('B', Tags.Items.SLIMEBALLS)
-                .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
+                .unlockedBy(getHasName(Items.STICK), has(Tags.Items.SLIMEBALLS))
                 .save(recipeOutput);
 
         //Mod Recipe
@@ -58,18 +57,18 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
-                .define('A', Items.DEEPSLATE)
+                .define('A', Items.STONE)
                 .define('B', Items.LAVA_BUCKET)
-                .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.LAVA_BUCKET))
+                .unlockedBy(getHasName(Items.STONE), has(Items.LAVA_BUCKET))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(ModBlocks.LIQUID_SOLIDING_STATION.get(),1)
                 .pattern("AAA")
                 .pattern("ABA")
                 .pattern("AAA")
-                .define('A', Items.DEEPSLATE)
+                .define('A', Items.STONE)
                 .define('B', Items.WATER_BUCKET)
-                .unlockedBy(getHasName(Items.DEEPSLATE), has(Items.WATER_BUCKET))
+                .unlockedBy(getHasName(Items.STONE), has(Items.WATER_BUCKET))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(ModItems.ENERGY_SLIME_SPAWN_EGG.get(),1)
@@ -87,7 +86,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("ABA")
                 .pattern("CAC")
                 .define('A', ModItems.ENERGY_SLIME_BALL.get())
-                .define('B', Items.COPPER_BLOCK)
+                .define('B', Items.REDSTONE_BLOCK)
                 .define('C', Items.REDSTONE)
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.REDSTONE))
                 .save(recipeOutput);
@@ -97,8 +96,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("ABA")
                 .pattern(" A ")
                 .define('A', Items.REDSTONE)
-                .define('B', Items.COPPER_INGOT)
-                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
+                .define('B', Items.IRON_INGOT)
+                .unlockedBy(getHasName(Items.REDSTONE), has(Items.REDSTONE))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(ModBlocks.DNA_EXTRACTOR.get(),1)
@@ -128,7 +127,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('A', Items.IRON_INGOT)
                 .define('B', ModItems.ENERGY_SLIME_BALL.get())
                 .define('C', Items.BLUE_WOOL)
-                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(ModBlocks.FLUID_TANK.get(),1)
@@ -262,13 +261,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         wall(recipeOutput, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
 
-        stairBuilder(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), Ingredient.of(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get())).group("slimy_cobbled_deepslate")
-                .unlockedBy("has_slimy_cobbled_deepslate", has(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get())).save(recipeOutput);
-
-        slab(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
-
-        wall(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
-
         //Slime Ball Recipe
         slimeBlockToSlimeBall(recipeOutput, ModBlocks.ENERGY_SLIME_BLOCK.get(), ModItems.ENERGY_SLIME_BALL.get());
         slimeBallToSlimeBlock(recipeOutput, ModItems.ENERGY_SLIME_BALL.get(), ModBlocks.ENERGY_SLIME_BLOCK.get());
@@ -303,13 +295,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         squeezingRecipe(recipeOutput, ModBlocks.SLIMY_DIRT.get(), new ItemStack(Items.DIRT, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
         squeezingRecipe(recipeOutput, ModBlocks.SLIMY_GRASS_BLOCK.get(), new ItemStack(Items.GRASS_BLOCK, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
         squeezingRecipe(recipeOutput, ModBlocks.SLIMY_STONE.get(), new ItemStack(Items.STONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
-        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_DEEPSLATE.get(), new ItemStack(Items.DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
         squeezingRecipe(recipeOutput, ModBlocks.SLIMY_COBBLESTONE.get(), new ItemStack(Items.COBBLESTONE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
-        squeezingRecipe(recipeOutput, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), new ItemStack(Items.COBBLED_DEEPSLATE, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
         squeezingRecipe(recipeOutput, ModBlocks.SLIMY_LOG.get(), new ItemStack(Items.OAK_LOG, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
     }
 
-    protected static void meltingRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+    protected static void meltingRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pIngredient, IItemProvider pResult, int pInputCount, int outputCount) {
         MeltingRecipeBuilder.meltingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(pInputCount)
@@ -319,7 +309,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pRecipeOutput, new ResourceLocation(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting"));
     }
 
-    protected static void solidingRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+    protected static void solidingRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pIngredient, IItemProvider pResult, int pInputCount, int outputCount) {
         SolidingRecipeBuilder.solidingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(pInputCount)
@@ -330,8 +320,8 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pRecipeOutput, new ResourceLocation(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding"));
     }
 
-    protected static void dnaExtractingRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
-        var recipeBuilder = DnaExtractingRecipeBuilder.dnaExtractingRecipe()
+    protected static void dnaExtractingRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pIngredient, IItemProvider pResult, int outputCount, float outputChance) {
+        DnaExtractingRecipeBuilder recipeBuilder = DnaExtractingRecipeBuilder.dnaExtractingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
                 .setInputCount(1)
                 .addOutput(new ItemStack(pResult, outputCount));
@@ -347,14 +337,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     }
 
-    protected static void dnaSynthesizingSelfRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pResult, int inputCount, ItemLike... pIngredient) {
-        var recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
+    protected static void dnaSynthesizingSelfRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pResult, int inputCount, IItemProvider... pIngredient) {
+        DnaSynthesizingRecipeBuilder recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
 
         if (pIngredient.length != 3) {
             throw new IllegalArgumentException("Only accepts 3 ingredients.");
         }
 
-        for (var ingredient : pIngredient) {
+        for (IItemProvider ingredient : pIngredient) {
             recipeBuilder.addIngredient(Ingredient.of(ingredient));
         }
 
@@ -367,14 +357,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     }
 
-    protected static void dnaSynthesizingRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pResult, int inputCount, ItemLike... pIngredient) {
-        var recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
+    protected static void dnaSynthesizingRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pResult, int inputCount, IItemProvider... pIngredient) {
+        DnaSynthesizingRecipeBuilder recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
 
         if (pIngredient.length != 3) {
             throw new IllegalArgumentException("Only accepts 3 ingredients.");
         }
 
-        for (var ingredient : pIngredient) {
+        for (IItemProvider ingredient : pIngredient) {
             recipeBuilder.addIngredient(Ingredient.of(ingredient));
         }
 
@@ -387,7 +377,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     }
 
-    protected static void squeezingRecipe(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pIngredient, ItemStack pResult1, ItemStack pResult2) {
+    protected static void squeezingRecipe(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pIngredient, ItemStack pResult1, ItemStack pResult2) {
         SqueezingRecipeBuilder.squeezingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
                 .addOutput(pResult1)
@@ -397,14 +387,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pRecipeOutput, new ResourceLocation(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing"));
     }
 
-    protected static void slimeBlockToSlimeBall(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pSlimeBlock, ItemLike pSlimeBall) {
+    protected static void slimeBlockToSlimeBall(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pSlimeBlock, IItemProvider pSlimeBall) {
         ShapelessRecipeBuilder.shapeless(pSlimeBall, 9)
                 .requires(pSlimeBlock)
                 .unlockedBy(getHasName(pSlimeBlock), has(pSlimeBlock))
                 .save(pRecipeOutput, getItemName(pSlimeBall) + "_from_" + getItemName(pSlimeBlock));
     }
 
-    protected static void slimeBallToSlimeBlock(Consumer<FinishedRecipe> pRecipeOutput, ItemLike pSlimeBall, ItemLike pSlimeBlock) {
+    protected static void slimeBallToSlimeBlock(Consumer<IFinishedRecipe> pRecipeOutput, IItemProvider pSlimeBall, IItemProvider pSlimeBlock) {
         ShapedRecipeBuilder.shaped(pSlimeBlock, 1)
                 .pattern("AAA")
                 .pattern("AAA")
@@ -414,61 +404,69 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pRecipeOutput, getItemName(pSlimeBlock) + "_from_" + getItemName(pSlimeBall));
     }
 
-    private static String getHasName(ItemLike pItemLike) {
+    private static String getHasName(IItemProvider pItemLike) {
         return "has_" + getItemName(pItemLike);
     }
 
-    private static String getItemName(ItemLike pItemLike) {
+    private static String getItemName(IItemProvider pItemLike) {
         return Registry.ITEM.getKey(pItemLike.asItem()).getPath();
     }
 
-    private static void planksFromLogs(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pPlanks, Tag<Item> pLogs) {
+    private static void planksFromLogs(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, IItemProvider pPlanks, Tags.IOptionalNamedTag<Item> pLogs) {
         ShapelessRecipeBuilder.shapeless(pPlanks, 4).requires(pLogs).group("planks").unlockedBy("has_logs", has(pLogs)).save(pFinishedRecipeConsumer);
     }
 
-    private static void woodFromLogs(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pWood, ItemLike pLog) {
+    private static void woodFromLogs(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, IItemProvider pWood, IItemProvider pLog) {
         ShapedRecipeBuilder.shaped(pWood, 3).define('#', pLog).pattern("##").pattern("##").group("bark").unlockedBy("has_log", has(pLog)).save(pFinishedRecipeConsumer);
     }
 
-    private static RecipeBuilder buttonBuilder(ItemLike pButton, Ingredient pMaterial) {
+    private static ShapelessRecipeBuilder buttonBuilder(IItemProvider pButton, Ingredient pMaterial) {
         return ShapelessRecipeBuilder.shapeless(pButton).requires(pMaterial);
     }
 
-    private static RecipeBuilder doorBuilder(ItemLike pDoor, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder doorBuilder(IItemProvider pDoor, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pDoor, 3).define('#', pMaterial).pattern("##").pattern("##").pattern("##");
     }
 
-    private static RecipeBuilder fenceBuilder(ItemLike pFence, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder fenceBuilder(IItemProvider pFence, Ingredient pMaterial) {
         int i = pFence == Blocks.NETHER_BRICK_FENCE ? 6 : 3;
         Item item = pFence == Blocks.NETHER_BRICK_FENCE ? Items.NETHER_BRICK : Items.STICK;
         return ShapedRecipeBuilder.shaped(pFence, i).define('W', pMaterial).define('#', item).pattern("W#W").pattern("W#W");
     }
 
-    private static RecipeBuilder fenceGateBuilder(ItemLike pFenceGate, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder fenceGateBuilder(IItemProvider pFenceGate, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pFenceGate).define('#', Items.STICK).define('W', pMaterial).pattern("#W#").pattern("#W#");
     }
 
-    private static void pressurePlate(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pPressurePlate, ItemLike pMaterial) {
-        pressurePlateBuilder(pPressurePlate, Ingredient.of(new ItemLike[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
+    private static void pressurePlate(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, IItemProvider pPressurePlate, IItemProvider pMaterial) {
+        pressurePlateBuilder(pPressurePlate, Ingredient.of(new IItemProvider[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
     }
 
-    private static RecipeBuilder pressurePlateBuilder(ItemLike pPressurePlate, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder pressurePlateBuilder(IItemProvider pPressurePlate, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pPressurePlate).define('#', pMaterial).pattern("##");
     }
 
-    private static void slab(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pSlab, ItemLike pMaterial) {
-        slabBuilder(pSlab, Ingredient.of(new ItemLike[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
+    private static void slab(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, IItemProvider pSlab, IItemProvider pMaterial) {
+        slabBuilder(pSlab, Ingredient.of(new IItemProvider[]{pMaterial})).unlockedBy(getHasName(pMaterial), has(pMaterial)).save(pFinishedRecipeConsumer);
     }
 
-    private static RecipeBuilder slabBuilder(ItemLike pSlab, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder slabBuilder(IItemProvider pSlab, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pSlab, 6).define('#', pMaterial).pattern("###");
     }
 
-    private static RecipeBuilder stairBuilder(ItemLike pStairs, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder stairBuilder(IItemProvider pStairs, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pStairs, 4).define('#', pMaterial).pattern("#  ").pattern("## ").pattern("###");
     }
 
-    private static RecipeBuilder trapdoorBuilder(ItemLike pTrapdoor, Ingredient pMaterial) {
+    private static ShapedRecipeBuilder trapdoorBuilder(IItemProvider pTrapdoor, Ingredient pMaterial) {
         return ShapedRecipeBuilder.shaped(pTrapdoor, 2).define('#', pMaterial).pattern("###").pattern("###");
+    }
+
+    protected static void wall(Consumer<IFinishedRecipe> p_251034_,IItemProvider p_250499_, IItemProvider p_249970_) {
+        wallBuilder(p_250499_, Ingredient.of(p_249970_)).unlockedBy(getHasName(p_249970_), has(p_249970_)).save(p_251034_);
+    }
+
+    protected static ShapedRecipeBuilder wallBuilder(IItemProvider p_250754_, Ingredient p_250311_) {
+        return ShapedRecipeBuilder.shaped(p_250754_, 6).define('#', p_250311_).pattern("###").pattern("###");
     }
 }

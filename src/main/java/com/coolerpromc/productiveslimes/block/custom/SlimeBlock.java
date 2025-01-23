@@ -1,24 +1,19 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HalfTransparentBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
-public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighlightFix {
+public class SlimeBlock extends BreakableBlock implements TranslucentHighlightFix {
     public final int color;
 
     public SlimeBlock(int color) {
-        super(BlockBehaviour.Properties.copy(Blocks.SLIME_BLOCK).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+        super(AbstractBlock.Properties.copy(Blocks.SLIME_BLOCK).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
         this.color = color;
     }
 
@@ -27,11 +22,11 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
     }
 
     @Override
-    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+    public void fallOn(World pLevel, BlockPos pPos, Entity pEntity, float pFallDistance) {
         if (pEntity.isSuppressingBounce()) {
-            super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance);
+            super.fallOn(pLevel, pPos, pEntity, pFallDistance);
         } else {
-            pEntity.causeFallDamage(pFallDistance, 0.0F, DamageSource.FALL);
+            pEntity.causeFallDamage(pFallDistance, 0.0F);
         }
     }
 
@@ -40,7 +35,7 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
      * This method is responsible for doing any modification on the motion of the entity that should result from the landing.
      */
     @Override
-    public void updateEntityAfterFallOn(BlockGetter pLevel, Entity pEntity) {
+    public void updateEntityAfterFallOn(IBlockReader pLevel, Entity pEntity) {
         if (pEntity.isSuppressingBounce()) {
             super.updateEntityAfterFallOn(pLevel, pEntity);
         } else {
@@ -49,7 +44,7 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
     }
 
     private void bounceUp(Entity pEntity) {
-        Vec3 vec3 = pEntity.getDeltaMovement();
+        Vector3d vec3 = pEntity.getDeltaMovement();
         if (vec3.y < 0.0) {
             double d0 = pEntity instanceof LivingEntity ? 1.0 : 0.8;
             pEntity.setDeltaMovement(vec3.x, -vec3.y * d0, vec3.z);
@@ -57,13 +52,13 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
     }
 
     @Override
-    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
+    public void stepOn(World pLevel, BlockPos pPos, Entity pEntity) {
         double d0 = Math.abs(pEntity.getDeltaMovement().y);
         if (d0 < 0.1 && !pEntity.isSteppingCarefully()) {
             double d1 = 0.4 + d0 * 0.2;
             pEntity.setDeltaMovement(pEntity.getDeltaMovement().multiply(d1, 1.0, d1));
         }
 
-        super.stepOn(pLevel, pPos, pState, pEntity);
+        super.stepOn(pLevel, pPos, pEntity);
     }
 }

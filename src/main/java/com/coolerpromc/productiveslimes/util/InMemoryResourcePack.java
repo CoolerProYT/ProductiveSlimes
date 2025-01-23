@@ -2,10 +2,10 @@ package com.coolerpromc.productiveslimes.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.resources.IResourcePack;
+import net.minecraft.resources.ResourcePackType;
+import net.minecraft.resources.data.IMetadataSectionSerializer;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -13,14 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class InMemoryResourcePack implements PackResources {
+public class InMemoryResourcePack implements IResourcePack {
     private final Map<String, byte[]> resources;
 
     public InMemoryResourcePack(Map<String, byte[]> resources) {
         this.resources = resources;
     }
 
-    @Nullable
+
     @Override
     public InputStream getRootResource(String s) throws IOException {
         byte[] data = resources.get(s);
@@ -31,8 +31,8 @@ public class InMemoryResourcePack implements PackResources {
     }
 
     @Override
-    public InputStream getResource(PackType packType, ResourceLocation location) throws IOException {
-        String path = packType.getDirectory() + "/" + location.getNamespace() + "/" + location.getPath();
+    public InputStream getResource(ResourcePackType resourcePackType, ResourceLocation resourceLocation) throws IOException {
+        String path = resourcePackType.getDirectory() + "/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
         byte[] data = resources.get(path);
         if (data != null) {
             return new ByteArrayInputStream(data);
@@ -41,17 +41,17 @@ public class InMemoryResourcePack implements PackResources {
     }
 
     @Override
-    public Collection<ResourceLocation> getResources(PackType packType, String namespace, String path, int i, Predicate<String> filter) {
+    public Collection<ResourceLocation> getResources(ResourcePackType resourcePackType, String s, String s1, int i, Predicate<String> predicate) {
         Set<ResourceLocation> matchingResources = new HashSet<>();
-        String prefix = packType.getDirectory() + "/" + namespace + "/" + path;
+        String prefix = resourcePackType.getDirectory() + "/" + s + "/" + s1;
 
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
-                String resourcePath = key.substring((packType.getDirectory() + "/" + namespace + "/").length());
+                String resourcePath = key.substring((resourcePackType.getDirectory() + "/" + s + "/").length());
 
-                ResourceLocation resourceLocation = new ResourceLocation(namespace, resourcePath);
+                ResourceLocation resourceLocation = new ResourceLocation(s, resourcePath);
 
-                if (filter.test(resourcePath)) {
+                if (predicate.test(resourcePath)) {
                     matchingResources.add(resourceLocation);
                 }
             }
@@ -61,16 +61,15 @@ public class InMemoryResourcePack implements PackResources {
     }
 
     @Override
-    public boolean hasResource(PackType packType, ResourceLocation resourceLocation) {
-        String fullPath = packType.getDirectory() + "/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
+    public boolean hasResource(ResourcePackType resourcePackType, ResourceLocation resourceLocation) {
+        String fullPath = resourcePackType.getDirectory() + "/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
         return resources.containsKey(fullPath);
     }
 
-
     @Override
-    public Set<String> getNamespaces(PackType type) {
+    public Set<String> getNamespaces(ResourcePackType resourcePackType) {
         Set<String> namespaces = new HashSet<>();
-        String prefix = type.getDirectory() + "/";
+        String prefix = resourcePackType.getDirectory() + "/";
         resources.keySet().forEach(key -> {
             if (key.startsWith(prefix)) {
                 String[] parts = key.substring(prefix.length()).split("/", 2);
@@ -84,17 +83,18 @@ public class InMemoryResourcePack implements PackResources {
 
     @Override
     public void close() {
-        // Nothing to close
+
     }
 
+    @Nullable
     @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
-        if ("pack".equals(serializer.getMetadataSectionName())) {
+    public <T> T getMetadataSection(IMetadataSectionSerializer<T> iMetadataSectionSerializer) throws IOException {
+        if ("pack".equals(iMetadataSectionSerializer.getMetadataSectionName())) {
             InputStream supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {
                 try (InputStream stream = supplier) {
                     JsonObject json = new Gson().fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class);
-                    return serializer.fromJson(json.getAsJsonObject("pack"));
+                    return iMetadataSectionSerializer.fromJson(json.getAsJsonObject("pack"));
                 }
             }
         }

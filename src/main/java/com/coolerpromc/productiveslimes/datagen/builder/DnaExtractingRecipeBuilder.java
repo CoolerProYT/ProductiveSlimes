@@ -3,15 +3,14 @@ package com.coolerpromc.productiveslimes.datagen.builder;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -20,14 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class DnaExtractingRecipeBuilder implements RecipeBuilder {
+public class DnaExtractingRecipeBuilder {
     private final List<Ingredient> ingredients = new ArrayList<>();
     private int inputCount;
     private int energy;
     private float outputChance;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final List<JsonObject> outputJson = new ArrayList<>();
-    private final Map<String, CriterionTriggerInstance> criteria = new LinkedHashMap<>();
+    private final Map<String, ICriterionInstance> criteria = new LinkedHashMap<>();
 
     @Nullable
     private String group;
@@ -69,30 +68,26 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    @Override
-    public DnaExtractingRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterion) {
+    public DnaExtractingRecipeBuilder unlockedBy(String name, ICriterionInstance criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
 
-    @Override
     public DnaExtractingRecipeBuilder group(@Nullable String group) {
         this.group = group;
         return this;
     }
 
-    @Override
     public Item getResult() {
         // Return the first output item as the representative result
         return this.outputs.isEmpty() ? Items.AIR : this.outputs.get(0).getItem();
     }
 
-    @Override
-    public void save(Consumer<FinishedRecipe> consumer, ResourceLocation resourceLocation) {
+    public void save(Consumer<IFinishedRecipe> consumer, ResourceLocation resourceLocation) {
         consumer.accept(new Result(resourceLocation, ingredients, outputJson, inputCount, energy, outputChance));
     }
 
-    public static class Result implements FinishedRecipe{
+    public static class Result implements IFinishedRecipe {
         private final ResourceLocation id;
         private final List<Ingredient> ingredients;
         private final List<JsonObject> outputs;
@@ -136,7 +131,7 @@ public class DnaExtractingRecipeBuilder implements RecipeBuilder {
         }
 
         @Override
-        public RecipeSerializer<?> getType() {
+        public IRecipeSerializer<?> getType() {
             return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
         }
 

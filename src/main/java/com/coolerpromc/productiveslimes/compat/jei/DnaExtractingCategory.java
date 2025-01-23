@@ -3,7 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -11,12 +11,13 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecipe> {
@@ -33,8 +34,8 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     }
 
     @Override
-    public Component getTitle() {
-        return new TranslatableComponent("block.productiveslimes.dna_extractor");
+    public String getTitle() {
+        return "Dna Extractor";
     }
 
     @Override
@@ -65,33 +66,33 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     }
 
     @Override
-    public void draw(DnaExtractingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(DnaExtractingRecipe recipe, MatrixStack stack, double mouseX, double mouseY) {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindForSetup(TEXTURE);
+        minecraft.getTextureManager().getTexture(TEXTURE);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        GuiComponent.blit(stack, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
+        AbstractGui.blit(stack, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+        AbstractGui.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
-        Component outputChance = new TranslatableComponent("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
+        ITextComponent outputChance = new TranslationTextComponent("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
         minecraft.font.draw(stack, outputChance, 3, 68, 0xFFFFFF);
     }
 
     @Override
-    public List<Component> getTooltipStrings(DnaExtractingRecipe recipe, double mouseX, double mouseY) {
-        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
+    public List<ITextComponent> getTooltipStrings(DnaExtractingRecipe recipe, double mouseX, double mouseY) {
+        ITextComponent text = new TranslationTextComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            return List.of(text);
+            return Collections.singletonList(text);
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
     @Override

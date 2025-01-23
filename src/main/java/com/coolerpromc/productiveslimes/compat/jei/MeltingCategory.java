@@ -3,7 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -11,15 +11,17 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
@@ -36,8 +38,8 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     }
 
     @Override
-    public Component getTitle() {
-        return new TranslatableComponent("block.productiveslimes.melting_station");
+    public String getTitle() {
+        return "Melting Station";
     }
 
     @Nullable
@@ -53,7 +55,7 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
 
     @Override
     public void setIngredients(MeltingRecipe meltingRecipe, IIngredients iIngredients) {
-        List<Ingredient> input = List.of(Ingredient.of(Items.BUCKET), meltingRecipe.getIngredients().get(0));
+        List<Ingredient> input = Arrays.asList(Ingredient.of(Items.BUCKET), meltingRecipe.getIngredients().get(0));
         iIngredients.setInputIngredients(input);
         iIngredients.setOutput(VanillaTypes.ITEM, meltingRecipe.getOutputs().get(0));
     }
@@ -68,30 +70,30 @@ public class MeltingCategory implements IRecipeCategory<MeltingRecipe> {
     }
 
     @Override
-    public void draw(MeltingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
+    public void draw(MeltingRecipe recipe, MatrixStack stack, double mouseX, double mouseY) {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bindForSetup(TEXTURE);
+        minecraft.getTextureManager().getTexture(TEXTURE);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        GuiComponent.blit(stack, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
+        AbstractGui.blit(stack, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        GuiComponent.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+        AbstractGui.blit(stack, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
     }
 
     @Override
-    public List<Component> getTooltipStrings(MeltingRecipe recipe, double mouseX, double mouseY) {
-        Component text = new TranslatableComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
+    public List<ITextComponent> getTooltipStrings(MeltingRecipe recipe, double mouseX, double mouseY) {
+        ITextComponent text = new TranslationTextComponent("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            return List.of(text);
+            return Collections.singletonList(text);
         }
 
-        return List.of();
+        return Collections.emptyList();
     }
 
     @Override

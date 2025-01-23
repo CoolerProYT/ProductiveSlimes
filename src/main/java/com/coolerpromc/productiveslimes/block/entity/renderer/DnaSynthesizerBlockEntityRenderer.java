@@ -1,30 +1,30 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.DnaSynthesizerBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 
-public class DnaSynthesizerBlockEntityRenderer implements BlockEntityRenderer<DnaSynthesizerBlockEntity> {
-    public DnaSynthesizerBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
-
+public class DnaSynthesizerBlockEntityRenderer extends TileEntityRenderer<DnaSynthesizerBlockEntity> {
+    public DnaSynthesizerBlockEntityRenderer(TileEntityRendererDispatcher pContext) {
+        super(pContext);
     }
 
     @Override
-    public void render(DnaSynthesizerBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(DnaSynthesizerBlockEntity pBlockEntity, float pPartialTick, MatrixStack pPoseStack, IRenderTypeBuffer pBufferSource, int pPackedLight, int pPackedOverlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         pPoseStack.pushPose();
 
@@ -73,20 +73,20 @@ public class DnaSynthesizerBlockEntityRenderer implements BlockEntityRenderer<Dn
         pPoseStack.popPose();
     }
 
-    private void renderItem(ItemStack itemStack, PoseStack pPoseStack, MultiBufferSource pBufferSource, DnaSynthesizerBlockEntity pBlockEntity, ItemRenderer itemRenderer, float xOffset, float yOffset, float zOffset) {
+    private void renderItem(ItemStack itemStack, MatrixStack pPoseStack, IRenderTypeBuffer pBufferSource, DnaSynthesizerBlockEntity pBlockEntity, ItemRenderer itemRenderer, float xOffset, float yOffset, float zOffset) {
         pPoseStack.pushPose();
         pPoseStack.translate(0.5 + xOffset, 0.35 + yOffset, 0.5 + zOffset);
         pPoseStack.scale(0.25f, 0.25f, 0.25f);
         pPoseStack.mulPose(Vector3f.YP.rotationDegrees(pBlockEntity.getRenderingRotation()));
 
-        itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.FIXED.FIXED, getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 1);
+        itemRenderer.renderStatic(itemStack, ItemCameraTransforms.TransformType.FIXED, getLightLevel(pBlockEntity.getLevel(), pBlockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource);
 
         pPoseStack.popPose();
     }
 
-    private int getLightLevel(Level level, BlockPos blockPos) {
-        int bLight = level.getBrightness(LightLayer.BLOCK, blockPos);
-        int sLight = level.getBrightness(LightLayer.SKY, blockPos);
+    private int getLightLevel(World level, BlockPos blockPos) {
+        int bLight = level.getBrightness(LightType.BLOCK, blockPos);
+        int sLight = level.getBrightness(LightType.SKY, blockPos);
         return LightTexture.pack(bLight, sLight);
     }
 }

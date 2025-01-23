@@ -3,22 +3,21 @@ package com.coolerpromc.productiveslimes.screen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.gui.CustomButton;
 import com.coolerpromc.productiveslimes.gui.ScrollableButtonList;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
+public class GuidebookScreen extends ContainerScreen<GuidebookMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/guidebook_gui.png");
     private ScrollableButtonList scrollableButtonList;
 
@@ -26,7 +25,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     private String description;
 
 
-    public GuidebookScreen(GuidebookMenu menu, Inventory playerInventory, Component title) {
+    public GuidebookScreen(GuidebookMenu menu, PlayerInventory playerInventory, ITextComponent title) {
         super(menu, playerInventory, title);
         this.displayItem = new ItemStack(Items.SLIME_BALL);
         this.description = "Welcome to the Productive Slimes Guidebook! For more information please visit the wiki at https://coolerproyt.github.io/ProductiveSlimes-Wiki/";
@@ -50,19 +49,19 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         }, new ItemStack(Items.SLIME_BALL));
 
         scrollableButtonList.addButton(homeSlimeButton);
-        this.addRenderableWidget(scrollableButtonList);
+        this.addWidget(scrollableButtonList);
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    protected void renderBg(MatrixStack poseStack, float pPartialTick, int pMouseX, int pMouseY) {
+        this.minecraft.getTextureManager().bind(TEXTURE);
         int x = (this.width - imageWidth) / 2;
         int y = (this.height - imageHeight) / 2;
         blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
     }
 
     @Override
-    public void render(PoseStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(MatrixStack poseStack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(poseStack);
 
         int x = (this.width - imageWidth) / 2;

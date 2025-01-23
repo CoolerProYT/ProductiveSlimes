@@ -1,29 +1,30 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SlimeballCollectorBlockEntity;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
 
-public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRenderer<SlimeballCollectorBlockEntity> {
-    public SlimeballCollectorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
+public class SlimeballCollectorBlockEntityRenderer extends TileEntityRenderer<SlimeballCollectorBlockEntity> {
+    public SlimeballCollectorBlockEntityRenderer(TileEntityRendererDispatcher pContext) {
+        super(pContext);
     }
 
     @Override
-    public void render(SlimeballCollectorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(SlimeballCollectorBlockEntity blockEntity, float partialTick, MatrixStack poseStack, IRenderTypeBuffer bufferSource, int packedLight, int packedOverlay) {
         if (blockEntity.getLevel() == null) return;
         if (blockEntity.getData().get(0) == 0) return;
 
         int rangeXZ = 8;
         int rangeY = 256;
-        AABB collectionArea = new AABB(
+        AxisAlignedBB collectionArea = new AxisAlignedBB(
                 blockEntity.getBlockPos().getX() - rangeXZ, -64, blockEntity.getBlockPos().getZ() - rangeXZ,
                 blockEntity.getBlockPos().getX() + rangeXZ + 1, rangeY, blockEntity.getBlockPos().getZ() + rangeXZ + 1
         );
@@ -35,8 +36,8 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
         poseStack.popPose();
     }
 
-    private void renderOutline(PoseStack poseStack, MultiBufferSource bufferSource, AABB aabb) {
-        var buffer = bufferSource.getBuffer(RenderType.lines());
+    private void renderOutline(MatrixStack poseStack, IRenderTypeBuffer bufferSource, AxisAlignedBB aabb) {
+        IVertexBuilder buffer = bufferSource.getBuffer(RenderType.lines());
 
         RenderSystem.enableDepthTest();
         RenderSystem.lineWidth(3.0f);
@@ -49,8 +50,8 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
     }
 
 
-    private void renderGrid(PoseStack poseStack, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
-        PoseStack.Pose pose = poseStack.last();
+    private void renderGrid(MatrixStack poseStack, IVertexBuilder buffer, AxisAlignedBB box, float red, float green, float blue, float alpha) {
+        MatrixStack.Entry pose = poseStack.last();
         Matrix4f matrix = pose.pose();
 
         int chunkSize = 16;
@@ -63,8 +64,8 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
         }
     }
 
-    private void drawBox(PoseStack poseStack, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
-        PoseStack.Pose pose = poseStack.last();
+    private void drawBox(MatrixStack poseStack, IVertexBuilder buffer, AxisAlignedBB box, float red, float green, float blue, float alpha) {
+        MatrixStack.Entry pose = poseStack.last();
         Matrix4f matrix = pose.pose();
         Matrix3f normal = pose.normal();
         float x1 = (float) box.minX;
@@ -89,7 +90,7 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
         drawLine(matrix, buffer, x1, y2, z1, x1, y2, z2, red, green, blue, alpha);
     }
 
-    private void drawLine(Matrix4f matrix, VertexConsumer buffer, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
+    private void drawLine(Matrix4f matrix, IVertexBuilder buffer, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
         buffer.vertex(matrix, (float) x1, (float) y1, (float) z1).color(red, green, blue, alpha).normal(1.0f, 0.0f, 0.0f).endVertex();
         buffer.vertex(matrix, (float) x2, (float) y2, (float) z2).color(red, green, blue, alpha).normal(1.0f, 0.0f, 0.0f).endVertex();
     }

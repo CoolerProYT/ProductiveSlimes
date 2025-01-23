@@ -6,19 +6,19 @@ import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
 public class ModCreativeTabs {
-    public static final CreativeModeTab PRODUCTIVE_SLIMES_TAB = new CreativeModeTab("productiveslimes") {
+    public static final ItemGroup PRODUCTIVE_SLIMES_TAB = new ItemGroup("productiveslimes") {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(Items.SLIME_BLOCK);
@@ -38,7 +38,8 @@ public class ModCreativeTabs {
                 try {
                     if (Supplier.class.isAssignableFrom(field.getType())) {
                         Supplier<?> supplier = (Supplier<?>) field.get(null);
-                        if (supplier.get() instanceof Block block) {
+                        if (supplier.get() instanceof Block) {
+                            Block block = (Block) supplier.get();
                             items.add(new ItemStack(block));
                         }
                     }

@@ -2,8 +2,10 @@ package com.coolerpromc.productiveslimes.compat.jade;
 
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import mcp.mobius.waila.api.*;
-import mcp.mobius.waila.api.config.IPluginConfig;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.List;
 
 @WailaPlugin
 public class JadePlugin implements IWailaPlugin {
@@ -16,10 +18,11 @@ public class JadePlugin implements IWailaPlugin {
         INSTANCE;
 
         @Override
-        public void appendTooltip(ITooltip iTooltip, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
-            if (entityAccessor.getEntity() instanceof BaseSlime slime) {
+        public void appendBody(List<ITextComponent> tooltip, IEntityAccessor accessor, IPluginConfig config) {
+            if (accessor.getEntity() instanceof BaseSlime) {
+                BaseSlime slime = (BaseSlime) accessor.getEntity();
                 int nextDrop = slime.getNextDropTime();
-                iTooltip.add(new TranslatableComponent("tooltip.productiveslimes.next_drop" , (int) Math.ceil(nextDrop / 20) + "s"));
+                tooltip.add(new TranslationTextComponent("tooltip.productiveslimes.next_drop", (int) Math.ceil(nextDrop / 20) + "s"));
             }
         }
     }

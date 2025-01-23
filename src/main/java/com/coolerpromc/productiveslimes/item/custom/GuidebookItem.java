@@ -1,30 +1,29 @@
 package com.coolerpromc.productiveslimes.item.custom;
 
 import com.coolerpromc.productiveslimes.screen.GuidebookMenu;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 
 public class GuidebookItem extends Item {
     public GuidebookItem(){
-        super(new Item.Properties().stacksTo(1).tab(CreativeModeTab.TAB_MISC));
+        super(new Item.Properties().stacksTo(1).tab(ItemGroup.TAB_MISC));
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+    public ActionResult<ItemStack> use(World pLevel, PlayerEntity pPlayer, Hand pUsedHand) {
         if (!pLevel.isClientSide) {
-            pPlayer.openMenu(new SimpleMenuProvider(
+            pPlayer.openMenu(new SimpleNamedContainerProvider(
                     (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory),
-                    new TranslatableComponent("item.productiveslimes.guidebook")
+                    new StringTextComponent("item.productiveslimes.guidebook")
             ));
         }
-        return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
+        return ActionResult.success(pPlayer.getItemInHand(pUsedHand));
     }
 }

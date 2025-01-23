@@ -7,9 +7,11 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.ItemTagsProvider;
+import net.minecraft.data.TagsProvider;
+import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -23,8 +25,8 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
     @Override
     protected void addTags() {
-        var slimeballTag = tag(Tags.Items.SLIMEBALLS);
-        var dnaTag = tag(ModTags.Items.DNA_ITEM);
+        TagsProvider.Builder<Item> slimeballTag = tag(Tags.Items.SLIMEBALLS);
+        TagsProvider.Builder<Item> dnaTag = tag(ModTags.Items.DNA_ITEM);
 
         slimeballTag.add(ModItems.ENERGY_SLIME_BALL.get());
         dnaTag.add(ModItems.SLIME_DNA.get());

@@ -7,12 +7,12 @@ import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.util.IItemProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -22,7 +22,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<BaseSlime>> ENERGY_SLIME =
             ENTITY_TYPES.register("energy_slime", () -> EntityType.Builder.<BaseSlime>of(
                     (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, 2000, 0xFFffff70, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK.get().asItem()),
-                    MobCategory.CREATURE).build("energy_slime"));
+                    EntityClassification.CREATURE).build("energy_slime"));
 
     public static void registerTierEntities(){
         for(Tier tier : Tier.values()) {
@@ -31,15 +31,15 @@ public class ModEntities {
             int cooldown = modTiers.cooldown();
             int color = modTiers.color();
             RegistryObject<Item> dropItem = ModTierLists.getSlimeballItemByName(modTiers.name());
-            ItemLike growthItem = ModTierLists.getItemByKey(modTiers.growthItemKey());
+            IItemProvider growthItem = ModTierLists.getItemByKey(modTiers.growthItemKey());
             RegistryObject<EntityType<BaseSlime>> slime = registerSlime(name, cooldown, color, dropItem, growthItem);
             ModTierLists.addRegisteredSlime(modTiers.name(), slime);
         }
     }
-    public static RegistryObject<EntityType<BaseSlime>> registerSlime(String name, int cooldown, int color, RegistryObject<Item> dropItem, ItemLike growthItem){
+    public static RegistryObject<EntityType<BaseSlime>> registerSlime(String name, int cooldown, int color, RegistryObject<Item> dropItem, IItemProvider growthItem){
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, cooldown, color, dropItem, growthItem),
-                MobCategory.CREATURE).build(name));
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, cooldown, color, dropItem, growthItem.asItem()),
+                EntityClassification.CREATURE).build(name));
     }
 
     public static void register(IEventBus eventBus) {

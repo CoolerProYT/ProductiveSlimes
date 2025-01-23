@@ -10,18 +10,19 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.StringTextComponent;
+
 import java.util.ArrayList;
 import java.util.List;
+
 public class ModCommands {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(Commands.literal("productiveslimes").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
                 .then(
                         Commands.literal("give").then(
@@ -30,7 +31,7 @@ public class ModCommands {
                                                     for (Tier tier : Tier.values()) {
                                                         ids.add(tier.getTierName());
                                                     }
-                                                    return SharedSuggestionProvider.suggest(ids, builder);
+                                                    return ISuggestionProvider.suggest(ids, builder);
                                                 }
                                         )
                                         .then(
@@ -40,7 +41,7 @@ public class ModCommands {
                                                             sizes.add("2");
                                                             sizes.add("3");
                                                             sizes.add("4");
-                                                            return SharedSuggestionProvider.suggest(sizes, builder);
+                                                            return ISuggestionProvider.suggest(sizes, builder);
                                                         })
                                                         .executes(ModCommands::execute)
                                         )
@@ -48,11 +49,13 @@ public class ModCommands {
                 )
         );
     }
-    public static int execute(CommandContext<CommandSourceStack> context) {
-        CommandSourceStack source = context.getSource();
+
+    public static int execute(CommandContext<CommandSource> context) {
+        CommandSource source = context.getSource();
+        ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
         // Ensure the command is executed by a player
-        if (!(source.getEntity() instanceof ServerPlayer player)) {
-            source.sendFailure(new TextComponent("This command can only be used by a player."));
+        if (!(source.getEntity() instanceof ServerPlayerEntity)) {
+            source.sendFailure(new StringTextComponent("This command can only be used by a player."));
             return 0;
         }
         // Get arguments
@@ -64,24 +67,25 @@ public class ModCommands {
         }
         // Create the item with custom NBT
         ItemStack slimeItem = new ItemStack(ModItems.SLIME_ITEM.get()); // Replace with your mod's item
-        CompoundTag tag = new CompoundTag();
-        tag.put("slime_data", data.toTag(new CompoundTag()));
+        CompoundNBT tag = new CompoundNBT();
+        tag.put("slime_data", data.toTag(new CompoundNBT()));
         slimeItem.setTag(tag);
         // Give the item to the player
         if (player.addItem(slimeItem)) {
-            source.sendSuccess(new TextComponent("Gave custom slime item!"), true);
+            source.sendSuccess(new StringTextComponent("Gave custom slime item!"), true);
             return Command.SINGLE_SUCCESS;
         } else {
-            source.sendFailure(new TextComponent("Failed to give item. Is your inventory full?"));
+            source.sendFailure(new StringTextComponent("Failed to give item. Is your inventory full?"));
             return 0;
         }
     }
-    private static SlimeData createSlimeData(String slimeId, int size, CommandSourceStack source) {
+
+    private static SlimeData createSlimeData(String slimeId, int size, CommandSource source) {
         try {
             ModTiers tier = ModTierLists.getTierByName(Tier.valueOf(slimeId.toUpperCase()));
             return new SlimeData(size, tier.color(), tier.cooldown(), new ItemStack(ModTierLists.getSlimeballItemByName(slimeId).get()), new ItemStack(ModTierLists.getItemByKey(tier.growthItemKey())), ModTierLists.getEntityByName(slimeId).get());
         } catch (IllegalArgumentException e) {
-            source.sendFailure(new TextComponent("Invalid slime ID. To get an id, pres f3+h and point on target slime in JEI/Inventory, for example, for productiveslimes:dirt_slime, the id in command is dirt"));
+            source.sendFailure(new StringTextComponent("Invalid slime ID. To get an id, pres f3+h and point on target slime in JEI/Inventory, for example, for productiveslimes:dirt_slime, the id in command is dirt"));
             return null;
         }
     }

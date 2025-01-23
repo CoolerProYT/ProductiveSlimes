@@ -2,20 +2,20 @@ package com.coolerpromc.productiveslimes.fluid;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -33,13 +33,13 @@ public class ModFluidResources {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, ProductiveSlimes.MODID);
     public static List<FluidStuff> fluidList = new ArrayList<FluidStuff>();
 
-    public static FluidStuff addFluid(ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties) {
+    public static FluidStuff addFluid(ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<Supplier<? extends FlowingFluid>, AbstractBlock.Properties, FlowingFluidBlock> block, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties) {
         FluidStuff fluid = new FluidStuff(info.name, info.color, info.isTranslucent, block, fluidProperties, source, flowing, properties);
         fluidList.add(fluid);
         return fluid;
     }
 
-    public static FluidStuff addFluid(ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties) {
+    public static FluidStuff addFluid(ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<Supplier<? extends FlowingFluid>, AbstractBlock.Properties, FlowingFluidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties) {
         return addFluid(info, properties, block, ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new, fluidProperties);
     }
 
@@ -57,7 +57,7 @@ public class ModFluidResources {
         public final ForgeFlowingFluid.Properties PROPERTIES;
         public final Supplier<ForgeFlowingFluid.Source> FLUID;
         public final Supplier<ForgeFlowingFluid.Flowing> FLUID_FLOW;
-        public final Supplier<LiquidBlock> FLUID_BLOCK;
+        public final Supplier<FlowingFluidBlock> FLUID_BLOCK;
         public final RegistryObject<Item> FLUID_BUCKET;
         public final String name;
         public final int color;
@@ -68,7 +68,7 @@ public class ModFluidResources {
         public static final ResourceLocation WATER_OVERLAY_RL = new ResourceLocation("block/water_overlay");
 
 
-        public FluidStuff(String name, int color, boolean isTranslucent, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, Block.Properties properties) {
+        public FluidStuff(String name, int color, boolean isTranslucent, BiFunction<Supplier<? extends FlowingFluid>, AbstractBlock.Properties, FlowingFluidBlock> block, @Nullable Consumer<ForgeFlowingFluid.Properties> fluidProperties, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Source> source, Function<ForgeFlowingFluid.Properties, ForgeFlowingFluid.Flowing> flowing, Block.Properties properties) {
             this.name = name;
             this.color = color;
             this.isTranslucent = isTranslucent;
@@ -83,7 +83,7 @@ public class ModFluidResources {
             if (fluidProperties != null)
                 fluidProperties.accept(PROPERTIES);
             FLUID_BLOCK = BLOCKS.register(fluidBlockName, () -> block.apply(FLUID, properties.randomTicks().strength(100.0F).noDrops()));
-            FLUID_BUCKET = ITEMS.register(fluidBucketName, () -> new BucketItem(FLUID, new BucketItem.Properties().craftRemainder(Items.BUCKET).stacksTo(64).tab(CreativeModeTab.TAB_MISC), color));
+            FLUID_BUCKET = ITEMS.register(fluidBucketName, () -> new BucketItem(FLUID, new BucketItem.Properties().craftRemainder(Items.BUCKET).stacksTo(64).tab(ItemGroup.TAB_MISC), color));
             PROPERTIES.bucket(FLUID_BUCKET).block(FLUID_BLOCK);
         }
 
@@ -91,7 +91,7 @@ public class ModFluidResources {
             return PROPERTIES;
         }
 
-        public Supplier<LiquidBlock> getBlock() {
+        public Supplier<FlowingFluidBlock> getBlock() {
             return FLUID_BLOCK;
         }
 

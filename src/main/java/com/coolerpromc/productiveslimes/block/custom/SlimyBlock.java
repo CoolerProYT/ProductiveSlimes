@@ -1,42 +1,36 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.FlowersFeature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.List;
 import java.util.Random;
 
-public class SlimyBlock extends Block implements BonemealableBlock {
+public class SlimyBlock extends Block implements IGrowable {
     public SlimyBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+    public BlockRenderType getRenderShape(BlockState p_149645_1_) {
+        return BlockRenderType.MODEL;
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader level, BlockPos pos) {
         return !state.isSolidRender(level, pos);
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        super.stepOn(level, pos, state, entity);
+    public void stepOn(World level, BlockPos pos, Entity entity) {
+        super.stepOn(level, pos, entity);
 
         if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
@@ -49,17 +43,17 @@ public class SlimyBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pPos, BlockState blockState, boolean b) {
+    public boolean isValidBonemealTarget(IBlockReader blockGetter, BlockPos pPos, BlockState blockState, boolean b) {
         return blockGetter.getBlockState(pPos.above()).isAir();
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, Random random, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(World level, Random random, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, Random pRand, BlockPos pPos, BlockState pState) {
+    public void performBonemeal(ServerWorld pLevel, Random pRand, BlockPos pPos, BlockState pState) {
         BlockPos var5 = pPos.above();
         BlockState var6 = Blocks.GRASS.defaultBlockState();
 
@@ -76,7 +70,7 @@ public class SlimyBlock extends Block implements BonemealableBlock {
 
             BlockState var12 = pLevel.getBlockState(var8);
             if (var12.is(var6.getBlock()) && pRand.nextInt(10) == 0) {
-                ((BonemealableBlock)var6.getBlock()).performBonemeal(pLevel, pRand, var8, var12);
+                ((IGrowable)var6.getBlock()).performBonemeal(pLevel, pRand, var8, var12);
             }
 
             if (var12.isAir()) {
@@ -99,8 +93,8 @@ public class SlimyBlock extends Block implements BonemealableBlock {
         }
     }
 
-    private static <U extends FeatureConfiguration> BlockState getBlockState(Random pRandom, BlockPos pPos, ConfiguredFeature<U, ?> pFlowerFeature) {
-        AbstractFlowerFeature<U> var3 = (AbstractFlowerFeature)pFlowerFeature.feature;
+    private static <U extends IFeatureConfig> BlockState getBlockState(Random pRandom, BlockPos pPos, ConfiguredFeature<U, ?> pFlowerFeature) {
+        FlowersFeature<U> var3 = (FlowersFeature) pFlowerFeature.feature;
         return var3.getRandomFlower(pRandom, pPos, pFlowerFeature.config());
     }
 }

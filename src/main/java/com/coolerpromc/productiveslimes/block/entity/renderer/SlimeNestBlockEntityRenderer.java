@@ -2,39 +2,40 @@ package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 
-public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNestBlockEntity> {
+public class SlimeNestBlockEntityRenderer extends TileEntityRenderer<SlimeNestBlockEntity> {
     public int tick;
 
-    public SlimeNestBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public SlimeNestBlockEntityRenderer(TileEntityRendererDispatcher context) {
+        super(context);
     }
 
     @Override
-    public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(SlimeNestBlockEntity blockEntity, float partialTick, MatrixStack poseStack, IRenderTypeBuffer bufferSource, int packedLight, int packedOverlay) {
         if (blockEntity.getSlime() == null) return;
         if (blockEntity.getSlime().isEmpty()) return;
         if (!blockEntity.getSlime().getTag().contains("slime_data")) return;
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack slime = blockEntity.getSlime();
-        Level level = blockEntity.getLevel();
+        World level = blockEntity.getLevel();
         // Get the center of the block
         double centerX = blockEntity.getBlockPos().getX() + 0.5;
         double centerY = blockEntity.getBlockPos().getY() + 0.5;
@@ -62,7 +63,7 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
                 double offsetZ = level.random.nextDouble() * 0.4 - 0.2; // Random offset around the Z-axis
                 // Add the particle with a randomized position surrounding the slime
                 level.addParticle(
-                        new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(SlimeData.fromTag(slime.getTag().getCompound("slime_data")).growthItem().getItem())),
+                        new ItemParticleData(ParticleTypes.ITEM, new ItemStack(SlimeData.fromTag(slime.getTag().getCompound("slime_data")).growthItem().getItem())),
                         centerX + offsetX,
                         centerY + offsetY,
                         centerZ + offsetZ,
@@ -91,13 +92,13 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
         poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX, centerY - blockEntity.getBlockPos().getY() + renderY - 0.05f, centerZ - blockEntity.getBlockPos().getZ() + renderZ);
         poseStack.scale(scaleX, scaleY, scaleZ); // Apply squish scaling
         poseStack.mulPose(Vector3f.YP.rotationDegrees(degree));
-        itemRenderer.renderStatic(slime, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, bufferSource, 1);
+        itemRenderer.renderStatic(slime, ItemCameraTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, bufferSource);
         poseStack.popPose();
     }
 
-    private int getLightLevel(Level level, BlockPos pos) {
-        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
-        int sLight = level.getBrightness(LightLayer.SKY, pos);
+    private int getLightLevel(World level, BlockPos pos) {
+        int bLight = level.getBrightness(LightType.BLOCK, pos);
+        int sLight = level.getBrightness(LightType.SKY, pos);
         return LightTexture.pack(bLight, sLight);
     }
 }

@@ -5,27 +5,26 @@ import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.screen.EnergyGeneratorMenu;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -38,14 +37,14 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvider {
+public class EnergyGeneratorBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private final ItemStackHandler itemHandler = new ItemStackHandler(1){
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return canBurn(stack);
         }
     };
-    protected final ContainerData data;
+    protected final IIntArray data;
 
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 0, 100, 0);
 
@@ -71,7 +70,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         return energyHandler;
     }
 
-    public ContainerData getData() {
+    public IIntArray getData() {
         return data;
     }
 
@@ -83,26 +82,26 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         return upgradeHandler;
     }
 
-    public EnergyGeneratorBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.ENERGY_GENERATOR_BE.get(), pPos, pBlockState);
-        this.data = new ContainerData() {
+    public EnergyGeneratorBlockEntity() {
+        super(ModBlockEntities.ENERGY_GENERATOR_BE.get());
+        this.data = new IIntArray() {
             @Override
             public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> EnergyGeneratorBlockEntity.this.energyHandler.getEnergyStored();
-                    case 1 -> EnergyGeneratorBlockEntity.this.energyHandler.getMaxEnergyStored();
-                    case 2 -> EnergyGeneratorBlockEntity.this.progress;
-                    case 3 -> EnergyGeneratorBlockEntity.this.maxProgress;
-                    default -> throw new UnsupportedOperationException("Unexpected value: " + pIndex);
-                };
+                switch (pIndex) {
+                    case 0 : return EnergyGeneratorBlockEntity.this.energyHandler.getEnergyStored();
+                    case 1 : return EnergyGeneratorBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    case 2 : return EnergyGeneratorBlockEntity.this.progress;
+                    case 3 : return EnergyGeneratorBlockEntity.this.maxProgress;
+                    default : return 0;
+                }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 -> EnergyGeneratorBlockEntity.this.energyHandler.setEnergy(pValue);
-                    case 2 -> EnergyGeneratorBlockEntity.this.progress = pValue;
-                    case 3 -> EnergyGeneratorBlockEntity.this.maxProgress = pValue;
+                    case 0 : EnergyGeneratorBlockEntity.this.energyHandler.setEnergy(pValue); break;
+                    case 2 : EnergyGeneratorBlockEntity.this.progress = pValue; break;
+                    case 3 : EnergyGeneratorBlockEntity.this.maxProgress = pValue; break;
                 }
             }
 
@@ -122,17 +121,18 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("block.productiveslimes.energy_generator");
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.productiveslimes.energy_generator");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+    public Container createMenu(int pContainerId, PlayerInventory pPlayerInventory, PlayerEntity pPlayer) {
         return new EnergyGeneratorMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+    @Override
+    public void tick() {
         if (this.level == null || this.level.isClientSide())
             return;
 
@@ -157,12 +157,13 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
                     }
                 }
 
-                int energy = switch (upgrade) {
-                    case 1 -> 10;
-                    case 2 -> 15;
-                    case 3 -> 25;
-                    case 4 -> 40;
-                    default -> 5;
+                int energy = 5;
+
+                switch (upgrade) {
+                    case 1 : energy = 10; break;
+                    case 2 : energy = 15; break;
+                    case 3 : energy = 25; break;
+                    case 4 : energy = 40; break;
                 };
 
                 this.energyHandler.addEnergy(energy);
@@ -172,7 +173,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
         if (!this.level.isClientSide) {
             for (Direction direction : Direction.values()) {
-                Level level = this.level;
+                World level = this.level;
 
                 Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()));
 
@@ -201,9 +202,9 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    public CompoundNBT save(CompoundNBT pTag) {
         pTag.put("Inventory", itemHandler.serializeNBT());
-        pTag.put("Energy", energyHandler.serializeNBT());
+        pTag.putInt("Energy", energyHandler.getEnergyStored());
         pTag.putInt("Progress", progress);
         pTag.putInt("MaxProgress", maxProgress);
         pTag.put("Upgrades", upgradeHandler.serializeNBT());
@@ -212,29 +213,29 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void load(BlockState state, CompoundNBT pTag) {
+        super.load(state, pTag);
 
         this.itemHandler.deserializeNBT(pTag.getCompound("Inventory"));
-        this.energyHandler.deserializeNBT(pTag.get("Energy"));
+        this.energyHandler.setEnergy(pTag.getInt("Energy"));
         this.progress = pTag.getInt("Progress");
         this.maxProgress = pTag.getInt("MaxProgress");
         this.upgradeHandler.deserializeNBT(pTag.getCompound("Upgrades"));
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        Inventory inventory = new Inventory(itemHandler.getSlots());
         for(int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        InventoryHelper.dropContents(this.level, this.worldPosition, inventory);
     }
 
     private void sendUpdate() {
         setChanged();
 
         if(this.level != null)
-            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
     }
 
     public int getBurnTime(ItemStack stack) {
@@ -252,28 +253,29 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         return getBurnTime(stack) > 0;
     }
 
+    @Nullable
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        this.load(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compoundTag = new CompoundNBT();
         this.save(compoundTag);
         return compoundTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 }

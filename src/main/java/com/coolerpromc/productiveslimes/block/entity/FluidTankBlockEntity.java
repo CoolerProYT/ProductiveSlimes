@@ -1,13 +1,14 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,7 +18,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import javax.annotation.Nullable;
 
-public class FluidTankBlockEntity extends BlockEntity {
+public class FluidTankBlockEntity extends TileEntity {
     public final int capacity = 50000;
 
     private final FluidTank fluidTank = new FluidTank(capacity){
@@ -37,8 +38,8 @@ public class FluidTankBlockEntity extends BlockEntity {
 
     LazyOptional<FluidTank> fluidTankLazyOptional = LazyOptional.of(() -> fluidTank);
 
-    public FluidTankBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.FLUID_TANK_BE.get(), pPos, pBlockState);
+    public FluidTankBlockEntity() {
+        super(ModBlockEntities.FLUID_TANK_BE.get());
         fluidTank.setFluid(FluidStack.EMPTY);
     }
 
@@ -67,7 +68,7 @@ public class FluidTankBlockEntity extends BlockEntity {
         return super.getCapability(cap);
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState){
+    public void tick(World level, BlockPos blockPos, BlockState blockState){
         setChanged();
         if (!level.isClientSide()){
             level.sendBlockUpdated(blockPos, blockState, blockState, 3);
@@ -87,41 +88,42 @@ public class FluidTankBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    public CompoundNBT save(CompoundNBT pTag) {
         pTag = fluidTank.writeToNBT(pTag);
 
         return super.save(pTag);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void load(BlockState state, CompoundNBT pTag) {
+        super.load(state, pTag);
 
         fluidTank.readFromNBT(pTag);
     }
 
+    @Nullable
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        this.load(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compoundTag = new CompoundNBT();
         this.save(compoundTag);
         return compoundTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 }

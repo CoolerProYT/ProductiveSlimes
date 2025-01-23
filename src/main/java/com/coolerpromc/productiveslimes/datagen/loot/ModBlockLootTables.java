@@ -4,11 +4,11 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.data.loot.BlockLoot;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraft.block.Block;
+import net.minecraft.data.loot.BlockLootTables;
+import net.minecraftforge.fml.RegistryObject;
 
-public class ModBlockLootTables extends BlockLoot {
+public class ModBlockLootTables extends BlockLootTables {
     public ModBlockLootTables() {
     }
 
@@ -22,9 +22,7 @@ public class ModBlockLootTables extends BlockLoot {
         dropOther(ModBlocks.SLIMY_GRASS_BLOCK.get(), ModBlocks.SLIMY_DIRT.get());
         dropSelf(ModBlocks.SLIMY_DIRT.get());
         dropOther(ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_COBBLESTONE.get());
-        dropOther(ModBlocks.SLIMY_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
         dropSelf(ModBlocks.SLIMY_COBBLESTONE.get());
-        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
 
         dropSelf(ModBlocks.SLIMY_LOG.get());
         dropSelf(ModBlocks.SLIMY_WOOD.get());
@@ -50,9 +48,6 @@ public class ModBlockLootTables extends BlockLoot {
         dropSelf(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get());
         add(ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLESTONE_SLAB.get()));
         dropSelf(ModBlocks.SLIMY_COBBLESTONE_WALL.get());
-        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get());
-        add(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get()));
-        dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get());
 
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
 

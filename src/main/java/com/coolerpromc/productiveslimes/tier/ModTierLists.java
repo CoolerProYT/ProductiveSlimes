@@ -2,14 +2,14 @@ package com.coolerpromc.productiveslimes.tier;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.util.IItemProvider;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class ModTierLists {
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredDnaItem = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredSpawnEggItem = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
+    private static final Map<ResourceLocation, Supplier<FlowingFluidBlock>> registeredLiquidBlock = new HashMap<>();
     private static final Map<ResourceLocation, RegistryObject<Item>> registeredBucketItem = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<ForgeFlowingFluid.Source>> registeredSource = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<ForgeFlowingFluid.Flowing>> registeredFlow = new HashMap<>();
@@ -91,7 +91,7 @@ public class ModTierLists {
         registeredSlimes.put(new ResourceLocation(ProductiveSlimes.MODID, name + "_slime"), entity);
     }
 
-    public static void addRegisteredLiquidBlock(String name, Supplier<LiquidBlock> liquidBlock){
+    public static void addRegisteredLiquidBlock(String name, Supplier<FlowingFluidBlock> liquidBlock){
         registeredLiquidBlock.put(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + name + "_block"), liquidBlock);
     }
 
@@ -131,7 +131,7 @@ public class ModTierLists {
         return registeredSlimes.get(new ResourceLocation(ProductiveSlimes.MODID, name + "_slime"));
     }
 
-    public static Supplier<LiquidBlock> getLiquidBlockByName(String name){
+    public static Supplier<FlowingFluidBlock> getLiquidBlockByName(String name){
         return registeredLiquidBlock.get(new ResourceLocation(ProductiveSlimes.MODID, "molten_" + name + "_block"));
     }
 
@@ -147,7 +147,7 @@ public class ModTierLists {
         return registeredFlow.get(new ResourceLocation(ProductiveSlimes.MODID, "flowing_molten_" + name));
     }
 
-    public static ItemLike getItemByKey(String key){
+    public static IItemProvider getItemByKey(String key){
         return ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
     }
 }

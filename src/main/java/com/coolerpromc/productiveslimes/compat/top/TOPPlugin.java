@@ -6,9 +6,9 @@ import mcjty.theoneprobe.api.IProbeHitEntityData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.ProbeMode;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
 
 public class TOPPlugin implements IProbeInfoEntityProvider {
     @Override
@@ -17,8 +17,9 @@ public class TOPPlugin implements IProbeInfoEntityProvider {
     }
 
     @Override
-    public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player player, Level level, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
-        if (entity instanceof BaseSlime slime) {
+    public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, PlayerEntity player, World level, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
+        if (entity instanceof BaseSlime) {
+            BaseSlime slime = (BaseSlime) entity;
             int nextDrop = slime.getNextDropTime();
             iProbeInfo.text("Next drop: " + (int) Math.ceil(nextDrop / 20) + "s");
         }

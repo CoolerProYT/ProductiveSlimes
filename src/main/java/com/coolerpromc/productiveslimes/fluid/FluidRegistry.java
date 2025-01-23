@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.fluid;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 

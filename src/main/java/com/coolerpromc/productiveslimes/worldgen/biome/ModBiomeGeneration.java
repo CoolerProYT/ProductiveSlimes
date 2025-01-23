@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,7 +14,7 @@ public class ModBiomeGeneration {
     }
 
     private static void addBiome(Biome biome, BiomeManager.BiomeType type, int weight, BiomeDictionary.Type... types) {
-        ResourceKey<Biome> key =  ResourceKey.create(ForgeRegistries.Keys.BIOMES, Objects.requireNonNull(ForgeRegistries.BIOMES.getKey(biome)));
+        RegistryKey<Biome> key =  RegistryKey.create(ForgeRegistries.Keys.BIOMES, Objects.requireNonNull(ForgeRegistries.BIOMES.getKey(biome)));
 
         BiomeDictionary.addTypes(key, types);
         BiomeManager.addBiome(type, new BiomeManager.BiomeEntry(key, weight));

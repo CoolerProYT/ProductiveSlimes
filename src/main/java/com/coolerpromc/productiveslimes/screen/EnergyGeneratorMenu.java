@@ -2,28 +2,32 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.EnergyGeneratorBlockEntity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntArray;
+import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class EnergyGeneratorMenu extends AbstractContainerMenu {
+public class EnergyGeneratorMenu extends Container {
     public final EnergyGeneratorBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
+    private final World level;
+    private final IIntArray data;
     private boolean showExtraSlots = true;
-    private final Inventory playerInventory;
+    private final PlayerInventory playerInventory;
 
-    public EnergyGeneratorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+    public EnergyGeneratorMenu(int pContainerId, PlayerInventory inv, PacketBuffer extraData) {
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new IntArray(4));
     }
 
-    public EnergyGeneratorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public EnergyGeneratorMenu(int pContainerId, PlayerInventory inv, TileEntity entity, IIntArray data) {
         super(ModMenuTypes.ENERGY_GENERATOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 4);
         blockEntity = ((EnergyGeneratorBlockEntity) entity);
@@ -97,7 +101,7 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_SLOT_COUNT = 5;  // must be the number of slots you have!
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
@@ -130,12 +134,12 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
+    public boolean stillValid(PlayerEntity pPlayer) {
+        return stillValid(IWorldPosCallable.create(level, blockEntity.getBlockPos()),
                 pPlayer, ModBlocks.ENERGY_GENERATOR.get());
     }
 
-    private void addPlayerInventory(Inventory playerInventory) {
+    private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
@@ -143,7 +147,7 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
         }
     }
 
-    private void addPlayerHotbar(Inventory playerInventory) {
+    private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }

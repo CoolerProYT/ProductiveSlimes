@@ -2,10 +2,10 @@ package com.coolerpromc.productiveslimes.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.resources.IResourcePack;
+import net.minecraft.resources.ResourcePackType;
+import net.minecraft.resources.data.IMetadataSectionSerializer;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class InMemoryDataPack implements PackResources {
+public class InMemoryDataPack implements IResourcePack {
     private final Map<String, byte[]> resources;
 
     public InMemoryDataPack(Map<String, byte[]> resources) {
@@ -34,8 +34,8 @@ public class InMemoryDataPack implements PackResources {
     }
 
     @Override
-    public InputStream getResource(PackType packType, ResourceLocation resourceLocation) throws IOException {
-        if (packType != PackType.SERVER_DATA) {
+    public InputStream getResource(ResourcePackType packType, ResourceLocation resourceLocation) throws IOException {
+        if (packType != ResourcePackType.SERVER_DATA) {
             return null;
         }
         String path = "data/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
@@ -47,7 +47,7 @@ public class InMemoryDataPack implements PackResources {
     }
 
     @Override
-    public Collection<ResourceLocation> getResources(PackType packType, String namespace, String path, int i, Predicate<String> filter) {
+    public Collection<ResourceLocation> getResources(ResourcePackType packType, String namespace, String path, int i, Predicate<String> filter) {
         Set<ResourceLocation> matchingResources = new HashSet<>();
         String prefix = "data/" + namespace + "/" + path;
 
@@ -67,14 +67,14 @@ public class InMemoryDataPack implements PackResources {
     }
 
     @Override
-    public boolean hasResource(PackType packType, ResourceLocation resourceLocation) {
+    public boolean hasResource(ResourcePackType packType, ResourceLocation resourceLocation) {
         String fullPath = "data/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath();
         return resources.containsKey(fullPath);
     }
 
     @Override
-    public Set<String> getNamespaces(PackType type) {
-        if (type != PackType.SERVER_DATA) {
+    public Set<String> getNamespaces(ResourcePackType type) {
+        if (type != ResourcePackType.SERVER_DATA) {
             return Collections.emptySet();
         }
         Set<String> namespaces = new HashSet<>();
@@ -95,7 +95,7 @@ public class InMemoryDataPack implements PackResources {
     }
 
     @Override
-    public <T> T getMetadataSection(MetadataSectionSerializer<T> serializer) throws IOException {
+    public <T> T getMetadataSection(IMetadataSectionSerializer<T> serializer) throws IOException {
         if ("pack".equals(serializer.getMetadataSectionName())) {
             InputStream supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {

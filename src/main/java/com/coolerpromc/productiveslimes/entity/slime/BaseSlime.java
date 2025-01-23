@@ -1,22 +1,37 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import net.minecraft.command.impl.data.EntityDataAccessor;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public abstract class BaseSlime extends SlimeEntity {
-    private static final EntityDataAccessor<ItemStack> RESOURCE =
-            SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Integer> ID_SIZE =
-            SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> GROWTH_COUNTER =
-            SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
+    private static final DataParameter<ItemStack> RESOURCE =
+            EntityDataManager.defineId(BaseSlime.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Integer> ID_SIZE =
+            EntityDataManager.defineId(BaseSlime.class, DataSerializers.INT);
+    private static final DataParameter<Integer> GROWTH_COUNTER =
+            EntityDataManager.defineId(BaseSlime.class, DataSerializers.INT);
 
     public final int growthTime;
     public final Item growthItem;
@@ -30,13 +45,13 @@ public abstract class BaseSlime extends SlimeEntity {
     }
 
     @Override
-    public Component getName() {
+    public ITextComponent getName() {
         return super.getName();
     }
 
     @Nullable
     @Override
-    public Component getCustomName() {
+    public ITextComponent getCustomName() {
         return super.getCustomName();
     }
 
@@ -65,19 +80,19 @@ public abstract class BaseSlime extends SlimeEntity {
         return false;
     }
 
-    public static EntityDataAccessor<Integer> getGrowthCounter() {
+    public static DataParameter<Integer> getGrowthCounter() {
         return GROWTH_COUNTER;
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(CompoundNBT pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("growth_counter", this.entityData.get(GROWTH_COUNTER));
         pCompound.putInt("size", this.entityData.get(ID_SIZE));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(CompoundNBT pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.entityData.set(ID_SIZE, pCompound.getInt("size"));
         this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
@@ -105,16 +120,16 @@ public abstract class BaseSlime extends SlimeEntity {
     }
 
     @Override
-    public boolean save(CompoundTag pCompound) {
+    public boolean save(CompoundNBT pCompound) {
         pCompound.putInt("size", this.getSize());
         pCompound.putInt("growth_counter", this.entityData.get(GROWTH_COUNTER));
-        pCompound.put("resource", this.entityData.get(RESOURCE).save(new CompoundTag()));
+        pCompound.put("resource", this.entityData.get(RESOURCE).save(new CompoundNBT()));
 
         return super.save(pCompound);
     }
 
     @Override
-    public void load(CompoundTag pCompound) {
+    public void load(CompoundNBT pCompound) {
         super.load(pCompound);
 
         if (pCompound.contains("size", 99)) {
@@ -131,15 +146,15 @@ public abstract class BaseSlime extends SlimeEntity {
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity pPassenger) {
-        return new Vec3(0.0, (double)this.level.getHeight() - 0.015625 * (double)this.getSize(), 0.0);
+    public Vector3d getDismountLocationForPassenger(LivingEntity pPassenger) {
+        return new Vector3d(0.0, (double)this.level.getHeight() - 0.015625 * (double)this.getSize(), 0.0);
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+    public void onSyncedDataUpdated(DataParameter<?> key) {
         if (ID_SIZE.equals(key)) {
             this.refreshDimensions();
-            this.setYRot(this.yHeadRot);
+            this.setYHeadRot(this.yHeadRot);
             this.yBodyRot = this.yHeadRot;
             if (this.isInWater() && this.random.nextInt(20) == 0) {
                 this.doWaterSplashEffect();
@@ -194,7 +209,7 @@ public abstract class BaseSlime extends SlimeEntity {
     public void setSize(int pSize, boolean pResetHealth) {
         // Setting the size based on the number of resources
         // int newSize = this.entityData.get(RESOURCE).getCount() * 2 - 1; // INSANE GROWTH (64 -> Size 127)
-        int i = Mth.clamp(pSize, 1, 127);
+        int i = MathHelper.clamp(pSize, 1, 127);
         this.entityData.set(ID_SIZE, i);
         this.reapplyPosition();
         this.refreshDimensions();
@@ -205,8 +220,8 @@ public abstract class BaseSlime extends SlimeEntity {
         this.xpReward = i;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes()
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MonsterEntity.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.2D)
                 .add(Attributes.ATTACK_DAMAGE, 0)
                 .add(Attributes.FOLLOW_RANGE, 16.0D);
@@ -223,16 +238,16 @@ public abstract class BaseSlime extends SlimeEntity {
         double d1 = this.getY();
         double d2 = this.getZ();
         super.refreshDimensions();
-        this.setBoundingBox(new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + (double)this.getBbWidth(), this.getY() + (double)this.getBbHeight(), this.getZ() + (double)this.getBbWidth()));
+        this.setBoundingBox(new AxisAlignedBB(this.getX(), this.getY(), this.getZ(), this.getX() + (double)this.getBbWidth(), this.getY() + (double)this.getBbHeight(), this.getZ() + (double)this.getBbWidth()));
         this.setPos(d0, d1, d2);
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pPose) {
+    public EntitySize getDimensions(Pose pPose) {
         return super.getDimensions(pPose).scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
     }
 
-    public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
+    public void growthSlime(PlayerEntity pPlayer, Hand pHand, BaseSlime slime){
         slime.setSize(slime.getSize() + 1, false);
         slime.setHealth(slime.getMaxHealth());
         slime.setPos(slime.getX(), slime.getY() + 1, slime.getZ());
@@ -305,7 +320,7 @@ public abstract class BaseSlime extends SlimeEntity {
         public SlimeMoveControl(BaseSlime p_33668_) {
             super(p_33668_);
             this.slime = p_33668_;
-            this.yRot = 180.0F * p_33668_.getYRot() / (float)Math.PI;
+            this.yRot = 180.0F * p_33668_.getYHeadRot() / (float)Math.PI;
         }
 
         public void setDirection(float pYRot, boolean pAggressive) {
@@ -315,17 +330,17 @@ public abstract class BaseSlime extends SlimeEntity {
 
         public void setWantedMovement(double pSpeed) {
             this.speedModifier = pSpeed;
-            this.operation = MoveControl.Operation.MOVE_TO;
+            this.operation = MovementController.Action.MOVE_TO;
         }
 
         public void tick() {
-            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0F));
-            this.mob.yHeadRot = this.mob.getYRot();
-            this.mob.yBodyRot = this.mob.getYRot();
-            if (this.operation != MoveControl.Operation.MOVE_TO) {
+            this.mob.setYHeadRot(this.rotlerp(this.mob.getYHeadRot(), this.yRot, 90.0F));
+            this.mob.yHeadRot = this.mob.getYHeadRot();
+            this.mob.yBodyRot = this.mob.getYHeadRot();
+            if (this.operation != MovementController.Action.MOVE_TO) {
                 this.mob.setZza(0.0F);
             } else {
-                this.operation = MoveControl.Operation.WAIT;
+                this.operation = MovementController.Action.WAIT;
                 if (this.mob.isOnGround()) {
                     this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                     if (this.jumpDelay-- <= 0) {
@@ -367,7 +382,7 @@ public abstract class BaseSlime extends SlimeEntity {
          */
         public boolean canUse() {
             return this.slime.getTarget() == null && (this.slime.isOnGround() || this.slime.isInWater() || this.slime.isInLava() ||
-                    this.slime.hasEffect(MobEffects.LEVITATION)) && this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
+                    this.slime.hasEffect(Effects.LEVITATION)) && this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
         }
 
         /**
@@ -384,28 +399,29 @@ public abstract class BaseSlime extends SlimeEntity {
     }
 
     static class SlimeFollowGoal extends Goal {
-        private final Slime slime;
+        private final SlimeEntity slime;
         private int growTiredTimer;
         private final Item targetItem; // The item to check for
 
-        public SlimeFollowGoal(Slime slime, Item targetItem) {
+        public SlimeFollowGoal(SlimeEntity slime, Item targetItem) {
             this.slime = slime;
             this.targetItem = targetItem;
             this.setFlags(EnumSet.of(Goal.Flag.LOOK));
         }
 
-        private boolean isPlayerHoldingTargetItem(Player player) {
-            return player.getMainHandItem().is(targetItem) || player.getOffhandItem().is(targetItem);
+        private boolean isPlayerHoldingTargetItem(PlayerEntity player) {
+            return player.getMainHandItem().getItem().equals(targetItem) || player.getOffhandItem().getItem().equals(targetItem);
         }
 
-        private boolean isInRange(Player player) {
+        private boolean isInRange(PlayerEntity player) {
             return this.slime.distanceTo(player) <= 8.0F;
         }
 
-        private Player findNearestPlayerWithItem() {
+        private PlayerEntity findNearestPlayerWithItem() {
             return this.slime.level.getNearestPlayer(
-                    TargetingConditions.forNonCombat().selector(livingEntity -> {
-                        if (livingEntity instanceof Player player) {
+                    EntityPredicate.DEFAULT.allowNonAttackable().selector(livingEntity -> {
+                        if (livingEntity instanceof PlayerEntity) {
+                            PlayerEntity player = (PlayerEntity) livingEntity;
                             return isPlayerHoldingTargetItem(player) && this.slime.getSize() < 4 && isInRange(player);
                         }
                         return false;
@@ -418,7 +434,7 @@ public abstract class BaseSlime extends SlimeEntity {
 
         @Override
         public boolean canUse() {
-            Player player = findNearestPlayerWithItem();
+            PlayerEntity player = findNearestPlayerWithItem();
             if (player == null) {
                 return false;
             }
@@ -434,7 +450,7 @@ public abstract class BaseSlime extends SlimeEntity {
 
         @Override
         public boolean canContinueToUse() {
-            Player player = findNearestPlayerWithItem();
+            PlayerEntity player = findNearestPlayerWithItem();
             if (player == null) {
                 return false;
             }
@@ -444,13 +460,14 @@ public abstract class BaseSlime extends SlimeEntity {
 
         @Override
         public void tick() {
-            Player player = findNearestPlayerWithItem();
+            PlayerEntity player = findNearestPlayerWithItem();
             if (player != null) {
                 this.slime.lookAt(player, 10.0F, 10.0F);
             }
 
-            if (this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl slimeMoveControl) {
-                slimeMoveControl.setDirection(this.slime.getYRot(), false);
+            if (this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl) {
+                BaseSlime.SlimeMoveControl slimeMoveControl = (BaseSlime.SlimeMoveControl) this.slime.getMoveControl();
+                slimeMoveControl.setDirection(this.slime.getYHeadRot(), false);
             }
         }
     }

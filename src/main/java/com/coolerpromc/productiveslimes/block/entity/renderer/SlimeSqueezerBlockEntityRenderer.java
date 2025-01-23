@@ -3,32 +3,33 @@ package com.coolerpromc.productiveslimes.block.entity.renderer;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.SlimeSqueezerBlock;
 import com.coolerpromc.productiveslimes.block.entity.SlimeSqueezerBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<SlimeSqueezerBlockEntity> {
-    public SlimeSqueezerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
+public class SlimeSqueezerBlockEntityRenderer extends TileEntityRenderer<SlimeSqueezerBlockEntity> {
+    public SlimeSqueezerBlockEntityRenderer(TileEntityRendererDispatcher context){
+        super(context);
     }
     @Override
-    public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        var squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
+    public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay) {
+        IBakedModel squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
         float progressRatio = (float) blockEntity.getData().get(0) / (float) blockEntity.getData().get(1);
         float startPoint = 0.8f;
         float endPoint = 0.15f;
@@ -49,7 +50,7 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.translate(0.5f, 0.09, 0.5f);
         poseStack.scale(0.35f, 0.35f, 0.35f);
         poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(inputItem, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
+        itemRenderer.renderStatic(inputItem, ItemCameraTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer);
         poseStack.popPose();
         switch (facing){
             case SOUTH:
@@ -70,17 +71,17 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.translate(x1, y1, z1);
         poseStack.scale(0.15f, 0.15f, 0.15f);
         poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(outputItem1, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
+        itemRenderer.renderStatic(outputItem1, ItemCameraTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer);
         poseStack.popPose();
         // Render the output item 2
         poseStack.pushPose();
         poseStack.translate(x2, y2, z2);
         poseStack.scale(0.15f, 0.15f, 0.15f);
         poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(outputItem2, ItemTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, 1);
+        itemRenderer.renderStatic(outputItem2, ItemCameraTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer);
         poseStack.popPose();
     }
-    private void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+    private void renderModel(IBakedModel model, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay) {
         Random rand = new Random();
         for (Direction direction : Direction.values()) {
             rand.setSeed(42L);
@@ -95,9 +96,9 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
             );
         }
     }
-    private int getLightLevel(Level level, BlockPos pos) {
-        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
-        int sLight = level.getBrightness(LightLayer.SKY, pos);
+    private int getLightLevel(World level, BlockPos pos) {
+        int bLight = level.getBrightness(LightType.BLOCK, pos);
+        int sLight = level.getBrightness(LightType.SKY, pos);
         return LightTexture.pack(bLight, sLight);
     }
 }

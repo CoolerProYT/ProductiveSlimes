@@ -1,18 +1,16 @@
 package com.coolerpromc.productiveslimes.mixin;
 
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,11 +18,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-@Mixin(Slime.class)
+@Mixin(SlimeEntity.class)
 public abstract class SlimeMixin {
     /**
      * @author CoolerProMC
@@ -35,15 +32,15 @@ public abstract class SlimeMixin {
         return false;
     }
 
-    @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 1))
+    @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/entity/ai/goal/Goal;)V", ordinal = 1))
     private void redirectSlimeAttackGoal(GoalSelector instance, int priority, Goal goal) {
         // This effectively skips the addition of the SlimeAttackGoal
         // No operation (NOP), we do nothing here to skip adding the goal
     }
 
     @Inject(method = "checkSlimeSpawnRules", at = @At("HEAD"), cancellable = true)
-    private static void onCheckSpawnRules(EntityType<Slime> slimeType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
-        Optional<ResourceKey<Biome>> biomeKey = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getResourceKey(level.getBiome(pos));
+    private static void onCheckSpawnRules(EntityType<SlimeEntity> slimeType, IWorld level, SpawnReason spawnType, BlockPos pos, Random random, CallbackInfoReturnable<Boolean> cir) {
+        Optional<RegistryKey<Biome>> biomeKey = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getResourceKey(level.getBiome(pos));
 
         if (biomeKey.isPresent() && biomeKey.get().location().equals(ModBiomes.SLIMY_LAND.get().getRegistryName())){
             cir.setReturnValue(true);

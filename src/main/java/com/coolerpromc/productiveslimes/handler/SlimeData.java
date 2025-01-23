@@ -11,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Objects;
 
 @SuppressWarnings("unchecked")
-public class SlimeData{
+public class SlimeData {
     public final int size;
     public final int color;
     public final int cooldown;
@@ -19,7 +19,7 @@ public class SlimeData{
     public final ItemStack growthItem;
     public final EntityType<BaseSlime> slime;
 
-    public SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime){
+    public SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime) {
         this.size = size;
         this.color = color;
         this.cooldown = cooldown;
@@ -97,6 +97,7 @@ public class SlimeData{
         SlimeData slimeData = (SlimeData) o;
         return size == slimeData.size && color == slimeData.color && cooldown == slimeData.cooldown && Objects.equals(dropItem, slimeData.dropItem) && Objects.equals(growthItem, slimeData.growthItem) && Objects.equals(slime, slimeData.slime);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(size, color, cooldown, dropItem, growthItem, slime);

@@ -5,26 +5,26 @@ import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
 import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.audio.SoundSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -35,12 +35,12 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
+public class SlimeNestBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private SlimeData slimeData;
     private int cooldown = 0;
     private int counter = 0;
     private ItemStack dropItem = ItemStack.EMPTY;
-    private final ContainerData data;
+    private final IIntArray data;
     private int hasSlot = 1;
     private int tick = 0;
     private float multiplier = 1;
@@ -122,9 +122,9 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         return outputHandler;
     }
 
-    public SlimeNestBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.SLIME_NEST_BE.get(), pos, blockState);
-        this.data = new ContainerData() {
+    public SlimeNestBlockEntity() {
+        super(ModBlockEntities.SLIME_NEST_BE.get());
+        this.data = new IIntArray() {
             @Override
             public int get(int index) {
                 switch (index) {
@@ -168,8 +168,8 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("block.productiveslimes.slime_nest");
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.productiveslimes.slime_nest");
     }
 
     @Override
@@ -186,20 +186,20 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+    public Container createMenu(int containerId, PlayerInventory playerInventory, PlayerEntity player) {
         return new SlimeNestMenu(containerId, playerInventory, this, data);
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public CompoundNBT save(CompoundNBT tag) {
         tag.put("upgradeHandler", upgradeHandler.serializeNBT());
         tag.put("slimeHandler", slimeHandler.serializeNBT());
         tag.put("outputHandler", outputHandler.serializeNBT());
         tag.putInt("counter", counter);
         tag.putInt("cooldown", cooldown);
         if (slimeData != null && !dropItem.isEmpty()) {
-            tag.put("dropItem", dropItem.save(new CompoundTag()));
-            tag.put("slimeData", slimeData.toTag(new CompoundTag()));
+            tag.put("dropItem", dropItem.save(new CompoundNBT()));
+            tag.put("slimeData", slimeData.toTag(new CompoundNBT()));
         }
         tag.putInt("tick", tick);
         tag.putFloat("multiplier", multiplier);
@@ -208,8 +208,8 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
+    public void load(BlockState state, CompoundNBT tag) {
+        super.load(state, tag);
         upgradeHandler.deserializeNBT(tag.getCompound("upgradeHandler"));
         slimeHandler.deserializeNBT(tag.getCompound("slimeHandler"));
         outputHandler.deserializeNBT(tag.getCompound("outputHandler"));
@@ -221,7 +221,8 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         multiplier = tag.getInt("multiplier");
     }
 
-    public void tick(Level level, BlockPos pos, BlockState state) {
+    @Override
+    public void tick() {
         data.set(2, 1);
         if (slimeHandler.getStackInSlot(0).isEmpty()) {
             counter = 0;
@@ -232,7 +233,8 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         float speed = 1;
         cooldown = slimeData.cooldown();
         for (int i = 0; i < upgradeHandler.getSlots(); i++) {
-            if (upgradeHandler.getStackInSlot(i).getItem() instanceof NestUpgradeItem nestUpgradeItem) {
+            if (upgradeHandler.getStackInSlot(i).getItem() instanceof NestUpgradeItem) {
+                NestUpgradeItem nestUpgradeItem = (NestUpgradeItem) upgradeHandler.getStackInSlot(i).getItem();
                 speed *= nestUpgradeItem.getMultiplier();
             }
         }
@@ -262,7 +264,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
             }
         }
         if (tick % 20 == 0) {
-            level.playSound(null, pos, SoundEvents.SLIME_SQUISH, SoundSource.BLOCKS, 0.5F, 1.0F);
+            level.playSound(null, this.getBlockPos(), SoundEvents.SLIME_SQUISH, SoundCategory.BLOCKS, 0.5F, 1.0F);
         }
     }
 
@@ -285,38 +287,39 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void drops() {
-        SimpleContainer container = new SimpleContainer(10);
+        Inventory container = new Inventory(10);
         container.addItem(slimeHandler.getStackInSlot(0));
         for (int i = 0; i < outputHandler.getSlots(); i++) {
             if (!outputHandler.getStackInSlot(i).isEmpty()) {
                 container.addItem(outputHandler.getStackInSlot(i));
             }
         }
-        Containers.dropContents(level, worldPosition, container);
+        InventoryHelper.dropContents(level, worldPosition, container);
     }
 
+    @Nullable
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        this.load(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compoundTag = new CompoundNBT();
         this.save(compoundTag);
         return compoundTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 
@@ -332,7 +335,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         return output;
     }
 
-    public ContainerData getData() {
+    public IIntArray getData() {
         return data;
     }
 }

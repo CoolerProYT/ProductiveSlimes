@@ -13,9 +13,27 @@ import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.resources.IPackNameDecorator;
+import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.resources.ResourcePackList;
+import net.minecraft.resources.ResourcePackType;
+import net.minecraft.resources.data.PackMetadataSection;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.File;
@@ -26,6 +44,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class CustomContentRegistry {
@@ -53,17 +72,16 @@ public class CustomContentRegistry {
 
     public static void handleResourcePack() {
         InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
-        PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
+        ResourcePackList packRepository = Minecraft.getInstance().getResourcePackRepository();
 
-        Pack pack = new Pack(
-                resourcePack.getName(),
-                new TextComponent("productiveslimes_resources"),
+        ResourcePackInfo pack = new ResourcePackInfo(
+                "productiveslimes_resourcepack",
                 true,
                 () -> resourcePack,
-                new PackMetadataSection(new TextComponent("productiveslimes_resources"), 9),
-                PackType.CLIENT_RESOURCES,
-                Pack.Position.TOP,
-                PackSource.BUILT_IN
+                resourcePack,
+                new PackMetadataSection(new StringTextComponent("productiveslimes_resources"), 9),
+                ResourcePackInfo.Priority.TOP,
+                IPackNameDecorator.BUILT_IN
         );
 
         packRepository.addPackFinder((packConsumer, packConstructor) -> packConsumer.accept(pack));
@@ -74,24 +92,23 @@ public class CustomContentRegistry {
     public static void handleDatapack(MinecraftServer server) {
         InMemoryDataPack dataPack = new InMemoryDataPack(dataPackResources);
 
-        Pack pack = new Pack(
+        ResourcePackInfo pack = new ResourcePackInfo(
                 dataPack.getName(),
-                new TextComponent("productiveslimes_datapack"),
                 true,
                 () -> dataPack,
-                new PackMetadataSection(new TextComponent("productiveslimes_datapack"), 10),
-                PackType.SERVER_DATA,
-                Pack.Position.TOP,
-                PackSource.BUILT_IN
+                dataPack,
+                new PackMetadataSection(new StringTextComponent("productiveslimes_datapack"), 10),
+                ResourcePackInfo.Priority.TOP,
+                IPackNameDecorator.BUILT_IN
         );
 
         // Add your pack to the pack repository
         server.getPackRepository().addPackFinder((packConsumer, packConstructor) -> packConsumer.accept(pack));
 
         // Reload data packs to include your new pack
-        List<Pack> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
+        List<ResourcePackInfo> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
         packs.add(pack);
-        server.reloadResources(packs.stream().map(Pack::getId).collect(Collectors.toList()));
+        server.reloadResources(packs.stream().map(ResourcePackInfo::getId).collect(Collectors.toList()));
     }
 
     public static List<CustomVariants> getLoadedTiers() {
@@ -165,7 +182,7 @@ public class CustomContentRegistry {
         String itemName = variant.getName() + "_slime_spawn_egg";
         ResourceLocation itemId = new ResourceLocation(ProductiveSlimes.MODID, itemName);
         RegistryObject<Item> item = ITEMS.register(itemName,
-                () -> new ForgeSpawnEggItem(getSlimeForVariant(variant.getName()), variant.getColor(), variant.getColor(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+                () -> new ForgeSpawnEggItem(getSlimeForVariant(variant.getName()), variant.getColor(), variant.getColor(), new Item.Properties().tab(ItemGroup.TAB_MISC)));
 
         registeredSpawnEggItems.put(itemId, item);
     }
@@ -176,7 +193,7 @@ public class CustomContentRegistry {
 
         RegistryObject<EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
                 (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()), ForgeRegistries.ITEMS.getValue(new ResourceLocation(variant.getGrowthItem()))),
-                MobCategory.CREATURE).build(slimeName));
+                EntityClassification.CREATURE).build(slimeName));
 
         registeredSlimes.put(slimeId, slime);
     }
@@ -224,15 +241,15 @@ public class CustomContentRegistry {
     }
 
     private static RegistryObject<BlockItem> registerBlockItem(String name, RegistryObject<Block> block, DeferredRegister<Item> ITEMS, String variantName){
-        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS)));
     }
 
     private static void registerFluid(CustomVariants variants) {
         FluidResources.register(() -> FluidResources.addFluid(
                 variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
                 new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true),
-                BlockBehaviour.Properties.copy(Blocks.WATER),
-                LiquidBlock::new,
+                AbstractBlock.Properties.copy(Blocks.WATER),
+                FlowingFluidBlock::new,
                 properties -> properties.explosionResistance(1000F).tickRate(20)));
     }
 

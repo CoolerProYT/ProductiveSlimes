@@ -1,12 +1,12 @@
 package com.coolerpromc.productiveslimes.item.custom;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 
 public class DnaItem extends Item {
     public final int color;
     public DnaItem(int pColor) {
-        super(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
+        super(new Item.Properties().tab(ItemGroup.TAB_MISC));
         this.color = pColor;
     }
 

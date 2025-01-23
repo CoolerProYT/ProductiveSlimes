@@ -5,17 +5,21 @@ import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import net.minecraft.core.Direction;
+import net.minecraft.block.AbstractButtonBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -37,9 +41,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.SLIMY_GRASS_BLOCK, new ModelFile.UncheckedModelFile(modLoc("block/slimy_grass_block")));
         blockWithItem(ModBlocks.SLIMY_DIRT);
         blockWithItem(ModBlocks.SLIMY_STONE);
-        blockWithItem(ModBlocks.SLIMY_DEEPSLATE);
         blockWithItem(ModBlocks.SLIMY_COBBLESTONE);
-        blockWithItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE);
 
         logBlock(((RotatedPillarBlock) ModBlocks.SLIMY_LOG.get()));
         axisBlock(((RotatedPillarBlock) ModBlocks.SLIMY_WOOD.get()), blockTexture(ModBlocks.SLIMY_LOG.get()), blockTexture(ModBlocks.SLIMY_LOG.get()));
@@ -68,9 +70,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         stairsBlock(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
         slabBlock(ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
         wallBlock(ModBlocks.SLIMY_COBBLESTONE_WALL.get(), blockTexture(ModBlocks.SLIMY_COBBLESTONE.get()));
-        stairsBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
-        slabBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
-        wallBlock(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), blockTexture(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get()));
         blockItem(ModBlocks.SLIMY_STAIRS);
         blockItem(ModBlocks.SLIMY_SLAB);
         blockItem(ModBlocks.SLIMY_PRESSURE_PLATE);
@@ -81,8 +80,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockItem(ModBlocks.SLIMY_STONE_PRESSURE_PLATE);
         blockItem(ModBlocks.SLIMY_COBBLESTONE_STAIRS);
         blockItem(ModBlocks.SLIMY_COBBLESTONE_SLAB);
-        blockItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS);
-        blockItem(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB);
 
         registerSlimeBlock(ModBlocks.ENERGY_SLIME_BLOCK.get(), "energy_slime_block");
 
@@ -161,5 +158,35 @@ public class ModBlockStateProvider extends BlockStateProvider {
                         "all", blockTexture(blockRegistryObject.get())));
         simpleBlockItem(blockRegistryObject.get(), models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
                 "all", blockTexture(blockRegistryObject.get())));
+    }
+
+    public void pressurePlateBlock(PressurePlateBlock block, ResourceLocation texture) {
+        ModelFile pressurePlate = this.models().withExistingParent(this.name(block), this.mcLoc("block/pressure_plate_up")).texture("texture", texture);
+        ModelFile pressurePlateDown = this.models().withExistingParent(this.name(block) + "_down", this.mcLoc("block/pressure_plate_down")).texture("texture", texture);
+        this.getVariantBuilder(block).partialState().with(PressurePlateBlock.POWERED, true).addModels(new ConfiguredModel[]{new ConfiguredModel(pressurePlateDown)}).partialState().with(PressurePlateBlock.POWERED, false).addModels(new ConfiguredModel[]{new ConfiguredModel(pressurePlate)});
+    }
+
+    public void buttonBlock(AbstractButtonBlock block,  ResourceLocation texture) {
+        ModelFile button = this.models().withExistingParent(this.name(block), this.mcLoc("block/button")).texture("texture", texture);
+        ModelFile buttonPressed = this.models().withExistingParent(this.name(block), this.mcLoc("block/button_pressed")).texture("texture", texture);
+
+        this.getVariantBuilder(block).forAllStates((state) -> {
+            Direction facing = (Direction)state.getValue(AbstractButtonBlock.FACING);
+            AttachFace face = (AttachFace)state.getValue(AbstractButtonBlock.FACE);
+            boolean powered = (Boolean)state.getValue(AbstractButtonBlock.POWERED);
+            return ConfiguredModel.builder().modelFile(powered ? buttonPressed : button).rotationX(face == AttachFace.FLOOR ? 0 : (face == AttachFace.WALL ? 90 : 180)).rotationY((int)(face == AttachFace.CEILING ? facing : facing.getOpposite()).toYRot()).uvLock(face == AttachFace.WALL).build();
+        });
+    }
+
+    private String name(Block block) {
+        return this.key(block).getPath();
+    }
+
+    private ResourceLocation key(Block block) {
+        return ForgeRegistries.BLOCKS.getKey(block);
+    }
+
+    public ResourceLocation mcLoc(String name) {
+        return new ResourceLocation(name);
     }
 }

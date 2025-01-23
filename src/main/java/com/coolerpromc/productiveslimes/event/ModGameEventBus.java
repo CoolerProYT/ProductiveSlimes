@@ -9,18 +9,18 @@ import com.coolerpromc.productiveslimes.util.ModRenderTypes;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.merchant.villager.VillagerTrades;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.MerchantOffer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.DrawSelectionEvent;
+import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,12 +30,13 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = ProductiveSlimes.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModGameEventBus {
     @SubscribeEvent
-    public void onDrawSelectionHighlightBlock(DrawSelectionEvent.HighlightBlock event) {
-        if (event.getInfo().getEntity() instanceof LivingEntity living) {
-            Level world = living.level;
-            BlockHitResult rtr = event.getTarget();
+    public void onDrawSelectionHighlightBlock(DrawHighlightEvent.HighlightBlock event) {
+        if (event.getInfo().getEntity() instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity) event.getInfo().getEntity();
+            World world = living.level;
+            BlockRayTraceResult rtr = event.getTarget();
             BlockPos pos = rtr.getBlockPos();
-            Vec3 renderView = event.getInfo().getPosition();
+            Vector3d renderView = event.getInfo().getPosition();
 
             BlockState targetBlock = world.getBlockState(rtr.getBlockPos());
             if (targetBlock.getBlock() instanceof TranslucentHighlightFix) {
@@ -52,7 +53,7 @@ public class ModGameEventBus {
     @SubscribeEvent
     public static void onVillagerTrades(VillagerTradesEvent event) {
         if (event.getType() == ModVillagers.SCIENTIST.get()){
-            Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+            Int2ObjectMap<List<VillagerTrades.ITrade>> trades = event.getTrades();
 
             //Novice
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(

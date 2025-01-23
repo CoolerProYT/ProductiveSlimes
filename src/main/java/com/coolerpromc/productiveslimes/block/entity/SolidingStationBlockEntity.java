@@ -4,25 +4,25 @@ import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class SolidingStationBlockEntity extends BlockEntity implements MenuProvider {
+public class SolidingStationBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private final ItemStackHandler inputHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {
@@ -65,30 +65,30 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0,0);
 
-    protected final ContainerData data;
+    protected final IIntArray data;
     private int progress = 0;
     private int maxProgress = 78;
 
-    public SolidingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.SOLIDING_STATION_BE.get(), pPos, pBlockState);
-        this.data = new ContainerData() {
+    public SolidingStationBlockEntity() {
+        super(ModBlockEntities.SOLIDING_STATION_BE.get());
+        this.data = new IIntArray() {
             @Override
             public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> SolidingStationBlockEntity.this.progress;
-                    case 1 -> SolidingStationBlockEntity.this.maxProgress;
-                    case 2 -> SolidingStationBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 -> SolidingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
-                    default -> 0;
-                };
+                switch (pIndex) {
+                    case 0 : return SolidingStationBlockEntity.this.progress;
+                    case 1 : return SolidingStationBlockEntity.this.maxProgress;
+                    case 2 : return SolidingStationBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3 : return SolidingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    default : return 0;
+                }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 -> SolidingStationBlockEntity.this.progress = pValue;
-                    case 1 -> SolidingStationBlockEntity.this.maxProgress = pValue;
-                    case 2 -> SolidingStationBlockEntity.this.energyHandler.setEnergy(pValue);
+                    case 0 : SolidingStationBlockEntity.this.progress = pValue; break;
+                    case 1 : SolidingStationBlockEntity.this.maxProgress = pValue; break;
+                    case 2 : SolidingStationBlockEntity.this.energyHandler.setEnergy(pValue); break;
                 }
             }
 
@@ -139,27 +139,27 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void drops(){
-        SimpleContainer inventory = new SimpleContainer(3);
+        Inventory inventory = new Inventory(3);
         inventory.setItem(0, inputHandler.getStackInSlot(0));
         inventory.setItem(1, outputHandler.getStackInSlot(0));
         inventory.setItem(2, outputHandler.getStackInSlot(1));
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        InventoryHelper.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("block.productiveslimes.soliding_station");
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.productiveslimes.soliding_station");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+    public Container createMenu(int pContainerId, PlayerInventory pPlayerInventory, PlayerEntity pPlayer) {
         return new SolidingStationMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    public CompoundNBT save(CompoundNBT pTag) {
         pTag.put("InputInventory", inputHandler.serializeNBT());
         pTag.put("OutputInventory", outputHandler.serializeNBT());
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
@@ -170,8 +170,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void load(BlockState state, CompoundNBT pTag) {
+        super.load(state, pTag);
 
         inputHandler.deserializeNBT(pTag.getCompound("InputInventory"));
         outputHandler.deserializeNBT(pTag.getCompound("OutputInventory"));
@@ -180,11 +180,12 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         progress = pTag.getInt("soliding_station.progress");
     }
 
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+    @Override
+    public void tick() {
         Optional<SolidingRecipe> recipe = getCurrentRecipe();
         if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()) {
             increaseCraftingProgress();
-            setChanged(pLevel, pPos, pState);
+            setChanged();
 
             if(hasProgressFinished()) {
                 energyHandler.removeEnergy(recipe.get().getEnergy());
@@ -238,7 +239,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     private boolean hasRecipe() {
         Optional<SolidingRecipe> recipe = getCurrentRecipe();
 
-        if (recipe.isEmpty()) {
+        if (!recipe.isPresent()) {
             return false;
         }
 
@@ -284,7 +285,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private Optional<SolidingRecipe> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(SolidingRecipe.Type.INSTANCE, new SimpleContainer(inputHandler.getStackInSlot(0)), level);
+        return this.level.getRecipeManager().getRecipeFor(SolidingRecipe.Type.INSTANCE, new Inventory(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -316,32 +317,33 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         progress++;
     }
 
-    public ContainerData getData() {
+    public IIntArray getData() {
         return data;
     }
 
+    @Nullable
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        this.load(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compoundTag = new CompoundNBT();
         this.save(compoundTag);
         return compoundTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 

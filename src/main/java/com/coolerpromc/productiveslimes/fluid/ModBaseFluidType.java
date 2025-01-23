@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.fluid;
 
-import com.mojang.math.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
+
 import java.awt.*;
 
 public class ModBaseFluidType {

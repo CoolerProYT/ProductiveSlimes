@@ -1,15 +1,14 @@
 package com.coolerpromc.productiveslimes.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractSelectionList;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.list.AbstractList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollableButtonList extends AbstractSelectionList<ScrollableButtonList.Entry> {
+public class ScrollableButtonList extends AbstractList<ScrollableButtonList.Entry> {
     private final List<Entry> entries = new ArrayList<>();
     private final int margin;
 
@@ -41,12 +40,7 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
         return false;
     }
 
-    @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {
-
-    }
-
-    public static class Entry extends AbstractSelectionList.Entry<Entry> {
+    public static class Entry extends AbstractList.AbstractListEntry<Entry> {
         private final Button button;
 
         public Entry(Button button) {
@@ -64,7 +58,7 @@ public class ScrollableButtonList extends AbstractSelectionList<ScrollableButton
         }
 
         @Override
-        public void render(PoseStack poseStack, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float partialTick) {
+        public void render(MatrixStack poseStack, int index, int y, int x, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isSelected, float partialTick) {
             this.button.y = (y - 4);
             this.button.render(poseStack, mouseX, mouseY, partialTick);
         }

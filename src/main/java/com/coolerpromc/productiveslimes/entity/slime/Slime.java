@@ -2,8 +2,14 @@ package com.coolerpromc.productiveslimes.entity.slime;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -46,8 +52,8 @@ public class Slime extends BaseSlime {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        if(pHand == InteractionHand.MAIN_HAND) {
+    protected ActionResultType mobInteract(PlayerEntity pPlayer, Hand pHand) {
+        if(pHand == Hand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
                 if(!level.isClientSide){
                     if (pPlayer.getItemInHand(pHand).getItem() == growthItem && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
@@ -61,12 +67,9 @@ public class Slime extends BaseSlime {
     }
 
     @Override
-    public void remove(Entity.RemovalReason pReason) {
+    public void remove(boolean pReason) {
         super.remove(pReason);
-        this.setRemoved(pReason);
-        if (pReason == Entity.RemovalReason.KILLED) {
-            this.gameEvent(GameEvent.ENTITY_KILLED);
-
+        if (this.isDeadOrDying()) {
             if(this.getSize() == 1){
                 this.dropResource();
             }
@@ -74,7 +77,7 @@ public class Slime extends BaseSlime {
     }
 
     @Override
-    protected ParticleOptions getParticleType() {
-        return new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(this.growthItem));
+    protected IParticleData getParticleType() {
+        return new ItemParticleData(ParticleTypes.ITEM, new ItemStack(this.growthItem));
     }
 }

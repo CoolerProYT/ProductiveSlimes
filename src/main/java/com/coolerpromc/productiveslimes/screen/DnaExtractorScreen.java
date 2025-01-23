@@ -1,23 +1,21 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Collections;
 import java.util.List;
 
-public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu>{
+public class DnaExtractorScreen extends ContainerScreen<DnaExtractorMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/dna_extractor_gui.png");
 
-    public DnaExtractorScreen(DnaExtractorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public DnaExtractorScreen(DnaExtractorMenu pMenu, PlayerInventory pPlayerInventory, ITextComponent pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
@@ -30,10 +28,9 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float v, int i, int i1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    protected void renderBg(MatrixStack poseStack, float v, int i, int i1) {
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bind(TEXTURE);
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
@@ -46,14 +43,14 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
         renderProgressArrow(poseStack, x, y);
     }
 
-    private void renderProgressArrow(PoseStack poseStack, int x, int y) {
+    private void renderProgressArrow(MatrixStack poseStack, int x, int y) {
         if(menu.isCrafting()) {
             blit(poseStack, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8, 256, 256);
         }
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(MatrixStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pPoseStack);
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pPoseStack, pMouseX, pMouseY);
@@ -61,9 +58,9 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
         int energyStored = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
 
-        Component text = new TranslatableComponent("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
+        ITextComponent text = new TranslationTextComponent("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
-            List<Component> tooltip = Collections.singletonList(text);
+            List<ITextComponent> tooltip = Collections.singletonList(text);
             renderComponentTooltip(pPoseStack, tooltip, pMouseX, pMouseY);
         }
     }

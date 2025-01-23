@@ -1,33 +1,37 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.LeavesBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 public class ModLeavesBlock extends LeavesBlock {
     public ModLeavesBlock(Properties properties) {
         super(properties);
     }
+
     @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public boolean isFlammable(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
         return true;
     }
+
     @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public int getFlammability(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
         return 60;
     }
+
     @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    public int getFireSpreadSpeed(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
         return 30;
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        super.stepOn(level, pos, state, entity);
+    public void stepOn(World level, BlockPos pos, Entity entity) {
+        super.stepOn(level, pos, entity);
         if (!entity.isOnGround() || entity.isSpectator() || entity.isVehicle()) {
             return;
         }

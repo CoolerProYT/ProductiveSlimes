@@ -5,28 +5,26 @@ import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPac
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
 import com.coolerpromc.productiveslimes.util.ModTags;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -38,7 +36,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvider {
+public class DnaSynthesizerBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private float rotation;
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0,0);
     private final ItemStackHandler inputHandler = new ItemStackHandler(3){
@@ -53,10 +51,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             if (slot != 2){
-                return stack.is(ModTags.Items.DNA_ITEM);
+                return stack.getItem().is(ModTags.Items.DNA_ITEM);
             }
             else {
-                return !(stack.is(ModTags.Items.DNA_ITEM));
+                return !(stack.getItem().is(ModTags.Items.DNA_ITEM));
             }
         }
     };
@@ -88,31 +86,31 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         }
     };
 
-    protected final ContainerData data;
+    protected final IIntArray data;
     private int progress = 0;
     private int maxProgress = 120;
 
-    public DnaSynthesizerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.DNA_SYNTHESIZER_BE.get(), pPos, pBlockState);
+    public DnaSynthesizerBlockEntity() {
+        super(ModBlockEntities.DNA_SYNTHESIZER_BE.get());
 
-        this.data = new ContainerData() {
+        this.data = new IIntArray() {
             @Override
             public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> DnaSynthesizerBlockEntity.this.progress;
-                    case 1 -> DnaSynthesizerBlockEntity.this.maxProgress;
-                    case 2 -> DnaSynthesizerBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 -> DnaSynthesizerBlockEntity.this.energyHandler.getMaxEnergyStored();
-                    default -> 0;
-                };
+                switch (pIndex) {
+                    case 0 : return DnaSynthesizerBlockEntity.this.progress;
+                    case 1 : return DnaSynthesizerBlockEntity.this.maxProgress;
+                    case 2 : return DnaSynthesizerBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3 : return DnaSynthesizerBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    default : return 0;
+                }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 -> DnaSynthesizerBlockEntity.this.progress = pValue;
-                    case 1 -> DnaSynthesizerBlockEntity.this.maxProgress = pValue;
-                    case 2 -> DnaSynthesizerBlockEntity.this.energyHandler.setEnergy(pValue);
+                    case 0 : DnaSynthesizerBlockEntity.this.progress = pValue; break;
+                    case 1 : DnaSynthesizerBlockEntity.this.maxProgress = pValue; break;
+                    case 2 : DnaSynthesizerBlockEntity.this.energyHandler.setEnergy(pValue); break;
                 }
             }
 
@@ -171,29 +169,29 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void drops(){
-        SimpleContainer inventory = new SimpleContainer(5);
+        Inventory inventory = new Inventory(5);
         inventory.setItem(0, inputHandler.getStackInSlot(0));
         inventory.setItem(1, inputHandler.getStackInSlot(1));
         inventory.setItem(2, inputHandler.getStackInSlot(2));
         inventory.setItem(3, outputHandler.getStackInSlot(0));
         inventory.setItem(4, eggHandler.getStackInSlot(0));
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        InventoryHelper.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("block.productiveslimes.dna_synthesizer");
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.productiveslimes.dna_synthesizer");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new DnaSynthesizerMenu(pContainerId, pPlayerInventory, this, this.data);
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new DnaSynthesizerMenu(i, playerInventory, this, this.data);
     }
 
     @Override
-    public CompoundTag save(CompoundTag pTag) {
+    public CompoundNBT save(CompoundNBT pTag) {
         pTag.put("InputSlot", inputHandler.serializeNBT());
         pTag.put("OutputSlot", outputHandler.serializeNBT());
         pTag.put("EggSlot", eggHandler.serializeNBT());
@@ -205,8 +203,8 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void load(BlockState state, CompoundNBT pTag) {
+        super.load(state, pTag);
         inputHandler.deserializeNBT(pTag.getCompound("InputSlot"));
         outputHandler.deserializeNBT(pTag.getCompound("OutputSlot"));
         eggHandler.deserializeNBT(pTag.getCompound("EggSlot"));
@@ -215,12 +213,13 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         progress = pTag.getInt("dna_synthesizing.progress");
     }
 
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+    @Override
+    public void tick() {
         Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
 
         if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().getInputCount()){
             increaseCraftingProgress();
-            setChanged(pLevel, pPos, pState);
+            setChanged();
 
             if(hasProgressFinished()) {
                 energyHandler.removeEnergy(recipe.get().getEnergy());
@@ -278,7 +277,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     private boolean hasRecipe() {
         Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
 
-        if (recipe.isEmpty()) {
+        if (!recipe.isPresent()) {
             return false;
         }
 
@@ -320,7 +319,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     private Optional<DnaSynthesizingRecipe> getCurrentRecipe(){
-        SimpleContainer input = new SimpleContainer(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2));
+        Inventory input = new Inventory(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2));
         return this.level.getRecipeManager().getRecipeFor(DnaSynthesizingRecipe.Type.INSTANCE, input, level);
     }
 
@@ -353,7 +352,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         progress++;
     }
 
-    public ContainerData getData() {
+    public IIntArray getData() {
         return data;
     }
 
@@ -365,28 +364,29 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         return rotation;
     }
 
+    @Nullable
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket(){
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        this.load(tag);
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compoundTag = new CompoundNBT();
         this.save(compoundTag);
         return compoundTag;
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 }

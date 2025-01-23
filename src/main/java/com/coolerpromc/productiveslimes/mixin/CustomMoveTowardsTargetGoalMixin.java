@@ -1,10 +1,8 @@
 package com.coolerpromc.productiveslimes.mixin;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
-import net.minecraft.world.entity.monster.Slime;
+import com.coolerpromc.productiveslimes.entity.slime.Slime;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.ai.goal.MoveTowardsTargetGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -18,7 +16,7 @@ public abstract class CustomMoveTowardsTargetGoalMixin {
     @Shadow public abstract void stop();
 
     @Accessor
-    public abstract PathfinderMob getMob();
+    public abstract CreatureEntity getMob();
 
     @Inject(method = "start", at = @At("HEAD"), cancellable = true)
     private void start(CallbackInfo ci) {

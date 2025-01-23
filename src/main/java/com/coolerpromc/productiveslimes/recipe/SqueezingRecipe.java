@@ -4,20 +4,20 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.*;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqueezingRecipe implements Recipe<SimpleContainer> {
+public class SqueezingRecipe implements IRecipe<Inventory> {
     private final NonNullList<Ingredient> inputItems;
     private final List<ItemStack> output;
     private final int energy;
@@ -31,7 +31,7 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public boolean matches(SimpleContainer pInput, Level pLevel) {
+    public boolean matches(Inventory pInput, World pLevel) {
         if (pLevel.isClientSide()){
             return false;
         }
@@ -39,7 +39,7 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer) {
+    public ItemStack assemble(Inventory simpleContainer) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
@@ -54,12 +54,12 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public IRecipeSerializer<?> getSerializer() {
         return ModRecipes.SQUEEZING_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public IRecipeType<?> getType() {
         return Type.INSTANCE;
     }
 
@@ -81,38 +81,38 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
         return id;
     }
 
-    public static class Type implements RecipeType<SqueezingRecipe> {
+    public static class Type implements IRecipeType<SqueezingRecipe> {
         public static final SqueezingRecipe.Type INSTANCE = new SqueezingRecipe.Type();
         public static final String ID = "squeezing";
     }
 
-    public static class Serializer implements RecipeSerializer<SqueezingRecipe>{
+    public static class Serializer implements IRecipeSerializer<SqueezingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(ProductiveSlimes.MODID, "squeezing");
 
         @Override
         public SqueezingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
+            JsonArray ingredients = JSONUtils.getAsJsonArray(jsonObject, "ingredients");
             NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 
             for (int i = 0; i < ingredients.size(); i++) {
                 inputItems.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            JsonArray outputs = GsonHelper.getAsJsonArray(jsonObject, "output");
+            JsonArray outputs = JSONUtils.getAsJsonArray(jsonObject, "output");
             List<ItemStack> output = new ArrayList<>();
 
             for(JsonElement element : outputs) {
-                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()).getDefaultInstance());
+                output.add(ShapedRecipe.itemFromJson(element.getAsJsonObject()));
             }
 
-            int energy = GsonHelper.getAsInt(jsonObject, "energy");
+            int energy = JSONUtils.getAsInt(jsonObject, "energy");
 
             return new SqueezingRecipe(inputItems, output, energy, resourceLocation);
         }
 
         @Override
-        public @Nullable SqueezingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buffer) {
+        public @Nullable SqueezingRecipe fromNetwork(ResourceLocation resourceLocation, PacketBuffer buffer) {
             NonNullList<Ingredient> inputItems = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             for (int i = 0; i < inputItems.size(); i++) {
@@ -132,7 +132,7 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, SqueezingRecipe recipe) {
+        public void toNetwork(PacketBuffer buffer, SqueezingRecipe recipe) {
             buffer.writeInt(recipe.inputItems.size());
 
             for (Ingredient ingredient : recipe.inputItems) {
@@ -148,7 +148,7 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
         }
 
         @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
+        public IRecipeSerializer<?> setRegistryName(ResourceLocation resourceLocation) {
             return INSTANCE;
         }
 
@@ -159,8 +159,8 @@ public class SqueezingRecipe implements Recipe<SimpleContainer> {
         }
 
         @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return Serializer.castClass(RecipeSerializer.class);
+        public Class<IRecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(IRecipeSerializer.class);
         }
 
         @SuppressWarnings("unchecked") // Need this wrapper, because generics

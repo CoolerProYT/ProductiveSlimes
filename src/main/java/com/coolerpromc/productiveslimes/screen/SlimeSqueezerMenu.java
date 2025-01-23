@@ -2,24 +2,30 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.SlimeSqueezerBlockEntity;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntArray;
+import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class SlimeSqueezerMenu extends AbstractContainerMenu {
+public class SlimeSqueezerMenu extends Container {
     public final SlimeSqueezerBlockEntity blockEntity;
-    private final Level level;
-    private final ContainerData data;
-    public SlimeSqueezerMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+    private final World level;
+    private final IIntArray data;
+
+    public SlimeSqueezerMenu(int pContainerId, PlayerInventory inv, PacketBuffer extraData) {
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new IntArray(4));
     }
-    public SlimeSqueezerMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+
+    public SlimeSqueezerMenu(int pContainerId, PlayerInventory inv, TileEntity entity, IIntArray data) {
         super(ModMenuTypes.SLIME_SQUEEZER_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
         blockEntity = (SlimeSqueezerBlockEntity) entity;
@@ -34,15 +40,18 @@ public class SlimeSqueezerMenu extends AbstractContainerMenu {
         this.addSlot(new SlotItemHandler(outputHandler, 1, 135, 34));
         addDataSlots(data);
     }
+
     public boolean isCrafting() {
         return data.get(0) > 0;
     }
+
     public int getScaledProgress() {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);  // Max Progress
         int progressArrowSize = 26; // This is the height in pixels of your arrow
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
+
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
@@ -52,8 +61,9 @@ public class SlimeSqueezerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
     // THIS YOU HAVE TO DEFINE!
     private static final int TE_INVENTORY_SLOT_COUNT = 3;
+
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(PlayerEntity pPlayer, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
         ItemStack sourceStack = sourceSlot.getItem();
@@ -83,29 +93,35 @@ public class SlimeSqueezerMenu extends AbstractContainerMenu {
         sourceSlot.onTake(pPlayer, sourceStack);
         return copyOfSourceStack;
     }
+
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
+    public boolean stillValid(PlayerEntity pPlayer) {
+        return stillValid(IWorldPosCallable.create(level, blockEntity.getBlockPos()),
                 pPlayer, ModBlocks.SLIME_SQUEEZER.get());
     }
-    private void addPlayerInventory(Inventory playerInventory) {
+
+    private void addPlayerInventory(PlayerInventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
             }
         }
     }
-    private void addPlayerHotbar(Inventory playerInventory) {
+
+    private void addPlayerHotbar(PlayerInventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
     }
+
     public int getEnergy() {
         return this.data.get(2);
     }
+
     public int getMaxEnergy() {
         return this.data.get(3);
     }
+
     public int getEnergyStoredScaled() {
         return (int) (((float) getEnergy() / (float) getMaxEnergy()) * 57);
     }

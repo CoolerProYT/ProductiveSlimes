@@ -5,7 +5,9 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.data.FluidTagsProvider;
+import net.minecraft.data.TagsProvider;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.FluidTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -18,7 +20,7 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
 
     @Override
     protected void addTags() {
-        var fluidTag = tag(FluidTags.WATER);
+        TagsProvider.Builder<Fluid> fluidTag = tag(FluidTags.WATER);
         for(Tier tier : Tier.values()){
             ModTiers modTiers = ModTierLists.getTierByName(tier);
             fluidTag.add(ModTierLists.getSourceByName(modTiers.name()).get());

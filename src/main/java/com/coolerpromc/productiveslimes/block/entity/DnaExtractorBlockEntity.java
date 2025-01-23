@@ -3,11 +3,14 @@ package com.coolerpromc.productiveslimes.block.entity;
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
-import com.sun.istack.internal.Nullable;
+import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -17,7 +20,10 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -25,11 +31,12 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class DnaExtractorBlockEntity extends TileEntity implements ITickableTileEntity {
+public class DnaExtractorBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private float rotation;
     private final ItemStackHandler inputHandler = new ItemStackHandler(1){
         @Override
@@ -63,6 +70,7 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
 
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0,0);
 
+    protected final IIntArray data;
     private int progress = 0;
     private int maxProgress = 78;
 
@@ -70,8 +78,34 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
     private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
     private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
 
-    public DnaExtractorBlockEntity(BlockPos pPos, BlockState pBlockState) {
+    public DnaExtractorBlockEntity() {
         super(ModBlockEntities.DNA_EXTRACTOR_BE.get());
+        this.data = new IIntArray() {
+            @Override
+            public int get(int pIndex) {
+                 switch (pIndex) {
+                     case 0 : return DnaExtractorBlockEntity.this.progress;
+                     case 1 : return DnaExtractorBlockEntity.this.maxProgress;
+                     case 2 : return DnaExtractorBlockEntity.this.energyHandler.getEnergyStored();
+                     case 3 : return DnaExtractorBlockEntity.this.energyHandler.getMaxEnergyStored();
+                     default : return 0;
+                }
+            }
+
+            @Override
+            public void set(int pIndex, int pValue) {
+                switch (pIndex) {
+                    case 0 : DnaExtractorBlockEntity.this.progress = pValue; break;
+                    case 1 : DnaExtractorBlockEntity.this.maxProgress = pValue; break;
+                    case 2 : DnaExtractorBlockEntity.this.energyHandler.setEnergy(pValue); break;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+        };
     }
 
     public ItemStackHandler getInputHandler() {
@@ -109,12 +143,23 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
     }
 
     public void drops(){
-        IInventory inventory = new Inventory(3);
+        Inventory inventory = new Inventory(3);
         inventory.setItem(0, inputHandler.getStackInSlot(0));
         inventory.setItem(1, outputHandler.getStackInSlot(0));
         inventory.setItem(2, outputHandler.getStackInSlot(1));
 
         InventoryHelper.dropContents(this.level, this.worldPosition, inventory);
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("block.productiveslimes.dna_extractor");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new DnaExtractorMenu(i, playerInventory, this, this.data);
     }
 
     @Override
@@ -129,8 +174,8 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
     }
 
     @Override
-    public void load(BlockState p_230337_1_, CompoundNBT pTag) {
-        super.load(p_230337_1_, pTag);
+    public void load(BlockState state, CompoundNBT pTag) {
+        super.load(state, pTag);
 
         inputHandler.deserializeNBT(pTag.getCompound("InputInventory"));
         outputHandler.deserializeNBT(pTag.getCompound("OutputInventory"));
@@ -255,9 +300,7 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
     }
 
     private Optional<DnaExtractingRecipe> getCurrentRecipe(){
-        IInventory inventory = new Inventory(1);
-        inventory.setItem(0, inputHandler.getStackInSlot(0));
-        return this.level.getRecipeManager().getRecipeFor(DnaExtractingRecipe.Type.INSTANCE, inventory, level);
+        return this.level.getRecipeManager().getRecipeFor(DnaExtractingRecipe.Type.INSTANCE, new Inventory(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -289,6 +332,10 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
         progress++;
     }
 
+    public IIntArray getData() {
+        return data;
+    }
+
     public ItemStack getRenderStack() {
         if (outputHandler.getStackInSlot(0).isEmpty() && outputHandler.getStackInSlot(1).isEmpty()) {
             return inputHandler.getStackInSlot(0);
@@ -317,9 +364,16 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
         return rotation;
     }
 
+
+    @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         return ModClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.load(state, tag);
     }
 
     @Override
@@ -330,15 +384,10 @@ public class DnaExtractorBlockEntity extends TileEntity implements ITickableTile
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        super.handleUpdateTag(state, tag);
-    }
-
-    @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT tag = pkt.getTag();
         if (tag != null) {
-            handleUpdateTag(this.level.getBlockState(pkt.getPos()), tag);
+            handleUpdateTag(this.getBlockState(), tag);
         }
     }
 }
