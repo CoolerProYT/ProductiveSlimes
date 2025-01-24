@@ -1,8 +1,8 @@
 package com.coolerpromc.productiveslimes.mixin;
 
-import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.MoveTowardsTargetGoal;
+import net.minecraft.entity.monster.SlimeEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -20,21 +20,21 @@ public abstract class CustomMoveTowardsTargetGoalMixin {
 
     @Inject(method = "start", at = @At("HEAD"), cancellable = true)
     private void start(CallbackInfo ci) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             ci.cancel();
         }
     }
 
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
     private void canUse(CallbackInfoReturnable<Boolean> cir) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "canContinueToUse", at = @At("HEAD"), cancellable = true)
     private void canContinueToUse(CallbackInfoReturnable<Boolean> cir) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             cir.setReturnValue(false);
         }
     }

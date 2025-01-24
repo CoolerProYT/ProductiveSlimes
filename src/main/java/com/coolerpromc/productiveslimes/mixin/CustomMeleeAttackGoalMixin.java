@@ -1,9 +1,9 @@
 package com.coolerpromc.productiveslimes.mixin;
 
-import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.monster.SlimeEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -20,28 +20,28 @@ public abstract class CustomMeleeAttackGoalMixin {
 
     @Inject(method = "checkAndPerformAttack", at = @At("HEAD"))
     private void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr, CallbackInfo ci) {
-        if (pEnemy instanceof Slime) {
+        if (pEnemy instanceof SlimeEntity) {
             stop();
         }
     }
 
     @Inject(method = "start", at = @At("HEAD"), cancellable = true)
     private void start(CallbackInfo ci) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             ci.cancel();
         }
     }
 
     @Inject(method = "stop", at = @At("HEAD"))
     private void stop(CallbackInfo ci) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             getMob().setTarget(null);
         }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick(CallbackInfo ci) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof SlimeEntity) {
             getMob().setTarget(null);
             ci.cancel();
         }
