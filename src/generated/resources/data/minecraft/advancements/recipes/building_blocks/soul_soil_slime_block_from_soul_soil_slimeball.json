@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:soul_soil_slimeball"
-            ]
+            "item": "productiveslimes:soul_soil_slimeball"
           }
         ]
       }

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:gold_slime_block"
-            ]
+            "item": "productiveslimes:gold_slime_block"
           }
         ]
       }

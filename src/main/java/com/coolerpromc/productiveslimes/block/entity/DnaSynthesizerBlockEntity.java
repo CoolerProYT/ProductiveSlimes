@@ -38,32 +38,31 @@ import java.util.Optional;
 
 public class DnaSynthesizerBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
     private float rotation;
-    private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0,0);
-    private final ItemStackHandler inputHandler = new ItemStackHandler(3){
+    private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 1000, 0, 0);
+    private final ItemStackHandler inputHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()){
+            if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            if (slot != 2){
+            if (slot != 2) {
                 return stack.getItem().is(ModTags.Items.DNA_ITEM);
-            }
-            else {
+            } else {
                 return !(stack.getItem().is(ModTags.Items.DNA_ITEM));
             }
         }
     };
 
-    private final ItemStackHandler outputHandler = new ItemStackHandler(1){
+    private final ItemStackHandler outputHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()){
+            if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -74,7 +73,7 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
         }
     };
 
-    private final ItemStackHandler eggHandler = new ItemStackHandler(1){
+    private final ItemStackHandler eggHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -97,20 +96,31 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
             @Override
             public int get(int pIndex) {
                 switch (pIndex) {
-                    case 0 : return DnaSynthesizerBlockEntity.this.progress;
-                    case 1 : return DnaSynthesizerBlockEntity.this.maxProgress;
-                    case 2 : return DnaSynthesizerBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 : return DnaSynthesizerBlockEntity.this.energyHandler.getMaxEnergyStored();
-                    default : return 0;
+                    case 0:
+                        return DnaSynthesizerBlockEntity.this.progress;
+                    case 1:
+                        return DnaSynthesizerBlockEntity.this.maxProgress;
+                    case 2:
+                        return DnaSynthesizerBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3:
+                        return DnaSynthesizerBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    default:
+                        return 0;
                 }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 : DnaSynthesizerBlockEntity.this.progress = pValue; break;
-                    case 1 : DnaSynthesizerBlockEntity.this.maxProgress = pValue; break;
-                    case 2 : DnaSynthesizerBlockEntity.this.energyHandler.setEnergy(pValue); break;
+                    case 0:
+                        DnaSynthesizerBlockEntity.this.progress = pValue;
+                        break;
+                    case 1:
+                        DnaSynthesizerBlockEntity.this.maxProgress = pValue;
+                        break;
+                    case 2:
+                        DnaSynthesizerBlockEntity.this.energyHandler.setEnergy(pValue);
+                        break;
                 }
             }
 
@@ -149,18 +159,16 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityEnergy.ENERGY){
+        if (cap == CapabilityEnergy.ENERGY) {
             return energy.cast();
         }
 
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-            if (side == Direction.UP){
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (side == Direction.UP) {
                 return egg.cast();
-            }
-            else if (side == Direction.DOWN){
+            } else if (side == Direction.DOWN) {
                 return output.cast();
-            }
-            else{
+            } else {
                 return input.cast();
             }
         }
@@ -168,7 +176,16 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
         return super.getCapability(cap, side);
     }
 
-    public void drops(){
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        input.invalidate();
+        output.invalidate();
+        egg.invalidate();
+    }
+
+    public void drops() {
         Inventory inventory = new Inventory(5);
         inventory.setItem(0, inputHandler.getStackInSlot(0));
         inventory.setItem(1, inputHandler.getStackInSlot(1));
@@ -217,11 +234,11 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
     public void tick() {
         Optional<DnaSynthesizingRecipe> recipe = getCurrentRecipe();
 
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().getInputCount()){
+        if (hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().getInputCount()) {
             increaseCraftingProgress();
             setChanged();
 
-            if(hasProgressFinished()) {
+            if (hasProgressFinished()) {
                 energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
@@ -292,25 +309,24 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
         return checkSlot(results);
     }
 
-    private boolean checkSlot(List<ItemStack> results){
+    private boolean checkSlot(List<ItemStack> results) {
         int count = 0;
         int emptyCount = 0;
-        for (ItemStack result : results){
+        for (ItemStack result : results) {
             count++;
         }
 
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {
             ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
-            if(!stackInSlot.isEmpty()){
-                for (ItemStack result : results){
-                    if(stackInSlot.getItem() == result.getItem()){
-                        if(stackInSlot.getCount() + result.getCount() <= 64){
+            if (!stackInSlot.isEmpty()) {
+                for (ItemStack result : results) {
+                    if (stackInSlot.getItem() == result.getItem()) {
+                        if (stackInSlot.getCount() + result.getCount() <= 64) {
                             emptyCount++;
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 emptyCount++;
             }
         }
@@ -318,7 +334,7 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
         return emptyCount >= count;
     }
 
-    private Optional<DnaSynthesizingRecipe> getCurrentRecipe(){
+    private Optional<DnaSynthesizingRecipe> getCurrentRecipe() {
         Inventory input = new Inventory(inputHandler.getStackInSlot(0), inputHandler.getStackInSlot(1), inputHandler.getStackInSlot(2));
         return this.level.getRecipeManager().getRecipeFor(DnaSynthesizingRecipe.Type.INSTANCE, input, level);
     }
@@ -358,7 +374,7 @@ public class DnaSynthesizerBlockEntity extends TileEntity implements INamedConta
 
     public float getRenderingRotation() {
         rotation += 0.5f;
-        if(rotation >= 360) {
+        if (rotation >= 360) {
             rotation = 0;
         }
         return rotation;

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:diorite_slime_block"
-            ]
+            "item": "productiveslimes:diorite_slime_block"
           }
         ]
       }

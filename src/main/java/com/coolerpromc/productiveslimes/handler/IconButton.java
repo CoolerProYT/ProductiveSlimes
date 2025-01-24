@@ -31,9 +31,7 @@ public class IconButton extends Button {
         int textureX = isOpen ? closedTextureX : openTextureX;
         int textureY = isOpen ? closedTextureY : openTextureY;
 
-        RenderSystem.bindTexture(0);
-
-        Minecraft.getInstance().getTextureManager().getTexture(iconTexture);
+        Minecraft.getInstance().getTextureManager().bind(iconTexture);
         AbstractGui.blit(pPoseStack, this.x, this.y, textureX, textureY, this.width, this.height, 256, 256);
 
         if (this.isHovered) {

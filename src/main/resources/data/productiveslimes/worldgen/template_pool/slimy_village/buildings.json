@@ -41,15 +41,6 @@
     {
       "weight": 1,
       "element": {
-        "location": "productiveslimes:slimy_village/houses/slime_statue",
-        "processors": "minecraft:empty",
-        "projection": "rigid",
-        "element_type": "minecraft:single_pool_element"
-      }
-    },
-    {
-      "weight": 1,
-      "element": {
         "location": "productiveslimes:slimy_village/houses/slimy_farm",
         "processors": "minecraft:empty",
         "projection": "rigid",

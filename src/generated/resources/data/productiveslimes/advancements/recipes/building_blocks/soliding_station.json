@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_deepslate": {
+    "has_stone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:water_bucket"
-            ]
+            "item": "minecraft:water_bucket"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_deepslate",
+      "has_stone",
       "has_the_recipe"
     ]
   ]

@@ -18,14 +18,11 @@ public class SlimyLandSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
     }
 
     @Override
-    public void apply(Random random, IChunk chunkAccess, Biome biome, int x, int z, int height,
-                      double noise, BlockState defaultBlock, BlockState defaultFluid,
-                      int minY, long seed, SurfaceBuilderConfig config) {
-
+    public void apply(Random random, IChunk chunkAccess, Biome biome, int x, int z, int height, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
         BlockState topBlock = ModBlocks.SLIMY_GRASS_BLOCK.get().defaultBlockState();
         BlockState underBlock = ModBlocks.SLIMY_DIRT.get().defaultBlockState();
         BlockState underunderBlock = ModBlocks.SLIMY_STONE.get().defaultBlockState();
-
+        int minY = 0;
         // Generate bedrock layer
         for(int y = minY; y <= minY + 5; y++) {
             if(random.nextInt(5) <= y - minY) {

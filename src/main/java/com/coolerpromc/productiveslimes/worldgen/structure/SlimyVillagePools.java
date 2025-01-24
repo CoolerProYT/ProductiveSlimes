@@ -45,7 +45,6 @@ public class SlimyVillagePools {
                         Pair.of(JigsawPiece.legacy("productiveslimes:slimy_village/houses/slimy_profession_house"), 2),
                         Pair.of(JigsawPiece.legacy("productiveslimes:slimy_village/houses/slimy_armorer_house"), 4),
                         Pair.of(JigsawPiece.legacy("productiveslimes:slimy_village/houses/slimy_fletcher_house"), 4),
-                        Pair.of(JigsawPiece.legacy("productiveslimes:slimy_village/houses/slime_statue"), 1),
                         Pair.of(JigsawPiece.legacy("productiveslimes:slimy_village/houses/slimy_farm"), 2)
                 ),
                 JigsawPattern.PlacementBehaviour.RIGID

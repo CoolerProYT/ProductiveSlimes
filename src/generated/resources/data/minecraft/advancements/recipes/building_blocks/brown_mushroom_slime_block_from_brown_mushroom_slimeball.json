@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:brown_mushroom_slimeball"
-            ]
+            "item": "productiveslimes:brown_mushroom_slimeball"
           }
         ]
       }

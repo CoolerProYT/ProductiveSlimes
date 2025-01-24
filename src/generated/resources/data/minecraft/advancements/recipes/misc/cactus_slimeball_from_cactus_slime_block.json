@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:cactus_slime_block"
-            ]
+            "item": "productiveslimes:cactus_slime_block"
           }
         ]
       }

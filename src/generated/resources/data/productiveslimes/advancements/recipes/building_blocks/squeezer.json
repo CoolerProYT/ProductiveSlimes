@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:slimy_planks"
-            ]
+            "item": "productiveslimes:slimy_planks"
           }
         ]
       }

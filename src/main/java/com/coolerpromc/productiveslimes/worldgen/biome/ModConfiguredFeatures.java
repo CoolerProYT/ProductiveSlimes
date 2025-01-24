@@ -8,17 +8,19 @@ import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 
 public class ModConfiguredFeatures {
-    public static final ConfiguredFeature<BaseTreeFeatureConfig, ?> SLIMY_TREE = register("slimy_tree", Feature.TREE.configured(
+    public static final ConfiguredFeature<?, ?> SLIMY_TREE = register("slimy_tree", Feature.TREE.configured(
             new BaseTreeFeatureConfig.Builder(
                     new SimpleBlockStateProvider(ModBlocks.SLIMY_LOG.get().defaultBlockState()),
                     new SimpleBlockStateProvider(ModBlocks.SLIMY_LEAVES.get().defaultBlockState()),
                     new FancyFoliagePlacer(FeatureSpread.fixed(2), FeatureSpread.fixed(3), 3),
                     new FancyTrunkPlacer(4, 4, 3),
                     new TwoLayerFeature(1, 0, 2)
-            ).ignoreVines().build())
+            ).ignoreVines().build()).decorated(Features.Placements.HEIGHTMAP_SQUARE).decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.05F, 1)))
     );
 
     public static final ConfiguredFeature<?, ?> MOLTEN_DIRT_LAKE = register("molten_dirt_lake", Feature.LAKE.configured(new BlockStateFeatureConfig(

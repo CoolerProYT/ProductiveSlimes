@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:netherrack_slimeball"
-            ]
+            "item": "productiveslimes:netherrack_slimeball"
           }
         ]
       }

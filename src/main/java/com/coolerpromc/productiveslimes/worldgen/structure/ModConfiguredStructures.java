@@ -10,6 +10,6 @@ import net.minecraft.world.gen.feature.structure.VillageConfig;
 
 public class ModConfiguredStructures {
     public static final StructureFeature<?, ?> SLIMY_VILLAGE = Registry.register(WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(ProductiveSlimes.MODID, "slimy_village"),
-            Structure.VILLAGE.configured(new VillageConfig(() -> SlimyVillagePools.START, 7))
+            Structure.VILLAGE.configured(new VillageConfig(() -> SlimyVillagePools.START, 6))
     );
 }

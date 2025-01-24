@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +35,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SolidingStationBlock extends Block implements TranslucentHighlightFix {
+public class SolidingStationBlock extends ContainerBlock implements TranslucentHighlightFix {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SolidingStationBlock(Properties pProperties) {
@@ -49,7 +50,7 @@ public class SolidingStationBlock extends Block implements TranslucentHighlightF
 
     @Override
     public BlockRenderType getRenderShape(BlockState p_149645_1_) {
-        return super.getRenderShape(p_149645_1_);
+        return BlockRenderType.MODEL;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class SolidingStationBlock extends Block implements TranslucentHighlightF
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState pState, IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new SolidingStationBlockEntity();
     }
 

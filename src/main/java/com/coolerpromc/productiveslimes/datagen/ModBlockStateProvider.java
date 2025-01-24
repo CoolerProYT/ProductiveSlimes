@@ -166,14 +166,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
         this.getVariantBuilder(block).partialState().with(PressurePlateBlock.POWERED, true).addModels(new ConfiguredModel[]{new ConfiguredModel(pressurePlateDown)}).partialState().with(PressurePlateBlock.POWERED, false).addModels(new ConfiguredModel[]{new ConfiguredModel(pressurePlate)});
     }
 
-    public void buttonBlock(AbstractButtonBlock block,  ResourceLocation texture) {
+    public void buttonBlock(AbstractButtonBlock block, ResourceLocation texture) {
         ModelFile button = this.models().withExistingParent(this.name(block), this.mcLoc("block/button")).texture("texture", texture);
-        ModelFile buttonPressed = this.models().withExistingParent(this.name(block), this.mcLoc("block/button_pressed")).texture("texture", texture);
+        ModelFile buttonPressed = this.models().withExistingParent(this.name(block) + "_pressed", this.mcLoc("block/button_pressed")).texture("texture", texture);
 
         this.getVariantBuilder(block).forAllStates((state) -> {
-            Direction facing = (Direction)state.getValue(AbstractButtonBlock.FACING);
-            AttachFace face = (AttachFace)state.getValue(AbstractButtonBlock.FACE);
-            boolean powered = (Boolean)state.getValue(AbstractButtonBlock.POWERED);
+            Direction facing = state.getValue(AbstractButtonBlock.FACING);
+            AttachFace face = state.getValue(AbstractButtonBlock.FACE);
+            boolean powered = state.getValue(AbstractButtonBlock.POWERED);
             return ConfiguredModel.builder().modelFile(powered ? buttonPressed : button).rotationX(face == AttachFace.FLOOR ? 0 : (face == AttachFace.WALL ? 90 : 180)).rotationY((int)(face == AttachFace.CEILING ? facing : facing.getOpposite()).toYRot()).uvLock(face == AttachFace.WALL).build();
         });
     }

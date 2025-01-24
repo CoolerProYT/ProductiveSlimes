@@ -24,13 +24,15 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class SlimeSqueezerBlockEntityRenderer extends TileEntityRenderer<SlimeSqueezerBlockEntity> {
-    public SlimeSqueezerBlockEntityRenderer(TileEntityRendererDispatcher context){
+    public SlimeSqueezerBlockEntityRenderer(TileEntityRendererDispatcher context) {
         super(context);
     }
+
     @Override
     public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay) {
         IBakedModel squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
         float progressRatio = (float) blockEntity.getData().get(0) / (float) blockEntity.getData().get(1);
+        if (progressRatio == 0.0 && blockEntity.getData().get(0) != 0) return;
         float startPoint = 0.8f;
         float endPoint = 0.15f;
         float squeezerPosition = startPoint - ((startPoint - endPoint) * progressRatio);
@@ -52,18 +54,38 @@ public class SlimeSqueezerBlockEntityRenderer extends TileEntityRenderer<SlimeSq
         poseStack.mulPose(Vector3f.XP.rotationDegrees(270));
         itemRenderer.renderStatic(inputItem, ItemCameraTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer);
         poseStack.popPose();
-        switch (facing){
+        switch (facing) {
             case SOUTH:
-                x1 = 0.0625f; x2 = 0.9375f; y1 = 0.175f; y2 = 0.175f; z1 = 0.5f; z2 = 0.5f;
+                x1 = 0.0625f;
+                x2 = 0.9375f;
+                y1 = 0.175f;
+                y2 = 0.175f;
+                z1 = 0.5f;
+                z2 = 0.5f;
                 break;
             case NORTH:
-                x1 = 0.9375f; x2 = 0.0625f; y1 = 0.175f; y2 = 0.175f; z1 = 0.5f; z2 = 0.5f;
+                x1 = 0.9375f;
+                x2 = 0.0625f;
+                y1 = 0.175f;
+                y2 = 0.175f;
+                z1 = 0.5f;
+                z2 = 0.5f;
                 break;
             case EAST:
-                x1 = 0.5f; x2 = 0.5f; y1 = 0.175f; y2 = 0.175f; z1 = 0.9375f; z2 = 0.0625f;
+                x1 = 0.5f;
+                x2 = 0.5f;
+                y1 = 0.175f;
+                y2 = 0.175f;
+                z1 = 0.9375f;
+                z2 = 0.0625f;
                 break;
             case WEST:
-                x1 = 0.5f; x2 = 0.5f; y1 = 0.175f; y2 = 0.175f; z1 = 0.0625f; z2 = 0.9375f;
+                x1 = 0.5f;
+                x2 = 0.5f;
+                y1 = 0.175f;
+                y2 = 0.175f;
+                z1 = 0.0625f;
+                z2 = 0.9375f;
                 break;
         }
         // Render the output item 1
@@ -81,6 +103,7 @@ public class SlimeSqueezerBlockEntityRenderer extends TileEntityRenderer<SlimeSq
         itemRenderer.renderStatic(outputItem2, ItemCameraTransforms.TransformType.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer);
         poseStack.popPose();
     }
+
     private void renderModel(IBakedModel model, MatrixStack poseStack, IRenderTypeBuffer buffer, int light, int overlay) {
         Random rand = new Random();
         for (Direction direction : Direction.values()) {
@@ -96,6 +119,7 @@ public class SlimeSqueezerBlockEntityRenderer extends TileEntityRenderer<SlimeSq
             );
         }
     }
+
     private int getLightLevel(World level, BlockPos pos) {
         int bLight = level.getBrightness(LightType.BLOCK, pos);
         int sLight = level.getBrightness(LightType.SKY, pos);

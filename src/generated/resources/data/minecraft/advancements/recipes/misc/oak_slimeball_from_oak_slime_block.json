@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:oak_slime_block"
-            ]
+            "item": "productiveslimes:oak_slime_block"
           }
         ]
       }

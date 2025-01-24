@@ -33,6 +33,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +47,12 @@ public class EnergyGeneratorBlockEntity extends TileEntity implements INamedCont
     };
     protected final IIntArray data;
 
-    private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 0, 100, 0);
+    private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 0, 100, 0){
+        @Override
+        public boolean canExtract() {
+            return true;
+        }
+    };
 
     private final ItemStackHandler upgradeHandler = new ItemStackHandler(4){
         @Override
@@ -63,10 +69,10 @@ public class EnergyGeneratorBlockEntity extends TileEntity implements INamedCont
     private int progress = 0;
     private int maxProgress = 100;
 
-    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
-    private LazyOptional<ItemStackHandler> items = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::getEnergyHandler);
+    private final LazyOptional<ItemStackHandler> items = LazyOptional.of(() -> itemHandler);
 
-    public CustomEnergyStorage getEnergyHandler() {
+    public IEnergyStorage getEnergyHandler() {
         return energyHandler;
     }
 
@@ -118,6 +124,13 @@ public class EnergyGeneratorBlockEntity extends TileEntity implements INamedCont
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return items.cast();
 
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        items.invalidate();
     }
 
     @Override
@@ -175,18 +188,21 @@ public class EnergyGeneratorBlockEntity extends TileEntity implements INamedCont
             for (Direction direction : Direction.values()) {
                 World level = this.level;
 
-                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()));
+                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.empty();
+                Optional<TileEntity> be = Optional.ofNullable(level.getBlockEntity(this.getBlockPos().relative(direction.getOpposite())));
 
-                if (neighborEnergy.get().isPresent()) {
+                if (be.isPresent()) {
+                    neighborEnergy = Optional.of(be.get().getCapability(CapabilityEnergy.ENERGY, direction));
+                }
+
+                if (neighborEnergy.isPresent()) {
                     LazyOptional<IEnergyStorage> neighborStorage = neighborEnergy.get();
-
                     neighborStorage.ifPresent(neighbor -> {
                         if (neighbor.canReceive()) {
                             int energyToExtract = Math.min(
                                     this.energyHandler.extractEnergy(1000, true),
                                     neighbor.receiveEnergy(1000, true)
                             );
-
                             // Perform the actual transfer
                             this.energyHandler.extractEnergy(energyToExtract, false);
                             neighbor.receiveEnergy(energyToExtract, false);

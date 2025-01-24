@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_deepslate": {
+    "has_stick": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:lava_bucket"
-            ]
+            "tag": "forge:slimeballs"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_deepslate",
+      "has_stick",
       "has_the_recipe"
     ]
   ]

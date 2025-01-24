@@ -51,10 +51,7 @@ public class FluidTankBlockEntityRenderer extends TileEntityRenderer<FluidTankBl
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(stillTexture);
         int tintColor = color;
 
-        float height = ((float) fluidStack.getAmount() / 50000) * 0.90f;
-        if (fluidStack.getAmount() > 1000) {
-            height += 0.05f;
-        }
+        float height = ((float) fluidStack.getAmount() / 50000) * 0.90f + 0.05f;
 
         IVertexBuilder builder = pBufferSource.getBuffer(RenderTypeLookup.getRenderLayer(state));
 

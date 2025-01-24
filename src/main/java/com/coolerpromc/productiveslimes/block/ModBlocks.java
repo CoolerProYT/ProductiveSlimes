@@ -61,10 +61,10 @@ public class ModBlocks {
             () -> new SlimyBlock(AbstractBlock.Properties.copy(Blocks.DIRT)));
 
     public static final RegistryObject<Block> SLIMY_STONE = registerBlock("slimy_stone",
-            () -> new SlimyBlock(AbstractBlock.Properties.copy(Blocks.STONE)));
+            () -> new SlimyStone(AbstractBlock.Properties.copy(Blocks.STONE)));
 
     public static final RegistryObject<Block> SLIMY_COBBLESTONE = registerBlock("slimy_cobblestone",
-            () -> new SlimyBlock(AbstractBlock.Properties.copy(Blocks.COBBLESTONE)));
+            () -> new SlimyStone(AbstractBlock.Properties.copy(Blocks.COBBLESTONE)));
 
     // Slimy Wood Set
     public static final RegistryObject<Block> SLIMY_LOG = registerBlock("slimy_log",

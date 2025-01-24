@@ -138,6 +138,14 @@ public class SolidingStationBlockEntity extends TileEntity implements INamedCont
         return super.getCapability(cap, side);
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        input.invalidate();
+        output.invalidate();
+    }
+
     public void drops(){
         Inventory inventory = new Inventory(3);
         inventory.setItem(0, inputHandler.getStackInSlot(0));

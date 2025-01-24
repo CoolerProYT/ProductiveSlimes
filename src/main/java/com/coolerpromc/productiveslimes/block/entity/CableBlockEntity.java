@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 import com.coolerpromc.productiveslimes.handler.EnergyNetwork;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -17,13 +18,13 @@ import org.antlr.v4.runtime.misc.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CableBlockEntity extends TileEntity implements IEnergyStorage {
+public class CableBlockEntity extends TileEntity implements IEnergyStorage, ITickableTileEntity {
     private int energyStoredToLoad = -1;
     private EnergyNetwork network;
     private final int capacity = 10000; // Example capacity
     private final int transferRate = 500; // Energy transfer rate per tick
 
-    private LazyOptional<IEnergyStorage> storageLazyOptional = LazyOptional.of(() -> this);
+    private final LazyOptional<IEnergyStorage> storageLazyOptional = LazyOptional.of(() -> this);
 
     public CableBlockEntity() {
         super(ModBlockEntities.CABLE_BE.get());
@@ -78,6 +79,7 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
     // Initialize or join a network when the block entity is loaded
     @Override
     public void onLoad() {
+        super.onLoad();
         if (!level.isClientSide) {
             initializeNetwork();
             if (energyStoredToLoad >= 0 && network != null) {
@@ -133,10 +135,11 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
         }
     }
 
-    public static void tick(World level, BlockPos pos, BlockState state, CableBlockEntity cable) {
-        if (!level.isClientSide && cable.network != null) {
-            cable.network.collectEnergy(level);
-            cable.network.distributeEnergy(level);
+    @Override
+    public void tick() {
+        if (!level.isClientSide && this.network != null) {
+            this.network.collectEnergy(level);
+            this.network.distributeEnergy(level);
         }
     }
 
@@ -177,5 +180,11 @@ public class CableBlockEntity extends TileEntity implements IEnergyStorage {
         }
 
         return super.getCapability(cap);
+    }
+
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        storageLazyOptional.invalidate();
     }
 }

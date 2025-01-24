@@ -99,6 +99,8 @@ dependencies {
     implementation fg.deobf("curse.maven:the-one-probe-245211:3752096")
 
     implementation fg.deobf("curse.maven:jade-324717:${jade_id}")
+
+    implementation fg.deobf("curse.maven:mekanism-268560:3659389")
 }
 
 mixin {

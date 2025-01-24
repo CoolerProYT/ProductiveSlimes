@@ -5,6 +5,6 @@
   "type": "minecraft:village",
   "config": {
     "start_pool": "productiveslimes:slimy_village/village_center",
-    "size": 7
+    "size": 6
   }
 }

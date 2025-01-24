@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:stripped_slimy_log"
-            ]
+            "item": "productiveslimes:stripped_slimy_log"
           }
         ]
       }

@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.block.entity.MeltingStationBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MeltingStationBlock extends Block {
+public class MeltingStationBlock extends ContainerBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public MeltingStationBlock(Properties pProperties) {
@@ -87,7 +88,7 @@ public class MeltingStationBlock extends Block {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState pState, IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new MeltingStationBlockEntity();
     }
 

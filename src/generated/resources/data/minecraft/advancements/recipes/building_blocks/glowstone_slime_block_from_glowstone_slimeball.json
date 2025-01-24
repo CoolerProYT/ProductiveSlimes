@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:glowstone_slimeball"
-            ]
+            "item": "productiveslimes:glowstone_slimeball"
           }
         ]
       }

@@ -184,6 +184,14 @@ public class SlimeNestBlockEntity extends TileEntity implements INamedContainerP
         return super.getCapability(cap, side);
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        upgradeHandlerCap.invalidate();
+        slimeHandlerCap.invalidate();
+        outputHandlerCap.invalidate();
+    }
+
     @Nullable
     @Override
     public Container createMenu(int containerId, PlayerInventory playerInventory, PlayerEntity player) {

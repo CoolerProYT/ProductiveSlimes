@@ -27,7 +27,6 @@ public class ModCreativeTabs {
         @Override
         public void fillItemList(NonNullList<ItemStack> items) {
             // Add custom items to the creative tab
-            items.add(ModItems.GUIDEBOOK.get().getDefaultInstance());
             items.add(ModItems.ENERGY_MULTIPLIER_UPGRADE.get().getDefaultInstance());
             items.add(ModItems.SLIME_NEST_SPEED_UPGRADE_1.get().getDefaultInstance());
             items.add(ModItems.SLIME_NEST_SPEED_UPGRADE_2.get().getDefaultInstance());

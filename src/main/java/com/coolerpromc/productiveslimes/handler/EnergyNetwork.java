@@ -159,7 +159,6 @@ public class EnergyNetwork implements IEnergyStorage {
 
                 if (neighborEntity != null) {
                     LazyOptional<IEnergyStorage> neighborEnergy = neighborEntity.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
-
                     neighborEnergy.ifPresent(neighbor -> {
                         if (neighbor.canReceive()) {
                             int energyAvailable = this.extractEnergy(cable.getTransferRate(), true);

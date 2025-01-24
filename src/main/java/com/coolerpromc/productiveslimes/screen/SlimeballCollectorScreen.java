@@ -25,7 +25,7 @@ public class SlimeballCollectorScreen extends ContainerScreen<SlimeballCollector
         this.titleLabelY = 5;
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        this.addWidget(new Button(x + 88, y + 65, 80, 16, new StringTextComponent("Toggle Area"), button -> {
+        this.addButton(new Button(x + 88, y + 61, 80, 20, new StringTextComponent("Toggle Area"), button -> {
             this.menu.blockEntity.setEnableOutline(this.menu.blockEntity.getData().get(0) == 0 ? 1 : 0);
         }));
     }

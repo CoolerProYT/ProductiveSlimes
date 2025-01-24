@@ -68,10 +68,6 @@ public class ModGameEventBus {
                     new ItemStack(Items.SLIME_BALL, 20),
                     new ItemStack(Items.EMERALD, 1), 8, 2, 0.05f
             ));
-            trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 1),
-                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.COPPER.getTierName()).get(), 4), 8, 1, 0.05f
-            ));
             //Apprentice
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemStack(Items.EMERALD, 1),
@@ -123,10 +119,6 @@ public class ModGameEventBus {
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemStack(Items.EMERALD, 48),
                     new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.IRON.getTierName()).get(), 1), 2, 30, 0.05f
-            ));
-            trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemStack(Items.EMERALD, 32),
-                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.COPPER.getTierName()).get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.DIRT.getTierName()).get(), 1),

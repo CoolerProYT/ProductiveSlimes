@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MeltingStationBlockEntity extends TileEntity implements INamedContainerProvider, ITickableTileEntity {
-    private final ItemStackHandler bucketHandler = new ItemStackHandler(1){
+    private final ItemStackHandler bucketHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -46,7 +46,7 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
         }
     };
 
-    private final ItemStackHandler inputHandler = new ItemStackHandler(1){
+    private final ItemStackHandler inputHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -58,7 +58,7 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
         }
     };
 
-    private final ItemStackHandler outputHandler = new ItemStackHandler(1){
+    private final ItemStackHandler outputHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -82,20 +82,31 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
             @Override
             public int get(int pIndex) {
                 switch (pIndex) {
-                    case 0 : return MeltingStationBlockEntity.this.progress;
-                    case 1 : return MeltingStationBlockEntity.this.maxProgress;
-                    case 2 : return MeltingStationBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 : return MeltingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
-                    default : return 0;
+                    case 0:
+                        return MeltingStationBlockEntity.this.progress;
+                    case 1:
+                        return MeltingStationBlockEntity.this.maxProgress;
+                    case 2:
+                        return MeltingStationBlockEntity.this.energyHandler.getEnergyStored();
+                    case 3:
+                        return MeltingStationBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    default:
+                        return 0;
                 }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case 0 : MeltingStationBlockEntity.this.progress = pValue; break;
-                    case 1 : MeltingStationBlockEntity.this.maxProgress = pValue; break;
-                    case 2 : MeltingStationBlockEntity.this.energyHandler.setEnergy(pValue); break;
+                    case 0:
+                        MeltingStationBlockEntity.this.progress = pValue;
+                        break;
+                    case 1:
+                        MeltingStationBlockEntity.this.maxProgress = pValue;
+                        break;
+                    case 2:
+                        MeltingStationBlockEntity.this.energyHandler.setEnergy(pValue);
+                        break;
                 }
             }
 
@@ -134,18 +145,16 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityEnergy.ENERGY){
+        if (cap == CapabilityEnergy.ENERGY) {
             return energy.cast();
         }
 
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-            if (side == Direction.UP){
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (side == Direction.UP) {
                 return bucket.cast();
-            }
-            else if (side == Direction.DOWN){
+            } else if (side == Direction.DOWN) {
                 return output.cast();
-            }
-            else{
+            } else {
                 return input.cast();
             }
         }
@@ -153,7 +162,16 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
         return super.getCapability(cap, side);
     }
 
-    public void drops(){
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        input.invalidate();
+        output.invalidate();
+        bucket.invalidate();
+    }
+
+    public void drops() {
         Inventory inventory = new Inventory(3);
         inventory.setItem(0, bucketHandler.getStackInSlot(0));
         inventory.setItem(1, inputHandler.getStackInSlot(0));
@@ -200,11 +218,11 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
     @Override
     public void tick() {
         Optional<MeltingRecipe> recipe = getCurrentRecipe();
-        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()){
+        if (hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()) {
             increaseCraftingProgress();
             setChanged();
 
-            if(hasProgressFinished()) {
+            if (hasProgressFinished()) {
                 energyHandler.removeEnergy(recipe.get().getEnergy());
                 craftItem();
                 resetProgress();
@@ -276,25 +294,24 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
         return checkSlot(results);
     }
 
-    private boolean checkSlot(List<ItemStack> results){
+    private boolean checkSlot(List<ItemStack> results) {
         int count = 0;
         int emptyCount = 0;
-        for (ItemStack result : results){
+        for (ItemStack result : results) {
             count++;
         }
 
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {
             ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
-            if(!stackInSlot.isEmpty()){
-                for (ItemStack result : results){
-                    if(stackInSlot.getItem() == result.getItem()){
-                        if(stackInSlot.getCount() + result.getCount() <= 64){
+            if (!stackInSlot.isEmpty()) {
+                for (ItemStack result : results) {
+                    if (stackInSlot.getItem() == result.getItem()) {
+                        if (stackInSlot.getCount() + result.getCount() <= 64) {
                             emptyCount++;
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 emptyCount++;
             }
         }
@@ -302,7 +319,7 @@ public class MeltingStationBlockEntity extends TileEntity implements INamedConta
         return emptyCount >= count;
     }
 
-    private Optional<MeltingRecipe> getCurrentRecipe(){
+    private Optional<MeltingRecipe> getCurrentRecipe() {
         return this.level.getRecipeManager().getRecipeFor(MeltingRecipe.Type.INSTANCE, new Inventory(inputHandler.getStackInSlot(0)), level);
     }
 

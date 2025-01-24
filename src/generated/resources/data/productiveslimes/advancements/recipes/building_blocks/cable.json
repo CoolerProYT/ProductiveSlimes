@@ -6,14 +6,12 @@
     ]
   },
   "criteria": {
-    "has_copper_ingot": {
+    "has_redstone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:redstone"
-            ]
+            "item": "minecraft:redstone"
           }
         ]
       }
@@ -27,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_copper_ingot",
+      "has_redstone",
       "has_the_recipe"
     ]
   ]

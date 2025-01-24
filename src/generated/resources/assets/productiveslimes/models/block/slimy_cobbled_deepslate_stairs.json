@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "side": "productiveslimes:block/slimy_cobbled_deepslate",
-    "bottom": "productiveslimes:block/slimy_cobbled_deepslate",
-    "top": "productiveslimes:block/slimy_cobbled_deepslate"
-  }
-}

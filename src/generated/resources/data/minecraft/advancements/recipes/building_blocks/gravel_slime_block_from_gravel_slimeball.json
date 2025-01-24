@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:gravel_slimeball"
-            ]
+            "item": "productiveslimes:gravel_slimeball"
           }
         ]
       }

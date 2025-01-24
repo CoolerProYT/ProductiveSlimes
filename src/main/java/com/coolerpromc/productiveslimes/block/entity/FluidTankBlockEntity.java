@@ -1,18 +1,15 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -36,7 +33,7 @@ public class FluidTankBlockEntity extends TileEntity {
         }
     };
 
-    LazyOptional<FluidTank> fluidTankLazyOptional = LazyOptional.of(() -> fluidTank);
+    LazyOptional<IFluidHandler> fluidTankLazyOptional = LazyOptional.of(() -> fluidTank);
 
     public FluidTankBlockEntity() {
         super(ModBlockEntities.FLUID_TANK_BE.get());
@@ -62,17 +59,11 @@ public class FluidTankBlockEntity extends TileEntity {
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY){
+            System.out.println("Fluid capability requested");
             return fluidTankLazyOptional.cast();
         }
 
         return super.getCapability(cap);
-    }
-
-    public void tick(World level, BlockPos blockPos, BlockState blockState){
-        setChanged();
-        if (!level.isClientSide()){
-            level.sendBlockUpdated(blockPos, blockState, blockState, 3);
-        }
     }
 
     @Override
@@ -89,22 +80,24 @@ public class FluidTankBlockEntity extends TileEntity {
 
     @Override
     public CompoundNBT save(CompoundNBT pTag) {
-        pTag = fluidTank.writeToNBT(pTag);
-
-        return super.save(pTag);
+        super.save(pTag);
+        pTag.put("fluid", fluidTank.writeToNBT(new CompoundNBT()));
+        return pTag;
     }
 
     @Override
     public void load(BlockState state, CompoundNBT pTag) {
         super.load(state, pTag);
 
-        fluidTank.readFromNBT(pTag);
+        fluidTank.readFromNBT(pTag.getCompound("fluid"));
     }
 
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundNBT tag = new CompoundNBT();
+        save(tag);
+        return new SUpdateTileEntityPacket(worldPosition, 1, tag);
     }
 
     @Override

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:slimy_stone"
-            ]
+            "item": "productiveslimes:slimy_stone"
           }
         ]
       }

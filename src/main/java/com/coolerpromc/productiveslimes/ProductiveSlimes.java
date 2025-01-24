@@ -38,6 +38,7 @@ import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
@@ -78,7 +79,7 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-//        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
@@ -116,15 +117,13 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        event.enqueueWork(() -> {
-            ModBiomeGeneration.generateBiomes();
-        });
+        event.enqueueWork(ModBiomeGeneration::generateBiomes);
     }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event)
     {
-//        CustomContentRegistry.handleDatapack(event.getServer());
+        CustomContentRegistry.handleDatapack(event.getServer());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -147,6 +146,17 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            RenderingRegistry.registerEntityRenderingHandler(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFffff70));
+
+            for (Tier name : Tier.values()){
+                ModTiers tiers = ModTierLists.getTierByName(name);
+                RenderingRegistry.registerEntityRenderingHandler(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
+            }
+
+            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
+                RenderingRegistry.registerEntityRenderingHandler(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
+            }
+
             event.enqueueWork(() -> {
                 ScreenManager.register(ModMenuTypes.MELTING_STATION_MENU.get(), MeltingStationScreen::new);
                 ScreenManager.register(ModMenuTypes.SOLIDING_STATION_MENU.get(), SolidingStationScreen::new);
@@ -165,17 +175,6 @@ public class ProductiveSlimes
                 ClientRegistry.bindTileEntityRenderer(ModBlockEntities.SLIME_SQUEEZER_BE.get(), SlimeSqueezerBlockEntityRenderer::new);
                 ClientRegistry.bindTileEntityRenderer(ModBlockEntities.SLIME_NEST_BE.get(), SlimeNestBlockEntityRenderer::new);
                 ClientRegistry.bindTileEntityRenderer(ModBlockEntities.SLIMEBALL_COLLECTOR_BE.get(), SlimeballCollectorBlockEntityRenderer::new);
-
-                RenderingRegistry.registerEntityRenderingHandler(ModEntities.ENERGY_SLIME.get(), pContext -> new BaseSlimeRenderer(pContext, 0xFFffff70));
-
-                for (Tier name : Tier.values()){
-                    ModTiers tiers = ModTierLists.getTierByName(name);
-                    RenderingRegistry.registerEntityRenderingHandler(ModTierLists.getEntityByName(tiers.name()).get(), pContext -> new BaseSlimeRenderer(pContext, tiers.color()));
-                }
-
-                for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                    RenderingRegistry.registerEntityRenderingHandler(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
-                }
 
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
@@ -196,7 +195,7 @@ public class ProductiveSlimes
                 EntitySpawnPlacementRegistry.register(ModTierLists.getEntityByName(Tier.IRON.getTierName()).get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, (entityTypes, serverLevel, spawnType, pos, random) -> serverLevel.getBlockState(pos.below()).getBlock() == ModBlocks.SLIMY_GRASS_BLOCK.get());
             });
 
-//            CustomContentRegistry.handleResourcePack();
+            CustomContentRegistry.handleResourcePack();
         }
 
         @SubscribeEvent
@@ -212,9 +211,12 @@ public class ProductiveSlimes
             registerAllSlimeBlockColor(event);
 
             event.getItemColors().register((stack, tintIndex) -> {
-                assert stack.getTag() != null;
-                SlimeData slimeData = SlimeData.fromTag(stack.getTag().getCompound("slime_data"));
-                return slimeData != null ? slimeData.color() : 0xFFFFFFFF;
+                if (stack.hasTag() && stack.getTag().contains("slime_data")) {
+                    CompoundNBT slimeDataTag = stack.getTag().getCompound("slime_data");
+                    SlimeData slimeData = SlimeData.fromTag(slimeDataTag);
+                    return slimeData.color();
+                }
+                return 0xFFFFFF;
             }, ModItems.SLIME_ITEM.get());
         }
 

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:obsidian_slime_block"
-            ]
+            "item": "productiveslimes:obsidian_slime_block"
           }
         ]
       }

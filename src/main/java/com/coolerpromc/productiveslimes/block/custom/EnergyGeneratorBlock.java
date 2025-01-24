@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnergyGeneratorBlock extends Block {
+public class EnergyGeneratorBlock extends ContainerBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public EnergyGeneratorBlock(Properties p_49792_) {
@@ -93,9 +94,8 @@ public class EnergyGeneratorBlock extends Block {
         return ActionResultType.sidedSuccess(pLevel.isClientSide());
     }
 
-    @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState blockState,IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new EnergyGeneratorBlockEntity();
     }
 
@@ -127,7 +127,7 @@ public class EnergyGeneratorBlock extends Block {
         if (be instanceof EnergyGeneratorBlockEntity) {
             EnergyGeneratorBlockEntity energyGeneratorBlockEntity = (EnergyGeneratorBlockEntity) be;
             if (pStack.hasTag() && pStack.getTag().contains("energy")) {
-                energyGeneratorBlockEntity.getEnergyHandler().setEnergy(pStack.getOrCreateTag().getInt("energy"));
+                energyGeneratorBlockEntity.getEnergyHandler().receiveEnergy(pStack.getOrCreateTag().getInt("energy"), false);
             }
         }
 

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:prismarine_slimeball"
-            ]
+            "item": "productiveslimes:prismarine_slimeball"
           }
         ]
       }

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:magma_slime_block"
-            ]
+            "item": "productiveslimes:magma_slime_block"
           }
         ]
       }

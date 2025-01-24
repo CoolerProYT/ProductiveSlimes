@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,12 +32,13 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FluidTankBlock extends Block implements TranslucentHighlightFix {
+public class FluidTankBlock extends ContainerBlock implements TranslucentHighlightFix {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public FluidTankBlock(Properties pProperties) {
@@ -107,12 +109,6 @@ public class FluidTankBlock extends Block implements TranslucentHighlightFix {
                 }
             }
         }
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(BlockState pState, IBlockReader world) {
-        return new FluidTankBlockEntity();
     }
 
     @Nullable
@@ -194,5 +190,11 @@ public class FluidTankBlock extends Block implements TranslucentHighlightFix {
                 pTooltip.add(new TranslationTextComponent("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(Color.fromRgb(0x00FF00))).append(new TranslationTextComponent("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(Color.fromRgb(0xFFFFF)))));
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public TileEntity newBlockEntity(IBlockReader p_196283_1_) {
+        return new FluidTankBlockEntity();
     }
 }

@@ -89,6 +89,12 @@ public class SlimeballCollectorBlockEntity extends TileEntity implements INamedC
         return super.getCapability(cap);
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        inventoryHolder.invalidate();
+    }
+
     public ItemStackHandler getInventory() {
         return inventory;
     }

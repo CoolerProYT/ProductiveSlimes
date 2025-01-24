@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:red_sand_slimeball"
-            ]
+            "item": "productiveslimes:red_sand_slimeball"
           }
         ]
       }

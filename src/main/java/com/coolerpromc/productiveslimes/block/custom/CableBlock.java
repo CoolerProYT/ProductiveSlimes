@@ -188,9 +188,4 @@ public class CableBlock extends Block {
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new CableBlockEntity();
     }
-
-    @Override
-    public void tick(BlockState blockState, ServerWorld serverLevel, BlockPos blockPos, Random random) {
-        CableBlockEntity.tick(serverLevel, blockPos, blockState, (CableBlockEntity) serverLevel.getBlockEntity(blockPos));
-    }
 }

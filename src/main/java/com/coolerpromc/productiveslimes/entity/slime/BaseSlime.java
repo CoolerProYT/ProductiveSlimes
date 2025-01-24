@@ -244,7 +244,7 @@ public abstract class BaseSlime extends SlimeEntity {
 
     @Override
     public EntitySize getDimensions(Pose pPose) {
-        return super.getDimensions(pPose).scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
+        return EntitySize.scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
     }
 
     public void growthSlime(PlayerEntity pPlayer, Hand pHand, BaseSlime slime){
@@ -320,7 +320,7 @@ public abstract class BaseSlime extends SlimeEntity {
         public SlimeMoveControl(BaseSlime p_33668_) {
             super(p_33668_);
             this.slime = p_33668_;
-            this.yRot = 180.0F * p_33668_.getYHeadRot() / (float)Math.PI;
+            this.yRot = 180.0F * p_33668_.yRot / (float)Math.PI;
         }
 
         public void setDirection(float pYRot, boolean pAggressive) {
@@ -334,9 +334,9 @@ public abstract class BaseSlime extends SlimeEntity {
         }
 
         public void tick() {
-            this.mob.setYHeadRot(this.rotlerp(this.mob.getYHeadRot(), this.yRot, 90.0F));
-            this.mob.yHeadRot = this.mob.getYHeadRot();
-            this.mob.yBodyRot = this.mob.getYHeadRot();
+            this.mob.yRot = this.rotlerp(this.mob.yRot, this.yRot, 90.0F);
+            this.mob.yHeadRot = this.mob.yRot;
+            this.mob.yBodyRot = this.mob.yRot;
             if (this.operation != MovementController.Action.MOVE_TO) {
                 this.mob.setZza(0.0F);
             } else {
@@ -381,8 +381,7 @@ public abstract class BaseSlime extends SlimeEntity {
          * method as well.
          */
         public boolean canUse() {
-            return this.slime.getTarget() == null && (this.slime.isOnGround() || this.slime.isInWater() || this.slime.isInLava() ||
-                    this.slime.hasEffect(Effects.LEVITATION)) && this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
+            return this.slime.getTarget() == null && (this.slime.onGround || this.slime.isInWater() || this.slime.isInLava() || this.slime.hasEffect(Effects.LEVITATION)) && this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
         }
 
         /**
@@ -390,7 +389,7 @@ public abstract class BaseSlime extends SlimeEntity {
          */
         public void tick() {
             if (--this.nextRandomizeTime <= 0) {
-                this.nextRandomizeTime = (40 + this.slime.getRandom().nextInt(60)) * 20;
+                this.nextRandomizeTime = 40 + this.slime.getRandom().nextInt(60);
                 this.chosenDegrees = (float)this.slime.getRandom().nextInt(360);
             }
 

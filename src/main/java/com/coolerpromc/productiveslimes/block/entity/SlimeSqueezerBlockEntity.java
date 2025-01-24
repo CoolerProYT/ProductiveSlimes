@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -66,7 +67,7 @@ public class SlimeSqueezerBlockEntity extends TileEntity implements INamedContai
     private int progress = 0;
     private int maxProgress = 78;
 
-    private LazyOptional<CustomEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
     private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
     private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
 
@@ -140,6 +141,14 @@ public class SlimeSqueezerBlockEntity extends TileEntity implements INamedContai
         return super.getCapability(cap, side);
     }
 
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        input.invalidate();
+        output.invalidate();
+    }
+
     public void drops() {
         Inventory inventory = new Inventory(3);
         inventory.setItem(0, inputHandler.getStackInSlot(0));
@@ -180,6 +189,9 @@ public class SlimeSqueezerBlockEntity extends TileEntity implements INamedContai
 
     @Override
     public void tick() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
         Optional<SqueezingRecipe> recipe = getCurrentRecipe();
         if (hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().getEnergy()) {
             increaseCraftingProgress();

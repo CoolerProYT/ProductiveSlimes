@@ -27,6 +27,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -74,7 +75,7 @@ public class DnaExtractorBlockEntity extends TileEntity implements INamedContain
     private int progress = 0;
     private int maxProgress = 78;
 
-    private LazyOptional<CustomEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyHandler);
     private LazyOptional<ItemStackHandler> input = LazyOptional.of(() -> inputHandler);
     private LazyOptional<ItemStackHandler> output = LazyOptional.of(() -> outputHandler);
 
@@ -389,5 +390,13 @@ public class DnaExtractorBlockEntity extends TileEntity implements INamedContain
         if (tag != null) {
             handleUpdateTag(this.getBlockState(), tag);
         }
+    }
+
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        energy.invalidate();
+        input.invalidate();
+        output.invalidate();
     }
 }

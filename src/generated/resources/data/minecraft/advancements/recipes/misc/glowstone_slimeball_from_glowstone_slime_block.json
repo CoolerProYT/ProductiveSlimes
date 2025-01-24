@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:glowstone_slime_block"
-            ]
+            "item": "productiveslimes:glowstone_slime_block"
           }
         ]
       }

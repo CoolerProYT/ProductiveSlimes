@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:andesite_slimeball"
-            ]
+            "item": "productiveslimes:andesite_slimeball"
           }
         ]
       }

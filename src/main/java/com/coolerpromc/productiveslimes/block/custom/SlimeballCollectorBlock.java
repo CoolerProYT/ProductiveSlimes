@@ -5,6 +5,7 @@ import com.coolerpromc.productiveslimes.block.entity.SlimeballCollectorBlockEnti
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class SlimeballCollectorBlock extends Block {
+public class SlimeballCollectorBlock extends ContainerBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SlimeballCollectorBlock(Properties properties) {
@@ -33,7 +34,7 @@ public class SlimeballCollectorBlock extends Block {
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new SlimeballCollectorBlockEntity();
     }
 

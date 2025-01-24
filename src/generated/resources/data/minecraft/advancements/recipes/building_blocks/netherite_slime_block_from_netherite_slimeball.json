@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:netherite_slimeball"
-            ]
+            "item": "productiveslimes:netherite_slimeball"
           }
         ]
       }

@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "productiveslimes:soul_sand_slime_block"
-            ]
+            "item": "productiveslimes:soul_sand_slime_block"
           }
         ]
       }

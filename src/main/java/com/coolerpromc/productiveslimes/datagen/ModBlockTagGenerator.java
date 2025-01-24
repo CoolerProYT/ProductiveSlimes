@@ -46,5 +46,18 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.SLIMY_FENCE_GATE.get());
         this.tag(BlockTags.WALLS)
                 .add(ModBlocks.SLIMY_COBBLESTONE_WALL.get());
+
+        this.tag(BlockTags.BASE_STONE_OVERWORLD)
+                .add(ModBlocks.SLIMY_STONE.get());
+
+        this.tag(Tags.Blocks.DIRT)
+                .add(ModBlocks.SLIMY_DIRT.get())
+                .add(ModBlocks.SLIMY_GRASS_BLOCK.get());
+
+        this.tag(BlockTags.DOORS)
+                .add(ModBlocks.SLIMY_DOOR.get());
+
+        this.tag(BlockTags.WOODEN_DOORS)
+                .add(ModBlocks.SLIMY_DOOR.get());
     }
 }

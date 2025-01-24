@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_wall_side",
-  "textures": {
-    "wall": "productiveslimes:block/slimy_cobbled_deepslate"
-  }
-}
