@@ -121,6 +121,7 @@ public class ProductiveSlimes
     public void onServerStarting(ServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
+        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -134,7 +135,7 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
+
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
