@@ -124,6 +124,7 @@ public class ProductiveSlimes
     public void onServerStarting(ServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
+        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
