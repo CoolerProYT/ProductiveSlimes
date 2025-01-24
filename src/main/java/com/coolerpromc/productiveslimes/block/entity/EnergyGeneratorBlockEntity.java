@@ -2,10 +2,8 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.screen.EnergyGeneratorMenu;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,7 +21,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -33,7 +30,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.antlr.v4.runtime.misc.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -272,7 +268,9 @@ public class EnergyGeneratorBlockEntity extends TileEntity implements INamedCont
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundNBT tag = new CompoundNBT();
+        save(tag);
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, tag);
     }
 
     @Override

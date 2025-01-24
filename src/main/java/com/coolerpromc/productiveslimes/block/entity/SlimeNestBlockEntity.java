@@ -1,12 +1,10 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
 import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.audio.SoundSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -308,7 +306,9 @@ public class SlimeNestBlockEntity extends TileEntity implements INamedContainerP
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundNBT tag = new CompoundNBT();
+        save(tag);
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, tag);
     }
 
     @Override

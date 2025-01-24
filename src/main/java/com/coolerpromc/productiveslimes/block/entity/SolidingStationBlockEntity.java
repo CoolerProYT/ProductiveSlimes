@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.block.BlockState;
@@ -22,7 +21,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -332,7 +330,9 @@ public class SolidingStationBlockEntity extends TileEntity implements INamedCont
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundNBT tag = new CompoundNBT();
+        save(tag);
+        return new SUpdateTileEntityPacket(this.getBlockPos(), 1, tag);
     }
 
     @Override
