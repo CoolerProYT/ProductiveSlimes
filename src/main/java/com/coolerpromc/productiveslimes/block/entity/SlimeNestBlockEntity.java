@@ -1,6 +1,5 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
@@ -297,7 +296,9 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket(){
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundTag tag = new CompoundTag();
+        save(tag);
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, tag);
     }
 
     @Override

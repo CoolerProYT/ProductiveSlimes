@@ -1,6 +1,5 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -14,8 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.antlr.v4.runtime.misc.NotNull;
-
-import javax.annotation.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity {
     public final int capacity = 50000;
@@ -102,9 +99,10 @@ public class FluidTankBlockEntity extends BlockEntity {
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket(){
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundTag tag = new CompoundTag();
+        save(tag);
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, tag);
     }
-
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         this.load(tag);

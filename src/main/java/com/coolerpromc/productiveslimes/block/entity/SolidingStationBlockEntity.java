@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.core.BlockPos;
@@ -322,9 +321,10 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket(){
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundTag tag = new CompoundTag();
+        save(tag);
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, tag);
     }
-
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         this.load(tag);

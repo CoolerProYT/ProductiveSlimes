@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
@@ -10,8 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -368,7 +365,9 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket(){
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundTag tag = new CompoundTag();
+        save(tag);
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, tag);
     }
 
     @Override

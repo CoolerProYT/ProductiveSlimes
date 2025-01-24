@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ModClientboundBlockEntityDataPacket;
 import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.coolerpromc.productiveslimes.screen.SlimeSqueezerMenu;
 import net.minecraft.core.BlockPos;
@@ -285,7 +284,9 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     }
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket(){
-        return ModClientboundBlockEntityDataPacket.create(this);
+        CompoundTag tag = new CompoundTag();
+        save(tag);
+        return new ClientboundBlockEntityDataPacket(this.getBlockPos(), 0, tag);
     }
 
     @Override
