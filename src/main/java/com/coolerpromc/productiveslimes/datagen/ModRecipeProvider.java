@@ -266,7 +266,7 @@ public class ModRecipeProvider extends RecipeProvider {
             meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 2, 5);
             meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 4, 1);
 
-            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.growthItemKey()), 1, tiers.solidingOutputAmount());
+            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.solidingOutputKey()), 1, tiers.solidingOutputAmount());
 
             dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
 

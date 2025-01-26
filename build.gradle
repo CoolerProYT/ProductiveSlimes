@@ -97,7 +97,7 @@ dependencies {
 
     implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 
-    implementation "curse.maven:jade-324717:${jade_id}"
+    compileOnly "curse.maven:jade-324717:${jade_id}"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.mixin;
 
+import com.coolerpromc.productiveslimes.Config;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModBiomes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -24,19 +25,18 @@ public abstract class SlimeMixin {
      */
     @Overwrite
     protected boolean isDealsDamage() {
-        return false;
+        return Config.CONFIG.vanillaSlimeCanAttackPlayer.get();
     }
 
     @Redirect(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/goal/GoalSelector;addGoal(ILnet/minecraft/world/entity/ai/goal/Goal;)V", ordinal = 1))
     private void redirectSlimeAttackGoal(GoalSelector instance, int priority, Goal goal) {
-        // This effectively skips the addition of the SlimeAttackGoal
-        // No operation (NOP), we do nothing here to skip adding the goal
+        if (Config.CONFIG.vanillaSlimeCanAttackPlayer.get()) {
+            instance.addGoal(priority, goal);
+        }
     }
 
     @Inject(method = "checkSlimeSpawnRules", at = @At("HEAD"), cancellable = true)
-    private static void onCheckSpawnRules(EntityType<Slime> slimeType, LevelAccessor level,
-                                          EntitySpawnReason spawnType, BlockPos pos, RandomSource random,
-                                          CallbackInfoReturnable<Boolean> cir) {
+    private static void onCheckSpawnRules(EntityType<Slime> slimeType, LevelAccessor level, EntitySpawnReason spawnType, BlockPos pos, RandomSource random, CallbackInfoReturnable<Boolean> cir) {
         if (level.getBiome(pos).is(ModBiomes.SLIMY_LAND)) {
             cir.setReturnValue(true);
         }
