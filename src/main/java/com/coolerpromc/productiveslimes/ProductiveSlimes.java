@@ -113,7 +113,7 @@ public class ProductiveSlimes
         ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -125,6 +125,8 @@ public class ProductiveSlimes
     public void onServerStarting(ServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
+        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
+
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -138,7 +140,6 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

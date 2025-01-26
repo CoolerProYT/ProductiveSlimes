@@ -273,7 +273,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             meltingRecipe(output, ModTierLists.getSlimeballItemByName(name), ModTierLists.getBucketItemByName(name), 4, 1);
 
             //Soliding Recipe
-            solidingRecipe(output, ModTierLists.getBucketItemByName(name), ModTierLists.getItemByKey(modTiers.growthItemKey()), 1, modTiers.solidingOutputAmount());
+            solidingRecipe(output, ModTierLists.getBucketItemByName(name), ModTierLists.getItemByKey(modTiers.solidingOutputKey()), 1, modTiers.solidingOutputAmount());
 
             //Dna Extracting Recipe
             dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(name), ModTierLists.getDnaItemByName(name), 1, modTiers.dnaOutputChance());

@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.mixin;
 
+import com.coolerpromc.productiveslimes.Config;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -20,19 +21,19 @@ public abstract class CustomMoveTowardsTargetGoalMixin {
     public abstract PathfinderMob getMob();
     @Inject(method = "start", at = @At("HEAD"), cancellable = true)
     private void start(CallbackInfo ci) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof Slime && !Config.CONFIG.ironGolemCanAttackSlime.get()) {
             ci.cancel();
         }
     }
     @Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
     private void canUse(CallbackInfoReturnable<Boolean> cir) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof Slime && !Config.CONFIG.ironGolemCanAttackSlime.get()) {
             cir.setReturnValue(false);
         }
     }
     @Inject(method = "canContinueToUse", at = @At("HEAD"), cancellable = true)
     private void canContinueToUse(CallbackInfoReturnable<Boolean> cir) {
-        if (getMob().getTarget() instanceof Slime) {
+        if (getMob().getTarget() instanceof Slime && !Config.CONFIG.ironGolemCanAttackSlime.get()) {
             cir.setReturnValue(false);
         }
     }
