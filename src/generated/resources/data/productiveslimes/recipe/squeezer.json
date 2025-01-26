@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "A": {
-      "item": "productiveslimes:slimy_planks"
-    }
+    "A": "productiveslimes:slimy_planks"
   },
   "pattern": [
     " A ",

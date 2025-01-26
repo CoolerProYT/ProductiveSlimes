@@ -1,21 +1,17 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,19 +40,15 @@ public class Slime extends BaseSlime {
     public ItemStack getItem() {
         return item.asItem().getDefaultInstance();
     }
-
     public ItemStack getGrowthItem() {
         return growthItem.asItem().getDefaultInstance();
     }
-
     public EntityType<BaseSlime> getEntityType() {
         return entityType;
     }
-
     public int getColor() {
         return color;
     }
-
     public int getCooldown() {
         return cooldown;
     }
@@ -101,12 +93,11 @@ public class Slime extends BaseSlime {
     }
 
     public static boolean checkMobSpawnRules(
-            EntityType<? extends Mob> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random
+            EntityType<? extends Mob> type, LevelAccessor level, EntitySpawnReason spawnType, BlockPos pos, RandomSource random
     ) {
-        boolean flag = MobSpawnType.ignoresLightRequirements(spawnType) || isBrightEnoughToSpawn(level, pos);
+        boolean flag = EntitySpawnReason.ignoresLightRequirements(spawnType) || isBrightEnoughToSpawn(level, pos);
         return level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && flag;
     }
-
     protected static boolean isBrightEnoughToSpawn(BlockAndTintGetter level, BlockPos pos) {
         return level.getRawBrightness(pos, 0) > 8;
     }

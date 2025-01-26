@@ -2,9 +2,7 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:molten_oak_leaves_bucket"
-    }
+    "productiveslimes:molten_oak_leaves_bucket"
   ],
   "inputCount": 1,
   "output": [

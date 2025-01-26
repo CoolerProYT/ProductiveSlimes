@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:netherrack_slimeball"
-    }
+    "productiveslimes:netherrack_slimeball"
   ],
   "inputCount": 4,
   "output": [

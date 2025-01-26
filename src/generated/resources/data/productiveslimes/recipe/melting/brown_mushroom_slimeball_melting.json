@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:brown_mushroom_slimeball"
-    }
+    "productiveslimes:brown_mushroom_slimeball"
   ],
   "inputCount": 4,
   "output": [

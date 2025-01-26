@@ -11,6 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -24,7 +25,11 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
     private final float outputChance;
 
     public DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance) {
-        this.inputItems = NonNullList.of(Ingredient.EMPTY, inputItems.toArray(new Ingredient[0]));
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        for (int i = 0; i < inputItems.size(); i++) {
+            ingredients.add(inputItems.get(i));
+        }
+        this.inputItems = ingredients;
         this.output = output;
         this.inputCount = inputCount;
         this.energy = energy;
@@ -45,28 +50,31 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput>{
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
-    @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return true;
+    public List<ItemStack> getOutput() {
+        return output;
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
-        return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
+    public RecipeSerializer<? extends Recipe<SingleRecipeInput>> getSerializer() {
+        return (RecipeSerializer<? extends Recipe<SingleRecipeInput>>) ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SingleRecipeInput>> getType() {
         return ModRecipes.DNA_EXTRACTING_TYPE.get();
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(inputItems);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
+    }
+
+    public NonNullList<Ingredient> getInputItems() {
         return inputItems;
     }
 

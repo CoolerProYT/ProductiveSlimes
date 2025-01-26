@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "productiveslimes:block/stripped_slimy_wood_horizontal",
+      "model": "productiveslimes:block/stripped_slimy_wood",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "productiveslimes:block/stripped_slimy_wood"
     },
     "axis=z": {
-      "model": "productiveslimes:block/stripped_slimy_wood_horizontal",
+      "model": "productiveslimes:block/stripped_slimy_wood",
       "x": 90
     }
   }

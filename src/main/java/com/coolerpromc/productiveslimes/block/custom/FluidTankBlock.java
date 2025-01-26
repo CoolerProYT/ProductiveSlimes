@@ -16,7 +16,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -48,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighlightFix {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public FluidTankBlock(Properties pProperties) {
         super(pProperties);
@@ -83,21 +82,22 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+    protected InteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (!pLevel.isClientSide()) {
             bucketUsed(pLevel, pPos, pPlayer);
         }
-        return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.SUCCESS;
     }
+
 
     protected void bucketUsed(Level pLevel, BlockPos pPos, Player pPlayer) {
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
         if (blockEntity instanceof FluidTankBlockEntity fluidTankBlockEntity) {
-            if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof net.minecraft.world.item.BucketItem bucketItem && bucketItem != Items.BUCKET) {
+            if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BucketItem bucketItem && bucketItem != Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
-                    if (bucketItem.content.getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
+                    if (bucketItem.getFluidStack().getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
                         if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
-                            FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
+                            FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
                             int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                             if (filled > 0 && !pPlayer.isCreative()) {
                                 pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -106,7 +106,7 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
                         }
                     }
                 } else {
-                    FluidStack fluidToAdd = new FluidStack(bucketItem.content, 1000);
+                    FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
                     int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
                     if (filled > 0 && !pPlayer.isCreative()) {
                         pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
@@ -177,7 +177,9 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
             ItemStack stack = new ItemStack(this);
             ImmutableFluidStack immutableFluidStack = new ImmutableFluidStack(fluidTankBlockEntity.getFluidStack().copy());
 
-            stack.set(ModDataComponents.FLUID_STACK.get(), immutableFluidStack);
+            if (immutableFluidStack.fluidStack() != FluidStack.EMPTY) {
+                stack.set(ModDataComponents.FLUID_STACK.get(), immutableFluidStack);
+            }
 
             drops.clear();
             drops.add(stack);

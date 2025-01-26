@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "slimy",
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "W": {
-      "item": "productiveslimes:slimy_planks"
-    }
+    "#": "minecraft:stick",
+    "W": "productiveslimes:slimy_planks"
   },
   "pattern": [
     "W#W",

@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:deepslate_slime_block"
-    }
+    "productiveslimes:deepslate_slime_block"
   ],
   "inputCount": 2,
   "output": [

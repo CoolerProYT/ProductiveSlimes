@@ -2,9 +2,7 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:molten_obsidian_bucket"
-    }
+    "productiveslimes:molten_obsidian_bucket"
   ],
   "inputCount": 1,
   "output": [

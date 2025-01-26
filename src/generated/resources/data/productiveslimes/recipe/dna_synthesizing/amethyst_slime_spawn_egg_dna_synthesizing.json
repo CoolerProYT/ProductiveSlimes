@@ -2,15 +2,9 @@
   "type": "productiveslimes:dna_synthesizing",
   "energy": 600,
   "ingredients": [
-    {
-      "item": "productiveslimes:calcite_slime_dna"
-    },
-    {
-      "item": "productiveslimes:glowstone_slime_dna"
-    },
-    {
-      "item": "minecraft:amethyst_shard"
-    }
+    "productiveslimes:calcite_slime_dna",
+    "productiveslimes:glowstone_slime_dna",
+    "minecraft:amethyst_shard"
   ],
   "inputCount": 4,
   "output": [

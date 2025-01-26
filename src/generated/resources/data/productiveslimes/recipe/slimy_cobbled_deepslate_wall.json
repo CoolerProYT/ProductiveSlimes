@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "productiveslimes:slimy_cobbled_deepslate"
-    }
+    "#": "productiveslimes:slimy_cobbled_deepslate"
   },
   "pattern": [
     "###",

@@ -3,13 +3,17 @@ package com.coolerpromc.productiveslimes.entity.slime;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -28,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.function.Predicate;
 
 public abstract class BaseSlime extends Slime {
     private static final EntityDataAccessor<ItemStack> RESOURCE =
@@ -224,15 +227,17 @@ public abstract class BaseSlime extends Slime {
 
     @Override
     public void refreshDimensions() {
-        double width = 0.6F * (float)this.getSize();
-        double height = 0.8F * (float)this.getSize();
-        this.setBoundingBox(new AABB(this.getSize(), 0.0D, -width / 2.0D, width / 2.0D, height, width / 2.0D));
+        double d0 = this.getX();
+        double d1 = this.getY();
+        double d2 = this.getZ();
+        super.refreshDimensions();
+        this.setBoundingBox(new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + (double)this.getBbWidth(), this.getY() + (double)this.getBbHeight(), this.getZ() + (double)this.getBbWidth()));
+        this.setPos(d0, d1, d2);
     }
 
     @Override
     public EntityDimensions getDefaultDimensions(Pose pose) {
-//        return EntityDimensions.scalable((float) (0.5 * (float)this.getSize()), (float) (0.5 * (float)this.getSize()));
-        return super.getDefaultDimensions(pose).scalable(this.getSize(), this.getSize());
+        return super.getDefaultDimensions(pose).scalable((float) (0.5 * this.getSize()), (float) (0.5 * this.getSize()));
     }
 
     public void growthSlime(Player pPlayer, InteractionHand pHand, BaseSlime slime){
@@ -390,24 +395,20 @@ public abstract class BaseSlime extends Slime {
         private final Slime slime;
         private int growTiredTimer;
         private final Item targetItem; // The item to check for
-
         public SlimeFollowGoal(Slime slime, Item targetItem) {
             this.slime = slime;
             this.targetItem = targetItem;
             this.setFlags(EnumSet.of(Goal.Flag.LOOK));
         }
-
         private boolean isPlayerHoldingTargetItem(Player player) {
             return player.getMainHandItem().is(targetItem) || player.getOffhandItem().is(targetItem);
         }
-
         private boolean isInRange(Player player) {
             return this.slime.distanceTo(player) <= 8.0F;
         }
-
         private Player findNearestPlayerWithItem() {
-            return this.slime.level().getNearestPlayer(
-                    TargetingConditions.forNonCombat().selector(livingEntity -> {
+            return getServerLevel(this.slime).getNearestPlayer(
+                    TargetingConditions.forNonCombat().selector((livingEntity, level) -> {
                         if (livingEntity instanceof Player player) {
                             return isPlayerHoldingTargetItem(player) && this.slime.getSize() < 4 && isInRange(player);
                         }
@@ -418,7 +419,6 @@ public abstract class BaseSlime extends Slime {
                     this.slime.getZ()
             );
         }
-
         @Override
         public boolean canUse() {
             Player player = findNearestPlayerWithItem();
@@ -428,13 +428,11 @@ public abstract class BaseSlime extends Slime {
             this.slime.setTarget(player);
             return this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl;
         }
-
         @Override
         public void start() {
             this.growTiredTimer = reducedTickDelay(300);
             super.start();
         }
-
         @Override
         public boolean canContinueToUse() {
             Player player = findNearestPlayerWithItem();
@@ -444,19 +442,16 @@ public abstract class BaseSlime extends Slime {
             this.slime.setTarget(player);
             return --this.growTiredTimer > 0;
         }
-
         @Override
         public boolean requiresUpdateEveryTick() {
             return true;
         }
-
         @Override
         public void tick() {
             Player player = findNearestPlayerWithItem();
             if (player != null) {
                 this.slime.lookAt(player, 10.0F, 10.0F);
             }
-
             if (this.slime.getMoveControl() instanceof BaseSlime.SlimeMoveControl slimeMoveControl) {
                 slimeMoveControl.setDirection(this.slime.getYRot(), false);
             }

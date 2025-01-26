@@ -39,7 +39,6 @@ public class ModRecipes{
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> SQUEEZING_SERIALIZER =
             SERIALIZERS.register("squeezing", () -> SqueezingRecipe.Serializer.INSTANCE);
-
     public static final DeferredHolder<RecipeType<?>, RecipeType<SqueezingRecipe>> SQUEEZING_TYPE =
             TYPES.register("squeezing", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing")));
 

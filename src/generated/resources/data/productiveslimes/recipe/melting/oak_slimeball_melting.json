@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:oak_slimeball"
-    }
+    "productiveslimes:oak_slimeball"
   ],
   "inputCount": 4,
   "output": [

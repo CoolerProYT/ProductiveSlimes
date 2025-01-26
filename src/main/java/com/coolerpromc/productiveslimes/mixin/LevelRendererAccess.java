@@ -1,5 +1,4 @@
 package com.coolerpromc.productiveslimes.mixin;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -11,9 +10,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LevelRenderer.class)
 public interface LevelRendererAccess {
-    @Invoker
+    @Invoker("renderHitOutline")
     void callRenderHitOutline(
             PoseStack matrixStackIn, VertexConsumer bufferIn, Entity entityIn, double xIn, double yIn, double zIn,
-            BlockPos blockPosIn, BlockState blockStateIn
+            BlockPos blockPosIn, BlockState blockStateIn, int packedLightIn
     );
 }

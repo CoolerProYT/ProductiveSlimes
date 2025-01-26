@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "productiveslimes:oak_leaves_slime_block"
-    }
+    "productiveslimes:oak_leaves_slime_block"
   ],
   "result": {
     "count": 9,

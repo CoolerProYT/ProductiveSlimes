@@ -2,9 +2,7 @@
   "type": "productiveslimes:squeezing",
   "energy": 300,
   "ingredients": [
-    {
-      "item": "productiveslimes:slimy_dirt"
-    }
+    "productiveslimes:slimy_dirt"
   ],
   "output": [
     {

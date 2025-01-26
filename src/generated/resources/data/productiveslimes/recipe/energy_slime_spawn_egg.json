@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "item": "minecraft:slime_ball"
-    },
-    "B": {
-      "item": "minecraft:egg"
-    },
-    "C": {
-      "item": "minecraft:redstone"
-    }
+    "A": "minecraft:slime_ball",
+    "B": "minecraft:egg",
+    "C": "minecraft:redstone"
   },
   "pattern": [
     "CAC",

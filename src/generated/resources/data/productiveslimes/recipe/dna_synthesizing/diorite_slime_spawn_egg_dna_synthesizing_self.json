@@ -2,15 +2,9 @@
   "type": "productiveslimes:dna_synthesizing",
   "energy": 600,
   "ingredients": [
-    {
-      "item": "productiveslimes:diorite_slime_dna"
-    },
-    {
-      "item": "productiveslimes:diorite_slime_dna"
-    },
-    {
-      "item": "minecraft:diorite"
-    }
+    "productiveslimes:diorite_slime_dna",
+    "productiveslimes:diorite_slime_dna",
+    "minecraft:diorite"
   ],
   "inputCount": 2,
   "output": [

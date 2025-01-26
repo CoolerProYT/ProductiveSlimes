@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.handler;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -27,7 +28,7 @@ public class IconButton extends Button {
     protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int textureX = isOpen ? closedTextureX : openTextureX;
         int textureY = isOpen ? closedTextureY : openTextureY;
-        pGuiGraphics.blit(iconTexture, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);
+        pGuiGraphics.blit(RenderType::guiTextured, iconTexture, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);
 
         if (this.isHovered()) {
             pGuiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0x80FFFFFF);

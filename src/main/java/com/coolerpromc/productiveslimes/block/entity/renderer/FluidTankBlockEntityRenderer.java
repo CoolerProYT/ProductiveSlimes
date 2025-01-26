@@ -9,24 +9,20 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.WaterFluid;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
 
 public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTankBlockEntity> {
     public FluidTankBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
@@ -42,9 +38,8 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
         if (itemStack instanceof BucketItem bucketItem) {
             color = bucketItem.getColor();
         }
-        else if (itemStack instanceof net.minecraft.world.item.BucketItem bucketItem){
-            color = IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor();
-        }
+
+        if (fluidStack.isEmpty()) return;
 
         Level level = pBlockEntity.getLevel();
         if (level == null) return;
@@ -53,10 +48,11 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
 
         IClientFluidTypeExtensions fluidTypeExtensions = fluidStack.isEmpty() ? IClientFluidTypeExtensions.of(Fluids.WATER.getFluidType()) : IClientFluidTypeExtensions.of(fluidStack.getFluid());
         ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+        if (stillTexture == null) return;
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(stillTexture);
         int tintColor = color;
 
         float height = ((float) fluidStack.getAmount() / 50000) * 0.90f;

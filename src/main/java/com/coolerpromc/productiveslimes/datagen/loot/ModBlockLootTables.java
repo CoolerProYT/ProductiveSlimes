@@ -57,9 +57,7 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.STRIPPED_SLIMY_WOOD.get());
         dropSelf(ModBlocks.SLIMY_PLANKS.get());
         dropSelf(ModBlocks.SLIMY_SAPLING.get());
-
         add(ModBlocks.SLIMY_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.SLIMY_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
-
         dropSelf(ModBlocks.SLIMY_STAIRS.get());
         add(ModBlocks.SLIMY_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_SLAB.get()));
         dropSelf(ModBlocks.SLIMY_PRESSURE_PLATE.get());
@@ -68,26 +66,22 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.SLIMY_FENCE_GATE.get());
         dropSelf(ModBlocks.SLIMY_TRAPDOOR.get());
         add(ModBlocks.SLIMY_DOOR.get(), block -> createDoorTable(ModBlocks.SLIMY_DOOR.get()));
-
         dropSelf(ModBlocks.SLIMY_STONE_STAIRS.get());
         add(ModBlocks.SLIMY_STONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_STONE_SLAB.get()));
         dropSelf(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get());
         dropSelf(ModBlocks.SLIMY_STONE_BUTTON.get());
-
         dropSelf(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get());
         add(ModBlocks.SLIMY_COBBLESTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLESTONE_SLAB.get()));
         dropSelf(ModBlocks.SLIMY_COBBLESTONE_WALL.get());
-
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get());
         add(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get()));
         dropSelf(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get());
 
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
 
-        for(Tier tier : Tier.values()) {
-            ModTiers modTiers = ModTierLists.getTierByName(tier);
-
-            dropSelf(ModTierLists.getBlockByName(modTiers.name()).get());
+        for (Tier tier : Tier.values()){
+            ModTiers tiers = ModTierLists.getTierByName(tier);
+            dropSelf(ModTierLists.getBlockByName(tiers.name()).get());
         }
     }
 

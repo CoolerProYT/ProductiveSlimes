@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class FluidResources {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, ProductiveSlimes.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, ProductiveSlimes.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister<FluidType> FLUIDTYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ProductiveSlimes.MODID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, ProductiveSlimes.MODID);
 
@@ -92,7 +92,7 @@ public class FluidResources {
                 fluidProperties.accept(PROPERTIES);
 
             FLUID_BLOCK = BLOCKS.register("molten_" + name + "_block", () -> block.apply(FLUID, properties.lightLevel((state) -> { return type.getLightLevel(); }).randomTicks().strength(100.0F).noLootTable()));
-            FLUID_BUCKET = ITEMS.register("molten_" + name + "_bucket", () -> new BucketItem(FLUID.get(), new BucketItem.Properties().craftRemainder(Items.BUCKET).stacksTo(64), color));
+            FLUID_BUCKET = ITEMS.registerItem("molten_" + name + "_bucket", properties1 -> new BucketItem(FLUID.get(), properties1.craftRemainder(Items.BUCKET).stacksTo(64), color));
 
             PROPERTIES.bucket(FLUID_BUCKET).block(FLUID_BLOCK);
         }

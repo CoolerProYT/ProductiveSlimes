@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slimy_cobblestone",
   "key": {
-    "#": {
-      "item": "productiveslimes:slimy_cobblestone"
-    }
+    "#": "productiveslimes:slimy_cobblestone"
   },
   "pattern": [
     "#  ",

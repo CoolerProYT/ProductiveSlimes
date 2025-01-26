@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.tier;
 
+import net.minecraft.util.ARGB;
 import net.minecraft.world.level.material.MapColor;
 
 /**
@@ -17,5 +18,9 @@ import net.minecraft.world.level.material.MapColor;
  */
 public record ModTiers(String name, int color, int mapColorId, int cooldown, String growthItemKey, String solidingOutputKey, int solidingOutputAmount, String synthesizingInputItemKey, String synthesizingInputDnaKey1, String synthesizingInputDnaKey2, float dnaOutputChance) {
     public ModTiers {
+    }
+
+    public int getOpaqueColor() {
+        return ARGB.opaque(color);
     }
 }

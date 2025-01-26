@@ -8,13 +8,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-import java.util.List;
-
 public class ModBiomeModifiers {
     public static void boostrap(BootstrapContext<BiomeModifier> context) {
         var biomes = context.lookup(Registries.BIOME);
     }
-
     public static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name));
     }

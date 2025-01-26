@@ -13,6 +13,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -58,7 +59,7 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
                 .entries(display.getInputEntries().get(1)).markInput());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 52, startPoint.y + 34))
-                .entries(Collections.singleton(EntryStacks.of(display.getInputItem()))).markInput());
+                .entries(display.getInputEntries().get(2)).markInput());
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 82, startPoint.y + 55))
                 .entries(Collections.singleton(EntryStacks.of(Items.EGG))).markInput());
@@ -73,21 +74,21 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
         widgets.add(new Widget() {
             @Override
             public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+                Minecraft.getInstance().getTextureManager().getTexture(TEXTURE);
 
                 // Arrow
                 tickCount++;
                 int arrowWidth = (tickCount % 600) * 26 / 600;
                 int dnaHeight = (tickCount % 600) * 23 / 600;
 
-                guiGraphics.blit(TEXTURE, startPoint.x + 77, startPoint.y + 38, 153, 0, arrowWidth, 8);
+                guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 77, startPoint.y + 38, 153, 0, arrowWidth, 8, 256,256);
 
                 // Energy bar
                 int energyScaled = (int) Math.ceil((double) display.getEnergy() / 10000 * 57);
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-                guiGraphics.blit(TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled);
-                guiGraphics.blit(TEXTURE, startPoint.x + 36, startPoint.y + 30, 153, 66, 6, dnaHeight);
+                guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256,256);
+                guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 36, startPoint.y + 30, 153, 66, 6, dnaHeight, 256,256);
             }
 
             @Override

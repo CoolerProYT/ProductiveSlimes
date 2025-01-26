@@ -4,7 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,10 +12,11 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-public class SlimeModel<T extends BaseSlime> extends HierarchicalModel<T> {
+public class SlimeModel extends EntityModel<EntityRenderState> {
     public final int color;
     public static final ModelLayerLocation SLIME_TEXTURE =
             new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/entity/template_slime_entity.png"), "main");
@@ -23,6 +24,7 @@ public class SlimeModel<T extends BaseSlime> extends HierarchicalModel<T> {
     private final ModelPart root;
 
     public SlimeModel(ModelPart pRoot, int color) {
+        super(pRoot);
         this.root = pRoot;
         this.color = color;
     }
@@ -44,20 +46,7 @@ public class SlimeModel<T extends BaseSlime> extends HierarchicalModel<T> {
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
-    @Override
-    public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int pColor) {
-        super.renderToBuffer(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, color);
-    }
-
-    /**
-     * Sets this entity's model rotation angles
-     */
-    @Override
-    public void setupAnim(T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-    }
-
-    @Override
-    public ModelPart root() {
+    public ModelPart getRoot() {
         return this.root;
     }
 }

@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "slimy",
   "key": {
-    "#": {
-      "item": "productiveslimes:slimy_planks"
-    }
+    "#": "productiveslimes:slimy_planks"
   },
   "pattern": [
     "##",

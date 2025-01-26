@@ -1,11 +1,8 @@
 package com.coolerpromc.productiveslimes.event;
-
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.mixin.LevelRendererAccess;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
-import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModRenderTypes;
 import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
@@ -18,7 +15,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -39,13 +35,12 @@ public class ModGameEventBus {
             BlockHitResult rtr = event.getTarget();
             BlockPos pos = rtr.getBlockPos();
             Vec3 renderView = event.getCamera().getPosition();
-
             BlockState targetBlock = world.getBlockState(rtr.getBlockPos());
             if (targetBlock.getBlock() instanceof TranslucentHighlightFix) {
                 ((LevelRendererAccess) event.getLevelRenderer()).callRenderHitOutline(
                         event.getPoseStack(), event.getMultiBufferSource().getBuffer(ModRenderTypes.LINES_NONTRANSLUCENT),
                         living, renderView.x, renderView.y, renderView.z,
-                        pos, targetBlock
+                        pos, targetBlock, 0xFF222222
                 );
                 event.setCanceled(true);
             }
@@ -56,14 +51,13 @@ public class ModGameEventBus {
     public static void onVillagerTrades(VillagerTradesEvent event) {
         if (event.getType() == ModVillagers.SCIENTIST.value()){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
-
             //Novice
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModTierLists.getSlimeballItemByName(Tier.DIRT.getTierName()), 10),
+                    new ItemCost(ModTierLists.getSlimeballItemByName("dirt"), 10),
                     new ItemStack(Items.EMERALD, 1), 8, 2, 0.05f
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModTierLists.getSlimeballItemByName(Tier.STONE.getTierName()), 10),
+                    new ItemCost(ModTierLists.getSlimeballItemByName("stone"), 10),
                     new ItemStack(Items.EMERALD, 1), 8, 2, 0.05f
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
@@ -72,7 +66,7 @@ public class ModGameEventBus {
             ));
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.COPPER.getTierName()).get(), 4), 8, 1, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName("copper").get(), 4), 8, 1, 0.05f
             ));
             //Apprentice
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
@@ -81,19 +75,19 @@ public class ModGameEventBus {
             ));
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.IRON.getTierName()).get(), 4), 4, 10, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName("iron").get(), 4), 4, 10, 0.05f
             ));
             trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 1),
-                    new ItemStack(ModTierLists.getSlimeballItemByName(Tier.STONE.getTierName()).get(), 6), 4, 10, 0.05f
+                    new ItemStack(ModTierLists.getSlimeballItemByName("stone").get(), 6), 4, 10, 0.05f
             ));
             //Journeyman
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModTierLists.getBucketItemByName(Tier.DIRT.getTierName()).get(), 16),
+                    new ItemCost(ModTierLists.getBucketItemByName("dirt").get(), 16),
                     new ItemStack(Items.EMERALD, 1), 4, 15, 0.05f
             ));
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModTierLists.getBucketItemByName(Tier.STONE.getTierName()).get(), 12),
+                    new ItemCost(ModTierLists.getBucketItemByName("stone").get(), 12),
                     new ItemStack(Items.EMERALD, 1), 4, 15, 0.05f
             ));
             trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
@@ -103,35 +97,35 @@ public class ModGameEventBus {
             //Expert
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 32),
-                    new ItemStack(ModTierLists.getDnaItemByName(Tier.IRON.getTierName()).get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName("iron").get(), 1), 4, 20, 0.05f
             ));
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 28),
-                    new ItemStack(ModTierLists.getDnaItemByName(Tier.GOLD.getTierName()).get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName("gold").get(), 1), 4, 20, 0.05f
             ));
             trades.get(4).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 48),
-                    new ItemStack(ModTierLists.getDnaItemByName(Tier.DIAMOND.getTierName()).get(), 1), 4, 20, 0.05f
+                    new ItemStack(ModTierLists.getDnaItemByName("diamond").get(), 1), 4, 20, 0.05f
             ));
             //Master
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 64),
-                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.DIAMOND.getTierName()).get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName("diamond").get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 40),
-                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.GOLD.getTierName()).get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName("gold").get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 48),
-                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.IRON.getTierName()).get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName("iron").get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
                     new ItemCost(Items.EMERALD, 32),
-                    new ItemStack(ModTierLists.getSpawnEggItemByName(Tier.COPPER.getTierName()).get(), 1), 2, 30, 0.05f
+                    new ItemStack(ModTierLists.getSpawnEggItemByName("copper").get(), 1), 2, 30, 0.05f
             ));
             trades.get(5).add((pTrader, pRandom) -> new MerchantOffer(
-                    new ItemCost(ModTierLists.getSpawnEggItemByName(Tier.DIRT.getTierName()).get(), 1),
+                    new ItemCost(ModTierLists.getSpawnEggItemByName("dirt").get(), 1),
                     new ItemStack(Items.EMERALD, 12), 2, 30, 0.05f
             ));
         }

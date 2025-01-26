@@ -6,6 +6,7 @@ import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -74,16 +75,14 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         return this.outputs.isEmpty() ? Items.AIR : this.outputs.get(0).getItem();
     }
 
-
     @Override
-    public void save(RecipeOutput pRecipeOutput, ResourceLocation pId) {
+    public void save(RecipeOutput pRecipeOutput, ResourceKey<Recipe<?>> p_379998_) {
         Advancement.Builder advancement = pRecipeOutput.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId))
-                .rewards(AdvancementRewards.Builder.recipe(pId))
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(p_379998_))
+                .rewards(AdvancementRewards.Builder.recipe(p_379998_))
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
 
-        // Create the recipe instance
         MeltingRecipe recipe = new MeltingRecipe(
                 this.ingredients,
                 this.outputs,
@@ -91,7 +90,6 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
                 this.energy
         );
 
-        // Pass the recipe and advancement to the output
-        pRecipeOutput.accept(pId, recipe, advancement.build(pId.withPrefix("recipes/")));
+        pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.location().withPrefix("recipes/")));
     }
 }

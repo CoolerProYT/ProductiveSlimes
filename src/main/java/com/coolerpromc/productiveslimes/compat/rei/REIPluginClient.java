@@ -2,21 +2,14 @@ package com.coolerpromc.productiveslimes.compat.rei;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.compat.rei.DnaExtracting.DnaExtractingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.DnaExtracting.DnaExtractingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Soliding.SolidingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.Soliding.SolidingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Squeezing.SqueezingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.Squeezing.SqueezingRecipeDisplay;
-import com.coolerpromc.productiveslimes.recipe.*;
 import com.coolerpromc.productiveslimes.screen.*;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 
@@ -29,15 +22,6 @@ public class REIPluginClient implements REIClientPlugin {
         registry.add(new MeltingCategory(), configuration -> configuration.addWorkstations(EntryStacks.of(ModBlocks.MELTING_STATION.get())));
         registry.add(new SolidingCategory(), configuration -> configuration.addWorkstations(EntryStacks.of(ModBlocks.LIQUID_SOLIDING_STATION.get())));
         registry.add(new SqueezingCategory(), configuration -> configuration.addWorkstations(EntryStacks.of(ModBlocks.SLIME_SQUEEZER.get())));
-    }
-
-    @Override
-    public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(DnaExtractingRecipe.class, ModRecipes.DNA_EXTRACTING_TYPE.get(), DnaExtractingRecipeDisplay::new);
-        registry.registerRecipeFiller(DnaSynthesizingRecipe.class, ModRecipes.DNA_SYNTHESIZING_TYPE.get(), DnaSynthesizingRecipeDisplay::new);
-        registry.registerRecipeFiller(MeltingRecipe.class, ModRecipes.MELTING_TYPE.get(), MeltingRecipeDisplay::new);
-        registry.registerRecipeFiller(SolidingRecipe.class, ModRecipes.SOLIDING_TYPE.get(), SolidingRecipeDisplay::new);
-        registry.registerRecipeFiller(SqueezingRecipe.class, ModRecipes.SQUEEZING_TYPE.get(), SqueezingRecipeDisplay::new);
     }
 
     @Override

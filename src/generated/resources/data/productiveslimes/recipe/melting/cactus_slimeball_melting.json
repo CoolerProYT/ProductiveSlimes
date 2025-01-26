@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:cactus_slimeball"
-    }
+    "productiveslimes:cactus_slimeball"
   ],
   "inputCount": 4,
   "output": [

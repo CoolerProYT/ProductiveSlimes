@@ -2,15 +2,13 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:molten_brown_mushroom_bucket"
-    }
+    "productiveslimes:molten_brown_mushroom_bucket"
   ],
   "inputCount": 1,
   "output": [
     {
       "count": 2,
-      "id": "minecraft:brown_mushroom_block"
+      "id": "minecraft:brown_mushroom"
     },
     {
       "count": 1,

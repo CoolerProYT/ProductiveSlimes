@@ -2,15 +2,9 @@
   "type": "productiveslimes:dna_synthesizing",
   "energy": 600,
   "ingredients": [
-    {
-      "item": "productiveslimes:glowstone_slime_dna"
-    },
-    {
-      "item": "productiveslimes:glowstone_slime_dna"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    }
+    "productiveslimes:glowstone_slime_dna",
+    "productiveslimes:glowstone_slime_dna",
+    "minecraft:glowstone_dust"
   ],
   "inputCount": 2,
   "output": [

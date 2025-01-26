@@ -1,9 +1,13 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.*;
-import com.coolerpromc.productiveslimes.screen.*;
+import com.coolerpromc.productiveslimes.screen.DnaExtractorScreen;
+import com.coolerpromc.productiveslimes.screen.DnaSynthesizerScreen;
+import com.coolerpromc.productiveslimes.screen.MeltingStationScreen;
+import com.coolerpromc.productiveslimes.screen.SolidingStationScreen;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -13,10 +17,14 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.level.Level;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,45 +38,44 @@ public class JEPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new MeltingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new SolidingCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new DnaExtractingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new DnaSynthesizingCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new SqueezingCategory(registration.getJeiHelpers().getGuiHelper()));
+//        registration.addRecipeCategories(new DnaSynthesizingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        ServerLevel serverLevel = Minecraft.getInstance().level.getServer().overworld();
+        RecipeManager recipeManager = serverLevel.recipeAccess();
+        Iterable<RecipeHolder<?>> recipe = recipeManager.getRecipes();
+        RecipeMap recipeMap = RecipeMap.create(recipe);
 
-        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
-        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+//        List<RecipeHolder<MeltingRecipe>> meltingRecipes = recipeManager.getAllRecipesFor(ModRecipes.MELTING_TYPE.get());
+//        List<MeltingRecipe> meltingRecipeList = meltingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+//
+//        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
+//        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        List<RecipeHolder<SolidingRecipe>> solidingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SOLIDING_TYPE.get());
-        List<SolidingRecipe> solidingRecipeList = solidingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
-
-        List<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_EXTRACTING_TYPE.get());
+        Collection<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeMap.byType(ModRecipes.DNA_EXTRACTING_TYPE.get());
         List<DnaExtractingRecipe> dnaExtractingRecipeList = dnaExtractingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
-        List<DnaSynthesizingRecipe> dnaSynthesizingRecipeList = dnaSynthesizingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
+//        List<RecipeHolder<DnaSynthesizingRecipe>> dnaSynthesizingRecipes = recipeManager.getAllRecipesFor(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
+//        List<DnaSynthesizingRecipe> dnaSynthesizingRecipeList = dnaSynthesizingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
 
-        List<RecipeHolder<SqueezingRecipe>> squeezingRecipes = recipeManager.getAllRecipesFor(ModRecipes.SQUEEZING_TYPE.get());
-        List<SqueezingRecipe> squeezingRecipeList = squeezingRecipes.stream().map(RecipeHolder::value).collect(Collectors.toList());
-
-        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
-        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
+//        registration.addRecipes(MeltingCategory.MELTING_TYPE, meltingRecipeList);
+//        registration.addRecipes(SolidingCategory.SOLIDING_TYPE, solidingRecipeList);
         registration.addRecipes(DnaExtractingCategory.DNA_EXTRACTING_TYPE, dnaExtractingRecipeList);
-        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
-        registration.addRecipes(SqueezingCategory.SQUEEZING_TYPE, squeezingRecipeList);
+//        registration.addRecipes(DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE, dnaSynthesizingRecipeList);
+
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
-        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
+//        registration.addRecipeClickArea(MeltingStationScreen.class, 77, 38, 26, 8, MeltingCategory.MELTING_TYPE);
+//        registration.addRecipeClickArea(SolidingStationScreen.class, 77, 38, 26, 8, SolidingCategory.SOLIDING_TYPE);
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
-        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
-        registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
+//        registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
     }
 }
+*/

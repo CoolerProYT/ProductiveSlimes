@@ -21,37 +21,27 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-
 public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<SlimeSqueezerBlockEntity> {
     public SlimeSqueezerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
-
     }
-
     @Override
     public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
         var squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
-
         float progressRatio = (float) blockEntity.getData().get(0) / (float) blockEntity.getData().get(1);
         float startPoint = 0.8f;
         float endPoint = 0.15f;
-
         float squeezerPosition = startPoint - ((startPoint - endPoint) * progressRatio);
-
         float x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0;
-
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack inputItem = blockEntity.getInputStack();
         ItemStack outputItem1 = blockEntity.getOutputStack(0);
         ItemStack outputItem2 = blockEntity.getOutputStack(1);
-
         Direction facing = blockEntity.getBlockState().getValue(SlimeSqueezerBlock.FACING);
-
         // Render the squeezer
         poseStack.pushPose();
         poseStack.translate(0, squeezerPosition, 0);
         renderModel(squeezer, poseStack, buffer, light, overlay);
         poseStack.popPose();
-
         // Render the input item
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.09, 0.5f);
@@ -59,7 +49,6 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.mulPose(Axis.XP.rotationDegrees(270));
         itemRenderer.renderStatic(inputItem, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
         poseStack.popPose();
-
         switch (facing){
             case SOUTH:
                 x1 = 0.0625f; x2 = 0.9375f; y1 = 0.175f; y2 = 0.175f; z1 = 0.5f; z2 = 0.5f;
@@ -74,7 +63,6 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
                 x1 = 0.5f; x2 = 0.5f; y1 = 0.175f; y2 = 0.175f; z1 = 0.0625f; z2 = 0.9375f;
                 break;
         }
-
         // Render the output item 1
         poseStack.pushPose();
         poseStack.translate(x1, y1, z1);
@@ -82,7 +70,6 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         poseStack.mulPose(Axis.XP.rotationDegrees(270));
         itemRenderer.renderStatic(outputItem1, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
         poseStack.popPose();
-
         // Render the output item 2
         poseStack.pushPose();
         poseStack.translate(x2, y2, z2);
@@ -91,7 +78,6 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         itemRenderer.renderStatic(outputItem2, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }
-
     private void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
         RandomSource rand = RandomSource.create();
         for (Direction direction : Direction.values()) {
@@ -107,7 +93,6 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
             );
         }
     }
-
     private int getLightLevel(Level level, BlockPos pos) {
         int bLight = level.getBrightness(LightLayer.BLOCK, pos);
         int sLight = level.getBrightness(LightLayer.SKY, pos);

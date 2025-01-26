@@ -3,12 +3,11 @@ package com.coolerpromc.productiveslimes.block.custom;
 import com.coolerpromc.productiveslimes.block.entity.CableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -138,16 +137,17 @@ public class CableBlock extends Block implements EntityBlock {
     private boolean canConnectBasedOnBlock(Block block) {
         return block instanceof IEnergyStorage;
     }
+
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor,
-                                  BlockPos pos, BlockPos neighborPos) {
-        if (levelAccessor instanceof Level level) {
+    protected BlockState updateShape(BlockState state, LevelReader p_374332_, ScheduledTickAccess p_374457_, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource p_374120_) {
+        if (p_374332_ instanceof Level level) {
             boolean canConnect = this.canConnectTo(level, neighborPos, direction);
             return state.setValue(getPropertyForDirection(direction), canConnect);
         } else {
             return state;
         }
     }
+
     private BooleanProperty getPropertyForDirection(Direction direction) {
         switch (direction) {
             case UP: return UP;

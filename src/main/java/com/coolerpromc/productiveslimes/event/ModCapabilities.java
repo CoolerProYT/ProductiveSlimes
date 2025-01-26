@@ -96,7 +96,6 @@ public class ModCapabilities {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.SLIME_SQUEEZER_BE.get(),
                 (be, side) -> be.getEnergyHandler());
-
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.SLIME_SQUEEZER_BE.get(),
                 (be, side) -> {

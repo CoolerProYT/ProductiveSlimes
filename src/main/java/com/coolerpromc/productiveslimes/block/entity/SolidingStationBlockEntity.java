@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
+//import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -231,7 +233,6 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
         return checkSlot(results);
     }
-
     private boolean checkSlot(List<ItemStack> results){
         int count = 0;
         int emptyCount = 0;
@@ -259,7 +260,8 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+        ServerLevel level = (ServerLevel) this.level;
+        return level.recipeAccess().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {

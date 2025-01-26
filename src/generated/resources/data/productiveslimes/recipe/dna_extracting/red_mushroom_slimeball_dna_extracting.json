@@ -2,9 +2,7 @@
   "type": "productiveslimes:dna_extracting",
   "energy": 400,
   "ingredients": [
-    {
-      "item": "productiveslimes:red_mushroom_slimeball"
-    }
+    "productiveslimes:red_mushroom_slimeball"
   ],
   "inputCount": 1,
   "output": [

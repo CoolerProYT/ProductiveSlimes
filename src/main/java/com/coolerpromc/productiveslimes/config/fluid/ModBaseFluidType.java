@@ -6,11 +6,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.awt.*;
 
@@ -98,14 +100,17 @@ public class ModBaseFluidType extends FluidType {
         }
 
         @Override
-        public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-            return FOG_COLOR;
+        public Vector4f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
+            return new Vector4f(FOG_COLOR.x, FOG_COLOR.y, FOG_COLOR.z, 1.0F);
         }
 
         @Override
-        public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
-            RenderSystem.setShaderFogStart(fogStart);
-            RenderSystem.setShaderFogEnd(fogEnd);
+        public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, FogParameters fogParameters) {
+            float r = FOG_COLOR.x;
+            float g = FOG_COLOR.y;
+            float b = FOG_COLOR.z;
+            float a = 1.0F;
+            return new FogParameters(1f, 6f, FogShape.SPHERE, r, g, b, a);
         }
     }
 }

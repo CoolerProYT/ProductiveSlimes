@@ -2,9 +2,7 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": [
-    {
-      "item": "productiveslimes:quartz_slimeball"
-    }
+    "productiveslimes:quartz_slimeball"
   ],
   "inputCount": 4,
   "output": [

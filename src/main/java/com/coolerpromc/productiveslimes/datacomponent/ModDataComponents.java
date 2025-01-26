@@ -24,7 +24,6 @@ public class ModDataComponents {
     private static <T>DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderUnaryOperator) {
         return REGISTRY.register(name, () -> builderUnaryOperator.apply(DataComponentType.builder()).build());
     }
-
     public static void register(IEventBus eventBus) {
         REGISTRY.register(eventBus);
     }

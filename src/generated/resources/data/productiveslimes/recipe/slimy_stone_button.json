@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "slimy_stone",
   "ingredients": [
-    {
-      "item": "productiveslimes:slimy_stone"
-    }
+    "productiveslimes:slimy_stone"
   ],
   "result": {
     "count": 1,

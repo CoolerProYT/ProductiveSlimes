@@ -9,39 +9,51 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeModel<BaseSlime>> {
-    private static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
+public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeRenderState, SlimeModel> {
+    public static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
 
     public BaseSlimeRenderer(EntityRendererProvider.Context pContext, int color) {
-        super(pContext, new SlimeModel<>(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);
-        this.addLayer(new SlimeOuterLayer<>(this, pContext.getModelSet(), color));
+        super(pContext, new SlimeModel(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);
+        this.addLayer(new SlimeOuterLayer(this, pContext.getModelSet(), color));
     }
 
     @Override
-    public void render(BaseSlime pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-        this.shadowRadius = 0.15f;
-        float scale = pEntity.getSize();
-        pPoseStack.scale(scale, scale, scale);
-
-        super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+    public void render(SlimeRenderState p_361886_, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+        this.shadowRadius = 0.25F * (float)p_361886_.size;
+        super.render(p_361886_, pPoseStack, pBuffer, pPackedLight);
     }
 
     @Override
-    protected void scale(BaseSlime pLivingEntity, PoseStack pPoseStack, float pPartialTickTime) {
-        float f = 0.999F;
-        pPoseStack.scale(0.999F, 0.999F, 0.999F);
-        pPoseStack.translate(0.0F, 0.001F, 0.0F);
-        float f1 = 1.0f;
-        float f2 = Mth.lerp(pPartialTickTime, pLivingEntity.oSquish, pLivingEntity.squish) / (f1 * 0.5F + 1.0F);
-        float f3 = 1.0F / (f2 + 1.0F);
-        pPoseStack.scale(f3 * f1, 1.0F / f3 * f1, f3 * f1);
+    public SlimeRenderState createRenderState() {
+        return new SlimeRenderState();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BaseSlime pEntity) {
+    public ResourceLocation getTextureLocation(SlimeRenderState p_368654_) {
         return BASE_TEXTURE;
+    }
+
+    @Override
+    protected void scale(SlimeRenderState p_362272_, PoseStack p_115315_) {
+        float f = 0.999F;
+        p_115315_.scale(0.999F, 0.999F, 0.999F);
+        p_115315_.translate(0.0F, 0.001F, 0.0F);
+        float f1 = (float)p_362272_.size;
+        float f2 = p_362272_.squish / (f1 * 0.5F + 1.0F);
+        float f3 = 1.0F / (f2 + 1.0F);
+        p_115315_.scale(f3 * f1, 1.0F / f3 * f1, f3 * f1);
+    }
+
+    @Override
+    public void extractRenderState(BaseSlime p_362733_, SlimeRenderState p_360515_, float p_361157_) {
+        super.extractRenderState(p_362733_, p_360515_, p_361157_);
+        p_360515_.squish = Mth.lerp(p_361157_, p_362733_.oSquish, p_362733_.squish);
+        p_360515_.size = p_362733_.getSize();
     }
 }

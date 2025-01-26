@@ -3,9 +3,6 @@ package com.coolerpromc.productiveslimes.item;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.fluid.ModFluids;
-import com.coolerpromc.productiveslimes.item.custom.DnaItem;
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
@@ -29,7 +26,6 @@ public class ModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(Items.SLIME_BLOCK))
                     .title(Component.translatable("creativetab.productiveslimes"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.GUIDEBOOK);
                         pOutput.accept(ModItems.ENERGY_MULTIPLIER_UPGRADE);
                         pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_1);
                         pOutput.accept(ModItems.SLIME_NEST_SPEED_UPGRADE_2);
@@ -51,8 +47,8 @@ public class ModCreativeTabs {
                         }
 
                         for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBlockByName(modTiers.name()).get());
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBlockByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -60,9 +56,10 @@ public class ModCreativeTabs {
                         }
 
                         pOutput.accept(ModItems.ENERGY_SLIME_BALL);
+
                         for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSlimeballItemByName(modTiers.name()).get());
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSlimeballItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -72,8 +69,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.SLIME_DNA);
 
                         for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getDnaItemByName(modTiers.name()).get());
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getDnaItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -81,9 +78,10 @@ public class ModCreativeTabs {
                         }
 
                         pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG);
+
                         for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSpawnEggItemByName(modTiers.name()).get());
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getSpawnEggItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -91,12 +89,12 @@ public class ModCreativeTabs {
                         }
 
                         for (Tier tier : Tier.values()){
-                            ModTiers modTiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBucketItemByName(modTiers.name()).get());
+                            ModTiers tiers = ModTierLists.getTierByName(tier);
+                            pOutput.accept(ModTierLists.getBucketItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")));
+                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value());
                         }
                     }).build());
 

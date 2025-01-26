@@ -3,9 +3,7 @@
   "category": "building",
   "group": "bark",
   "key": {
-    "#": {
-      "item": "productiveslimes:slimy_log"
-    }
+    "#": "productiveslimes:slimy_log"
   },
   "pattern": [
     "##",

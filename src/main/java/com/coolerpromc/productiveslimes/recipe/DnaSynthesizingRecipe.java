@@ -6,17 +6,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
-import org.jline.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -75,23 +71,30 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return true;
+    public RecipeSerializer<? extends Recipe<MultipleRecipeInput>> getSerializer() {
+        return (RecipeSerializer<? extends Recipe<MultipleRecipeInput>>) ModRecipes.DNA_SYNTHESIZING_SERIALIZER.get();
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
-        return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.DNA_SYNTHESIZING_SERIALIZER.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<MultipleRecipeInput>> getType() {
         return ModRecipes.DNA_SYNTHESIZING_TYPE.get();
+    }
+
+    @Override
+    public List<RecipeDisplay> display() {
+        return List.of(
+
+        );
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.create(inputItems);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
     }
 
     public int getEnergy() {

@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -15,6 +16,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -48,28 +50,33 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
     }
 
     @Override
-    public IDrawable getBackground() {
-        return this.background;
-    }
-
-    @Override
     public IDrawable getIcon() {
         return this.icon;
     }
 
     @Override
+    public int getWidth() {
+        return 168;
+    }
+
+    @Override
+    public int getHeight() {
+        return 77;
+    }
+
+    @Override
     public void draw(DnaExtractingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Minecraft.getInstance().getTextureManager().bindForSetup(TEXTURE);
+        Minecraft.getInstance().getTextureManager().getTexture(TEXTURE);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        guiGraphics.blit(TEXTURE, 72, 33, 176, 0, arrowWidth, 8);
+        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        guiGraphics.blit(TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled);
+        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.getEnergy());
 
@@ -84,10 +91,11 @@ public class DnaExtractingCategory implements IRecipeCategory<DnaExtractingRecip
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, DnaExtractingRecipe DnaExtractingRecipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,29,29).addIngredients(DnaExtractingRecipe.getIngredients().get(0));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,29,29).addIngredients(DnaExtractingRecipe.getInputItems().get(0));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,110,29).addItemStack(DnaExtractingRecipe.getOutputs().get(0));
         if (DnaExtractingRecipe.getOutputs().size() > 1) {
             iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).addItemStack(DnaExtractingRecipe.getOutputs().get(1));
         }
     }
 }
+*/
