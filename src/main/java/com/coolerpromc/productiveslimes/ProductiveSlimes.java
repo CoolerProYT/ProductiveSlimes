@@ -48,7 +48,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -107,6 +109,7 @@ public class ProductiveSlimes
         ModTerrablender.registerBiomes();
 
         MinecraftForge.EVENT_BUS.register(this);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -118,6 +121,7 @@ public class ProductiveSlimes
     public void onServerStarting(ServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
+        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -131,7 +135,7 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().getServer().getCommands().performCommand(event.getEntity().getServer().getCommands().getDispatcher().parse("reload", event.getEntity().getServer().createCommandSourceStack()), "reload");
+
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
