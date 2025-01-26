@@ -82,7 +82,7 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-//        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
