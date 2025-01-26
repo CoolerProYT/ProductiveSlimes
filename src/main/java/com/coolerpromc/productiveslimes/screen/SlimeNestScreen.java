@@ -46,8 +46,13 @@ public class SlimeNestScreen extends ContainerScreen<SlimeNestMenu> {
         ITextComponent size = new StringTextComponent("Slime Size: " + menu.getSlimeSize()).setStyle(Style.EMPTY.withColor(Color.fromRgb(0xa5f5a6)));
         ITextComponent multiplier = new StringTextComponent("Multiplier: " + menu.getMultiplier()).setStyle(Style.EMPTY.withColor(Color.fromRgb(0xa5f5a6)));
         ITextComponent dropItem = new StringTextComponent("Drop Item: ").append(new TranslationTextComponent(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(Color.fromRgb(0xa5f5a6)));
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+
+        int guiLeft = (width - imageWidth) / 2;
+        int guiTop = (height - imageHeight) / 2;
+
+        int textX = guiLeft + 54;
+        int textY = guiTop + 17;
+
         if (!(menu.hasSlime() && menu.hasOutputSlot())) {
             if (!menu.hasOutputSlot()) {
                 cd = new StringTextComponent("No Output Slot").setStyle(Style.EMPTY.withColor(Color.fromRgb(0xd59c20)));
@@ -55,28 +60,40 @@ public class SlimeNestScreen extends ContainerScreen<SlimeNestMenu> {
                 cd = new StringTextComponent("No Slime Found").setStyle(Style.EMPTY.withColor(Color.fromRgb(0xc70d0d)));
             }
         }
+
         poseStack.pushPose();
+        poseStack.translate(textX, textY, 0);
         poseStack.scale(0.75f, 0.75f, 0.75f);
-        drawString(poseStack, Minecraft.getInstance().font, cd, x + 123, y + 40, 0xFFFFFF);
-        if (menu.hasSlime()) {
-            drawString(poseStack, Minecraft.getInstance().font, size, x + 123, y + 52, 0xFFFFFF);
-        }
+        drawString(poseStack, Minecraft.getInstance().font, cd, 0, 0, 0xFFFFFF);
         poseStack.popPose();
+
+        if (menu.hasSlime()) {
+            poseStack.pushPose();
+            poseStack.translate(textX, textY + 8, 0);
+            poseStack.scale(0.75f, 0.75f, 0.75f);
+            drawString(poseStack, Minecraft.getInstance().font, size, 0, 0, 0xFFFFFF);
+            poseStack.popPose();
+        }
+
         if (menu.hasSlime()) {
             poseStack.pushPose();
             if (String.valueOf(menu.getMultiplier()).length() >= 6) {
+                poseStack.translate(textX, textY + 16, 0);
                 poseStack.scale(0.7f, 0.7f, 0.7f);
-                drawString(poseStack, Minecraft.getInstance().font, multiplier, x + 143, y + 72, 0xFFFFFF);
+                drawString(poseStack, Minecraft.getInstance().font, multiplier, 0, 0, 0xFFFFFF);
             } else {
+                poseStack.translate(textX, textY + 16, 0);
                 poseStack.scale(0.75f, 0.75f, 0.75f);
-                drawString(poseStack, Minecraft.getInstance().font, multiplier, x + 123, y + 64, 0xFFFFFF);
+                drawString(poseStack, Minecraft.getInstance().font, multiplier, 0, 0, 0xFFFFFF);
             }
             poseStack.popPose();
+
             List<IReorderingProcessor> lines = font.split(dropItem, 85);
             for (int i = 0; i < lines.size(); i++) {
                 poseStack.pushPose();
+                poseStack.translate(textX, textY + 24 + (i * font.lineHeight - (2 * i)), 0);
                 poseStack.scale(0.75f, 0.75f, 0.75f);
-                font.draw(poseStack, lines.get(i), x + 123, y + 76 + (i * font.lineHeight), 0xFFFFFF);
+                font.draw(poseStack, lines.get(i), 0, 0, 0xFFFFFF);
                 poseStack.popPose();
             }
         }
