@@ -50,40 +50,51 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
         Component multiplier = Component.literal("Multiplier: " + menu.getMultiplier()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
         Component dropItem = Component.literal("Drop Item: ").append(Component.translatable(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
 
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+        int guiLeft = (width - imageWidth) / 2;
+        int guiTop = (height - imageHeight) / 2;
 
-        if (!(menu.hasSlime() && menu.hasOutputSlot())){
-            if(!menu.hasOutputSlot()){
+        int textX = guiLeft + 54;
+        int textY = guiTop + 17;
+
+        if (!(menu.hasSlime() && menu.hasOutputSlot())) {
+            if (!menu.hasOutputSlot()) {
                 cd = Component.literal("No Output Slot").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xd59c20)));
-            }
-            else {
+            } else {
                 cd = Component.literal("No Slime Found").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xc70d0d)));
             }
         }
 
         pGuiGraphics.pose().pushPose();
+        pGuiGraphics.pose().translate(textX, textY, 0);
         pGuiGraphics.pose().scale(0.75f, 0.75f, 0.75f);
-        pGuiGraphics.drawString(Minecraft.getInstance().font, cd, x + 123,  y + 40, 0xFFFFFF);
-        if (menu.hasSlime()){
-            pGuiGraphics.drawString(Minecraft.getInstance().font, size, x + 123,  y + 52, 0xFFFFFF);
-        }
+        pGuiGraphics.drawString(Minecraft.getInstance().font, cd, 0, 0, 0xFFFFFF);
         pGuiGraphics.pose().popPose();
-        if (menu.hasSlime()){
-            pGuiGraphics.pose().pushPose();
 
-            if (String.valueOf(menu.getMultiplier()).length() >= 6){
+        if (menu.hasSlime()) {
+            pGuiGraphics.pose().pushPose();
+            pGuiGraphics.pose().translate(textX, textY + 8, 0);
+            pGuiGraphics.pose().scale(0.75f, 0.75f, 0.75f);
+            pGuiGraphics.drawString(Minecraft.getInstance().font, size, 0, 0, 0xFFFFFF);
+            pGuiGraphics.pose().popPose();
+        }
+
+        if (menu.hasSlime()) {
+            pGuiGraphics.pose().pushPose();
+            if (String.valueOf(menu.getMultiplier()).length() >= 6) {
+                pGuiGraphics.pose().translate(textX, textY + 16, 0);
                 pGuiGraphics.pose().scale(0.7f, 0.7f, 0.7f);
-                pGuiGraphics.drawString(Minecraft.getInstance().font, multiplier, x + 143,  y + 72, 0xFFFFFF);
-            }
-            else{
+                pGuiGraphics.drawString(Minecraft.getInstance().font, multiplier, 0, 0, 0xFFFFFF);
+            } else {
+                pGuiGraphics.pose().translate(textX, textY + 16, 0);
                 pGuiGraphics.pose().scale(0.75f, 0.75f, 0.75f);
-                pGuiGraphics.drawString(Minecraft.getInstance().font, multiplier, x + 123,  y + 64, 0xFFFFFF);
+                pGuiGraphics.drawString(Minecraft.getInstance().font, multiplier, 0, 0, 0xFFFFFF);
             }
             pGuiGraphics.pose().popPose();
+
             pGuiGraphics.pose().pushPose();
+            pGuiGraphics.pose().translate(textX, textY + 24, 0);
             pGuiGraphics.pose().scale(0.75f, 0.75f, 0.75f);
-            pGuiGraphics.drawWordWrap(Minecraft.getInstance().font, dropItem, x + 123,  y + 76, 85,  0xFFFFFF);
+            pGuiGraphics.drawWordWrap(Minecraft.getInstance().font, dropItem, 0, 0, 85, 0xFFFFFF);
             pGuiGraphics.pose().popPose();
         }
     }
