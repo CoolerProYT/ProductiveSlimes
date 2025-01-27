@@ -32,6 +32,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         }
 
         var dnaTag = tag(ModTags.Items.DNA_ITEM);
+        dnaTag.add(ModItems.SLIME_DNA.get());
 
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);

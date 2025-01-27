@@ -258,6 +258,8 @@ public class ModRecipeProvider extends RecipeProvider {
         slimeBlockToSlimeBall(output, ModBlocks.ENERGY_SLIME_BLOCK, ModItems.ENERGY_SLIME_BALL);
         slimeBallToSlimeBlock(output, ModItems.ENERGY_SLIME_BALL, ModBlocks.ENERGY_SLIME_BLOCK);
 
+        dnaExtractingRecipe(output, Items.SLIME_BALL, ModItems.SLIME_DNA, 1, 0.9f);
+
         for (Tier tier : Tier.values()){
             ModTiers tiers = ModTierLists.getTierByName(tier);
             slimeBlockToSlimeBall(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSlimeballItemByName(tiers.name()));
