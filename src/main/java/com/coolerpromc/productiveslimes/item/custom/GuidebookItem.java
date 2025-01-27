@@ -22,7 +22,7 @@ public class GuidebookItem extends Item {
     public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide) {
             pPlayer.openMenu(new SimpleMenuProvider(
-                    (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory, (ServerLevel) pLevel),
+                    (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory),
                     Component.translatable("item.productiveslimes.guidebook")
             ));
         }

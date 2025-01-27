@@ -30,7 +30,9 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.block.Block;
@@ -46,6 +48,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
@@ -62,6 +65,7 @@ import terrablender.api.SurfaceRuleManager;
 public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
+    public static ServerLevel serverLevel;
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
@@ -120,7 +124,7 @@ public class ProductiveSlimes
     {
         CustomContentRegistry.handleDatapack(event.getServer());
         event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
-
+        serverLevel = event.getServer().overworld();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -134,6 +138,7 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        event.getEntity().displayClientMessage(Component.literal("Message From Productive Slimes: If you are on dedicated server, please join single player world before opening guidebook on server to avoid crashing. Sorry for the inconvenience.").withColor(0xFF0000), false);
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

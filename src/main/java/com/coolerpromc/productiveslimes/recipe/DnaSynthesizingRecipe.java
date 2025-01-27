@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
@@ -82,9 +83,11 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
 
     @Override
     public List<RecipeDisplay> display() {
-        return List.of(
+        return List.of();
+    }
 
-        );
+    public String getName() {
+        return BuiltInRegistries.ITEM.getKey(output.get(0).getItem()).getPath();
     }
 
     @Override
