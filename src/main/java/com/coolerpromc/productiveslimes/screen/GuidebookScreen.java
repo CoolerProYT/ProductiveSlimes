@@ -1,378 +1,267 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.gui.CustomButton;
-import com.coolerpromc.productiveslimes.gui.ScrollableButtonList;
-import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
+import com.coolerpromc.productiveslimes.recipe.ModRecipes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeMap;
+import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook_gui.png");
-    private ScrollableButtonList scrollableButtonList;
+    private static final int NAVIGATION_WIDTH = 100; // Width of the navigation panel
+    private static final int SCROLLBAR_WIDTH = 6; // Width of the scrollbar
+    private static final int SECTION_HEIGHT = 20; // Height of each navigation section
 
-    private ItemStack displayItem;
-    private String description;
+    private final List<String> sections = List.of("Introduction", "Basics", "Advanced", "Tips", "Credits"); // Example sections
+    private int scrollOffset = 0; // Tracks how far the navigation is scrolled
+    private int selectedSection = 0; // Tracks the currently selected section
+    // Example values — adjust these to suit your GUI sizes.
+    public static final int RECIPE_WIDTH  = 153;
+    public static final int RECIPE_HEIGHT = 83;
 
+    // Number of columns in your grid.
+    public static int COLUMNS = 2;
+
+    // How many pixels to place between items horizontally and vertically
+    public static final int H_SPACING = 5;
+    public static final int V_SPACING = 5;
+
+    private int contentScrollOffset = 0; // Tracks the scroll offset
 
     public GuidebookScreen(GuidebookMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        this.displayItem = new ItemStack(Items.SLIME_BALL);
-        this.description = "Welcome to the Productive Slimes Guidebook! For more information please visit the wiki at https://coolerproyt.github.io\n/ProductiveSlimes-Wiki/";
     }
 
     @Override
     protected void init() {
         super.init();
-        this.inventoryLabelX = 1000000;
+        this.inventoryLabelX = 1000000; // Hide default labels
         this.inventoryLabelY = 1000000;
         this.titleLabelX = 10000000;
 
-        int x = (this.width - imageWidth) / 2;
-        int y = (this.height - imageHeight) / 2;
-
-        scrollableButtonList = new ScrollableButtonList(minecraft, 22, 148, y + 9, x, 16);
-
-        Button homeSlimeButton = new CustomButton(x + 5, y, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(Items.SLIME_BALL);
-            this.description = "Welcome to the Productive Slimes Guidebook! For more information please visit the wiki at https://coolerproyt.github.io\n/ProductiveSlimes-Wiki/";
-        }, new ItemStack(Items.SLIME_BALL));
-
-        Button dirtSlimeballButton = new CustomButton(x + 5, y + 9, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("dirt").get());
-            this.description = "Drop from Dirt Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("dirt").get()));
-
-        Button stoneSlimeballButton = new CustomButton(x + 5, y + 27, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("stone").get());
-            this.description = "Drop from Stone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("stone").get()));
-
-        Button copperSlimeballButton = new CustomButton(x + 5, y + 45, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("copper").get());
-            this.description = "Drop from Copper Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("copper").get()));
-
-        Button ironSlimeballButton = new CustomButton(x + 5, y + 63, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("iron").get());
-            this.description = "Drop from Iron Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("iron").get()));
-
-        Button goldSlimeballButton = new CustomButton(x + 5, y + 81, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("gold").get());
-            this.description = "Drop from Gold Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("gold").get()));
-
-        Button diamondSlimeballButton = new CustomButton(x + 5, y + 99, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("diamond").get());
-            this.description = "Drop from Diamond Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("diamond").get()));
-
-        Button netheriteSlimeballButton = new CustomButton(x + 5, y + 117, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("netherite").get());
-            this.description = "Drop from Netherite Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("netherite").get()));
-
-        Button lapisSlimeballButton = new CustomButton(x + 5, y + 135, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("lapis").get());
-            this.description = "Drop from Lapis Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("lapis").get()));
-
-        Button redstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("redstone").get());
-            this.description = "Drop from Redstone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("redstone").get()));
-
-        Button oakSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("oak").get());
-            this.description = "Drop from Oak Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("oak").get()));
-
-        Button sandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("sand").get());
-            this.description = "Drop from Sand Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("sand").get()));
-
-        Button andesiteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("andesite").get());
-            this.description = "Drop from Andesite Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("andesite").get()));
-
-        Button snowSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("snow").get());
-            this.description = "Drop from Snow Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("snow").get()));
-
-        Button iceSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("ice").get());
-            this.description = "Drop from Ice Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("ice").get()));
-
-        Button mudSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("mud").get());
-            this.description = "Drop from Mud Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("mud").get()));
-
-        Button claySlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("clay").get());
-            this.description = "Drop from Clay Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("clay").get()));
-
-        Button redSandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("red_sand").get());
-            this.description = "Drop from Red Sand Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("red_sand").get()));
-
-        Button mossSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("moss").get());
-            this.description = "Drop from Moss Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("moss").get()));
-
-        Button deepslateSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("deepslate").get());
-            this.description = "Drop from Deepslate Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("deepslate").get()));
-
-        Button graniteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("granite").get());
-            this.description = "Drop from Granite Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("granite").get()));
-
-        Button dioriteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("diorite").get());
-            this.description = "Drop from Diorite Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("diorite").get()));
-
-        Button calciteSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("calcite").get());
-            this.description = "Drop from Calcite Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("calcite").get()));
-
-        Button tuffSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("tuff").get());
-            this.description = "Drop from Tuff Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("tuff").get()));
-
-        Button dripstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("dripstone").get());
-            this.description = "Drop from Dripstone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("dripstone").get()));
-
-        Button netherrackSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("netherite").get());
-            this.description = "Drop from Netherrack Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("netherite").get()));
-
-        Button prismarineSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("prismarine").get());
-            this.description = "Drop from Prismarine Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("prismarine").get()));
-
-        Button magmaSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("magma").get());
-            this.description = "Drop from Magma Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("magma").get()));
-
-        Button obsidianSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("obsidian").get());
-            this.description = "Drop from Obsidian Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("obsidian").get()));
-
-        Button soulSandSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("soul_sand").get());
-            this.description = "Drop from Soul Sand Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("soul_sand").get()));
-
-        Button soulSoilSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("soul_soil").get());
-            this.description = "Drop from Soul Soil Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("soul_soil").get()));
-
-        Button blackstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("blackstone").get());
-            this.description = "Drop from Blackstone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("blackstone").get()));
-
-        Button basaltSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("basalt").get());
-            this.description = "Drop from Basalt Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("basalt").get()));
-
-        Button endstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("end_stone").get());
-            this.description = "Drop from Endstone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("end_stone").get()));
-
-        Button quartzSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("quartz").get());
-            this.description = "Drop from Quartz Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("quartz").get()));
-
-        Button glowstoneSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("glowstone").get());
-            this.description = "Drop from Glowstone Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("glowstone").get()));
-
-        Button amethystSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("amethyst").get());
-            this.description = "Drop from Amethyst Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("amethyst").get()));
-
-        Button brownMushroomSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("brown_mushroom").get());
-            this.description = "Drop from Brown Mushroom Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("brown_mushroom").get()));
-
-        Button redMushroomSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("red_mushroom").get());
-            this.description = "Drop from Red Mushroom Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("red_mushroom").get()));
-
-        Button cactusSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("cactus").get());
-            this.description = "Drop from Cactus Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("cactus").get()));
-
-        Button coalSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("coal").get());
-            this.description = "Drop from Coal Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("coal").get()));
-
-        Button gravelSlimeballButton = new CustomButton(x + 5, y + 153, 16, 16, (button) -> {
-            this.displayItem = new ItemStack(ModTierLists.getSlimeballItemByName("gravel").get());
-            this.description = "Drop from Gravel Slime.";
-        }, new ItemStack(ModTierLists.getSlimeballItemByName("gravel").get()));
-
-        addScrollableButtonList(
-                homeSlimeButton,
-                dirtSlimeballButton,
-                stoneSlimeballButton,
-                copperSlimeballButton,
-                ironSlimeballButton,
-                goldSlimeballButton,
-                diamondSlimeballButton,
-                netheriteSlimeballButton,
-                lapisSlimeballButton,
-                redstoneSlimeballButton,
-                oakSlimeballButton,
-                sandSlimeballButton,
-                andesiteSlimeballButton,
-                snowSlimeballButton,
-                iceSlimeballButton,
-                mudSlimeballButton,
-                claySlimeballButton,
-                redSandSlimeballButton,
-                mossSlimeballButton,
-                deepslateSlimeballButton,
-                graniteSlimeballButton,
-                dioriteSlimeballButton,
-                calciteSlimeballButton,
-                tuffSlimeballButton,
-                dripstoneSlimeballButton,
-                netherrackSlimeballButton,
-                prismarineSlimeballButton,
-                magmaSlimeballButton,
-                obsidianSlimeballButton,
-                soulSandSlimeballButton,
-                soulSoilSlimeballButton,
-                blackstoneSlimeballButton,
-                basaltSlimeballButton,
-                endstoneSlimeballButton,
-                quartzSlimeballButton,
-                glowstoneSlimeballButton,
-                amethystSlimeballButton,
-                brownMushroomSlimeballButton,
-                redMushroomSlimeballButton,
-                cactusSlimeballButton,
-                coalSlimeballButton,
-                gravelSlimeballButton
-        );
-
-        this.addRenderableWidget(scrollableButtonList);
-    }
-
-    private void addScrollableButtonList(Button ...button) {
-        for (Button b : button) {
-            scrollableButtonList.addButton(b);
-        }
+        this.imageWidth = this.width;
+        this.imageHeight = this.height;
     }
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (this.width - imageWidth) / 2;
-        int y = (this.height - imageHeight) / 2;
-        pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        // Render background (optional)
+        pGuiGraphics.fillGradient(0, 0, this.width, this.height, 0xFFC6C6C6, 0xFF8B8B8B);
     }
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-
-        int x = (this.width - imageWidth) / 2;
-        int y = (this.height - imageHeight) / 2;
-
-        if (this.description != null && this.displayItem != null){
-            if (this.displayItem.getItem() == Items.SLIME_BALL){
-                pGuiGraphics.drawCenteredString(this.font, "Productive Slimes", x + (imageWidth / 2) + 15, y + 10, 0x404040);
-            } else {
-                pGuiGraphics.drawCenteredString(this.font, displayItem.getHoverName(), x + (imageWidth / 2) + 15, y + 10, 0x404040);
-            }
-
-            pGuiGraphics.renderItem(displayItem, x + (imageWidth) / 2 + 5, y + 25);
-
-            if (pMouseX >= x + (imageWidth) / 2 + 5 && pMouseX < x + 26 + imageWidth/2 && pMouseY >= y + 25 && pMouseY < y + 41) {
-                pGuiGraphics.renderTooltip(this.font, displayItem, pMouseX, pMouseY);
-            }
-
-            List<String> lines = wrapText(description, 25);
-
-            for (int i = 0; i < lines.size(); i++){
-                pGuiGraphics.drawCenteredString(this.font, lines.get(i), x + (imageWidth / 2) + 15, y + 50 + (i * 10), 0x404040);
-            }
-        }
-
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+
+        // Render navigation panel
+        renderNavigationPanel(pGuiGraphics, pMouseX, pMouseY);
+
+        // Render content panel
+        renderContentPanel(pGuiGraphics, pMouseX, pMouseY);
     }
 
-    public static List<String> wrapText(String description, int maxLineLength) {
-        List<String> lines = new ArrayList<>();
+    private void renderNavigationPanel(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+        int navigationX = 10;
+        int navigationY = 10;
+        int navigationHeight = this.height - 20;
+        COLUMNS = (this.width - NAVIGATION_WIDTH - 30) / (RECIPE_WIDTH + H_SPACING);
 
-        String[] words = description.split(" ");
-        StringBuilder currentLine = new StringBuilder();
+        // Draw navigation background
+        pGuiGraphics.fill(navigationX, navigationY, navigationX + NAVIGATION_WIDTH, navigationY + navigationHeight, 0xFF555555);
 
-        for (String word : words) {
-            if (currentLine.length() + word.length() + 1 > maxLineLength) {
-                // Add the current line to the list if it exceeds the maxLineLength
-                lines.add(currentLine.toString());
-                currentLine = new StringBuilder();
+        // Draw sections
+        int sectionY = navigationY + 10 - scrollOffset;
+        for (int i = 0; i < sections.size(); i++) {
+            if (sectionY + SECTION_HEIGHT > navigationY && sectionY < navigationY + navigationHeight) {
+                boolean isSelected = i == selectedSection;
+                int color = isSelected ? 0xFFFFFF00 : 0xFFFFFFFF; // Highlight selected section
+                pGuiGraphics.drawString(this.font, sections.get(i), navigationX + 10, sectionY, color);
             }
-            if (currentLine.length() > 0) {
-                currentLine.append(" ");
-            }
-            currentLine.append(word);
+            sectionY += SECTION_HEIGHT;
         }
 
-        // Add any remaining text as the last line
-        if (currentLine.length() > 0) {
-            lines.add(currentLine.toString());
+        // Draw scrollbar
+        int scrollbarX = navigationX + NAVIGATION_WIDTH - SCROLLBAR_WIDTH;
+        int scrollbarHeight = (int) ((float) navigationHeight / sections.size() * navigationHeight);
+        int scrollbarY = navigationY + (int) ((float) scrollOffset / (sections.size() * SECTION_HEIGHT) * navigationHeight);
+        pGuiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + SCROLLBAR_WIDTH, scrollbarY + scrollbarHeight, 0xFF888888);
+    }
+
+    private void renderContentPanel(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+        int contentX = 10 + NAVIGATION_WIDTH + 10;
+        int contentY = 10;
+        int contentWidth = this.width - contentX - 10;
+        int contentHeight = this.height - 20;
+
+        // Draw content background
+        pGuiGraphics.fill(NAVIGATION_WIDTH + 10, 0, width , height, 0xFF333333);
+
+        switch (selectedSection) {
+            case 0:
+                ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/dna_extractor_gui.png");
+
+                // Get the server level and recipe manager
+                ServerLevel serverLevel = menu.level;
+                RecipeManager recipeManager = serverLevel.recipeAccess();
+                Iterable<RecipeHolder<?>> recipes = recipeManager.getRecipes();
+                RecipeMap recipeMap = RecipeMap.create(recipes);
+
+                Collection<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeMap.byType(ModRecipes.DNA_EXTRACTING_TYPE.get());
+                List<DnaExtractingRecipe> dnaExtractingRecipeList = dnaExtractingRecipes.stream().map(RecipeHolder::value).toList();
+
+                int index = 0;
+
+                // Render each recipe
+                int yOffset = -contentScrollOffset; // Track vertical position for rendering
+                for (DnaExtractingRecipe recipe : dnaExtractingRecipeList) {
+                    int row = index / COLUMNS;
+                    int col = index % COLUMNS;
+
+                    // Calculate the top-left corner for this recipe in the grid
+                    int xPos = contentX + col * (RECIPE_WIDTH  + H_SPACING);
+                    int yPos = contentY + row * (RECIPE_HEIGHT + V_SPACING) - contentScrollOffset;
+
+                    // Render recipe background (optional)
+                    pGuiGraphics.blit(
+                            RenderType::guiTextured,
+                            TEXTURE,
+                            xPos, yPos,        // Where to draw the recipe background
+                            0, 0,              // UV offsets on the texture
+                            RECIPE_WIDTH,
+                            RECIPE_HEIGHT,
+                            256,               // Texture width
+                            256                // Texture height
+                    );
+
+                    // Render recipe input
+                    Ingredient input = recipe.getInputItems().get(0);
+                    ItemStack inputStack = new ItemStack(input.getValues().get(0));
+                    int inputX = xPos + 27;
+                    int inputY = yPos + 34;
+                    pGuiGraphics.renderItem(inputStack, inputX, inputY);
+                    if (pMouseX >= inputX && pMouseX < inputX + 16 && pMouseY >= inputY && pMouseY < inputY + 16) {
+                        pGuiGraphics.renderTooltip(font, inputStack, pMouseX, pMouseY);
+                        pGuiGraphics.fill(RenderType.gui(), inputX, inputY, inputX + 16, inputY + 16, 0x80FFFFFF);
+                    }
+
+                    // Render recipe output
+                    ItemStack output = recipe.getOutput().getFirst();
+                    int outputX = xPos + 108;
+                    int outputY = yPos + 34;
+                    pGuiGraphics.renderItem(output, outputX, outputY);
+                    if (pMouseX >= outputX && pMouseX < outputX + 16 && pMouseY >= outputY && pMouseY < outputY + 16) {
+                        pGuiGraphics.renderTooltip(font, output, pMouseX, pMouseY);
+                        pGuiGraphics.fill(RenderType.gui(), outputX, outputY, outputX + 16, outputY + 16, 0x80FFFFFF);
+                    }
+
+                    // Move to the next recipe position
+                    if (index % COLUMNS == COLUMNS - 1) {
+                        yOffset += RECIPE_HEIGHT + V_SPACING;
+                    }
+                    index++;
+                }
+
+                int scrollbarWidth = 6;
+                int scrollbarX = width - scrollbarWidth;
+                int scrollbarHeight = (int) ((float) contentHeight / (Math.ceil((double) dnaExtractingRecipeList.size() / COLUMNS) * RECIPE_HEIGHT + RECIPE_HEIGHT / 3) * height);
+                int scrollbarY = (int) ((float) contentScrollOffset / (Math.ceil((double) dnaExtractingRecipeList.size() / COLUMNS) * RECIPE_HEIGHT + RECIPE_HEIGHT / 3) * height);
+                pGuiGraphics.fill(scrollbarX, scrollbarY, scrollbarX + scrollbarWidth, scrollbarY + scrollbarHeight, 0xFF888888);
+
+                break;
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        // We'll consider 'verticalAmount' as the usual scroll wheel direction
+        double scroll = verticalAmount;
+
+        // Example scroll speed
+        int scrollSpeed = 10;
+
+        // Check if mouse is over the left navigation panel
+        int navX = 10;
+        int navY = 10;
+        int navWidth = NAVIGATION_WIDTH;
+        int navHeight = this.height - 20;
+
+        boolean overNav = (mouseX >= navX && mouseX < navX + navWidth
+                && mouseY >= navY && mouseY < navY + navHeight);
+        if (overNav) {
+            int totalSectionHeight = sections.size() * SECTION_HEIGHT;
+            int maxNavScroll = Math.max(0, totalSectionHeight - navHeight);
+
+            // Adjust our navigation scroll offset
+            scrollOffset -= scroll * scrollSpeed;
+            if (scrollOffset < 0) scrollOffset = 0;
+            if (scrollOffset > maxNavScroll) scrollOffset = maxNavScroll;
+
+            return true; // Return true to indicate we handled the scroll
         }
 
-        return lines;
+        // Check if mouse is over the content panel
+        int contentX = navX + navWidth + 10;
+        int contentY = navY;
+        int contentWidth = this.width - contentX - 10;
+        int contentHeight = navHeight;
+
+        ServerLevel serverLevel = menu.level;
+        RecipeManager recipeManager = serverLevel.recipeAccess();
+        Iterable<RecipeHolder<?>> recipes = recipeManager.getRecipes();
+        RecipeMap recipeMap = RecipeMap.create(recipes);
+
+        Collection<RecipeHolder<DnaExtractingRecipe>> dnaExtractingRecipes = recipeMap.byType(ModRecipes.DNA_EXTRACTING_TYPE.get());
+        List<DnaExtractingRecipe> dnaExtractingRecipeList = dnaExtractingRecipes.stream().map(RecipeHolder::value).toList();
+
+        boolean overContent = (mouseX >= contentX && mouseX < contentX + contentWidth
+                && mouseY >= contentY && mouseY < contentY + contentHeight);
+        if (overContent) {
+            // If this section has recipes (for example), we scroll them
+            if (selectedSection == 0) {
+                // Suppose you have a list of recipes
+                int totalRecipeHeight = (int) ((Math.ceil((double) dnaExtractingRecipeList.size() / COLUMNS)) * RECIPE_HEIGHT) + RECIPE_HEIGHT + RECIPE_HEIGHT / 3;
+                int maxContentScroll = Math.max(0, totalRecipeHeight - contentHeight);
+
+                contentScrollOffset -= scroll * scrollSpeed;
+                if (contentScrollOffset < 0) contentScrollOffset = 0;
+                if (contentScrollOffset > maxContentScroll) contentScrollOffset = maxContentScroll;
+
+                return true; // We handled this scroll event
+            }
+        }
+
+        // If we didn't handle it, fall back to the super method
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        // Handle section selection
+        if (pMouseX >= 10 && pMouseX < 10 + NAVIGATION_WIDTH && pMouseY >= 10 && pMouseY < this.height - 10) {
+            int sectionIndex = (int) ((pMouseY - 10 + scrollOffset) / SECTION_HEIGHT);
+            if (sectionIndex >= 0 && sectionIndex < sections.size()) {
+                selectedSection = sectionIndex;
+                return true;
+            }
+        }
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 }

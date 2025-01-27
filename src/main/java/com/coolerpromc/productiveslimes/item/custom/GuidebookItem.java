@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.screen.GuidebookMenu;
 import com.coolerpromc.productiveslimes.screen.GuidebookScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -21,7 +22,7 @@ public class GuidebookItem extends Item {
     public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (!pLevel.isClientSide) {
             pPlayer.openMenu(new SimpleMenuProvider(
-                    (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory),
+                    (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory, (ServerLevel) pLevel),
                     Component.translatable("item.productiveslimes.guidebook")
             ));
         }
