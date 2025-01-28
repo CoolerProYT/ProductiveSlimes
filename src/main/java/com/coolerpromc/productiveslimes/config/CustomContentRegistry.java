@@ -8,6 +8,8 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
 import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
@@ -200,6 +202,9 @@ public class CustomContentRegistry {
                     registerSlime(ENTITY_TYPES, variant);
                     registerSpawnEggItem(ITEMS, variant);
                     registerFluid(variant);
+
+                    ModTiers registerTier = new ModTiers(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, variant.solidingOutput, variant.solidingOutputCount, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
+                    ModTierLists.addRegisteredTier(variant.getName(), registerTier);
                 }
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");
@@ -722,7 +727,7 @@ public class CustomContentRegistry {
     }
 
     private static void dnaSynthesizing(CustomVariants variant){
-        String recipePath = "data/productiveslimes/recipe/dna_synthesizer/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
+        String recipePath = "data/productiveslimes/recipe/dna_synthesizing/" + variant.getName() + "_slime_spawn_egg_synthesizing.json";
 
         String recipe = "{\n" +
                 "  \"type\": \"productiveslimes:dna_synthesizing\",\n" +

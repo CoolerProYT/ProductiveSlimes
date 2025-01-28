@@ -14,6 +14,7 @@ import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.fluid.ModFluidResources;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.networking.RecipeSyncPayload;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
@@ -30,11 +31,13 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
@@ -48,7 +51,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
@@ -65,7 +67,6 @@ import terrablender.api.SurfaceRuleManager;
 public class ProductiveSlimes
 {
     public static final String MODID = "productiveslimes";
-    public static ServerLevel serverLevel;
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
@@ -124,7 +125,6 @@ public class ProductiveSlimes
     {
         CustomContentRegistry.handleDatapack(event.getServer());
         event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
-        serverLevel = event.getServer().overworld();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -138,7 +138,14 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        event.getEntity().displayClientMessage(Component.literal("Message From Productive Slimes: If you are on dedicated server, please join single player world before opening guidebook on server to avoid crashing. Sorry for the inconvenience.").withColor(0xFF0000), false);
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        RecipeManager recipeManager = player.server.getRecipeManager();
+
+        player.connection.send(new RecipeSyncPayload(recipeManager.getRecipes().stream().toList()));
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
