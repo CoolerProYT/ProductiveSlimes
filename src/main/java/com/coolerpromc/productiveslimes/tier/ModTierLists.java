@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -16,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import java.util.function.Supplier;
 
 public class ModTierLists {
     private static final Map<Tier , ModTiers> TIERS = new HashMap<>();
+    private static final Map<String , ModTiers> REGISTERED_TIERS = new HashMap<>();
     private static final Map<ResourceLocation, DeferredBlock<SlimeBlock>> registeredBlock = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredSlimeballItem = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredDnaItem = new HashMap<>();
@@ -78,6 +78,8 @@ public class ModTierLists {
         TIERS.put(Tier.COAL, new ModTiers("coal", 0xFF3b3d3b, 29, 1800, "minecraft:coal_block", "minecraft:coal", 2, "minecraft:coal_block", "productiveslimes:stone_slime_dna", "productiveslimes:stone_slime_dna", 0.65f));
         TIERS.put(Tier.GRAVEL, new ModTiers("gravel", 0xFF4a444b, 21, 1500, "minecraft:gravel", "minecraft:gravel", 2, "minecraft:gravel", "productiveslimes:sand_slime_dna", "productiveslimes:stone_slime_dna", 0.6f));
         TIERS.put(Tier.OAK_LEAVES, new ModTiers("oak_leaves", 0xFF48b518, 27, 1500, "minecraft:oak_leaves", "minecraft:oak_leaves", 2, "minecraft:oak_leaves", "productiveslimes:dirt_slime_dna", "productiveslimes:slime_dna", 0.7f));
+
+        TIERS.forEach((tier, modTiers) -> REGISTERED_TIERS.put(tier.toString(), modTiers));
     }
 
     public static void addRegisteredBlock(String name, DeferredBlock<SlimeBlock> block){
@@ -161,6 +163,13 @@ public class ModTierLists {
 
     public static Supplier<BaseFlowingFluid.Flowing> getFlowByName(String name){
         return registeredFlow.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "flowing_molten_" + name));
+    }
+
+    public static void addRegisteredTier(String key, ModTiers value){
+        REGISTERED_TIERS.put(key, value);
+    }
+    public static List<ModTiers> getRegisteredTiers(){
+        return REGISTERED_TIERS.values().stream().sorted(Comparator.comparing(ModTiers::name)).toList();
     }
 
     public static ItemLike getItemByKey(String key){
