@@ -48,6 +48,11 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void registerBlockModels(BlockModelGenerators blockModels){
+        BlockModelGenerators.BlockFamilyProvider slimyWoodSet = blockModels.family(ModBlocks.SLIMY_PLANKS.get());
+        BlockModelGenerators.BlockFamilyProvider slimyStoneSet = blockModels.family(ModBlocks.SLIMY_STONE.get());
+        BlockModelGenerators.BlockFamilyProvider slimyCobblestoneSet = blockModels.family(ModBlocks.SLIMY_COBBLESTONE.get());
+        BlockModelGenerators.BlockFamilyProvider slimyCobbledDeepslateSet = blockModels.family(ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
+
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.MELTING_STATION.get(), "melting_station");
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.LIQUID_SOLIDING_STATION.get(), "soliding_station");
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, ModBlocks.ENERGY_GENERATOR.get(), "energy_generator");
@@ -63,37 +68,38 @@ public class ModModelProvider extends ModelProvider {
         simpleBlockWithExistingModel(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
 
         simpleBlock(blockModels, ModBlocks.SLIMY_DIRT.get());
-        blockWithSlab(blockModels, ModBlocks.SLIMY_STONE.get(), ModBlocks.SLIMY_STONE_SLAB.get());
         simpleBlock(blockModels, ModBlocks.SLIMY_DEEPSLATE.get());
-        blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLESTONE.get(), ModBlocks.SLIMY_COBBLESTONE_SLAB.get());
-        blockWithSlab(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get());
 
         logBlock(blockModels, ModBlocks.SLIMY_LOG.get(), ModBlocks.SLIMY_WOOD.get());
         logBlock(blockModels, ModBlocks.STRIPPED_SLIMY_LOG.get(), ModBlocks.STRIPPED_SLIMY_WOOD.get());
 
-        blockWithSlab(blockModels, ModBlocks.SLIMY_PLANKS.get(), ModBlocks.SLIMY_SLAB.get());
+        slimyStoneSet.slab(ModBlocks.SLIMY_STONE_SLAB.get());
+        slimyStoneSet.stairs(ModBlocks.SLIMY_STONE_STAIRS.get());
+        slimyStoneSet.pressurePlate(ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get());
+        slimyStoneSet.button(ModBlocks.SLIMY_STONE_BUTTON.get());
+
+        slimyCobblestoneSet.slab(ModBlocks.SLIMY_COBBLESTONE_SLAB.get());
+        slimyCobblestoneSet.stairs(ModBlocks.SLIMY_COBBLESTONE_STAIRS.get());
+        slimyCobblestoneSet.wall(ModBlocks.SLIMY_COBBLESTONE_WALL.get());
+
+        slimyCobbledDeepslateSet.slab(ModBlocks.SLIMY_COBBLED_DEEPSLATE_SLAB.get());
+        slimyCobbledDeepslateSet.stairs(ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get());
+        slimyCobbledDeepslateSet.wall(ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get());
+
+        slimyWoodSet.slab(ModBlocks.SLIMY_SLAB.get());
+        slimyWoodSet.stairs(ModBlocks.SLIMY_STAIRS.get());
+        slimyWoodSet.pressurePlate(ModBlocks.SLIMY_PRESSURE_PLATE.get());
+        slimyWoodSet.button(ModBlocks.SLIMY_BUTTON.get());
+        slimyWoodSet.fence(ModBlocks.SLIMY_FENCE.get());
+        slimyWoodSet.fenceGate(ModBlocks.SLIMY_FENCE_GATE.get());
 
         leavesBlock(blockModels, ModBlocks.SLIMY_LEAVES.get());
         saplingBlock(blockModels, ModBlocks.SLIMY_SAPLING.get());
 
-        stairsBlock(blockModels, ModBlocks.SLIMY_STAIRS.get(), ModBlocks.SLIMY_PLANKS.get());
-        pressurePlateBlock(blockModels, ModBlocks.SLIMY_PRESSURE_PLATE.get(), ModBlocks.SLIMY_PLANKS.get());
-        buttonBlock(blockModels, ModBlocks.SLIMY_BUTTON.get(), ModBlocks.SLIMY_PLANKS.get());
-        fenceBlock(blockModels, ModBlocks.SLIMY_FENCE.get(), ModBlocks.SLIMY_PLANKS.get());
-        fenceGateBlock(blockModels, ModBlocks.SLIMY_FENCE_GATE.get(), ModBlocks.SLIMY_PLANKS.get());
         trapdoorBlockWithRenderType(blockModels, ModBlocks.SLIMY_TRAPDOOR.get());
         doorBlockWithRenderType(blockModels, ModBlocks.SLIMY_DOOR.get());
 
-        stairsBlock(blockModels, ModBlocks.SLIMY_STONE_STAIRS.get(), ModBlocks.SLIMY_STONE.get());
-        pressurePlateBlock(blockModels, ModBlocks.SLIMY_STONE_PRESSURE_PLATE.get(), ModBlocks.SLIMY_STONE.get());
-        buttonBlock(blockModels, ModBlocks.SLIMY_STONE_BUTTON.get(), ModBlocks.SLIMY_STONE.get());
-
-        stairsBlock(blockModels, ModBlocks.SLIMY_COBBLESTONE_STAIRS.get(), ModBlocks.SLIMY_COBBLESTONE.get());
-        wallBlock(blockModels, ModBlocks.SLIMY_COBBLESTONE_WALL.get(), ModBlocks.SLIMY_COBBLESTONE.get());
-
-        stairsBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_STAIRS.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
-        wallBlock(blockModels, ModBlocks.SLIMY_COBBLED_DEEPSLATE_WALL.get(), ModBlocks.SLIMY_COBBLED_DEEPSLATE.get());
-
+        // Slimes Blocks
         slimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
 
         for (Tier tier : Tier.values()){
@@ -242,15 +248,6 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
     }
 
-    private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
-        ResourceLocation texture = blockLocation(getBlockName(block));
-        blockModels.new BlockFamilyProvider(TextureMapping.cube(texture)
-                .put(TextureSlot.BOTTOM, texture)
-                .put(TextureSlot.TOP, texture)
-                .put(TextureSlot.SIDE, texture)
-        ).fullBlock(block, ModelTemplates.CUBE_ALL).slab(slab);
-    }
-
     private void logBlock(BlockModelGenerators blockModels, Block block, Block wood){
         blockModels.woodProvider(block).logWithHorizontal(block).wood(wood);
     }
@@ -272,31 +269,6 @@ public class ModModelProvider extends ModelProvider {
     private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
-    }
-
-    private void pressurePlateBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).pressurePlate(block);
-    }
-
-    private void stairsBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        ResourceLocation texture = blockLocation(getBlockName(materialBlock));
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(texture)
-                .put(TextureSlot.BOTTOM, texture)
-                .put(TextureSlot.TOP, texture)
-                .put(TextureSlot.SIDE, texture)
-        ).stairs(block);
-    }
-
-    private void buttonBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).button(block);
-    }
-
-    private void fenceBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).fence(block);
-    }
-
-    private void fenceGateBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock)).fenceGate(block);
     }
 
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
@@ -337,10 +309,6 @@ public class ModModelProvider extends ModelProvider {
                 );
     }
 
-    private void wallBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(materialBlock).put(TextureSlot.WALL, blockLocation(getBlockName(materialBlock)))).wall(block);
-    }
-
     // Item models
     private void simpleItem(ItemModelGenerators itemModels, Item item){
         TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, itemLocation(getItemName(item)));
@@ -368,8 +336,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){
-        ResourceLocation model = itemLocation("slime_item");
-        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
+        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(itemLocation("slime_item"), List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
     }
 
     // Helper methods
