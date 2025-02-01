@@ -21,6 +21,8 @@ import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
+import com.coolerpromc.productiveslimes.networking.ModNetworkManager;
+import com.coolerpromc.productiveslimes.networking.ModNetworkStateManager;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
@@ -39,6 +41,7 @@ import net.minecraft.client.resources.model.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -61,7 +64,10 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import terrablender.api.SurfaceRuleManager;
 
@@ -141,6 +147,24 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onPlayer(PlayerEvent.PlayerLoggedInEvent event) {
 
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+        ServerLevel overworld = event.getServer().overworld();
+        ModNetworkStateManager.forceSave(overworld);
+    }
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent.Post event) {
+        for (ServerLevel level : event.getServer().getAllLevels()){
+            ModNetworkManager.tickAllNetworks(level);
+        }
+    }
+    @SubscribeEvent
+    public void onLevel(LevelEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel serverWorld) {
+            ModNetworkStateManager.loadAllNetworksToManager(serverWorld);
+        }
     }
 
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
