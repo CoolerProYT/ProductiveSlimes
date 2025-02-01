@@ -14,6 +14,8 @@ import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.fluid.ModFluidResources;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
+import com.coolerpromc.productiveslimes.networking.ModNetworkManager;
+import com.coolerpromc.productiveslimes.networking.ModNetworkStateManager;
 import com.coolerpromc.productiveslimes.networking.RecipeSyncPayload;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
@@ -59,7 +61,11 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerLifecycleEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import terrablender.api.SurfaceRuleManager;
 
@@ -138,6 +144,26 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+        ServerLevel overworld = event.getServer().overworld();
+        ModNetworkStateManager.forceSave(overworld);
+    }
+
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent.Post event) {
+        for (ServerLevel level : event.getServer().getAllLevels()){
+            ModNetworkManager.tickAllNetworks(level);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLevel(LevelEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel serverWorld) {
+            ModNetworkStateManager.loadAllNetworksToManager(serverWorld);
+        }
     }
 
     @SubscribeEvent
