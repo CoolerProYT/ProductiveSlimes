@@ -171,7 +171,11 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
                 Level level = this.level;
                 BlockPos neighborPos = this.getBlockPos().relative(direction);
 
-                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(level.getCapability(ForgeCapabilities.ENERGY, direction.getOpposite()));
+                BlockEntity neighborEntity = level.getBlockEntity(neighborPos);
+
+                if (neighborEntity == null) continue;
+
+                Optional<LazyOptional<IEnergyStorage>> neighborEnergy = Optional.of(neighborEntity.getCapability(ForgeCapabilities.ENERGY));
 
                 if (neighborEnergy.get().isPresent()) {
                     LazyOptional<IEnergyStorage> neighborStorage = neighborEnergy.get();

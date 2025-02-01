@@ -52,27 +52,10 @@ public class CableBlock extends Block implements EntityBlock {
                 .setValue(EAST, false)
                 .setValue(WEST, false));
     }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(UP, DOWN, NORTH, SOUTH, EAST, WEST);
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof CableBlockEntity cableBE) {
-                cableBE.onRemoved();
-            }
-            for (Direction direction : Direction.values()) {
-                BlockPos neighborPos = pos.relative(direction);
-                BlockEntity neighborBE = level.getBlockEntity(neighborPos);
-                if (neighborBE instanceof CableBlockEntity neighborCable) {
-                    neighborCable.reinitializeNetwork();
-                }
-            }
-            super.onRemove(state, level, pos, newState, isMoving);
-        }
     }
 
     @Nullable
@@ -117,11 +100,13 @@ public class CableBlock extends Block implements EntityBlock {
         }
         return shape;
     }
+
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         updateConnections(pLevel, pPos, pState);
     }
+
     private void updateConnections(Level level, BlockPos pos, BlockState state) {
         if (!level.isClientSide) {
             BlockState newState = state;
@@ -134,15 +119,18 @@ public class CableBlock extends Block implements EntityBlock {
             level.setBlock(pos, newState, 2);
         }
     }
+
     private boolean canConnectToBlock(LevelAccessor level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
 
         return block instanceof CableBlock || canConnectBasedOnBlock(block);
     }
+
     private boolean canConnectBasedOnBlock(Block block) {
         return block instanceof IEnergyStorage;
     }
+
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
         if (levelAccessor instanceof Level level) {
@@ -152,17 +140,26 @@ public class CableBlock extends Block implements EntityBlock {
             return state;
         }
     }
+
     private BooleanProperty getPropertyForDirection(Direction direction) {
         switch (direction) {
-            case UP: return UP;
-            case DOWN: return DOWN;
-            case NORTH: return NORTH;
-            case SOUTH: return SOUTH;
-            case EAST: return EAST;
-            case WEST: return WEST;
-            default: throw new IllegalArgumentException("Invalid direction: " + direction);
+            case UP:
+                return UP;
+            case DOWN:
+                return DOWN;
+            case NORTH:
+                return NORTH;
+            case SOUTH:
+                return SOUTH;
+            case EAST:
+                return EAST;
+            case WEST:
+                return WEST;
+            default:
+                throw new IllegalArgumentException("Invalid direction: " + direction);
         }
     }
+
     private boolean canConnectTo(Level level, BlockPos pos, Direction direction) {
         // Get the BlockEntity at the target position
         BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -190,7 +187,7 @@ public class CableBlock extends Block implements EntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return (lvl, pos, blockState, t) -> {
             if (t instanceof CableBlockEntity blockEntity) {
-                CableBlockEntity.tick(lvl, pos, blockState, blockEntity);
+                CableBlockEntity.tick(lvl, pos, blockEntity);
             }
         };
     }
