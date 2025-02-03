@@ -45,10 +45,10 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
 
         int countdown = menu.getCountdown();
 
-        Component cd = Component.literal("Cooldown: " + countdown + "s").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component size = Component.literal("Slime Size: " + menu.getSlimeSize()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component multiplier = Component.literal("Multiplier: " + menu.getMultiplier()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
-        Component dropItem = Component.literal("Drop Item: ").append(Component.translatable(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component cd = Component.translatable("slimenest.productiveslimes.cooldown", countdown).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component size = Component.translatable("slimenest.productiveslimes.slime_size", menu.getSlimeSize()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component multiplier = Component.translatable("slimenest.productiveslimes.multiplier", menu.getMultiplier()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
+        Component dropItem = Component.translatable("slimenest.productiveslimes.drop_item").append(Component.translatable(menu.getDrop().getItem().getDescriptionId())).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xa5f5a6)));
 
         int guiLeft = (width - imageWidth) / 2;
         int guiTop = (height - imageHeight) / 2;
@@ -58,9 +58,9 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
 
         if (!(menu.hasSlime() && menu.hasOutputSlot())) {
             if (!menu.hasOutputSlot()) {
-                cd = Component.literal("No Output Slot").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xd59c20)));
+                cd = Component.translatable("slimenest.productiveslimes.no_output_slot").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xd59c20)));
             } else {
-                cd = Component.literal("No Slime Found").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xc70d0d)));
+                Component.translatable("slimenest.productiveslimes.no_slime_found").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xc70d0d)));
             }
         }
 
