@@ -28,7 +28,7 @@ public class SlimeballCollectorScreen extends AbstractContainerScreen<SlimeballC
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.addRenderableWidget(new Button.Builder(Component.literal("Toggle Area"), button -> {
+        this.addRenderableWidget(new Button.Builder(Component.translatable("gui.productiveslimes.toggle_area"), button -> {
             this.menu.blockEntity.setEnableOutline(this.menu.blockEntity.getData().get(0) == 0 ? 1 : 0);
         }).pos(x + 88, y + 65).size(80, 16).build());
     }

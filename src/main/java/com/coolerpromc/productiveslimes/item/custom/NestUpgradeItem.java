@@ -23,6 +23,6 @@ public class NestUpgradeItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
-        tooltipComponents.add(Component.literal("Increases the speed of the slime nest by " + String.format("%.2f", multiplier) + "x"));
+        tooltipComponents.add(Component.translatable("tooltip.productiveslimes.nest_upgrade", String.format("%.2f", multiplier)));
     }
 }
