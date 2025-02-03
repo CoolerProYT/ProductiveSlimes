@@ -36,7 +36,17 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     private static int ENERGY_GENERATION_INFO_HEIGHT = 150;
     private static int WORLD_GEN_INFO_HEIGHT = 150;
     private static final ResourceLocation CRAFTING_TEXTURE = new ResourceLocation(ProductiveSlimes.MODID, "textures/gui/guidebook/crafting_table_gui.png");
-    private final List<String> sections = List.of("Welcome", "Slime & Slimeball", "Energy Generation", "World Gen", "Dna Extracting", "Dna Synthesizing", "Melting", "Soliding", "Squeezing");
+    private final List<Component> sections = List.of(
+            Component.translatable("guidebook.productiveslimes.nav.welcome"),
+            Component.translatable("guidebook.productiveslimes.slime_and_slimeball"),
+            Component.translatable("guidebook.productiveslimes.energy_generation"),
+            Component.translatable("guidebook.productiveslimes.nav.world_gen"),
+            Component.translatable("guidebook.productiveslimes.dna_extracting"),
+            Component.translatable("guidebook.productiveslimes.dna_synthesizing"),
+            Component.translatable("guidebook.productiveslimes.nav.melting"),
+            Component.translatable("guidebook.productiveslimes.soliding"),
+            Component.translatable("guidebook.productiveslimes.squeezing")
+    );
     private int selectedSection = 0;
 
     public static final int RECIPE_WIDTH = 153;
@@ -245,11 +255,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
 
         // Render the info section
-        Component title = Component.literal("DNA Extracting");
+        Component title = Component.translatable("guidebook.productiveslimes.dna_extracting");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Slime DNA's can be extracted from slime balls using the DNA Extractor.");
+        Component description = Component.translatable("guidebook.productiveslimes.dna_extracting.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth - 20, 0xAAAAAA);
 
         pGuiGraphics.blit(CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
@@ -335,11 +345,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
 
         // Render the info section
-        Component title = Component.literal("DNA Synthesizing");
+        Component title = Component.translatable("guidebook.productiveslimes.dna_synthesizing");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Slime Spawn Eggs can be obtained from DNA synthesizing using the DNA Synthesizer.");
+        Component description = Component.translatable("guidebook.productiveslimes.dna_synthesizing.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth - 30, 0xAAAAAA);
 
         pGuiGraphics.blit(CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
@@ -439,11 +449,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
 
         // Render the info section
-        Component title = Component.literal("Slimeball Melting");
+        Component title = Component.translatable("guidebook.productiveslimes.slimeball_melting");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Slimeball can be melted into liquid using the Melting Station.");
+        Component description = Component.translatable("guidebook.productiveslimes.slimeball_melting.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth - 20, 0xAAAAAA);
 
         pGuiGraphics.blit(CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
@@ -516,11 +526,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
 
         // Render the info section
-        Component title = Component.literal("Soliding");
+        Component title = Component.translatable("guidebook.productiveslimes.soliding");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Molten slimes can be solidified into resources using the Soliding Station.");
+        Component description = Component.translatable("guidebook.productiveslimes.soliding.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth - 20, 0xAAAAAA);
 
         pGuiGraphics.blit(CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
@@ -591,11 +601,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
 
         // Render the info section
-        Component title = Component.literal("Squeezing");
+        Component title = Component.translatable("guidebook.productiveslimes.squeezing");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Some of the slimy blocks can be squeezed into vanilla block and slimeball fragment using the Slime Squeezer.");
+        Component description = Component.translatable("guidebook.productiveslimes.squeezing.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth - 20, 0xAAAAAA);
 
         pGuiGraphics.blit(CRAFTING_TEXTURE, contentX, infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT);
@@ -681,21 +691,21 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int infoY = contentY - contentScrollOffset;
         int wordWarpLength = (int) (contentWidth * 0.85f);
 
-        Component title = Component.literal("Slime & Slimeball");
+        Component title = Component.translatable("guidebook.productiveslimes.slime_and_slimeball");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, (int) (contentX + (contentWidth - fontX) / 2 * 0.8f), infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("In Productive Slimes, there are many different types of slimes and slimeballs. Each slime has its own Slimeball and Growth Item (Will be explained later).");
+        Component description = Component.translatable("guidebook.productiveslimes.slime_and_slimeball.description1");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, wordWarpLength, 0xAAAAAA);
 
-        Component description2 = Component.literal("In this mod, vanilla slime will not attack any entities, Iron Golem will not attack vanilla slime, and vanilla slime will not attack Iron Golem. (This is toggleable in the config file)");
+        Component description2 = Component.translatable("guidebook.productiveslimes.slime_and_slimeball.description2");
         pGuiGraphics.drawWordWrap(font, description2, contentX + 5, infoY + font.wordWrapHeight(description, wordWarpLength) + 25, (int) (contentWidth * 0.85f), 0xAAAAAA);
 
-        Component title2 = Component.literal("Slime Growing");
+        Component title2 = Component.translatable("guidebook.productiveslimes.slime_growing");
         int fontX2 = font.width(title2);
         pGuiGraphics.drawString(font, title2, (int) (contentX + (contentWidth - fontX2) / 2 * 0.8f), infoY + font.wordWrapHeight(description, wordWarpLength) + font.wordWrapHeight(description2, wordWarpLength) + 30, 0xFFFFFF);
 
-        Component description3 = Component.literal("The maximum size of a slime is 4. When the slime size is smaller than 4 and player holding their growth item, the slime will follow the player. To grow a slime, hold their growth item and sneak right click on them.");
+        Component description3 = Component.translatable("guidebook.productiveslimes.slime_growing.description");
         pGuiGraphics.drawWordWrap(font, description3, contentX + 5, infoY + font.wordWrapHeight(description, wordWarpLength) + font.wordWrapHeight(description2, wordWarpLength) + font.wordWrapHeight(title2, wordWarpLength) + 35, (int) (contentWidth * 0.85f), 0xAAAAAA);
 
         SLIME_AND_SLIMEBALL_INFO_HEIGHT = contentY + font.wordWrapHeight(description, wordWarpLength) + font.wordWrapHeight(description2, wordWarpLength) + font.wordWrapHeight(title2, wordWarpLength) + font.wordWrapHeight(description3, wordWarpLength) + 40;
@@ -746,17 +756,17 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         int infoY2 = contentY - contentScrollOffset + SLIME_AND_SLIMEBALL_INFO_HEIGHT + totalRecipeHeight;
 
-        Component title3 = Component.literal("Slimeball Obtaining");
+        Component title3 = Component.translatable("guidebook.productiveslimes.slimeball_obtaining");
         int fontX3 = font.width(title);
         pGuiGraphics.drawString(font, title3, (int) (contentX + (contentWidth - fontX3) / 2 * 0.8f), infoY2 + 5, 0xFFFFFF);
 
-        Component description4 = Component.literal("Slimeball can be obtained from squeezing slimy blocks into slimeball fragment or dropping from slimes. Every slime (Except vanilla slime) will drop slimeball every x Seconds (Different for every slime). Install Jade to view next drop time of the slime. The amount of slimeball drop based on their size.");
+        Component description4 = Component.translatable("guidebook.productiveslimes.slimeball_obtaining.description");
         pGuiGraphics.drawWordWrap(font, description4, contentX + 5, infoY2 + 20, wordWarpLength, 0xAAAAAA);
 
-        Component description5 = Component.literal("Player can let slime randomly walk around in the world and use a Slimeball Collector to collect their drops or put them into Slime Simulation Chamber.");
+        Component description5 = Component.translatable("guidebook.productiveslimes.slimeball_obtaining.description2");
         pGuiGraphics.drawWordWrap(font, description5, contentX + 5, infoY2 + 25 + font.wordWrapHeight(description4, wordWarpLength), wordWarpLength, 0xAAAAAA);
 
-        Component title4 = Component.literal("Slime Cooldown Time");
+        Component title4 = Component.translatable("guidebook.productiveslimes.slime_cooldown_time");
         int fontX4 = font.width(title);
         pGuiGraphics.drawString(font, title4, (int) (contentX + (contentWidth - fontX4) / 2 * 0.8f), infoY2 + 25 + font.wordWrapHeight(description4, wordWarpLength) + font.wordWrapHeight(description5, wordWarpLength) + 5, 0xFFFFFF);
 
@@ -787,7 +797,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 29, yPos + 15, slimeItem, font);
 
-            Component cooldownText = Component.literal("Cooldown: " + tiers.cooldown() / 20 + "s");
+            Component cooldownText = Component.translatable("guidebook.productiveslimes.cooldown", tiers.cooldown() / 20);
             pGuiGraphics.drawString(font, cooldownText, xPos + 55, yPos + 19, 0x555555, false);
 
             index2++;
@@ -795,11 +805,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         int infoY3 = contentY - contentScrollOffset + SLIME_AND_SLIMEBALL_INFO_HEIGHT + totalRecipeHeight + SLIME_AND_SLIMEBALL_SECOND_INFO_HEIGHT + totalCooldownHeight;
 
-        Component title5 = Component.literal("Slimeball Collector");
+        Component title5 = Component.translatable("block.productiveslimes.slimeball_collector");
         int fontX5 = font.width(title5);
         pGuiGraphics.drawString(font, title5, (int) (contentX + (contentWidth - fontX5) / 2 * 0.8f), infoY3 + 5, 0xFFFFFF);
 
-        Component description6 = Component.literal("Slimeball Collector is a block that can collect dropped slimeball within a certain radius. The collected slimeball will be stored in the block and can be extracted using a hopper or a pipe.");
+        Component description6 = Component.translatable("guidebook.productiveslimes.slimeball_collector.description");
         pGuiGraphics.drawWordWrap(font, description6, contentX + 5, infoY3 + 20, wordWarpLength, 0xAAAAAA);
 
         Optional<?> slimeballCollectorHolder = menu.level.getRecipeManager().byKey(new ResourceLocation(ProductiveSlimes.MODID, "slimeball_collector"));
@@ -819,17 +829,17 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output = ModBlocks.SLIMEBALL_COLLECTOR.get().asItem().getDefaultInstance();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f) + 95 + 18, textureY + 17 + 18, output, font);
 
-        Component note = Component.literal("Note: It accept any input with chest tag.");
+        Component note = Component.translatable("guidebook.productiveslimes.slimeball_collector.note");
         pGuiGraphics.drawString(font, note, (int) (contentX + (contentWidth - font.width(note)) / 2 * 0.8f), infoY3 + 110 + 18 + 26, 0x555555, false);
 
-        Component title6 = Component.literal("Slime Simulation Chamber & Upgrades");
+        Component title6 = Component.translatable("guidebook.productiveslimes.slime_simulation_chamber_and_upgrades");
         int fontX6 = font.width(title6);
         pGuiGraphics.drawString(font, title6, (int) (contentX + (contentWidth - fontX6) / 2 * 0.8f), infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + 15, 0xFFFFFF);
 
-        Component description7 = Component.literal("Slime Simulation Chamber is a block entity that can simulate slimeball dropping from slime. Sneak + Right Click a slime to pickup a slime and put it in to the chamber.");
+        Component description7 = Component.translatable("guidebook.productiveslimes.slime_simulation_chamber_and_upgrades.description");
         pGuiGraphics.drawWordWrap(font, description7, contentX + 5, infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + 20, wordWarpLength, 0xAAAAAA);
 
-        Component description8 = Component.literal("There are 2 speed uprgades for the chamber, Speed Upgrade 1 and Speed Upgrade 2. Speed Upgrade 1 will increase the speed of the chamber by 1.5x and Speed Upgrade 2 will increase the speed of the chamber by 2x. They are stackable.");
+        Component description8 = Component.translatable("guidebook.productiveslimes.slime_simulation_chamber_and_upgrades.description2");
         pGuiGraphics.drawWordWrap(font, description8, contentX + 5, infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + font.wordWrapHeight(description7, wordWarpLength) + 25, wordWarpLength, 0xAAAAAA);
 
         Optional<?> slimeNestHolder = menu.level.getRecipeManager().byKey(new ResourceLocation(ProductiveSlimes.MODID, "slime_nest"));
@@ -883,11 +893,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output4 = ModItems.SLIME_NEST_SPEED_UPGRADE_2.get().asItem().getDefaultInstance();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f) + 95 + 18, textureY4 + 17 + 18, output4, font);
 
-        Component title7 = Component.literal("Slimeball Fragment");
+        Component title7 = Component.translatable("guidebook.productiveslimes.slimeball_fragment");
         int fontX7 = font.width(title7);
         pGuiGraphics.drawString(font, title7, (int) (contentX + (contentWidth - fontX7) / 2 * 0.8f), infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + font.wordWrapHeight(description7, wordWarpLength) + font.wordWrapHeight(description8, wordWarpLength) + 30 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 5, 0xFFFFFF);
 
-        Component description9 = Component.literal("Slimeball Fragment can be crafted into slimeball. It can be obtained by squeezing slimy blocks in a Slimeball Squeezer.");
+        Component description9 = Component.translatable("guidebook.productiveslimes.slimeball_fragment.description");
         pGuiGraphics.drawWordWrap(font, description9, contentX + 5, infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + font.wordWrapHeight(description7, wordWarpLength) + font.wordWrapHeight(description8, wordWarpLength) + 30 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 10 + 5, wordWarpLength, 0xAAAAAA);
 
         Optional<?> slimeball = menu.level.getRecipeManager().byKey(new ResourceLocation("minecraft", "slimeball_from_fragment"));
@@ -926,23 +936,23 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         int infoY = contentY - contentScrollOffset;
 
-        Component title = Component.literal("Welcome to Productive Slimes");
+        Component title = Component.translatable("guidebook.productiveslimes.welcome");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, contentX + (contentWidth - fontX) / 2, infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("Productive Slimes is a mod that adds a lot of new slimes, slimeballs, and slimy blocks. In this mod, you can collect slimes, grow them, and use them to produce items. This mod also adds a lot of new blocks that can help you to automate the process of collecting slimeballs.");
+        Component description = Component.translatable("guidebook.productiveslimes.welcome.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth, 0xAAAAAA);
 
-        Component description2 = Component.literal("This guidebook will help you to understand the mod and how to use it. You can navigate through the guidebook using the navigation bar on the left side of the screen.");
+        Component description2 = Component.translatable("guidebook.productiveslimes.welcome.description2");
         pGuiGraphics.drawWordWrap(font, description2, contentX + 5, infoY + 20 + font.wordWrapHeight(description, contentWidth) + 5, contentWidth, 0xAAAAAA);
 
-        Component description3 = Component.literal("If you have any questions or suggestions, feel free to create an issue on our GitHub repository.");
+        Component description3 = Component.translatable("guidebook.productiveslimes.welcome.description3");
         pGuiGraphics.drawWordWrap(font, description3, contentX + 5, infoY + 20 + font.wordWrapHeight(description, contentWidth) + font.wordWrapHeight(description2, contentWidth) + 10, contentWidth, 0xAAAAAA);
 
-        Component description4 = Component.literal("For more information, you can visit our wiki page.");
+        Component description4 = Component.translatable("guidebook.productiveslimes.welcome.description4");
         pGuiGraphics.drawWordWrap(font, description4, contentX + 5, infoY + 20 + font.wordWrapHeight(description, contentWidth) + font.wordWrapHeight(description2, contentWidth) + font.wordWrapHeight(description3, contentWidth) + 15, contentWidth, 0xAAAAAA);
 
-        Component wikiLink = Component.literal("https://coolerproyt.github.io/ProductiveSlimes-Wiki/#/Home");
+        Component wikiLink = Component.translatable("guidebook.productiveslimes.welcome.wiki_link");
         int wikiLinkWidth = font.width(wikiLink);
         pGuiGraphics.drawString(font, wikiLink, contentX + (contentWidth - wikiLinkWidth) / 2, infoY + 20 + font.wordWrapHeight(description, contentWidth) + font.wordWrapHeight(description2, contentWidth) + font.wordWrapHeight(description3, contentWidth) + font.wordWrapHeight(description4, contentWidth) + 20, 0x5555FF);
     }
@@ -954,11 +964,11 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         int infoY = contentY - contentScrollOffset;
 
-        Component title = Component.literal("Energy Generation");
+        Component title = Component.translatable("guidebook.productiveslimes.energy_generation");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, contentX + (contentWidth - fontX) / 2, infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("In Productive Slimes, Energy Slimeball/Block can be used to generate energy. Energy Slimeball is a drop from Energy Slime, Energy Slime Spawn Egg cna be crafted in Crafting Table. To use Energy Slimeball/Block to generate energy, Energy Generator is needed.");
+        Component description = Component.translatable("guidebook.productiveslimes.energy_generation.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth, 0xAAAAAA);
 
         int recipeBaseY = infoY + font.lineHeight + font.wordWrapHeight(description, contentWidth) + 25;
@@ -1047,17 +1057,17 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         int infoY = contentY - contentScrollOffset;
 
-        Component title = Component.literal("World Generation");
+        Component title = Component.translatable("guidebook.productiveslimes.world_generation");
         int fontX = font.width(title);
         pGuiGraphics.drawString(font, title, contentX + (contentWidth - fontX) / 2, infoY + 5, 0xFFFFFF);
 
-        Component description = Component.literal("In Productive Slimes, there is a new biome called Slimy Land. Slimy Land is a biome that is filled with slimy blocks and slimes. In this biome, you can find different types of slimes and slimy blocks. Slimy Land can be found in the Overworld. There is a small chance to find Slimy Village in Slimy Land.");
+        Component description = Component.translatable("guidebook.productiveslimes.world_generation.description");
         pGuiGraphics.drawWordWrap(font, description, contentX + 5, infoY + 20, contentWidth, 0xAAAAAA);
 
-        Component description2 = Component.literal("There is a chance for Scientist Villager to spawn in Slimy Village. Scientist Villager can trade you some items related to Productive Slimes.");
+        Component description2 = Component.translatable("guidebook.productiveslimes.world_generation.description2");
         pGuiGraphics.drawWordWrap(font, description2, contentX + 5, infoY + 20 + font.wordWrapHeight(description, contentWidth) + 5, contentWidth, 0xAAAAAA);
 
-        Component description3 = Component.literal("Entities will walk slower than usual on any Slimy Blocks. Have fun exploring Slimy Land!");
+        Component description3 = Component.translatable("guidebook.productiveslimes.world_generation.description3");
         pGuiGraphics.drawWordWrap(font, description3, contentX + 5, infoY + 20 + font.wordWrapHeight(description, contentWidth) + font.wordWrapHeight(description2, contentWidth) + 10, contentWidth, 0xAAAAAA);
     }
 }
