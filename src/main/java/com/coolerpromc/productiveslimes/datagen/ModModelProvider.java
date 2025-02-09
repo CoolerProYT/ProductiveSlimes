@@ -4,7 +4,6 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.CableBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
-import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datagen.template.ModModelTemplates;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
@@ -14,10 +13,8 @@ import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import com.coolerpromc.productiveslimes.util.FluidTankTint;
+import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
-import com.coolerpromc.productiveslimes.util.property.*;
-import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -143,87 +140,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void fluidTank(BlockModelGenerators blockModels, Block block){
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, block, "fluid_tank");
-
-        ResourceLocation fluidTankEmpty = itemLocation("fluid_tank/fluid_tank_empty");
-        ResourceLocation fluidTank3k = itemLocation("fluid_tank/fluid_tank_1");
-        ResourceLocation fluidTank6k = itemLocation("fluid_tank/fluid_tank_2");
-        ResourceLocation fluidTank9k = itemLocation("fluid_tank/fluid_tank_3");
-        ResourceLocation fluidTank12k = itemLocation("fluid_tank/fluid_tank_4");
-        ResourceLocation fluidTank15k = itemLocation("fluid_tank/fluid_tank_5");
-        ResourceLocation fluidTank18k = itemLocation("fluid_tank/fluid_tank_6");
-        ResourceLocation fluidTank21k = itemLocation("fluid_tank/fluid_tank_7");
-        ResourceLocation fluidTank24k = itemLocation("fluid_tank/fluid_tank_8");
-        ResourceLocation fluidTank27k = itemLocation("fluid_tank/fluid_tank_9");
-        ResourceLocation fluidTank30k = itemLocation("fluid_tank/fluid_tank_10");
-        ResourceLocation fluidTank33k = itemLocation("fluid_tank/fluid_tank_11");
-        ResourceLocation fluidTank36k = itemLocation("fluid_tank/fluid_tank_12");
-        ResourceLocation fluidTank40k = itemLocation("fluid_tank/fluid_tank_13");
-        ResourceLocation fluidTank45k = itemLocation("fluid_tank/fluid_tank_14");
-        ResourceLocation fluidTankFull = itemLocation("fluid_tank/fluid_tank_full");
-
-        List<ItemTintSource> tintSources = List.of(ItemModelUtils.constantTint(-1), new FluidTankTint(16777215));
-
-        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.conditional(
-                new FluidTankProperty(),
-                new BlockModelWrapper.Unbaked(fluidTankEmpty, tintSources),
-                ItemModelUtils.conditional(
-                        new FluidTankProperty3k(),
-                        new BlockModelWrapper.Unbaked(fluidTank3k, tintSources),
-                        ItemModelUtils.conditional(
-                                new FluidTankProperty6k(),
-                                new BlockModelWrapper.Unbaked(fluidTank6k, tintSources),
-                                ItemModelUtils.conditional(
-                                        new FluidTankProperty9k(),
-                                        new BlockModelWrapper.Unbaked(fluidTank9k, tintSources),
-                                        ItemModelUtils.conditional(
-                                                new FluidTankProperty12k(),
-                                                new BlockModelWrapper.Unbaked(fluidTank12k, tintSources),
-                                                ItemModelUtils.conditional(
-                                                        new FluidTankProperty15k(),
-                                                        new BlockModelWrapper.Unbaked(fluidTank15k, tintSources),
-                                                        ItemModelUtils.conditional(
-                                                                new FluidTankProperty18k(),
-                                                                new BlockModelWrapper.Unbaked(fluidTank18k, tintSources),
-                                                                ItemModelUtils.conditional(
-                                                                        new FluidTankProperty21k(),
-                                                                        new BlockModelWrapper.Unbaked(fluidTank21k, tintSources),
-                                                                        ItemModelUtils.conditional(
-                                                                                new FluidTankProperty24k(),
-                                                                                new BlockModelWrapper.Unbaked(fluidTank24k, tintSources),
-                                                                                ItemModelUtils.conditional(
-                                                                                        new FluidTankProperty27k(),
-                                                                                        new BlockModelWrapper.Unbaked(fluidTank27k, tintSources),
-                                                                                        ItemModelUtils.conditional(
-                                                                                                new FluidTankProperty30k(),
-                                                                                                new BlockModelWrapper.Unbaked(fluidTank30k, tintSources),
-                                                                                                ItemModelUtils.conditional(
-                                                                                                        new FluidTankProperty33k(),
-                                                                                                        new BlockModelWrapper.Unbaked(fluidTank33k, tintSources),
-                                                                                                        ItemModelUtils.conditional(
-                                                                                                                new FluidTankProperty36k(),
-                                                                                                                new BlockModelWrapper.Unbaked(fluidTank36k, tintSources),
-                                                                                                                ItemModelUtils.conditional(
-                                                                                                                        new FluidTankProperty40k(),
-                                                                                                                        new BlockModelWrapper.Unbaked(fluidTank40k, tintSources),
-                                                                                                                        ItemModelUtils.conditional(
-                                                                                                                                new FluidTankProperty45k(),
-                                                                                                                                new BlockModelWrapper.Unbaked(fluidTank45k, tintSources),
-                                                                                                                                new BlockModelWrapper.Unbaked(fluidTankFull, tintSources)
-                                                                                                                        )
-                                                                                                                )
-                                                                                                        )
-                                                                                                )
-                                                                                        )
-                                                                                )
-                                                                        )
-                                                                )
-                                                        )
-                                                )
-                                        )
-                                )
-                        )
-                )
-        ));
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.specialModel(blockLocation("fluid_tank"), new FluidTankSpecialRenderer.Unbaked(blockLocation("fluid_tank"))));
     }
 
     private void oppositeHorizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
