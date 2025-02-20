@@ -11,7 +11,6 @@ mixin {
     config "${mod_id}.mixins.json"
 }
 
-
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }

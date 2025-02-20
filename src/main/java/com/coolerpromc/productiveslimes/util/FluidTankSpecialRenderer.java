@@ -19,7 +19,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public record FluidTankSpecialRenderer() implements SpecialModelRenderer {
+public record FluidTankSpecialRenderer() implements SpecialModelRenderer<ImmutableFluidStack> {
     @Nullable
     @Override
     public ImmutableFluidStack extractArgument(ItemStack stack) {
@@ -27,16 +27,16 @@ public record FluidTankSpecialRenderer() implements SpecialModelRenderer {
     }
 
     @Override
-    public void render(@Nullable Object patterns, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void render(@Nullable ImmutableFluidStack immutableFluidStack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
         poseStack.pushPose();
         BlockState blockState = ModBlocks.FLUID_TANK.get().defaultBlockState();
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, packedLight, packedOverlay, ModelData.EMPTY, RenderType.CUTOUT);
         poseStack.popPose();
 
-        if (patterns instanceof ImmutableFluidStack immutableFluidStack){
-            FluidStack fluidStack = immutableFluidStack.fluidStack();
-            FluidTankBlockEntityRenderer.renderFluid(poseStack, bufferSource, packedLight, packedOverlay, fluidStack);
-        }
+        if (immutableFluidStack == null) return;
+
+        FluidStack fluidStack = immutableFluidStack.fluidStack();
+        FluidTankBlockEntityRenderer.renderFluid(poseStack, bufferSource, packedLight, packedOverlay, fluidStack);
     }
 
     public record Unbaked(ResourceLocation texture) implements SpecialModelRenderer.Unbaked{
