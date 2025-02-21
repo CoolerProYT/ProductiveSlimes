@@ -2,10 +2,15 @@ package com.coolerpromc.productiveslimes.compat.rei;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.compat.rei.DnaExtracting.DnaExtractingCategory;
+import com.coolerpromc.productiveslimes.compat.rei.DnaExtracting.DnaExtractingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingCategory;
+import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingCategory;
+import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Soliding.SolidingCategory;
+import com.coolerpromc.productiveslimes.compat.rei.Soliding.SolidingRecipeDisplay;
 import com.coolerpromc.productiveslimes.compat.rei.Squeezing.SqueezingCategory;
+import com.coolerpromc.productiveslimes.compat.rei.Squeezing.SqueezingRecipeDisplay;
 import com.coolerpromc.productiveslimes.screen.*;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -26,10 +31,10 @@ public class REIPluginClient implements REIClientPlugin {
 
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), DnaExtractorScreen.class, DnaExtractingCategory.DNA_EXTRACTING);
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), DnaSynthesizerScreen.class, DnaSynthesizingCategory.DNA_SYNTHESIZING);
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), MeltingStationScreen.class, MeltingCategory.MELTING);
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), SolidingStationScreen.class, SolidingCategory.SOLIDING);
-        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), SlimeSqueezerScreen.class, SqueezingCategory.SQUEEZING);
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), DnaExtractorScreen.class, DnaExtractingRecipeDisplay.CATEGORY);
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), DnaSynthesizerScreen.class, DnaSynthesizingRecipeDisplay.CATEGORY);
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), MeltingStationScreen.class, MeltingRecipeDisplay.CATEGORY);
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), SolidingStationScreen.class, SolidingRecipeDisplay.CATEGORY);
+        registry.registerClickArea(screen -> new Rectangle(((screen.width - 176) / 2) + 77, ((screen.height - 166) / 2) + 38, 26, 8), SlimeSqueezerScreen.class, SqueezingRecipeDisplay.CATEGORY);
     }
 }

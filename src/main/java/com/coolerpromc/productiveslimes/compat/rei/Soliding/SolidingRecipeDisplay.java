@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingCategory;
 import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingRecipeDisplay;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SolidingRecipeDisplay extends BasicDisplay {
+    public static final CategoryIdentifier<? extends SolidingRecipeDisplay> CATEGORY = CategoryIdentifier.of(ProductiveSlimes.MODID, "soliding");
     private final int energy;
     private final int inputCount;
 
@@ -74,7 +76,7 @@ public class SolidingRecipeDisplay extends BasicDisplay {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return SolidingCategory.SOLIDING;
+        return CATEGORY;
     }
 
     @Override

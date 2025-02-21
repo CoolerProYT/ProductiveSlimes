@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
+    public static final CategoryIdentifier<? extends DnaSynthesizingRecipeDisplay> CATEGORY = CategoryIdentifier.of(ProductiveSlimes.MODID, "dna_synthesizing");
     private final int energy;
     private final int inputCount;
 
@@ -74,7 +76,7 @@ public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return DnaSynthesizingCategory.DNA_SYNTHESIZING;
+        return CATEGORY;
     }
 
     @Override
