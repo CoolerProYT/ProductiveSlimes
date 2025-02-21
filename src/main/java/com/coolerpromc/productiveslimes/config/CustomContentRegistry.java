@@ -134,12 +134,9 @@ public class CustomContentRegistry {
                 new PackSelectionConfig(true, Pack.Position.TOP, true)
         );
 
-        // Add your pack to the pack repository
         server.getPackRepository().addPackFinder((consumer) -> consumer.accept(pack));
-        // Reload data packs to include your new pack
         List<Pack> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
         packs.add(pack);
-        server.reloadResources(packs.stream().map(Pack::getId).collect(Collectors.toList()));
     }
 
     public static List<CustomVariants> getLoadedTiers() {

@@ -15,27 +15,31 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SqueezingCategory implements DisplayCategory<SqueezingRecipeDisplay> {
-    public static final CategoryIdentifier<? extends SqueezingRecipeDisplay> SQUEEZING = CategoryIdentifier.of(ProductiveSlimes.MODID, "squeezing");
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/slime_squeezer_gui.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/slime_squeezer_gui.png");
     private int tickCount = 0;
+
     @Override
     public CategoryIdentifier<? extends SqueezingRecipeDisplay> getCategoryIdentifier() {
-        return SQUEEZING;
+        return SqueezingRecipeDisplay.CATEGORY;
     }
+
     @Override
     public Component getTitle() {
         return Component.translatable("block.productiveslimes.slime_squeezer");
     }
+
     @Override
     public Renderer getIcon() {
         return EntryStacks.of(ModBlocks.SLIME_SQUEEZER.get());
     }
+
     @Override
     public List<Widget> setupDisplay(SqueezingRecipeDisplay display, Rectangle bounds) {
         Point startPoint = new Point(bounds.getCenterX() - 77, bounds.getCenterY() - 41);
@@ -61,6 +65,7 @@ public class SqueezingCategory implements DisplayCategory<SqueezingRecipeDisplay
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
                 guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
             }
+
             @Override
             public List<? extends GuiEventListener> children() {
                 return new ArrayList<>();
@@ -68,6 +73,7 @@ public class SqueezingCategory implements DisplayCategory<SqueezingRecipeDisplay
         });
         return widgets;
     }
+
     @Override
     public int getDisplayHeight() {
         return 83;

@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.compat.rei.Squeezing;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,11 +17,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 public class SqueezingRecipeDisplay extends BasicDisplay {
     private final int energy;
     private final EntryStack<ItemStack> inputItem;
+    public static final CategoryIdentifier<? extends SqueezingRecipeDisplay> CATEGORY = CategoryIdentifier.of(ProductiveSlimes.MODID, "squeezing");
+
     public static final DisplaySerializer<SqueezingRecipeDisplay> SERIALIZER = DisplaySerializer.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     EntryIngredient.codec().listOf().fieldOf("ingredients").forGetter(SqueezingRecipeDisplay::getInputEntries),
@@ -37,6 +41,7 @@ public class SqueezingRecipeDisplay extends BasicDisplay {
                     SqueezingRecipeDisplay::new
             )
     );
+
     public SqueezingRecipeDisplay(RecipeHolder<SqueezingRecipe> recipe) {
         super(
                 List.of(EntryIngredients.ofIngredient(recipe.value().getInputItems().getFirst())),
@@ -48,21 +53,26 @@ public class SqueezingRecipeDisplay extends BasicDisplay {
         energy = recipe.value().getEnergy();
         inputItem = EntryStacks.of(new ItemStack(recipe.value().getInputItems().getFirst().getValues().get(0)));
     }
+
     public SqueezingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int energy) {
         super(input, output);
         this.energy = energy;
         this.inputItem = (EntryStack<ItemStack>) input.get(0).getFirst();
     }
+
     public int getEnergy() {
         return energy;
     }
+
     public EntryStack<ItemStack> getInputItem() {
         return inputItem;
     }
+
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return SqueezingCategory.SQUEEZING;
+        return CATEGORY;
     }
+
     @Override
     public @Nullable DisplaySerializer<? extends Display> getSerializer() {
         return SERIALIZER;

@@ -1,5 +1,6 @@
 package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
+import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing.DnaSynthesizingRecipeDisplay;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.mojang.serialization.Codec;
@@ -23,6 +24,8 @@ import java.util.List;
 public class MeltingRecipeDisplay extends BasicDisplay {
     private final int energy;
     private final int inputCount;
+    public static final CategoryIdentifier<? extends MeltingRecipeDisplay> CATEGORY = CategoryIdentifier.of(ProductiveSlimes.MODID, "melting");
+
 
     public static final DisplaySerializer<MeltingRecipeDisplay> SERIALIZER = DisplaySerializer.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -69,7 +72,7 @@ public class MeltingRecipeDisplay extends BasicDisplay {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return MeltingCategory.MELTING;
+        return CATEGORY;
     }
 
     @Override

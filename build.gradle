@@ -85,9 +85,11 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
+    compileOnly 'me.shedaniel.cloth:basic-math:0.6.1'
+    compileOnly "dev.architectury:architectury-neoforge:15.0.3"
+    compileOnly 'me.shedaniel:RoughlyEnoughItems-neoforge:18.0.798'
+    compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
+
     runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
 //    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
