@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagGenerator extends ItemTagsProvider {
     public ModItemTagGenerator(PackOutput p_275343_, CompletableFuture<HolderLookup.Provider> p_275729_, CompletableFuture<TagLookup<Block>> p_275322_) {
-        super(p_275343_, p_275729_, p_275322_, ProductiveSlimes.MODID, null);
+        super(p_275343_, p_275729_, p_275322_, ProductiveSlimes.MODID);
     }
 
     @Override

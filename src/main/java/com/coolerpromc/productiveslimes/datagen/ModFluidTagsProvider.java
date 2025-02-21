@@ -12,7 +12,7 @@ import net.minecraft.tags.FluidTags;
 import java.util.concurrent.CompletableFuture;
 
 public class ModFluidTagsProvider extends FluidTagsProvider {
-    public ModFluidTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider) {super(pOutput, pProvider, ProductiveSlimes.MODID, null);
+    public ModFluidTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pProvider) {super(pOutput, pProvider, ProductiveSlimes.MODID);
     }
 
     @Override

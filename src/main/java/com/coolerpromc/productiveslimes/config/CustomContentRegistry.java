@@ -419,7 +419,7 @@ public class CustomContentRegistry {
             String itemsSpawnEggContent = "{\n" +
                     "  \"model\": {\n" +
                     "    \"type\": \"minecraft:model\",\n" +
-                    "    \"model\": \"productiveslimes:item/" + variants.getName() + "_slime_spawn_egg\",\n" +
+                    "    \"model\": \"productiveslimes:item/template_slime_spawn_egg\",\n" +
                     "    \"tints\": [\n" +
                     "      {\n" +
                     "        \"type\": \"minecraft:constant\",\n" +
