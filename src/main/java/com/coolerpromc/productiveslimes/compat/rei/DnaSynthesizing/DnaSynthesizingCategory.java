@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.DnaSynthesizing;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.compat.rei.DnaExtracting.DnaExtractingRecipeDisplay;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -25,14 +26,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingRecipeDisplay> {
-    public static final CategoryIdentifier<? extends DnaSynthesizingRecipeDisplay> DNA_SYNTHESIZING = CategoryIdentifier.of(ProductiveSlimes.MODID, "dna_synthesizing");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/dna_synthesizer_gui.png");
 
     private int tickCount = 0;
 
     @Override
     public CategoryIdentifier<? extends DnaSynthesizingRecipeDisplay> getCategoryIdentifier() {
-        return DNA_SYNTHESIZING;
+        return DnaSynthesizingRecipeDisplay.CATEGORY;
     }
 
     @Override
