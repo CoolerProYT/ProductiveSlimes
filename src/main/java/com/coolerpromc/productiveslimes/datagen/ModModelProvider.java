@@ -247,9 +247,9 @@ public class ModModelProvider extends ModelProvider {
         itemModels.itemModelOutput.accept(item.get(), new BlockModelWrapper.Unbaked(ModelTemplates.TWO_LAYERED_ITEM.create(item.get(), textureMapping, itemModels.modelOutput), List.of(ItemModelUtils.constantTint(-1), ItemModelUtils.constantTint(((BucketItem)item.get()).getColor()))));
     }
 
-    private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
-        SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
-        itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
+    private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<SpawnEggItem> item) {
+        ResourceLocation model =itemLocation("template_slime_spawn_egg");
+        itemModels.itemModelOutput.accept(item.get(), ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(item.get().getColor())));
     }
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){

@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.tier;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
+import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +26,7 @@ public class ModTierLists {
     private static final Map<ResourceLocation, DeferredBlock<SlimeBlock>> registeredBlock = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredSlimeballItem = new HashMap<>();
     private static final Map<ResourceLocation, DeferredItem<Item>> registeredDnaItem = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItem = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredItem<SpawnEggItem>> registeredSpawnEggItem = new HashMap<>();
     private static final Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<FluidType>> registeredFluidType = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
@@ -91,7 +92,7 @@ public class ModTierLists {
     public static void addRegisteredDnaItem(String name, DeferredItem<Item> item){
         registeredDnaItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"), item);
     }
-    public static void addRegisteredSpawnEggItem(String name, DeferredItem<Item> item){
+    public static void addRegisteredSpawnEggItem(String name, DeferredItem<SpawnEggItem> item){
         registeredSpawnEggItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"), item);
     }
 
@@ -135,7 +136,7 @@ public class ModTierLists {
         return registeredDnaItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"));
     }
 
-    public static DeferredItem<Item> getSpawnEggItemByName(String name){
+    public static DeferredItem<SpawnEggItem> getSpawnEggItemByName(String name){
         return registeredSpawnEggItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"));
     }
 
