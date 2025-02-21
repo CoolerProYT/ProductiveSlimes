@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.worldgen.biome;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -21,8 +22,11 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlace
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 
 public class ModConfiguredFeatures {
-    public static final ResourceKey<ConfiguredFeature<?,?>> SLIMY_TREE = registerKey("slimy_tree");
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context){
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SLIMY_TREE = registerKey("slimy_tree");
+    public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_DIRT = registerKey("lake_molten_dirt");
+    public static final ResourceKey<ConfiguredFeature<?,?>> LAKE_MOLTEN_STONE = registerKey("lake_molten_stone");
+
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, ModConfiguredFeatures.SLIMY_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(ModBlocks.SLIMY_LOG.get()),
                 new FancyTrunkPlacer(4, 4, 3),
@@ -30,12 +34,16 @@ public class ModConfiguredFeatures {
                 new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(3), 3),
                 new TwoLayersFeatureSize(1, 0, 2)
         ).dirt(BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get())).build());
+
+        register(context, ModConfiguredFeatures.LAKE_MOLTEN_DIRT, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName(Tier.DIRT.getTierName()).get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
+        register(context, ModConfiguredFeatures.LAKE_MOLTEN_STONE, Feature.LAKE, new LakeFeature.Configuration(BlockStateProvider.simple(ModTierLists.getLiquidBlockByName(Tier.STONE.getTierName()).get().defaultBlockState()), BlockStateProvider.simple(ModBlocks.SLIMY_DIRT.get().defaultBlockState())));
     }
-    private static ResourceKey<ConfiguredFeature<?,?>> registerKey(String name){
+
+    private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name));
     }
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, F feature, FC configuration)
-    {
+
+    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, F feature, FC configuration) {
         context.register(configuredFeatureKey, new ConfiguredFeature<>(feature, configuration));
     }
 }

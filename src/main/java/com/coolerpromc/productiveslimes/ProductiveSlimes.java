@@ -84,11 +84,13 @@ public class ProductiveSlimes
             modEventBus.addListener(this::enqueueIMC);
         }
 
-        CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
+        if (!Boolean.getBoolean("neoforge.datagen")){
+            CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
 
-        ITEMS.register(modEventBus);
-        BLOCKS.register(modEventBus);
-        ENTITY_TYPES.register(modEventBus);
+            ITEMS.register(modEventBus);
+            BLOCKS.register(modEventBus);
+            ENTITY_TYPES.register(modEventBus);
+        }
 
         FluidResources.register(modEventBus);
 
