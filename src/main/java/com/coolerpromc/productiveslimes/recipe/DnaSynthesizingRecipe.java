@@ -37,7 +37,7 @@ public record DnaSynthesizingRecipe(List<SizedIngredient> inputItems, List<ItemS
             Iterator<SizedIngredient> iterator = remainingIngredients.iterator();
 
             while (iterator.hasNext()) {
-                Ingredient ingredient = iterator.next().ingredient();
+                SizedIngredient ingredient = iterator.next();
                 if (ingredient.test(itemStack)) {
                     iterator.remove();
                     ingredientFound = true;
