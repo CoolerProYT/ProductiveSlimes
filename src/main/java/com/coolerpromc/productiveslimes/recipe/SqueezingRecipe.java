@@ -15,13 +15,13 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 
-public record SqueezingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int energy) implements Recipe<SingleRecipeInput> {
+public record SqueezingRecipe(Ingredient inputItems, List<ItemStack> output, int energy) implements Recipe<SingleRecipeInput> {
     @Override
     public boolean matches(SingleRecipeInput pInput, Level pLevel) {
         if (pLevel.isClientSide()) {
             return false;
         }
-        return inputItems.getFirst().test(pInput.getItem(0));
+        return inputItems.test(pInput.getItem(0));
     }
 
     @Override
@@ -54,7 +54,7 @@ public record SqueezingRecipe(List<Ingredient> inputItems, List<ItemStack> outpu
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing");
         public static final MapCodec<SqueezingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
+                Ingredient.CODEC.fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
                 Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, SqueezingRecipe::new));
@@ -63,11 +63,7 @@ public record SqueezingRecipe(List<Ingredient> inputItems, List<ItemStack> outpu
         );
 
         private static SqueezingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int ingredientCount = buffer.readVarInt();
-            List<Ingredient> inputItems = new ArrayList<>(ingredientCount);
-            for (int i = 0; i < ingredientCount; i++) {
-                inputItems.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-            }
+            Ingredient inputItems = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             int outputCount = buffer.readVarInt();
             List<ItemStack> result = new ArrayList<>(outputCount);
             for (int i = 0; i < outputCount; i++) {
@@ -78,10 +74,8 @@ public record SqueezingRecipe(List<Ingredient> inputItems, List<ItemStack> outpu
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, SqueezingRecipe recipe) {
-            buffer.writeVarInt(recipe.inputItems.size());
-            for (Ingredient ingredient : recipe.inputItems) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
-            }
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.inputItems);
+
             buffer.writeVarInt(recipe.output.size());
             for (ItemStack itemStack : recipe.output) {
                 ItemStack.STREAM_CODEC.encode(buffer, itemStack);

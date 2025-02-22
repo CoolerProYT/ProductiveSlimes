@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SqueezingRecipeBuilder implements RecipeBuilder {
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private Ingredient ingredients;
     private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
@@ -35,7 +35,7 @@ public class SqueezingRecipeBuilder implements RecipeBuilder {
         // Private constructor to enforce the use of the static method
     }
     public SqueezingRecipeBuilder addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
+        this.ingredients = ingredient;
         return this;
     }
     public SqueezingRecipeBuilder addOutput(ItemStack output) {

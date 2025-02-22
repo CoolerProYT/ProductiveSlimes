@@ -44,7 +44,7 @@ public record SqueezingRecipeDisplay(RecipeHolder<SqueezingRecipe> recipe) imple
 
     @Override
     public List<EntryIngredient> getInputEntries() {
-        return EntryIngredients.ofIngredients(recipe.value().inputItems());
+        return List.of(EntryIngredients.ofIngredient(recipe.value().inputItems()));
     }
 
     @Override
