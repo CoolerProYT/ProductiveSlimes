@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -23,9 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DnaSynthesizingRecipeBuilder implements RecipeBuilder {
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private final List<SizedIngredient> ingredients = new ArrayList<>();
     private int energy;
-    private int inputCount;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
@@ -39,7 +39,7 @@ public class DnaSynthesizingRecipeBuilder implements RecipeBuilder {
         // Private constructor to enforce the use of the static factory method
     }
 
-    public DnaSynthesizingRecipeBuilder addIngredient(Ingredient ingredient) {
+    public DnaSynthesizingRecipeBuilder addIngredient(SizedIngredient ingredient) {
         this.ingredients.add(ingredient);
         return this;
     }
@@ -51,11 +51,6 @@ public class DnaSynthesizingRecipeBuilder implements RecipeBuilder {
 
     public DnaSynthesizingRecipeBuilder setEnergy(int energy) {
         this.energy = energy;
-        return this;
-    }
-
-    public DnaSynthesizingRecipeBuilder setInputCount(int inputCount) {
-        this.inputCount = inputCount;
         return this;
     }
 
@@ -90,8 +85,7 @@ public class DnaSynthesizingRecipeBuilder implements RecipeBuilder {
         DnaSynthesizingRecipe recipe = new DnaSynthesizingRecipe(
                 this.ingredients,
                 this.outputs,
-                this.energy,
-                this.inputCount
+                this.energy
         );
 
         // Pass the recipe and advancement to the output

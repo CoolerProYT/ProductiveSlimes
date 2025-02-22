@@ -20,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -272,9 +273,9 @@ public class ModRecipeProvider extends RecipeProvider {
 
             dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
 
-            dnaSynthesizingSelfRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), 2, ModTierLists.getDnaItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()));
+            dnaSynthesizingSelfRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()).toStack(), ModTierLists.getDnaItemByName(tiers.name()).toStack(), new ItemStack(ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()), 2));
 
-            dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), 4, ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey1()), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey2()), ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()));
+            dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey1()).asItem().getDefaultInstance(), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey2()).asItem().getDefaultInstance(), new ItemStack(ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()), 4));
         }
 
         squeezingRecipe(output, ModBlocks.SLIMY_DIRT, new ItemStack(Items.DIRT, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));
@@ -340,7 +341,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     }
 
-    protected void dnaSynthesizingSelfRecipe(RecipeOutput pRecipeOutput, ItemLike pResult, int inputCount, ItemLike... pIngredient) {
+    protected void dnaSynthesizingSelfRecipe(RecipeOutput pRecipeOutput, ItemLike pResult, ItemStack... pIngredient) {
         var recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
 
         if (pIngredient.length != 3) {
@@ -348,19 +349,18 @@ public class ModRecipeProvider extends RecipeProvider {
         }
 
         for (var ingredient : pIngredient) {
-            recipeBuilder.addIngredient(Ingredient.of(ingredient));
+            recipeBuilder.addIngredient(SizedIngredient.of(ingredient.getItem(), ingredient.getCount()));
         }
 
         recipeBuilder
                 .addOutput(new ItemStack(pResult, 1))
-                .setInputCount(inputCount)
                 .setEnergy(600)
                 .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing_self").toString());
 
     }
 
-    protected void dnaSynthesizingRecipe(RecipeOutput pRecipeOutput, ItemLike pResult, int inputCount, ItemLike... pIngredient) {
+    protected void dnaSynthesizingRecipe(RecipeOutput pRecipeOutput, ItemLike pResult, ItemStack... pIngredient) {
         var recipeBuilder = DnaSynthesizingRecipeBuilder.dnaSynthesizingRecipe();
 
         if (pIngredient.length != 3) {
@@ -368,12 +368,11 @@ public class ModRecipeProvider extends RecipeProvider {
         }
 
         for (var ingredient : pIngredient) {
-            recipeBuilder.addIngredient(Ingredient.of(ingredient));
+            recipeBuilder.addIngredient(SizedIngredient.of(ingredient.getItem(), ingredient.getCount()));
         }
 
         recipeBuilder
                 .addOutput(new ItemStack(pResult, 1))
-                .setInputCount(inputCount)
                 .setEnergy(600)
                 .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing").toString());

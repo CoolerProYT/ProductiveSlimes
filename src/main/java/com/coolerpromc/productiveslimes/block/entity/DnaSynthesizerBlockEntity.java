@@ -1,7 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-//import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.DnaSynthesizingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.custom.MultipleRecipeInput;
@@ -29,6 +28,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -188,7 +188,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<DnaSynthesizingRecipe>> recipe = getCurrentRecipe();
 
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().energy() && !eggHandler.getStackInSlot(0).isEmpty() && inputHandler.getStackInSlot(2).getCount() >= recipe.get().value().inputCount()){
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().energy() && !eggHandler.getStackInSlot(0).isEmpty()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
@@ -209,12 +209,16 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     private void craftItem() {
         Optional<RecipeHolder<DnaSynthesizingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
+            List<SizedIngredient> ingredients = recipe.get().value().inputItems();
             List<ItemStack> results = recipe.get().value().output();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, 1, false);
-            this.inputHandler.extractItem(1, 1, false);
-            this.inputHandler.extractItem(2, recipe.get().value().inputCount(), false);
+            int i = 0;
+            for (SizedIngredient ingredient : ingredients) {
+                this.inputHandler.extractItem(i, ingredient.count(), false);
+                i++;
+            }
+
             this.eggHandler.extractItem(0, 1, false);
 
             // Loop through each result item and find suitable output slots

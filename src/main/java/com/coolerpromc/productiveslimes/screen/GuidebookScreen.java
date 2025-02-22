@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -395,10 +396,10 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             }
 
             // Render recipe input
-            List<Ingredient> input = recipe.inputItems();
+            List<SizedIngredient> input = recipe.inputItems();
             int ingredientIndex = 0;
-            for (Ingredient ingredient : input) {
-                ItemStack inputStack = new ItemStack(ingredient.getValues().get(0));
+            for (SizedIngredient ingredient : input) {
+                ItemStack inputStack = new ItemStack(ingredient.ingredient().getValues().get(0));
                 int inputX = xPos;
                 int inputY = yPos;
                 int inputCount = 1;
@@ -414,7 +415,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
                     case 2:
                         inputX += 52;
                         inputY += 34;
-                        inputCount = recipe.inputCount();
+                        inputCount = ingredient.count();
                         break;
                 }
 

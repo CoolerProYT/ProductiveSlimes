@@ -6,20 +6,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int energy, int inputCount) implements Recipe<MultipleRecipeInput> {
+public record DnaSynthesizingRecipe(List<SizedIngredient> inputItems, List<ItemStack> output, int energy) implements Recipe<MultipleRecipeInput> {
     @Override
     public boolean matches(MultipleRecipeInput pInput, Level pLevel) {
         List<ItemStack> inputItems = pInput.inputItems();
@@ -27,7 +26,7 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
             return false;
         }
 
-        List<Ingredient> remainingIngredients = new ArrayList<>(this.inputItems);
+        List<SizedIngredient> remainingIngredients = new ArrayList<>(this.inputItems);
 
         for (ItemStack itemStack : inputItems) {
             if (itemStack.isEmpty()) {
@@ -35,10 +34,10 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
             }
 
             boolean ingredientFound = false;
-            Iterator<Ingredient> iterator = remainingIngredients.iterator();
+            Iterator<SizedIngredient> iterator = remainingIngredients.iterator();
 
             while (iterator.hasNext()) {
-                Ingredient ingredient = iterator.next();
+                Ingredient ingredient = iterator.next().ingredient();
                 if (ingredient.test(itemStack)) {
                     iterator.remove();
                     ingredientFound = true;
@@ -82,11 +81,10 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
     public static class Serializer implements RecipeSerializer<DnaSynthesizingRecipe> {
         public static final DnaSynthesizingRecipe.Serializer INSTANCE = new DnaSynthesizingRecipe.Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing");
-        public final MapCodec<DnaSynthesizingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
+        public static final MapCodec<DnaSynthesizingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                SizedIngredient.NESTED_CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount)
+                Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, DnaSynthesizingRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, DnaSynthesizingRecipe> STREAM_CODEC = StreamCodec.of(
@@ -95,9 +93,9 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
 
         private static DnaSynthesizingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             int ingredientCount = buffer.readVarInt();
-            List<Ingredient> inputItems = new ArrayList<>(ingredientCount);
+            List<SizedIngredient> inputItems = new ArrayList<>(ingredientCount);
             for (int i = 0; i < ingredientCount; i++) {
-                inputItems.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+                inputItems.add(SizedIngredient.STREAM_CODEC.decode(buffer));
             }
 
             int outputCount = buffer.readVarInt();
@@ -108,15 +106,13 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
 
             int energy = buffer.readInt();
 
-            int inputCount = buffer.readInt();
-
-            return new DnaSynthesizingRecipe(inputItems, result, energy, inputCount);
+            return new DnaSynthesizingRecipe(inputItems, result, energy);
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, DnaSynthesizingRecipe recipe) {
             buffer.writeVarInt(recipe.inputItems.size());
-            for (Ingredient ingredient : recipe.inputItems) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+            for (SizedIngredient ingredient : recipe.inputItems) {
+                SizedIngredient.STREAM_CODEC.encode(buffer, ingredient);
             }
 
             buffer.writeVarInt(recipe.output.size());
@@ -125,7 +121,6 @@ public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack>
             }
 
             buffer.writeInt(recipe.energy);
-            buffer.writeInt(recipe.inputCount);
         }
 
         @Override
