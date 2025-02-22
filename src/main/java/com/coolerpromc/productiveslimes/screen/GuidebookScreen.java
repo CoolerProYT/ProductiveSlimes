@@ -503,7 +503,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             }
 
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 25, yPos + 34, new ItemStack(Items.BUCKET, recipe.output().getFirst().getCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 45, yPos + 34, new ItemStack(recipe.inputItems().getFirst().getValues().get(0), recipe.inputCount()), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 45, yPos + 34, new ItemStack(recipe.inputItems().ingredient().getValues().get(0), recipe.inputItems().count()), font);
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 108 + 20, yPos + 34, recipe.output().getFirst(), font);
 
             pGuiGraphics.pose().pushPose();

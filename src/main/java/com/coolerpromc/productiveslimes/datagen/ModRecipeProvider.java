@@ -305,8 +305,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
     protected void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
         MeltingRecipeBuilder.meltingRecipe()
-                .addIngredient(Ingredient.of(pIngredient))
-                .setInputCount(pInputCount)
+                .addIngredient(SizedIngredient.of(pIngredient, pInputCount))
                 .addOutput(new ItemStack(pResult, outputCount))
                 .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))

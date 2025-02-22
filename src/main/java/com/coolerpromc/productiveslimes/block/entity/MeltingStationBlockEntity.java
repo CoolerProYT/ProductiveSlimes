@@ -195,8 +195,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
             List<ItemStack> results = recipe.get().value().output();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().inputCount(), false);
-            this.bucketHandler.extractItem(0, recipe.get().value().output().get(0).getCount(), false);
+            this.inputHandler.extractItem(0, recipe.get().value().inputItems().count(), false);
+            this.bucketHandler.extractItem(0, recipe.get().value().output().getFirst().getCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -232,7 +232,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().inputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().inputItems().count()) {
             return false;
         }
 

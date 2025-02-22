@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MeltingRecipeBuilder implements RecipeBuilder {
-    private final List<Ingredient> ingredients = new ArrayList<>();
-    private int inputCount;
+    private SizedIngredient ingredients;
     private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
@@ -38,13 +38,8 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         // Private constructor to enforce the use of the static method
     }
 
-    public MeltingRecipeBuilder addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-        return this;
-    }
-
-    public MeltingRecipeBuilder setInputCount(int count) {
-        this.inputCount = count;
+    public MeltingRecipeBuilder addIngredient(SizedIngredient ingredient) {
+        this.ingredients = ingredient;
         return this;
     }
 
@@ -86,7 +81,6 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         MeltingRecipe recipe = new MeltingRecipe(
                 this.ingredients,
                 this.outputs,
-                this.inputCount,
                 this.energy
         );
 
