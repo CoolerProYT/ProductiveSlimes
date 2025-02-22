@@ -31,7 +31,7 @@ public record DnaExtractingRecipeDisplay(RecipeHolder<DnaExtractingRecipe> recip
                             DnaExtractingRecipe.Serializer.CODEC.fieldOf("ingredients").forGetter(display ->
                                     display.recipe.value()
                             )
-                    ).apply(instance, (ResourceLocation recipeId, DnaExtractingRecipe recipe) ->
+                    ).apply(instance, (recipeId, recipe) ->
                             new DnaExtractingRecipeDisplay(new RecipeHolder<>(
                                     ResourceKey.create(Registries.RECIPE, recipeId), recipe
                             ))

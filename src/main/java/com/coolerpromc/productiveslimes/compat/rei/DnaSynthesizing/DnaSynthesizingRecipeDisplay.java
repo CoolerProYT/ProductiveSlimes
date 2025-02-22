@@ -32,7 +32,7 @@ public record DnaSynthesizingRecipeDisplay(RecipeHolder<DnaSynthesizingRecipe> r
                             DnaSynthesizingRecipe.Serializer.CODEC.fieldOf("ingredients").forGetter(display ->
                                     display.recipe.value()
                             )
-                    ).apply(instance, (ResourceLocation recipeId, DnaSynthesizingRecipe recipe) ->
+                    ).apply(instance, (recipeId, recipe) ->
                             new DnaSynthesizingRecipeDisplay(new RecipeHolder<>(
                                     ResourceKey.create(Registries.RECIPE, recipeId), recipe
                             ))

@@ -1,82 +1,65 @@
 package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingCategory;
-import com.coolerpromc.productiveslimes.compat.rei.Melting.MeltingRecipeDisplay;
-import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.DisplaySerializer;
-import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class SolidingRecipeDisplay extends BasicDisplay {
-    private final int energy;
-    private final int inputCount;
+public record SolidingRecipeDisplay(RecipeHolder<SolidingRecipe> recipe) implements Display {
     public static final CategoryIdentifier<? extends SolidingRecipeDisplay> CATEGORY = CategoryIdentifier.of(ProductiveSlimes.MODID, "soliding");
 
     public static final DisplaySerializer<SolidingRecipeDisplay> SERIALIZER = DisplaySerializer.of(
             RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    EntryIngredient.codec().listOf().fieldOf("ingredients").forGetter(SolidingRecipeDisplay::getInputEntries),
-                    EntryIngredient.codec().listOf().fieldOf("output").forGetter(SolidingRecipeDisplay::getOutputEntries),
-                    Codec.INT.fieldOf("inputCount").forGetter(SolidingRecipeDisplay::getInputCount),
-                    Codec.INT.fieldOf("energy").forGetter(SolidingRecipeDisplay::getEnergy)
-            ).apply(instance, SolidingRecipeDisplay::new)),
+                    ResourceLocation.CODEC.fieldOf("recipeId").forGetter(display -> display.recipe.id().location()),
+                    SolidingRecipe.Serializer.CODEC.fieldOf("ingredients").forGetter(display -> display.recipe.value())
+            ).apply(instance, (resourceLocation, solidingRecipe) -> new SolidingRecipeDisplay(new RecipeHolder<>(ResourceKey.create(Registries.RECIPE, resourceLocation), solidingRecipe)))),
             StreamCodec.composite(
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    SolidingRecipeDisplay::getInputEntries,
-                    EntryIngredient.streamCodec().apply(ByteBufCodecs.list()),
-                    SolidingRecipeDisplay::getOutputEntries,
-                    ByteBufCodecs.INT,
-                    SolidingRecipeDisplay::getInputCount,
-                    ByteBufCodecs.INT,
-                    SolidingRecipeDisplay::getEnergy,
-                    SolidingRecipeDisplay::new
+                    ResourceLocation.STREAM_CODEC,
+                    display -> display.recipe.id().location(),
+                    SolidingRecipe.Serializer.STREAM_CODEC,
+                    display -> display.recipe.value(),
+                    (recipeId, recipe) -> new SolidingRecipeDisplay(new RecipeHolder<>(ResourceKey.create(Registries.RECIPE, recipeId), recipe))
             )
     );
 
-    public SolidingRecipeDisplay(RecipeHolder<SolidingRecipe> recipe) {
-        super(
-            List.of(EntryIngredients.ofIngredient(recipe.value().inputItems().getFirst())),
-            List.of(
-                EntryIngredient.of(EntryStacks.of(recipe.value().output().get(0))),
-                EntryIngredient.of(EntryStacks.of(recipe.value().output().get(1)))
-            )
-        );
-
-        energy = recipe.value().energy();
-        inputCount = recipe.value().inputCount();
+    @Override
+    public List<EntryIngredient> getInputEntries() {
+        return EntryIngredients.ofIngredients(recipe.value().inputItems());
     }
 
-    public SolidingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int inputCount, int energy) {
-        super(input, output);
-        this.energy = energy;
-        this.inputCount = inputCount;
-    }
-
-    public int getEnergy() {
-        return energy;
-    }
-
-    public int getInputCount() {
-        return inputCount;
+    @Override
+    public List<EntryIngredient> getOutputEntries() {
+        List<ItemStack> outputs = recipe.value().output();
+        List<EntryIngredient> entryIngredients = new ArrayList<>();
+        for (ItemStack output : outputs) {
+            entryIngredients.add(EntryIngredients.of(output));
+        }
+        return entryIngredients;
     }
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return CATEGORY;
+    }
+
+    @Override
+    public Optional<ResourceLocation> getDisplayLocation() {
+        return Optional.of(recipe.id().location());
     }
 
     @Override

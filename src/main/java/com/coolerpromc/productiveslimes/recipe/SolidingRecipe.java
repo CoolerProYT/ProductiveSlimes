@@ -53,7 +53,7 @@ public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output
     public static class Serializer implements RecipeSerializer<SolidingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding");
-        public final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public static final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
                 Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),

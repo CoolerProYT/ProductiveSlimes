@@ -28,7 +28,7 @@ public record MeltingRecipeDisplay(RecipeHolder<MeltingRecipe> recipe) implement
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     ResourceLocation.CODEC.fieldOf("recipeId").forGetter(display -> display.recipe.id().location()),
                     MeltingRecipe.Serializer.CODEC.fieldOf("ingredients").forGetter(display -> display.recipe.value())
-            ).apply(instance, (ResourceLocation recipeId, MeltingRecipe recipe) -> new MeltingRecipeDisplay(new RecipeHolder<>(ResourceKey.create(Registries.RECIPE, recipeId), recipe)))),
+            ).apply(instance, (recipeId, recipe) -> new MeltingRecipeDisplay(new RecipeHolder<>(ResourceKey.create(Registries.RECIPE, recipeId), recipe)))),
             StreamCodec.composite(
                     ResourceLocation.STREAM_CODEC,
                     display -> display.recipe.id().location(),
