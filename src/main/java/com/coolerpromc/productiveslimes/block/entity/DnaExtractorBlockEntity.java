@@ -189,7 +189,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             List<ItemStack> results = recipe.get().value().output();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().inputCount(), false);
+            this.inputHandler.extractItem(0, 1, false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -236,7 +236,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().inputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < 1) {
             return false;
         }
 

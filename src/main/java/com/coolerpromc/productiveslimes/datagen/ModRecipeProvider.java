@@ -326,7 +326,6 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void dnaExtractingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
         var recipeBuilder = DnaExtractingRecipeBuilder.dnaExtractingRecipe()
                 .addIngredient(Ingredient.of(pIngredient))
-                .setInputCount(1)
                 .addOutput(new ItemStack(pResult, outputCount));
 
         if (pIngredient != Items.SLIME_BALL) {

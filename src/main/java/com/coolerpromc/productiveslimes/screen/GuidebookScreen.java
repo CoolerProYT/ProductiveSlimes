@@ -306,7 +306,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             }
 
             // Render recipe input
-            Ingredient input = recipe.inputItems().getFirst();
+            Ingredient input = recipe.inputItems();
             ItemStack inputStack = new ItemStack(input.getValues().get(0));
             int inputX = xPos + 27;
             int inputY = yPos + 34;
