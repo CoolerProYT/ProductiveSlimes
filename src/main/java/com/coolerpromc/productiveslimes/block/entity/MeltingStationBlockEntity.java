@@ -171,12 +171,12 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().getOutputs().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
+        if(hasRecipe() && bucketHandler.getStackInSlot(0).getCount() >= recipe.get().value().output().get(0).getCount() && energyHandler.getEnergyStored() >= recipe.get().value().energy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().value().energy());
                 craftItem();
                 resetProgress();
             }
@@ -192,11 +192,11 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     private void craftItem() {
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutputs();
+            List<ItemStack> results = recipe.get().value().output();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
-            this.bucketHandler.extractItem(0, recipe.get().value().getOutputs().get(0).getCount(), false);
+            this.inputHandler.extractItem(0, recipe.get().value().inputCount(), false);
+            this.bucketHandler.extractItem(0, recipe.get().value().output().get(0).getCount(), false);
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
@@ -232,11 +232,11 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().getInputCount()) {
+        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().inputCount()) {
             return false;
         }
 
-        List<ItemStack> results = recipe.get().value().getOutputs();
+        List<ItemStack> results = recipe.get().value().output();
 
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {

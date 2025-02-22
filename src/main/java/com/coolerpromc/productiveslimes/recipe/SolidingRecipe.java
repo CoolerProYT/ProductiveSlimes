@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
@@ -16,23 +15,7 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolidingRecipe implements Recipe<SingleRecipeInput>{
-    private final NonNullList<Ingredient> inputItems;
-    private final List<ItemStack> output;
-    private final int inputCount;
-    private final int energy;
-
-    public SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) {
-        NonNullList<Ingredient> ingredients = NonNullList.create();
-        for (int i = 0; i < inputItems.size(); i++) {
-            ingredients.add(inputItems.get(i));
-        }
-        this.inputItems = ingredients;
-        this.output = output;
-        this.inputCount = inputCount;
-        this.energy = energy;
-    }
-
+public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) implements Recipe<SingleRecipeInput>{
     @Override
     public boolean matches(SingleRecipeInput pInput, Level pLevel) {
         if (pLevel.isClientSide()){
@@ -49,7 +32,7 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
 
     @Override
     public RecipeSerializer<? extends Recipe<SingleRecipeInput>> getSerializer() {
-        return (RecipeSerializer<? extends Recipe<SingleRecipeInput>>) ModRecipes.SOLIDING_SERIALIZER.get();
+        return ModRecipes.SOLIDING_SERIALIZER.get();
     }
 
     @Override
@@ -59,34 +42,18 @@ public class SolidingRecipe implements Recipe<SingleRecipeInput>{
 
     @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.create(inputItems);
+        return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return null;
-    }
-
-    public NonNullList<Ingredient> getInputItems() {
-        return inputItems;
-    }
-
-    public List<ItemStack> getOutputs() {
-        return output;
-    }
-
-    public int getInputCount() {
-        return inputCount;
-    }
-
-    public int getEnergy() {
-        return energy;
+        return ModRecipes.SOLIDING_CATEGORY.get();
     }
 
     public static class Serializer implements RecipeSerializer<SolidingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding");
-        private final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
                 Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),

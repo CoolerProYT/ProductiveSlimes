@@ -129,11 +129,11 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     }
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<SqueezingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()) {
+        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().energy()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
             if(hasProgressFinished()) {
-                energyHandler.removeEnergy(recipe.get().value().getEnergy());
+                energyHandler.removeEnergy(recipe.get().value().energy());
                 craftItem();
                 resetProgress();
             }
@@ -151,7 +151,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     private void craftItem() {
         Optional<RecipeHolder<SqueezingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
-            List<ItemStack> results = recipe.get().value().getOutputs();
+            List<ItemStack> results = recipe.get().value().output();
             // Extract the input item from the input slot
             this.inputHandler.extractItem(0, 1, false);
             // Loop through each result item and find suitable output slots
@@ -186,7 +186,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         if (inputHandler.getStackInSlot(0).getCount() < 1) {
             return false;
         }
-        List<ItemStack> results = recipe.get().value().getOutputs();
+        List<ItemStack> results = recipe.get().value().output();
         for (ItemStack result : results) {
             if (!canInsertAmountIntoOutputSlot(result) || !canInsertItemIntoOutputSlot(result.getItem())) {
                 return false;

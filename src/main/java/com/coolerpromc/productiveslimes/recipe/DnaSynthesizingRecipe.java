@@ -19,23 +19,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
-    private final List<Ingredient> inputItems;
-    private final List<ItemStack> output;
-    private final int energy;
-    private final int inputCount;
-
-    public DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int energy, int inputCount) {
-        this.inputItems = inputItems;
-        this.output = output;
-        this.energy = energy;
-        this.inputCount = inputCount;
-    }
-
+public record DnaSynthesizingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int energy, int inputCount) implements Recipe<MultipleRecipeInput> {
     @Override
     public boolean matches(MultipleRecipeInput pInput, Level pLevel) {
         List<ItemStack> inputItems = pInput.inputItems();
-        if (inputItems.size() != inputItems.size()) {
+        if (inputItems.size() != this.inputItems.size()) {
             return false;
         }
 
@@ -68,12 +56,12 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
 
     @Override
     public ItemStack assemble(MultipleRecipeInput pInput, HolderLookup.Provider pRegistries) {
-        return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
+        return output.isEmpty() ? ItemStack.EMPTY : output.getFirst().copy();
     }
 
     @Override
     public RecipeSerializer<? extends Recipe<MultipleRecipeInput>> getSerializer() {
-        return (RecipeSerializer<? extends Recipe<MultipleRecipeInput>>) ModRecipes.DNA_SYNTHESIZING_SERIALIZER.get();
+        return ModRecipes.DNA_SYNTHESIZING_SERIALIZER.get();
     }
 
     @Override
@@ -82,44 +70,19 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
     }
 
     @Override
-    public List<RecipeDisplay> display() {
-        return List.of();
-    }
-
-    public String getName() {
-        return BuiltInRegistries.ITEM.getKey(output.get(0).getItem()).getPath();
-    }
-
-    @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.create(inputItems);
+        return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return null;
+        return ModRecipes.DNA_SYNTHESIZING_CATEGORY.get();
     }
 
-    public int getEnergy() {
-        return energy;
-    }
-
-    public List<ItemStack> getOutput() {
-        return output;
-    }
-
-    public List<Ingredient> getInputItems() {
-        return inputItems;
-    }
-
-    public int getInputCount() {
-        return inputCount;
-    }
-
-    public static class Serializer implements RecipeSerializer<DnaSynthesizingRecipe>{
+    public static class Serializer implements RecipeSerializer<DnaSynthesizingRecipe> {
         public static final DnaSynthesizingRecipe.Serializer INSTANCE = new DnaSynthesizingRecipe.Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing");
-        private final MapCodec<DnaSynthesizingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public final MapCodec<DnaSynthesizingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
                 Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy),

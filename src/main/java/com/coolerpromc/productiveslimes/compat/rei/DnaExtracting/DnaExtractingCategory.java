@@ -59,7 +59,7 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
                     .entries(display.getOutputEntries().get(1)).markOutput());
         }
 
-        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.recipe().value().getEnergy());
+        Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.recipe().value().energy());
 
         widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 8, startPoint.y + 12, 10, 58), text));
 
@@ -75,12 +75,12 @@ public class DnaExtractingCategory implements DisplayCategory<DnaExtractingRecip
                 guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 70, startPoint.y + 38, 153, 0, arrowWidth, 8, 256, 256);
 
                 // Energy bar
-                int energyScaled = (int) Math.ceil((double) display.recipe().value().getEnergy() / 10000 * 57);
+                int energyScaled = (int) Math.ceil((double) display.recipe().value().energy() / 10000 * 57);
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
                 guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
 
-                Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", display.recipe().value().getOutputChance() * 100) + "%");
+                Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", display.recipe().value().outputChance() * 100) + "%");
 
                 guiGraphics.drawString(Minecraft.getInstance().font, outputChance, startPoint.x + 7, startPoint.y + 71, 0xFFFFFF);
             }

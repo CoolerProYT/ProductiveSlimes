@@ -11,10 +11,8 @@ import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.core.Holder;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
@@ -50,15 +48,15 @@ public class DnaSynthesizingRecipeDisplay extends BasicDisplay {
     public DnaSynthesizingRecipeDisplay(RecipeHolder<DnaSynthesizingRecipe> recipe) {
         super(
             List.of(
-                EntryIngredients.ofIngredient(recipe.value().getInputItems().get(0)),
-                EntryIngredients.ofIngredient(recipe.value().getInputItems().get(1)),
-                EntryIngredients.of(new ItemStack(recipe.value().getInputItems().get(2).items().toList().getFirst(), recipe.value().getInputCount()))
+                EntryIngredients.ofIngredient(recipe.value().inputItems().get(0)),
+                EntryIngredients.ofIngredient(recipe.value().inputItems().get(1)),
+                EntryIngredients.of(new ItemStack(recipe.value().inputItems().get(2).items().toList().getFirst(), recipe.value().inputCount()))
             ),
-            List.of(EntryIngredient.of(EntryStacks.of(recipe.value().getOutput().getFirst())))
+            List.of(EntryIngredient.of(EntryStacks.of(recipe.value().output().getFirst())))
         );
 
-        energy = recipe.value().getEnergy();
-        inputCount = recipe.value().getInputCount();
+        energy = recipe.value().energy();
+        inputCount = recipe.value().inputCount();
     }
 
     public DnaSynthesizingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int inputCount, int energy) {

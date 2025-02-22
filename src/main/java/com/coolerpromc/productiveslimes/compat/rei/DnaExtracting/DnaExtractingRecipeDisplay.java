@@ -51,12 +51,12 @@ public record DnaExtractingRecipeDisplay(RecipeHolder<DnaExtractingRecipe> recip
 
     @Override
     public List<EntryIngredient> getInputEntries() {
-        return EntryIngredients.ofIngredients(recipe().value().getInputItems());
+        return EntryIngredients.ofIngredients(recipe().value().inputItems());
     }
 
     @Override
     public List<EntryIngredient> getOutputEntries() {
-        List<ItemStack> output = recipe().value().getOutput();
+        List<ItemStack> output = recipe().value().output();
         List<EntryIngredient> entries = new ArrayList<>();
         for (int i = 0; i < output.size(); i++) {
             entries.add(EntryIngredients.of(output.get(i)));

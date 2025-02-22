@@ -297,22 +297,22 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos, yPos, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
             // Render energy bar
-            int energyScaled = (int) (((float) recipe.getEnergy() / (float) 10000) * 57);
+            int energyScaled = (int) (((float) recipe.energy() / (float) 10000) * 57);
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos + 9, yPos + 13 + (57 - energyScaled), 153, 8, 9, energyScaled, 256, 256);
             if (pMouseX >= xPos + 9 && pMouseX < xPos + 18 && pMouseY >= yPos + 13 && pMouseY < yPos + 70) {
-                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.getEnergy(), 10000);
+                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.energy(), 10000);
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
             // Render recipe input
-            Ingredient input = recipe.getInputItems().getFirst();
+            Ingredient input = recipe.inputItems().getFirst();
             ItemStack inputStack = new ItemStack(input.getValues().get(0));
             int inputX = xPos + 27;
             int inputY = yPos + 34;
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, inputX, inputY, inputStack, font);
 
             // Render recipe output
-            ItemStack output = recipe.getOutput().getFirst();
+            ItemStack output = recipe.output().getFirst();
             int outputX = xPos + 108;
             int outputY = yPos + 34;
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, outputX, outputY, output, font);
@@ -323,7 +323,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
             pGuiGraphics.drawString(font, output.getDisplayName().getString().substring(1, output.getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
 
-            Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.getOutputChance() * 100) + "%");
+            Component outputChance = Component.translatable("gui.productiveslimes.output_chance", String.format("%.1f", recipe.outputChance() * 100) + "%");
             pGuiGraphics.drawString(font, outputChance, xPos + 9, yPos + 72, 0x555555, false);
 
             index++;
@@ -387,15 +387,15 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos, yPos, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
             // Render energy bar
-            int energyScaled = (int) (((float) recipe.getEnergy() / (float) 10000) * 57);
+            int energyScaled = (int) (((float) recipe.energy() / (float) 10000) * 57);
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos + 9, yPos + 13 + (57 - energyScaled), 153, 8, 9, energyScaled, 256, 256);
             if (pMouseX >= xPos + 9 && pMouseX < xPos + 18 && pMouseY >= yPos + 13 && pMouseY < yPos + 70) {
-                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.getEnergy(), 10000);
+                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.energy(), 10000);
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
             // Render recipe input
-            List<Ingredient> input = recipe.getInputItems();
+            List<Ingredient> input = recipe.inputItems();
             int ingredientIndex = 0;
             for (Ingredient ingredient : input) {
                 ItemStack inputStack = new ItemStack(ingredient.getValues().get(0));
@@ -414,7 +414,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
                     case 2:
                         inputX += 52;
                         inputY += 34;
-                        inputCount = recipe.getInputCount();
+                        inputCount = recipe.inputCount();
                         break;
                 }
 
@@ -424,12 +424,12 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             }
 
             GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 82, yPos + 55, Items.EGG.getDefaultInstance(), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 125, yPos + 34, recipe.getOutput().getFirst(), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 125, yPos + 34, recipe.output().getFirst(), font);
 
             pGuiGraphics.pose().pushPose();
             pGuiGraphics.pose().translate(xPos + 9, yPos + 4, 0);
             pGuiGraphics.pose().scale(0.8f, 0.8f, 0.8f);
-            pGuiGraphics.drawString(font, recipe.getOutput().getFirst().getDisplayName().getString().substring(1, recipe.getOutput().getFirst().getDisplayName().getString().length() - 1), 0, 0, 0x555555, false);
+            pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), 0, 0, 0x555555, false);
             pGuiGraphics.pose().popPose();
 
             index++;
@@ -494,21 +494,21 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos, yPos, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
             // Render energy bar
-            int energyScaled = (int) (((float) recipe.getEnergy() / (float) 10000) * 57);
+            int energyScaled = (int) (((float) recipe.energy() / (float) 10000) * 57);
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos + 9, yPos + 13 + (57 - energyScaled), 153, 8, 9, energyScaled, 256, 256);
             if (pMouseX >= xPos + 9 && pMouseX < xPos + 18 && pMouseY >= yPos + 13 && pMouseY < yPos + 70) {
-                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.getEnergy(), 10000);
+                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.energy(), 10000);
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 25, yPos + 34, new ItemStack(Items.BUCKET, recipe.getOutputs().getFirst().getCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 45, yPos + 34, new ItemStack(recipe.getInputItems().getFirst().getValues().get(0), recipe.getInputCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 108 + 20, yPos + 34, recipe.getOutputs().getFirst(), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 25, yPos + 34, new ItemStack(Items.BUCKET, recipe.output().getFirst().getCount()), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 45, yPos + 34, new ItemStack(recipe.inputItems().getFirst().getValues().get(0), recipe.inputCount()), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 108 + 20, yPos + 34, recipe.output().getFirst(), font);
 
             pGuiGraphics.pose().pushPose();
             pGuiGraphics.pose().translate(xPos + 9, yPos + 4, 0);
             pGuiGraphics.pose().scale(0.8f, 0.8f, 0.8f);
-            pGuiGraphics.drawString(font, recipe.getOutputs().getFirst().getDisplayName().getString().substring(1, recipe.getOutputs().getFirst().getDisplayName().getString().length() - 1), 0, 0, 0x555555, false);
+            pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), 0, 0, 0x555555, false);
             pGuiGraphics.pose().popPose();
 
             index++;
@@ -576,18 +576,18 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos, yPos, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
             // Render energy bar
-            int energyScaled = (int) (((float) recipe.getEnergy() / (float) 10000) * 57);
+            int energyScaled = (int) (((float) recipe.energy() / (float) 10000) * 57);
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos + 9, yPos + 13 + (57 - energyScaled), 153, 8, 9, energyScaled, 256, 256);
             if (pMouseX >= xPos + 9 && pMouseX < xPos + 18 && pMouseY >= yPos + 13 && pMouseY < yPos + 70) {
-                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.getEnergy(), 10000);
+                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.energy(), 10000);
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 26, yPos + 34, new ItemStack( recipe.getInputItems().getFirst().getValues().get(0), recipe.getInputCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 87 + 20, yPos + 34, recipe.getOutputs().getFirst(), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 107 + 20, yPos + 34, recipe.getOutputs().get(1), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 26, yPos + 34, new ItemStack( recipe.inputItems().getFirst().getValues().get(0), recipe.inputCount()), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 87 + 20, yPos + 34, recipe.output().getFirst(), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 107 + 20, yPos + 34, recipe.output().get(1), font);
 
-            pGuiGraphics.drawString(font, recipe.getOutputs().getFirst().getDisplayName().getString().substring(1, recipe.getOutputs().getFirst().getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
+            pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
 
             index++;
         }
@@ -669,18 +669,18 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos, yPos, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
             // Render energy bar
-            int energyScaled = (int) (((float) recipe.getEnergy() / (float) 10000) * 57);
+            int energyScaled = (int) (((float) recipe.energy() / (float) 10000) * 57);
             pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, xPos + 9, yPos + 13 + (57 - energyScaled), 153, 8, 9, energyScaled, 256, 256);
             if (pMouseX >= xPos + 9 && pMouseX < xPos + 18 && pMouseY >= yPos + 13 && pMouseY < yPos + 70) {
-                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.getEnergy(), 10000);
+                Component text = Component.translatable("gui.productiveslimes.energy_stored", recipe.energy(), 10000);
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 26, yPos + 34, new ItemStack(recipe.getInputItems().getFirst().getValues().get(0)), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 87 + 20, yPos + 34, recipe.getOutputs().getFirst(), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 107 + 20, yPos + 34, recipe.getOutputs().get(1), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 26, yPos + 34, new ItemStack(recipe.inputItems().getFirst().getValues().get(0)), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 87 + 20, yPos + 34, recipe.output().getFirst(), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 107 + 20, yPos + 34, recipe.output().get(1), font);
 
-            pGuiGraphics.drawString(font, recipe.getOutputs().getFirst().getDisplayName().getString().substring(1, recipe.getOutputs().getFirst().getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
+            pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
 
             index++;
         }

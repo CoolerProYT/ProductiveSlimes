@@ -39,7 +39,7 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(ModBlocks.MELTING_STATION.get());
+        return EntryStacks.of(ModBlocks.LIQUID_SOLIDING_STATION.get());
     }
 
     @Override

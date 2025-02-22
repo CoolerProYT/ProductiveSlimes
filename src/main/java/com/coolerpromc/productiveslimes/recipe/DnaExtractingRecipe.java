@@ -5,37 +5,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DnaExtractingRecipe implements Recipe<SingleRecipeInput> {
-    private final NonNullList<Ingredient> inputItems;
-    private final List<ItemStack> output;
-    private final int inputCount;
-    private final int energy;
-    private final float outputChance;
-
-    public DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance) {
-        NonNullList<Ingredient> ingredients = NonNullList.create();
-        for (int i = 0; i < inputItems.size(); i++) {
-            ingredients.add(inputItems.get(i));
-        }
-        this.inputItems = ingredients;
-        this.output = output;
-        this.inputCount = inputCount;
-        this.energy = energy;
-        this.outputChance = outputChance;
-    }
-
+public record DnaExtractingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy, float outputChance) implements Recipe<SingleRecipeInput> {
     @Override
     public boolean matches(SingleRecipeInput pInput, Level pLevel) {
         if (pLevel.isClientSide()) {
@@ -50,13 +30,9 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput> {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
-    public List<ItemStack> getOutput() {
-        return output;
-    }
-
     @Override
     public RecipeSerializer<? extends Recipe<SingleRecipeInput>> getSerializer() {
-        return (RecipeSerializer<? extends Recipe<SingleRecipeInput>>) ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
+        return ModRecipes.DNA_EXTRACTING_SERIALIZER.get();
     }
 
     @Override
@@ -66,33 +42,14 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public PlacementInfo placementInfo() {
-        return PlacementInfo.create(inputItems);
+        return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return null;
+        return ModRecipes.DNA_EXTRACTING_CATEGORY.get();
     }
 
-    public NonNullList<Ingredient> getInputItems() {
-        return inputItems;
-    }
-
-    public List<ItemStack> getOutputs() {
-        return output;
-    }
-
-    public int getInputCount() {
-        return inputCount;
-    }
-
-    public int getEnergy() {
-        return energy;
-    }
-
-    public float getOutputChance() {
-        return outputChance;
-    }
 
     public static class Serializer implements RecipeSerializer<DnaExtractingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
@@ -104,7 +61,6 @@ public class DnaExtractingRecipe implements Recipe<SingleRecipeInput> {
                 Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy),
                 Codec.FLOAT.fieldOf("outputChance").forGetter(recipe -> recipe.outputChance)
         ).apply(instance, DnaExtractingRecipe::new));
-
         public static final StreamCodec<RegistryFriendlyByteBuf, DnaExtractingRecipe> STREAM_CODEC = StreamCodec.of(
                 DnaExtractingRecipe.Serializer::toNetwork, DnaExtractingRecipe.Serializer::fromNetwork
         );

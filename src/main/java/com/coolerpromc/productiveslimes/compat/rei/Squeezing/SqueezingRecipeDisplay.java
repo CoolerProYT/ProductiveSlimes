@@ -44,14 +44,14 @@ public class SqueezingRecipeDisplay extends BasicDisplay {
 
     public SqueezingRecipeDisplay(RecipeHolder<SqueezingRecipe> recipe) {
         super(
-                List.of(EntryIngredients.ofIngredient(recipe.value().getInputItems().getFirst())),
+                List.of(EntryIngredients.ofIngredient(recipe.value().inputItems().getFirst())),
                 List.of(
-                        EntryIngredient.of(EntryStacks.of(recipe.value().getOutputs().get(0))),
-                        EntryIngredient.of(EntryStacks.of(recipe.value().getOutputs().get(1)))
+                        EntryIngredient.of(EntryStacks.of(recipe.value().output().get(0))),
+                        EntryIngredient.of(EntryStacks.of(recipe.value().output().get(1)))
                 )
         );
-        energy = recipe.value().getEnergy();
-        inputItem = EntryStacks.of(new ItemStack(recipe.value().getInputItems().getFirst().getValues().get(0)));
+        energy = recipe.value().energy();
+        inputItem = EntryStacks.of(new ItemStack(recipe.value().inputItems().getFirst().getValues().get(0)));
     }
 
     public SqueezingRecipeDisplay(List<EntryIngredient> input, List<EntryIngredient> output, int energy) {
