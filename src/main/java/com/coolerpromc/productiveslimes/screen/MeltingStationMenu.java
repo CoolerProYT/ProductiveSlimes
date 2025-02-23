@@ -31,14 +31,14 @@ public class MeltingStationMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler bucketHandler = blockEntity.getBucketHandler();
-        this.addSlot(new SlotItemHandler(bucketHandler, 0, 25, 34));
+        IItemHandler drainInputSlot = blockEntity.getDrainInputSlot();
+        this.addSlot(new SlotItemHandler(drainInputSlot, 0, 133, 54));
+
+        IItemHandler drainOutputSlot = blockEntity.getDrainOutputSlot();
+        this.addSlot(new SlotItemHandler(drainOutputSlot, 0, 113, 54));
 
         IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 45, 34));
-
-        IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 134, 34));
+        this.addSlot(new SlotItemHandler(inputHandler, 0, 36, 34));
 
         addDataSlots(data);
     }

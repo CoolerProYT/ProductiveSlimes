@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.concurrent.CompletableFuture;
@@ -268,8 +269,8 @@ public class ModRecipeProvider extends RecipeProvider {
             slimeBlockToSlimeBall(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSlimeballItemByName(tiers.name()));
             slimeBallToSlimeBlock(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBlockByName(tiers.name()));
 
-            meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 2, 5);
-            meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 4, 1);
+            meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSourceByName(tiers.name()).get(), 2, 5000);
+            meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getSourceByName(tiers.name()).get(), 4, 1000);
 
             solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()).get(), ModTierLists.getItemByKey(tiers.solidingOutputKey()), tiers.solidingOutputAmount());
 
@@ -305,10 +306,10 @@ public class ModRecipeProvider extends RecipeProvider {
         }
     }
 
-    protected void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+    protected void meltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, BaseFlowingFluid.Source pResult, int pInputCount, int outputCount) {
         MeltingRecipeBuilder.meltingRecipe()
                 .addIngredient(SizedIngredient.of(pIngredient, pInputCount))
-                .addOutput(new ItemStack(pResult, outputCount))
+                .addOutput(new FluidStack(pResult, outputCount))
                 .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting").toString());

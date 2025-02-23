@@ -12,11 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public record MeltingRecipe(SizedIngredient inputItems, List<ItemStack> output, int energy) implements Recipe<SingleRecipeInput>{
+public record MeltingRecipe(SizedIngredient inputItems, FluidStack output, int energy) implements Recipe<SingleRecipeInput>{
     @Override
     public boolean matches(SingleRecipeInput pInput, Level pLevel) {
         if (pLevel.isClientSide()){
@@ -28,7 +26,7 @@ public record MeltingRecipe(SizedIngredient inputItems, List<ItemStack> output, 
 
     @Override
     public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
-        return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
+        return output.isEmpty() ? ItemStack.EMPTY : output.getFluid().getBucket().getDefaultInstance();
     }
 
     @Override
@@ -57,7 +55,7 @@ public record MeltingRecipe(SizedIngredient inputItems, List<ItemStack> output, 
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting");
         public static final MapCodec<MeltingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 SizedIngredient.NESTED_CODEC.fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
-                ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
+                FluidStack.CODEC.fieldOf("output").forGetter(recipe -> recipe.output),
                 Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, MeltingRecipe::new));
 
@@ -67,13 +65,7 @@ public record MeltingRecipe(SizedIngredient inputItems, List<ItemStack> output, 
 
         private static MeltingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             SizedIngredient inputItems = SizedIngredient.STREAM_CODEC.decode(buffer);
-
-            int outputCount = buffer.readVarInt();
-            List<ItemStack> result = new ArrayList<>(outputCount);
-            for (int i = 0; i < outputCount; i++) {
-                result.add(ItemStack.STREAM_CODEC.decode(buffer));
-            }
-
+            FluidStack result = FluidStack.STREAM_CODEC.decode(buffer);
             int energy = buffer.readInt();
 
             return new MeltingRecipe(inputItems, result, energy);
@@ -81,12 +73,7 @@ public record MeltingRecipe(SizedIngredient inputItems, List<ItemStack> output, 
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, MeltingRecipe recipe) {
             SizedIngredient.STREAM_CODEC.encode(buffer, recipe.inputItems);
-
-            buffer.writeVarInt(recipe.output.size());
-            for (ItemStack itemStack : recipe.output) {
-                ItemStack.STREAM_CODEC.encode(buffer, itemStack);
-            }
-
+            FluidStack.STREAM_CODEC.encode(buffer, recipe.output);
             buffer.writeInt(recipe.energy);
         }
 

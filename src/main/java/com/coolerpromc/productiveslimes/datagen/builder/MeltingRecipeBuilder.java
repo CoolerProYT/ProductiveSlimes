@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class MeltingRecipeBuilder implements RecipeBuilder {
     private SizedIngredient ingredients;
     private int energy;
-    private final List<ItemStack> outputs = new ArrayList<>();
+    private FluidStack outputs;
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
     @Nullable
     private String group;
@@ -43,8 +44,8 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    public MeltingRecipeBuilder addOutput(ItemStack output) {
-        this.outputs.add(output);
+    public MeltingRecipeBuilder addOutput(FluidStack output) {
+        this.outputs = output;
         return this;
     }
 
@@ -67,7 +68,7 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public Item getResult() {
-        return this.outputs.isEmpty() ? Items.AIR : this.outputs.get(0).getItem();
+        return this.outputs.isEmpty() ? Items.AIR : this.outputs.getFluid().getBucket();
     }
 
     @Override

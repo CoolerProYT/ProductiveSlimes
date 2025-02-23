@@ -5,10 +5,8 @@
     "count": 4,
     "ingredient": "productiveslimes:gravel_slimeball"
   },
-  "output": [
-    {
-      "count": 1,
-      "id": "productiveslimes:molten_gravel_bucket"
-    }
-  ]
+  "output": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_gravel"
+  }
 }

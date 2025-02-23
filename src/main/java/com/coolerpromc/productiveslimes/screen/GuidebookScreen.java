@@ -503,14 +503,13 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 25, yPos + 34, new ItemStack(Items.BUCKET, recipe.output().getFirst().getCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 45, yPos + 34, new ItemStack(recipe.inputItems().ingredient().getValues().get(0), recipe.inputItems().count()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 108 + 20, yPos + 34, recipe.output().getFirst(), font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 36, yPos + 34, new ItemStack(recipe.inputItems().ingredient().getValues().get(0), recipe.inputItems().count()), font);
+            GuideBookScreenHelper.renderFluidStack(pGuiGraphics, recipe.output(), recipe.output().getAmount(), 15, 57, xPos + 129, yPos + 13, pMouseX, pMouseY, font);
 
             pGuiGraphics.pose().pushPose();
             pGuiGraphics.pose().translate(xPos + 9, yPos + 4, 0);
             pGuiGraphics.pose().scale(0.8f, 0.8f, 0.8f);
-            pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), 0, 0, 0x555555, false);
+            pGuiGraphics.drawString(font, recipe.output().getHoverName(), 0, 0, 0x555555, false);
             pGuiGraphics.pose().popPose();
 
             index++;

@@ -5,10 +5,8 @@
     "count": 4,
     "ingredient": "productiveslimes:diorite_slimeball"
   },
-  "output": [
-    {
-      "count": 1,
-      "id": "productiveslimes:molten_diorite_bucket"
-    }
-  ]
+  "output": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_diorite"
+  }
 }

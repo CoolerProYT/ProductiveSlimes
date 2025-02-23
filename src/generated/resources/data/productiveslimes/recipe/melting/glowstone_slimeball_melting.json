@@ -5,10 +5,8 @@
     "count": 4,
     "ingredient": "productiveslimes:glowstone_slimeball"
   },
-  "output": [
-    {
-      "count": 1,
-      "id": "productiveslimes:molten_glowstone_bucket"
-    }
-  ]
+  "output": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_glowstone"
+  }
 }
