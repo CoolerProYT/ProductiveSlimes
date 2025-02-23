@@ -27,35 +27,22 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
 
     @Override
     public void render(SolidingStationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        ItemStack itemStack = pBlockEntity.getRenderStack();
-        FluidStack fluidStack;
-        int color = 0xFFFFFFFF;
-
-        if (itemStack.getItem() instanceof BucketItem bucketItem) {
-            fluidStack = bucketItem.getFluidStack();
-            color = bucketItem.getColor();
-        }
-        else {
-            fluidStack = FluidStack.EMPTY;
-        }
+        FluidStack fluidStack = pBlockEntity.getFluid();
 
         if (fluidStack.isEmpty()) return;
 
         Level level = pBlockEntity.getLevel();
         if (level == null) return;
 
-        BlockPos pos = pBlockEntity.getBlockPos();
-
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
         ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
-        if (stillTexture == null) return;
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
 
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(stillTexture);
-        int tintColor = color;
+        int tintColor = fluidTypeExtensions.getTintColor();
 
-        float height = 0.8f;
+        float height = fluidStack.getAmount() / (float) pBlockEntity.getFluidTank().getCapacity() * 0.6f + 0.2f;
 
         VertexConsumer builder = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(state));
 

@@ -3,15 +3,22 @@ package com.coolerpromc.productiveslimes.util;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
+import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuideBookScreenHelper {
     public static int scrollOffset(int contentScrollOffset, double scroll, int maxContentScroll, int scrollSpeed){
@@ -39,5 +46,16 @@ public class GuideBookScreenHelper {
                 ModTierLists.getItemByKey(tiers.growthItemKey()).asItem().getDefaultInstance(),
                 (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slime")).get().value()
         );
+    }
+
+    public static void renderFluidStack(GuiGraphics guiGraphics, FluidStack fluidStack, int tankCapacity, int w, int h, int x, int y, int mouseX, int mouseY, Font font){
+        FluidTankRenderer.renderFluidStack(guiGraphics, fluidStack, tankCapacity, w, h, x, y);
+        if (mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h) {
+            List<Component> fluidTankTooltip = new ArrayList<>();
+            fluidTankTooltip.add(Component.translatable(fluidStack.getDescriptionId()));
+            fluidTankTooltip.add(Component.translatable("productiveslimes.tooltip.liquid.amount", fluidStack.getAmount()));
+            guiGraphics.renderComponentTooltip(font, fluidTankTooltip, mouseX, mouseY);
+            guiGraphics.fill(RenderType.gui(), x, y, x + w, y + h, 0x80FFFFFF);
+        }
     }
 }

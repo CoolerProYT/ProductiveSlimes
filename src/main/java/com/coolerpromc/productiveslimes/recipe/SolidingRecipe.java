@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.recipe.custom.SingleFluidRecipeInput;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,32 +12,30 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output, int inputCount, int energy) implements Recipe<SingleRecipeInput>{
+public record SolidingRecipe(FluidStack fluidStack, List<ItemStack> output, int energy) implements Recipe<SingleFluidRecipeInput>{
     @Override
-    public boolean matches(SingleRecipeInput pInput, Level pLevel) {
-        if (pLevel.isClientSide()){
-            return false;
-        }
-
-        return inputItems.getFirst().test(pInput.getItem(0));
+    public boolean matches(SingleFluidRecipeInput pInput, Level pLevel) {
+        FluidStack inputStack = pInput.fluidStack();
+        return inputStack.getFluid().isSame(fluidStack.getFluid()) && inputStack.getAmount() >= fluidStack.getAmount();
     }
 
     @Override
-    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(SingleFluidRecipeInput pInput, HolderLookup.Provider pRegistries) {
         return output.isEmpty() ? ItemStack.EMPTY : output.get(0).copy();
     }
 
     @Override
-    public RecipeSerializer<? extends Recipe<SingleRecipeInput>> getSerializer() {
+    public RecipeSerializer<? extends Recipe<SingleFluidRecipeInput>> getSerializer() {
         return ModRecipes.SOLIDING_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<? extends Recipe<SingleRecipeInput>> getType() {
+    public RecipeType<? extends Recipe<SingleFluidRecipeInput>> getType() {
         return ModRecipes.SOLIDING_TYPE.get();
     }
 
@@ -54,9 +53,8 @@ public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding");
         public static final MapCodec<SolidingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
+                FluidStack.CODEC.fieldOf("ingredients").forGetter(recipe -> recipe.fluidStack),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),
-                Codec.INT.fieldOf("inputCount").forGetter(recipe -> recipe.inputCount),
                 Codec.INT.fieldOf("energy").forGetter(recipe -> recipe.energy)
         ).apply(instance, SolidingRecipe::new));
 
@@ -65,11 +63,7 @@ public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output
         );
 
         private static SolidingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int ingredientCount = buffer.readVarInt();
-            List<Ingredient> inputItems = new ArrayList<>(ingredientCount);
-            for (int i = 0; i < ingredientCount; i++) {
-                inputItems.add(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-            }
+            FluidStack inputItems = FluidStack.STREAM_CODEC.decode(buffer);
 
             int outputCount = buffer.readVarInt();
             List<ItemStack> result = new ArrayList<>(outputCount);
@@ -77,25 +71,19 @@ public record SolidingRecipe(List<Ingredient> inputItems, List<ItemStack> output
                 result.add(ItemStack.STREAM_CODEC.decode(buffer));
             }
 
-            int inputCount = buffer.readInt();
-
             int energy = buffer.readInt();
 
-            return new SolidingRecipe(inputItems, result, inputCount, energy);
+            return new SolidingRecipe(inputItems, result, energy);
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, SolidingRecipe recipe) {
-            buffer.writeVarInt(recipe.inputItems.size());
-            for (Ingredient ingredient : recipe.inputItems) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
-            }
+            FluidStack.STREAM_CODEC.encode(buffer, recipe.fluidStack);
 
             buffer.writeVarInt(recipe.output.size());
             for (ItemStack itemStack : recipe.output) {
                 ItemStack.STREAM_CODEC.encode(buffer, itemStack);
             }
 
-            buffer.writeInt(recipe.inputCount);
             buffer.writeInt(recipe.energy);
         }
 

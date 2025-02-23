@@ -67,7 +67,7 @@ public class ModFluidResources {
 
         public final Supplier<LiquidBlock> FLUID_BLOCK;
 
-        public final DeferredItem<Item> FLUID_BUCKET;
+        public final DeferredItem<BucketItem> FLUID_BUCKET;
 
         public final String name;
         public final int color;
@@ -111,7 +111,7 @@ public class ModFluidResources {
             return FLUID_BLOCK;
         }
 
-        public DeferredItem<Item> getBucket() {
+        public DeferredItem<BucketItem> getBucket() {
             return FLUID_BUCKET;
         }
 

@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.tier;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
+import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +31,7 @@ public class ModTierLists {
     private static final Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<FluidType>> registeredFluidType = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredBucketItem = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredItem<BucketItem>> registeredBucketItem = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<BaseFlowingFluid.Source>> registeredSource = new HashMap<>();
     private static final Map<ResourceLocation, Supplier<BaseFlowingFluid.Flowing>> registeredFlow = new HashMap<>();
 
@@ -108,7 +109,7 @@ public class ModTierLists {
         registeredLiquidBlock.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"), liquidBlock);
     }
 
-    public static void addRegisteredBucketItem(String name, DeferredItem<Item> bucketItem){
+    public static void addRegisteredBucketItem(String name, DeferredItem<BucketItem> bucketItem){
         registeredBucketItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"), bucketItem);
     }
 
@@ -152,7 +153,7 @@ public class ModTierLists {
         return registeredLiquidBlock.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"));
     }
 
-    public static DeferredItem<Item> getBucketItemByName(String name){
+    public static DeferredItem<BucketItem> getBucketItemByName(String name){
         return registeredBucketItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"));
     }
 

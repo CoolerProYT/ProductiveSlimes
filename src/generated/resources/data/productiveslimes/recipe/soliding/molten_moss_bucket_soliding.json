@@ -1,18 +1,14 @@
 {
   "type": "productiveslimes:soliding",
   "energy": 200,
-  "ingredients": [
-    "productiveslimes:molten_moss_bucket"
-  ],
-  "inputCount": 1,
+  "ingredients": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_moss"
+  },
   "output": [
     {
       "count": 2,
       "id": "minecraft:moss_block"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:bucket"
     }
   ]
 }

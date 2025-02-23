@@ -1,9 +1,13 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
+import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 //import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
+import com.coolerpromc.productiveslimes.recipe.custom.SingleFluidRecipeInput;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -20,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,6 +33,9 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +43,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class SolidingStationBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inputHandler = new ItemStackHandler(1){
+    private final ItemStackHandler fillInputHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -46,19 +54,82 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return true;
+            return stack.has(ModDataComponents.FLUID_STACK) || stack.getItem() instanceof BucketItem || stack.getItem() == ModBlocks.FLUID_TANK.asItem();
         }
     };
 
-    private final ItemStackHandler outputHandler = new ItemStackHandler(2){
+    private final ItemStackHandler fillOutputHandler = new ItemStackHandler(1){
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return false;
+        }
+    };
+
+    private final ItemStackHandler drainInputHandler = new ItemStackHandler(1){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return stack.getItem() == Items.BUCKET || stack.getItem() == ModBlocks.FLUID_TANK.asItem();
+        }
+    };
+
+    private final ItemStackHandler drainOutputHandler = new ItemStackHandler(1){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false;
+        }
+    };
+
+    private final ItemStackHandler outputHandler = new ItemStackHandler(1){
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false;
+        }
+    };
+
+    private final FluidTank fluidTank = new FluidTank(16000){
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+            if (!level.isClientSide()){
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+
+        @Override
+        public boolean isFluidValid(FluidStack stack) {
+            return true;
         }
     };
 
@@ -98,8 +169,20 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         };
     }
 
-    public ItemStackHandler getInputHandler() {
-        return inputHandler;
+    public ItemStackHandler getFillInputHandler() {
+        return fillInputHandler;
+    }
+
+    public ItemStackHandler getFillOutputHandler() {
+        return fillOutputHandler;
+    }
+
+    public ItemStackHandler getDrainInputHandler() {
+        return drainInputHandler;
+    }
+
+    public ItemStackHandler getDrainOutputHandler() {
+        return drainOutputHandler;
     }
 
     public ItemStackHandler getOutputHandler() {
@@ -110,16 +193,26 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return energyHandler;
     }
 
+    public FluidTank getFluidTank() {
+        return fluidTank;
+    }
+
+    public FluidStack getFluid() {
+        return fluidTank.getFluid();
+    }
+
     @Override
     public void onLoad() {
         super.onLoad();
     }
 
     public void drops(){
-        SimpleContainer inventory = new SimpleContainer(3);
-        inventory.setItem(0, inputHandler.getStackInSlot(0));
-        inventory.setItem(1, outputHandler.getStackInSlot(0));
-        inventory.setItem(2, outputHandler.getStackInSlot(1));
+        SimpleContainer inventory = new SimpleContainer(5);
+        inventory.setItem(0, fillInputHandler.getStackInSlot(0));
+        inventory.setItem(1, fillOutputHandler.getStackInSlot(0));
+        inventory.setItem(2, drainInputHandler.getStackInSlot(0));
+        inventory.setItem(3, drainOutputHandler.getStackInSlot(0));
+        inventory.setItem(4, outputHandler.getStackInSlot(0));
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -137,11 +230,15 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
+        pTag.put("FillInputInventory", fillInputHandler.serializeNBT(pRegistries));
+        pTag.put("FillOutputInventory", fillOutputHandler.serializeNBT(pRegistries));
+        pTag.put("DrainInputInventory", drainInputHandler.serializeNBT(pRegistries));
+        pTag.put("DrainOutputInventory", drainOutputHandler.serializeNBT(pRegistries));
         pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
         pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
         pTag.putInt("soliding_station.progress", progress);
+        pTag = fluidTank.writeToNBT(pRegistries, pTag);
 
         super.saveAdditional(pTag, pRegistries);
     }
@@ -150,14 +247,94 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
+        fillInputHandler.deserializeNBT(pRegistries, pTag.getCompound("FillInputInventory"));
+        fillOutputHandler.deserializeNBT(pRegistries, pTag.getCompound("FillOutputInventory"));
+        drainInputHandler.deserializeNBT(pRegistries, pTag.getCompound("DrainInputInventory"));
+        drainOutputHandler.deserializeNBT(pRegistries, pTag.getCompound("DrainOutputInventory"));
         outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
         energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
         progress = pTag.getInt("soliding_station.progress");
+        fluidTank.readFromNBT(pRegistries, pTag);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+        if(pLevel.isClientSide) {
+            return;
+        }
+
+        if(fillInputHandler.getStackInSlot(0).getItem() instanceof BucketItem bucketItem && fluidTank.getFluidAmount() < fluidTank.getCapacity()){
+            if(bucketItem != Items.BUCKET){
+                FluidStack fluidStack = new FluidStack(bucketItem.content, 1000);
+
+                if (fluidTank.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) != 0 && (fillOutputHandler.getStackInSlot(0).getItem() == Items.BUCKET || fillOutputHandler.getStackInSlot(0).isEmpty()) && fillOutputHandler.getStackInSlot(0).getCount() < Items.BUCKET.getDefaultMaxStackSize()){
+                    fluidTank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    fillInputHandler.extractItem(0, 1, false);
+                    ItemStack result = new ItemStack(Items.BUCKET);
+                    this.fillOutputHandler.setStackInSlot(0, new ItemStack(result.getItem(), this.fillOutputHandler.getStackInSlot(0).getCount() + result.getCount()));
+                }
+            }
+        }
+        else if(fillInputHandler.getStackInSlot(0).getItem() == ModBlocks.FLUID_TANK.asItem()){
+            ItemStack stack = fillInputHandler.getStackInSlot(0);
+
+            if (stack.has(ModDataComponents.FLUID_STACK)){
+                ImmutableFluidStack immutableFluidStack = stack.getOrDefault(ModDataComponents.FLUID_STACK, new ImmutableFluidStack(FluidStack.EMPTY));
+                FluidStack fluidStack = new FluidStack(immutableFluidStack.fluidStack().getFluid(), Math.min(1000, immutableFluidStack.fluidStack().getAmount()));
+                if (fluidTank.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) != 0 && (fillOutputHandler.getStackInSlot(0).getItem() == ModBlocks.FLUID_TANK.asItem() || fillOutputHandler.getStackInSlot(0).isEmpty()) && fillOutputHandler.getStackInSlot(0).getCount() < ModBlocks.FLUID_TANK.asItem().getDefaultMaxStackSize()){
+                    int fluidFilled = fluidTank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    FluidStack newFluidStack = fluidStack.copy();
+                    if (immutableFluidStack.fluidStack().getAmount() - fluidFilled <= 0){
+                        stack.remove(ModDataComponents.FLUID_STACK);
+                        fillInputHandler.extractItem(0, 1, false);
+                        fillOutputHandler.setStackInSlot(0, stack);
+                    }
+                    else {
+                        newFluidStack.setAmount(immutableFluidStack.fluidStack().getAmount() - fluidFilled);
+                        stack.set(ModDataComponents.FLUID_STACK, new ImmutableFluidStack(newFluidStack));
+                    }
+                }
+            }
+        }
+
+        if(drainInputHandler.getStackInSlot(0).getItem() == Items.BUCKET && fluidTank.getFluidAmount() >= 1000){
+            if ((drainOutputHandler.getStackInSlot(0).getItem() == fluidTank.getFluid().getFluid().getBucket() && drainOutputHandler.getStackInSlot(0).getCount() < drainOutputHandler.getStackInSlot(0).getMaxStackSize()) || drainOutputHandler.getStackInSlot(0).isEmpty()){
+                FluidStack fluidStack = fluidTank.drain(1000, IFluidHandler.FluidAction.SIMULATE);
+                if (!fluidStack.isEmpty()){
+                    fluidTank.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                    ItemStack result = new ItemStack(fluidStack.getFluid().getBucket());
+                    this.drainOutputHandler.setStackInSlot(0, new ItemStack(result.getItem(), this.drainOutputHandler.getStackInSlot(0).getCount() + result.getCount()));
+                    drainInputHandler.extractItem(0, 1, false);
+                }
+            }
+        }
+        else if(drainInputHandler.getStackInSlot(0).getItem() == ModBlocks.FLUID_TANK.asItem() && fluidTank.getFluidAmount() > 0){
+            ItemStack stack = drainInputHandler.getStackInSlot(0);
+
+            if (stack.has(ModDataComponents.FLUID_STACK)){
+                ImmutableFluidStack immutableFluidStack = stack.getOrDefault(ModDataComponents.FLUID_STACK, new ImmutableFluidStack(FluidStack.EMPTY));
+                FluidStack fluidStack = immutableFluidStack.fluidStack();
+                if (fluidTank.getFluid().getFluid().isSame(fluidStack.getFluid())){
+                    if(fluidStack.getAmount() < FluidTankBlockEntity.capacity){
+                        FluidStack fluidStack2 = fluidTank.drain(Math.min(fluidTank.getFluidAmount(), Math.min(1000, FluidTankBlockEntity.capacity - fluidStack.getAmount())), IFluidHandler.FluidAction.SIMULATE);
+                        if (!fluidStack2.isEmpty()){
+                            FluidStack fluidStack3 = fluidTank.drain(Math.min(fluidTank.getFluidAmount(), Math.min(1000, FluidTankBlockEntity.capacity - fluidStack.getAmount())), IFluidHandler.FluidAction.EXECUTE);
+                            fluidStack.setAmount(fluidStack.getAmount() + fluidStack3.getAmount());
+                            stack.set(ModDataComponents.FLUID_STACK, new ImmutableFluidStack(fluidStack));
+                            }
+                    }
+                }
+            }
+            else{
+                FluidStack fluidStack = fluidTank.drain(Math.min(fluidTank.getFluidAmount(), 1000), IFluidHandler.FluidAction.SIMULATE);
+                if (!fluidStack.isEmpty()){
+                    FluidStack fluidStack2 = fluidTank.drain(Math.min(fluidTank.getFluidAmount(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                    ImmutableFluidStack immutableFluidStack = new ImmutableFluidStack(fluidStack2);
+                    stack.set(ModDataComponents.FLUID_STACK, immutableFluidStack);
+                }
+            }
+        }
+
         Optional<RecipeHolder<SolidingRecipe>> recipe = getCurrentRecipe();
         if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().energy()) {
             increaseCraftingProgress();
@@ -182,18 +359,14 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().output();
 
-            // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().inputCount(), false);
+            this.fluidTank.drain(recipe.get().value().fluidStack().getAmount(), IFluidHandler.FluidAction.EXECUTE);
 
-            // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
                 int outputSlot = findSuitableOutputSlot(result);
                 if (outputSlot != -1) {
                     this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
                             this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
                 } else {
-                    // Handle the case where no suitable output slot is found
-                    // This can be logging an error, throwing an exception, or any other handling logic
                     System.err.println("No suitable output slot found for item: " + result);
                 }
             }
@@ -201,8 +374,6 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     private int findSuitableOutputSlot(ItemStack result) {
-        // Implement logic to find a suitable output slot for the given result
-        // Return the slot index or -1 if no suitable slot is found
         for (int i = 0; i < this.outputHandler.getSlots(); i++) {
             ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
             if (stackInSlot.isEmpty() || (stackInSlot.getItem() == result.getItem() && stackInSlot.getCount() + result.getCount() <= stackInSlot.getMaxStackSize())) {
@@ -219,7 +390,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().inputCount()) {
+        if (fluidTank.getFluidAmount() < recipe.get().value().fluidStack().getAmount()) {
             return false;
         }
 
@@ -261,7 +432,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     private Optional<RecipeHolder<SolidingRecipe>> getCurrentRecipe(){
         ServerLevel level = (ServerLevel) this.level;
-        return level.recipeAccess().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+        return level.recipeAccess().getRecipeFor(ModRecipes.SOLIDING_TYPE.get(), new SingleFluidRecipeInput(fluidTank.getFluid()), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
@@ -306,9 +477,5 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
-    }
-
-    public ItemStack getRenderStack() {
-        return inputHandler.getStackInSlot(0);
     }
 }

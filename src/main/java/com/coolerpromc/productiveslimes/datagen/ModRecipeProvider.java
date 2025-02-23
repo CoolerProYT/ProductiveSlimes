@@ -14,6 +14,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -269,7 +271,7 @@ public class ModRecipeProvider extends RecipeProvider {
             meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 2, 5);
             meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBucketItemByName(tiers.name()), 4, 1);
 
-            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.solidingOutputKey()), 1, tiers.solidingOutputAmount());
+            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()).get(), ModTierLists.getItemByKey(tiers.solidingOutputKey()), tiers.solidingOutputAmount());
 
             dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
 
@@ -312,12 +314,10 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting").toString());
     }
 
-    protected void solidingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
+    protected void solidingRecipe(RecipeOutput pRecipeOutput, BucketItem pIngredient, ItemLike pResult, int outputCount) {
         SolidingRecipeBuilder.solidingRecipe()
-                .addIngredient(Ingredient.of(pIngredient))
-                .setInputCount(pInputCount)
+                .addIngredient(new FluidStack(pIngredient.content, 1000))
                 .addOutput(new ItemStack(pResult, outputCount))
-                .addOutput(new ItemStack(Items.BUCKET, pInputCount))
                 .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
                 .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding").toString());

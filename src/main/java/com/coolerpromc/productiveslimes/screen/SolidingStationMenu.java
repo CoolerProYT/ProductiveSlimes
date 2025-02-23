@@ -31,12 +31,16 @@ public class SolidingStationMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 34, 34));
-
+        IItemHandler fillInputHandler = blockEntity.getFillInputHandler();
+        this.addSlot(new SlotItemHandler(fillInputHandler, 0, 43, 13));
+        IItemHandler fillOutputHandler = blockEntity.getFillOutputHandler();
+        this.addSlot(new SlotItemHandler(fillOutputHandler, 0, 63, 13));
+        IItemHandler drainInputHandler = blockEntity.getDrainInputHandler();
+        this.addSlot(new SlotItemHandler(drainInputHandler, 0, 43, 54));
+        IItemHandler drainOutputHandler = blockEntity.getDrainOutputHandler();
+        this.addSlot(new SlotItemHandler(drainOutputHandler, 0, 63, 54));
         IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 115, 34));
-        this.addSlot(new SlotItemHandler(outputHandler, 1, 135, 34));
+        this.addSlot(new SlotItemHandler(outputHandler, 0, 135, 34));
 
         addDataSlots(data);
     }
@@ -61,7 +65,7 @@ public class SolidingStationMenu extends AbstractContainerMenu {
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;
+    private static final int TE_INVENTORY_SLOT_COUNT = 5;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {

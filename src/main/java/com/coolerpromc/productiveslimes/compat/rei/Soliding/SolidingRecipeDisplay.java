@@ -39,7 +39,7 @@ public record SolidingRecipeDisplay(RecipeHolder<SolidingRecipe> recipe) impleme
 
     @Override
     public List<EntryIngredient> getInputEntries() {
-        return EntryIngredients.ofIngredients(recipe.value().inputItems());
+        return List.of(EntryIngredients.of(recipe.value().fluidStack().getFluid(), recipe.value().fluidStack().getAmount()));
     }
 
     @Override

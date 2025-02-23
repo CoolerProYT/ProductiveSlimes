@@ -7,6 +7,7 @@ import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.coolerpromc.productiveslimes.networking.ClientRecipeManager;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.*;
+import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.util.GuideBookScreenHelper;
@@ -584,9 +585,8 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
                 pGuiGraphics.renderTooltip(font, text, pMouseX, pMouseY);
             }
 
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 26, yPos + 34, new ItemStack( recipe.inputItems().getFirst().getValues().get(0), recipe.inputCount()), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 87 + 20, yPos + 34, recipe.output().getFirst(), font);
-            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 107 + 20, yPos + 34, recipe.output().get(1), font);
+            GuideBookScreenHelper.renderFluidStack(pGuiGraphics, recipe.fluidStack(), recipe.fluidStack().getAmount(), 15, 57, xPos + 22, yPos + 13, pMouseX, pMouseY, font);
+            GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, xPos + 127, yPos + 34, recipe.output().getFirst(), font);
 
             pGuiGraphics.drawString(font, recipe.output().getFirst().getDisplayName().getString().substring(1, recipe.output().getFirst().getDisplayName().getString().length() - 1), xPos + 9, yPos + 4, 0x555555, false);
 

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SolidingRecipeBuilder implements RecipeBuilder {
-    private final List<Ingredient> ingredients = new ArrayList<>();
+    private FluidStack ingredients;
     private int inputCount;
     private int energy;
     private final List<ItemStack> outputs = new ArrayList<>();
@@ -39,8 +40,8 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
         // Private constructor to enforce the use of the static factory method
     }
 
-    public SolidingRecipeBuilder addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
+    public SolidingRecipeBuilder addIngredient(FluidStack ingredient) {
+        this.ingredients = ingredient;
         return this;
     }
 
@@ -90,7 +91,6 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
         SolidingRecipe recipe = new SolidingRecipe(
                 this.ingredients,
                 this.outputs,
-                this.inputCount,
                 this.energy
         );
 

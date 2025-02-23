@@ -1,18 +1,14 @@
 {
   "type": "productiveslimes:soliding",
   "energy": 200,
-  "ingredients": [
-    "productiveslimes:molten_gravel_bucket"
-  ],
-  "inputCount": 1,
+  "ingredients": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_gravel"
+  },
   "output": [
     {
       "count": 2,
       "id": "minecraft:gravel"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:bucket"
     }
   ]
 }

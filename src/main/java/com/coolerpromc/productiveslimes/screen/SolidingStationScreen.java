@@ -1,14 +1,17 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SolidingStationScreen extends AbstractContainerScreen<SolidingStationMenu>{
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/soliding_station_gui.png");
@@ -22,7 +25,7 @@ public class SolidingStationScreen extends AbstractContainerScreen<SolidingStati
         super.init();
         this.inventoryLabelY = 74;
         this.titleLabelX = 54;
-        this.titleLabelY = 5;
+        this.titleLabelY = 4;
     }
 
     @Override
@@ -39,11 +42,13 @@ public class SolidingStationScreen extends AbstractContainerScreen<SolidingStati
         pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
         renderProgressArrow(pGuiGraphics, x, y);
+
+        FluidTankRenderer.renderFluidStack(pGuiGraphics, menu.blockEntity.getFluid(), menu.blockEntity.getFluidTank().getCapacity(), 15, 57, x + 22, y + 13);
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8, 256, 256);
+            guiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 94, y + 38, 176, 0, menu.getScaledProgress(), 8, 256, 256);
         }
     }
 
@@ -59,6 +64,13 @@ public class SolidingStationScreen extends AbstractContainerScreen<SolidingStati
         Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
             pGuiGraphics.renderTooltip(this.font, text, pMouseX, pMouseY);
+        }
+
+        List<Component> fluidTankTooltip = new ArrayList<>();
+        fluidTankTooltip.add(Component.translatable(menu.blockEntity.getFluid().getDescriptionId()));
+        fluidTankTooltip.add(Component.translatable("productiveslimes.tooltip.liquid.amount.with.capacity", menu.blockEntity.getFluid().getAmount(), menu.blockEntity.getFluidTank().getCapacity()));
+        if(isHovering(22, 13, 15, 57, pMouseX, pMouseY)) {
+            pGuiGraphics.renderComponentTooltip(this.font, fluidTankTooltip, pMouseX, pMouseY);
         }
     }
 }

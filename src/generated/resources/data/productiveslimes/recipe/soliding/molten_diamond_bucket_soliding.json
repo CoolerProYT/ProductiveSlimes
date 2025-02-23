@@ -1,18 +1,14 @@
 {
   "type": "productiveslimes:soliding",
   "energy": 200,
-  "ingredients": [
-    "productiveslimes:molten_diamond_bucket"
-  ],
-  "inputCount": 1,
+  "ingredients": {
+    "amount": 1000,
+    "id": "productiveslimes:source_molten_diamond"
+  },
   "output": [
     {
       "count": 1,
       "id": "minecraft:diamond"
-    },
-    {
-      "count": 1,
-      "id": "minecraft:bucket"
     }
   ]
 }

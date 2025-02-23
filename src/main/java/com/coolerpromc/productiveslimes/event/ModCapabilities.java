@@ -36,14 +36,11 @@ public class ModCapabilities {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.SOLIDING_STATION_BE.get(),
-                (be, side) -> {
-                    if (side == Direction.DOWN) {
-                        return be.getOutputHandler();
-                    }
-                    else {
-                        return be.getInputHandler();
-                    }
-                });
+                (be, side) -> be.getOutputHandler());
+
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.SOLIDING_STATION_BE.get(),
+                (be, side) -> be.getFluidTank());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.ENERGY_GENERATOR_BE.get(),
