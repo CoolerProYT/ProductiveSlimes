@@ -50,17 +50,12 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
 
         widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83)));
 
+        widgets.add(Widgets.createSlot(new Rectangle(startPoint.x + 21, startPoint.y + 12, 17, 59)).entries(display.getInputEntries().getFirst()).markInput().disableBackground());
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 127, startPoint.y + 34)).entries(display.getOutputEntries().getFirst()).markOutput());
 
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.recipe().value().energy());
 
         widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 8, startPoint.y + 12, 10, 58), text));
-
-        List<Component> fluidTankTooltip = new ArrayList<>();
-        fluidTankTooltip.add(Component.translatable(display.recipe().value().fluidStack().getDescriptionId()));
-        fluidTankTooltip.add(Component.translatable("productiveslimes.tooltip.liquid.amount", display.recipe().value().fluidStack().getAmount()));
-
-        widgets.add(Widgets.createTooltip(new Rectangle(startPoint.x + 21, startPoint.y + 12, 14, 58), fluidTankTooltip));
 
         widgets.add(new Widget() {
             @Override
@@ -78,10 +73,6 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
                 energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
                 guiGraphics.blit(RenderType::guiTextured, TEXTURE, startPoint.x + 9, (startPoint.y + 18) + (52 - energyScaled), 153, 65 - energyScaled, 9, energyScaled, 256, 256);
-
-                if (mouseX >= startPoint.x + 23 && mouseX < startPoint.x + 23 + 14 && mouseY >= startPoint.y + 13 && mouseY < startPoint.y + 13 + 58) {
-                    guiGraphics.fill(startPoint.x + 22, startPoint.y + 13, startPoint.x + 23 + 14, startPoint.y + 13 + 58, 0x80FFFFFF);
-                }
             }
 
             @Override

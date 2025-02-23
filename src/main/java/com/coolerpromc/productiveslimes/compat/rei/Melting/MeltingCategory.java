@@ -2,6 +2,7 @@ package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
+import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -51,14 +52,9 @@ public class MeltingCategory implements DisplayCategory<MeltingRecipeDisplay> {
 
         widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83)));
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 25, startPoint.y + 34))
-                .entries(display.getInputEntries().get(1)).markInput());
+        widgets.add(Widgets.createSlot(new Point(startPoint.x + 36, startPoint.y + 34)).entries(display.getInputEntries().get(0)).markInput());
 
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 45, startPoint.y + 34))
-                .entries(display.getInputEntries().get(0)).markInput());
-
-        widgets.add(Widgets.createSlot(new Point(startPoint.x + 128, startPoint.y + 34))
-                .entries(display.getOutputEntries().getFirst()).markOutput());
+        widgets.add(Widgets.createSlot(new Rectangle(startPoint.x + 128, startPoint.y + 12, 17, 59)).entries(display.getOutputEntries().getFirst()).disableBackground().markOutput());
 
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", display.recipe().value().energy());
 
