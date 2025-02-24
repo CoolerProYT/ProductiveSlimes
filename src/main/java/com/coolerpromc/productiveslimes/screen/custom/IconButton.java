@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.handler;
+package com.coolerpromc.productiveslimes.screen.custom;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.client.gui.GuiGraphics;

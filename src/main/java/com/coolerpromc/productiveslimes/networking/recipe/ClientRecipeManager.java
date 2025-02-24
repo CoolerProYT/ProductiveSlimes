@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.networking;
+package com.coolerpromc.productiveslimes.networking.recipe;
 
 import com.coolerpromc.productiveslimes.recipe.*;
 import net.minecraft.resources.ResourceLocation;

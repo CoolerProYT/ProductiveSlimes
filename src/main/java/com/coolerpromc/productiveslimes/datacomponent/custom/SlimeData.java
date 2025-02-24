@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.handler;
+package com.coolerpromc.productiveslimes.datacomponent.custom;
 
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;

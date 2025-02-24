@@ -1,7 +1,7 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.networking.CableNetwork;
-import com.coolerpromc.productiveslimes.networking.ModNetworkManager;
+import com.coolerpromc.productiveslimes.networking.cable.CableNetwork;
+import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,7 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage{
         super.setRemoved();
         if(!level.isClientSide && level instanceof ServerLevel serverLevel) {
             if (shouldRemoveCableEntity(serverLevel)) {
-                ModNetworkManager.onCableRemoved(serverLevel, this.getBlockPos());
+                ModCableNetworkManager.onCableRemoved(serverLevel, this.getBlockPos());
             }
         }
     }
@@ -45,44 +45,44 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage{
         if (!blockEntity.initialized) {
             blockEntity.initialized = true;
             if (!level.isClientSide && level instanceof ServerLevel serverWorld && blockEntity.newlyPlaced) {
-                ModNetworkManager.rebuildNetwork(serverWorld, pos);
+                ModCableNetworkManager.rebuildNetwork(serverWorld, pos);
             }
         }
     }
 
     @Override
     public int receiveEnergy(int toReceive, boolean simulate) {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net == null ? 0 : net.insertEnergy(toReceive, simulate);
     }
 
     @Override
     public int extractEnergy(int toExtract, boolean simulate) {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net == null ? 0 : net.extractEnergy(toExtract, simulate);
     }
 
     @Override
     public int getEnergyStored() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net == null ? 0 : net.getTotalEnergy();
     }
 
     @Override
     public int getMaxEnergyStored() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net == null ? 0 : net.getTotalCapacity();
     }
 
     @Override
     public boolean canExtract() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net != null && net.getTotalEnergy() > 0;
     }
 
     @Override
     public boolean canReceive() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        CableNetwork net = ModCableNetworkManager.getNetwork(this.getBlockPos());
         return net != null && net.getTotalEnergy() < net.getTotalCapacity();
     }
 

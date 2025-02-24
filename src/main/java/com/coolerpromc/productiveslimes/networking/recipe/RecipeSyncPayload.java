@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.networking;
+package com.coolerpromc.productiveslimes.networking.recipe;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.network.FriendlyByteBuf;

@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.item.custom;
 
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import com.coolerpromc.productiveslimes.handler.SlimeData;
+import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;

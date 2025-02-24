@@ -3,7 +3,7 @@ package com.coolerpromc.productiveslimes.util;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
-import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
+import com.coolerpromc.productiveslimes.datacomponent.custom.ImmutableFluidStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;

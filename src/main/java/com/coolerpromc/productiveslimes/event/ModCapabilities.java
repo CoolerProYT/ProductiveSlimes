@@ -56,6 +56,10 @@ public class ModCapabilities {
                 ModBlockEntities.CABLE_BE.get(),
                 (be, side) -> be);
 
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.PIPE_BE.get(),
+                (be, side) -> be);
+
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.DNA_EXTRACTOR_BE.get(),
                 (be, side) -> be.getEnergyHandler());

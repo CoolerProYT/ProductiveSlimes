@@ -2,12 +2,14 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
-import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
+import com.coolerpromc.productiveslimes.util.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.datacomponent.custom.ImmutableFluidStack;
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
+import com.coolerpromc.productiveslimes.util.ExtractOnlyFluidTank;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -30,9 +32,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,7 +77,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         }
     };
 
-    private final FluidTank outputHandler = new FluidTank(16000){
+    private final ExtractOnlyFluidTank outputHandler = new ExtractOnlyFluidTank(16000){
         @Override
         protected void onContentsChanged() {
             setChanged();
@@ -133,7 +135,7 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         return inputHandler;
     }
 
-    public FluidTank getOutputHandler() {
+    public ExtractOnlyFluidTank getOutputHandler() {
         return outputHandler;
     }
 
@@ -195,6 +197,28 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = this.getBlockPos().relative(direction);
+            IFluidHandler neighborStorage = level.getCapability(Capabilities.FluidHandler.BLOCK, neighborPos, direction.getOpposite());
+
+            if (neighborStorage != null) {
+                FluidStack availableFluid = outputHandler.getFluidInTank(0);
+                FluidStack neighborFluid = neighborStorage.getFluidInTank(0);
+                if ((!availableFluid.isEmpty() && availableFluid.getFluid().isSame(neighborFluid.getFluid())) || neighborFluid.isEmpty()) {
+                    FluidStack simulatedDrain = outputHandler.drain(availableFluid.copy(), IFluidHandler.FluidAction.SIMULATE);
+                    if (!simulatedDrain.isEmpty()) {
+                        int simulatedFill = neighborStorage.fill(simulatedDrain, IFluidHandler.FluidAction.SIMULATE);
+                        if (simulatedFill > 0) {
+                            FluidStack drained = outputHandler.drain(new FluidStack(simulatedDrain.getFluid(), simulatedFill), IFluidHandler.FluidAction.EXECUTE);
+                            if (!drained.isEmpty()) {
+                                neighborStorage.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         if(drainInputSlot.getStackInSlot(0).getItem() == Items.BUCKET && outputHandler.getFluidAmount() >= 1000){
             if ((drainOutputSlot.getStackInSlot(0).getItem() == outputHandler.getFluid().getFluid().getBucket() && drainOutputSlot.getStackInSlot(0).getCount() < drainOutputSlot.getStackInSlot(0).getMaxStackSize()) || drainOutputSlot.getStackInSlot(0).isEmpty()){
                 FluidStack fluidStack = outputHandler.drain(1000, IFluidHandler.FluidAction.SIMULATE);
@@ -256,9 +280,8 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
         Optional<RecipeHolder<MeltingRecipe>> recipe = getCurrentRecipe();
         if (recipe.isPresent()) {
             FluidStack results = recipe.get().value().output();
-            System.out.println(results);
             this.inputHandler.extractItem(0, recipe.get().value().inputItems().count(), false);
-            this.outputHandler.fill(results, IFluidHandler.FluidAction.EXECUTE);
+            this.outputHandler.internalFill(results, IFluidHandler.FluidAction.EXECUTE);
         }
     }
 

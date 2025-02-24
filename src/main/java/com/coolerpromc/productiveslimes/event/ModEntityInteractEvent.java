@@ -3,7 +3,7 @@ package com.coolerpromc.productiveslimes.event;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
-import com.coolerpromc.productiveslimes.handler.SlimeData;
+import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;

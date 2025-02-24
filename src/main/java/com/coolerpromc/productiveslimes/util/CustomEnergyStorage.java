@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.handler;
+package com.coolerpromc.productiveslimes.util;
 
 import net.neoforged.neoforge.energy.EnergyStorage;
 

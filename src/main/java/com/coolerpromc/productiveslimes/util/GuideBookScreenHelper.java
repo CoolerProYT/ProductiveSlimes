@@ -2,11 +2,10 @@ package com.coolerpromc.productiveslimes.util;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
-import com.coolerpromc.productiveslimes.handler.SlimeData;
+import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
-import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;

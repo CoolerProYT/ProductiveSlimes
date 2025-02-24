@@ -1,6 +1,7 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -9,7 +10,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +57,26 @@ public class FluidTankBlockEntity extends BlockEntity {
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState){
+        Direction direction = Direction.DOWN;
+        BlockPos neighborPos = this.getBlockPos().relative(direction);
+        IFluidHandler neighborStorage = level.getCapability(Capabilities.FluidHandler.BLOCK, neighborPos, direction.getOpposite());
 
+        if (neighborStorage != null) {
+            FluidStack availableFluid = fluidTank.getFluidInTank(0);
+            FluidStack neighborFluid = neighborStorage.getFluidInTank(0);
+            if ((!availableFluid.isEmpty() && availableFluid.getFluid().isSame(neighborFluid.getFluid())) || neighborFluid.isEmpty()) {
+                FluidStack simulatedDrain = fluidTank.drain(availableFluid.copy(), IFluidHandler.FluidAction.SIMULATE);
+                if (!simulatedDrain.isEmpty()) {
+                    int simulatedFill = neighborStorage.fill(simulatedDrain, IFluidHandler.FluidAction.SIMULATE);
+                    if (simulatedFill > 0) {
+                        FluidStack drained = fluidTank.drain(new FluidStack(simulatedDrain.getFluid(), simulatedFill), IFluidHandler.FluidAction.EXECUTE);
+                        if (!drained.isEmpty()) {
+                            neighborStorage.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -24,6 +24,9 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<CableBlockEntity>> CABLE_BE = BLOCK_ENTITIES.register("cable_be",
             () -> new BlockEntityType<>(CableBlockEntity::new, ModBlocks.CABLE.get()));
 
+    public static final Supplier<BlockEntityType<PipeBlockEntity>> PIPE_BE = BLOCK_ENTITIES.register("pipe_be",
+            () -> new BlockEntityType<>(PipeBlockEntity::new, ModBlocks.PIPE.get()));
+
     public static final Supplier<BlockEntityType<DnaExtractorBlockEntity>> DNA_EXTRACTOR_BE = BLOCK_ENTITIES.register("dna_extractor_be",
             () -> new BlockEntityType<>(DnaExtractorBlockEntity::new, ModBlocks.DNA_EXTRACTOR.get()));
 

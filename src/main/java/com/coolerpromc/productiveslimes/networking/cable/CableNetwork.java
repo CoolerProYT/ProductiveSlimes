@@ -1,7 +1,5 @@
-package com.coolerpromc.productiveslimes.networking;
+package com.coolerpromc.productiveslimes.networking.cable;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

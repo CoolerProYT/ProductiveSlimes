@@ -14,9 +14,11 @@ import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
 import com.coolerpromc.productiveslimes.fluid.ModFluidResources;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
-import com.coolerpromc.productiveslimes.networking.ModNetworkManager;
-import com.coolerpromc.productiveslimes.networking.ModNetworkStateManager;
-import com.coolerpromc.productiveslimes.networking.RecipeSyncPayload;
+import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkManager;
+import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkStateManager;
+import com.coolerpromc.productiveslimes.networking.pipe.ModPipeNetworkManager;
+import com.coolerpromc.productiveslimes.networking.pipe.ModPipeNetworkStateManager;
+import com.coolerpromc.productiveslimes.networking.recipe.RecipeSyncPayload;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
@@ -148,20 +150,23 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
         ServerLevel overworld = event.getServer().overworld();
-        ModNetworkStateManager.forceSave(overworld);
+        ModCableNetworkStateManager.forceSave(overworld);
+        ModPipeNetworkStateManager.forceSave(overworld);
     }
 
     @SubscribeEvent
     public void onServerTick(ServerTickEvent.Post event) {
         for (ServerLevel level : event.getServer().getAllLevels()){
-            ModNetworkManager.tickAllNetworks(level);
+            ModCableNetworkManager.tickAllNetworks(level);
+            ModPipeNetworkManager.tickAllNetworks(level);
         }
     }
 
     @SubscribeEvent
     public void onLevel(LevelEvent.Load event) {
         if (event.getLevel() instanceof ServerLevel serverWorld) {
-            ModNetworkStateManager.loadAllNetworksToManager(serverWorld);
+            ModCableNetworkStateManager.loadAllNetworksToManager(serverWorld);
+            ModPipeNetworkStateManager.loadAllNetworksToManager(serverWorld);
         }
     }
 

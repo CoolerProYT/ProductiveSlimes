@@ -1,6 +1,6 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
+import com.coolerpromc.productiveslimes.util.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.coolerpromc.productiveslimes.screen.SlimeSqueezerMenu;

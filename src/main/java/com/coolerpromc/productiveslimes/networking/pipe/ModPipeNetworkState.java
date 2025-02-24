@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.networking;
+package com.coolerpromc.productiveslimes.networking.pipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -10,22 +10,22 @@ import net.minecraft.world.level.saveddata.SavedData;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModNetworkState extends SavedData {
-    private final Map<Integer, CableNetwork> networks = new HashMap<>();
+public class ModPipeNetworkState extends SavedData {
+    private final Map<Integer, PipeNetwork> networks = new HashMap<>();
     private int nextId = 1;
 
-    public static final SavedData.Factory<ModNetworkState> MY_TYPE =
-            new SavedData.Factory<>(
-                    ModNetworkState::new,
+    public static final Factory<ModPipeNetworkState> MY_TYPE =
+            new Factory<>(
+                    ModPipeNetworkState::new,
                     (nbt, registry) -> {
-                        ModNetworkState state = new ModNetworkState();
+                        ModPipeNetworkState state = new ModPipeNetworkState();
                         state.readNbt(nbt, registry);
                         return state;
                     },
                     DataFixTypes.LEVEL
             );
 
-    public ModNetworkState() {
+    public ModPipeNetworkState() {
         super();
     }
 
@@ -33,13 +33,13 @@ public class ModNetworkState extends SavedData {
         return nextId;
     }
 
-    public CableNetwork getNetwork(int netId) {
+    public PipeNetwork getNetwork(int netId) {
         return networks.get(netId);
     }
 
     public int createNetwork() {
         int id = nextId++;
-        CableNetwork net = new CableNetwork();
+        PipeNetwork net = new PipeNetwork();
         net.setNetworkId(id);
         networks.put(id, net);
         this.setDirty(true);
@@ -51,20 +51,20 @@ public class ModNetworkState extends SavedData {
         this.setDirty(true);
     }
 
-    public Map<Integer, CableNetwork> getAllNetworks() {
+    public Map<Integer, PipeNetwork> getAllNetworks() {
         return networks;
     }
 
     @Override
     public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         ListTag list = new ListTag();
-        for (Map.Entry<Integer, CableNetwork> entry : networks.entrySet()) {
+        for (Map.Entry<Integer, PipeNetwork> entry : networks.entrySet()) {
             int netId = entry.getKey();
-            CableNetwork net = entry.getValue();
+            PipeNetwork net = entry.getValue();
 
             CompoundTag netTag = new CompoundTag();
             netTag.putInt("NetId", netId);
-            netTag.put("CableNetwork", CableNetwork.writeToNbt(net, new CompoundTag()));
+            netTag.put("PipeNetwork", PipeNetwork.writeToNbt(net, new CompoundTag()));
             list.add(netTag);
         }
         tag.put("Networks", list);
@@ -81,7 +81,7 @@ public class ModNetworkState extends SavedData {
             for (int i = 0; i < list.size(); i++) {
                 CompoundTag netTag = list.getCompound(i);
                 int netId = netTag.getInt("NetId");
-                CableNetwork net = CableNetwork.readFromNbt(netTag.getCompound("CableNetwork"));
+                PipeNetwork net = PipeNetwork.readFromNbt(netTag.getCompound("PipeNetwork"));
 
                 // Make sure the CableNetwork’s own ID is set:
                 net.setNetworkId(netId);

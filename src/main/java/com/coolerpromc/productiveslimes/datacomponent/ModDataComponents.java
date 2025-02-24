@@ -1,8 +1,8 @@
 package com.coolerpromc.productiveslimes.datacomponent;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.handler.ImmutableFluidStack;
-import com.coolerpromc.productiveslimes.handler.SlimeData;
+import com.coolerpromc.productiveslimes.datacomponent.custom.ImmutableFluidStack;
+import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

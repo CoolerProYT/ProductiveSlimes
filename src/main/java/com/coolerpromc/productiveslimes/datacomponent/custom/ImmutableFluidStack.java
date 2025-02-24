@@ -1,15 +1,11 @@
-package com.coolerpromc.productiveslimes.handler;
+package com.coolerpromc.productiveslimes.datacomponent.custom;
 
 import com.coolerpromc.productiveslimes.fluid.FluidRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Objects;
 
