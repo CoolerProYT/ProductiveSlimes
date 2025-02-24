@@ -43,7 +43,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
     public static final DeferredBlock<Block> SLIMEBALL_COLLECTOR = registerBlock("slimeball_collector", SlimeballCollectorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
-    public static final DeferredBlock<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK));
+    public static final DeferredBlock<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block", SlimyGrassBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK));
     public static final DeferredBlock<Block> SLIMY_DIRT = registerBlock("slimy_dirt", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT));
     public static final DeferredBlock<Block> SLIMY_STONE = registerBlock("slimy_stone", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
     public static final DeferredBlock<Block> SLIMY_DEEPSLATE = registerBlock("slimy_deepslate", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE));

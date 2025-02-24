@@ -91,7 +91,7 @@ dependencies {
     compileOnly "me.shedaniel:REIPluginCompatibilities-forge-annotations:12.+"
 
     runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
-    implementation "curse.maven:pipez-443900:5960087"
+
 //    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
 //    runtimeOnly "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
 
