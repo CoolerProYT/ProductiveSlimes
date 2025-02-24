@@ -2,6 +2,8 @@ package com.coolerpromc.productiveslimes.config;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.config.asset.CustomContentDataPack;
+import com.coolerpromc.productiveslimes.config.asset.CustomContentResourcePack;
 import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
@@ -10,8 +12,6 @@ import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.ModTier;
-import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
-import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -83,7 +83,7 @@ public class CustomContentRegistry {
     }
 
     public static void handleResourcePack(){
-        InMemoryResourcePack resourcePack = new InMemoryResourcePack(resourceData);
+        CustomContentResourcePack resourcePack = new CustomContentResourcePack(resourceData);
         PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
         Pack pack = Pack.readMetaAndCreate(
                 resourcePack.location(),
@@ -107,7 +107,7 @@ public class CustomContentRegistry {
     }
 
     public static void handleDatapack(MinecraftServer server) {
-        InMemoryDataPack dataPack = new InMemoryDataPack(dataPackResources);
+        CustomContentDataPack dataPack = new CustomContentDataPack(dataPackResources);
         Pack pack = Pack.readMetaAndCreate(
                 new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
                         new PackSource() {

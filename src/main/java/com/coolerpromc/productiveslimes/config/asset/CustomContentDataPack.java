@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.util;
+package com.coolerpromc.productiveslimes.config.asset;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
@@ -10,14 +10,16 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionType;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
-import org.jetbrains.annotations.Nullable;
-import java.io.*;
+import javax.annotation.Nullable;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
-public class InMemoryResourcePack implements PackResources {
+public class CustomContentDataPack implements PackResources {
     private final Map<String, byte[]> resources;
-    public InMemoryResourcePack(Map<String, byte[]> resources) {
+    public CustomContentDataPack(Map<String, byte[]> resources) {
         this.resources = resources;
     }
     @Nullable
@@ -33,7 +35,10 @@ public class InMemoryResourcePack implements PackResources {
     @Nullable
     @Override
     public IoSupplier<InputStream> getResource(PackType packType, ResourceLocation location) {
-        String path = packType.getDirectory() + "/" + location.getNamespace() + "/" + location.getPath();
+        if (packType != PackType.SERVER_DATA) {
+            return null;
+        }
+        String path = "data/" + location.getNamespace() + "/" + location.getPath();
         byte[] data = resources.get(path);
         if (data != null) {
             return () -> new ByteArrayInputStream(data);
@@ -42,10 +47,13 @@ public class InMemoryResourcePack implements PackResources {
     }
     @Override
     public void listResources(PackType packType, String namespace, String path, ResourceOutput resourceOutput) {
-        String prefix = packType.getDirectory() + "/" + namespace + "/" + path;
+        if (packType != PackType.SERVER_DATA) {
+            return;
+        }
+        String prefix = "data/" + namespace + "/" + path;
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
-                String resourcePath = key.substring((packType.getDirectory() + "/" + namespace + "/").length());
+                String resourcePath = key.substring(("data/" + namespace + "/").length());
                 ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, resourcePath);
                 resourceOutput.accept(location, () -> new ByteArrayInputStream(data));
             }
@@ -53,11 +61,13 @@ public class InMemoryResourcePack implements PackResources {
     }
     @Override
     public Set<String> getNamespaces(PackType type) {
+        if (type != PackType.SERVER_DATA) {
+            return Collections.emptySet();
+        }
         Set<String> namespaces = new HashSet<>();
-        String prefix = type.getDirectory() + "/";
         resources.keySet().forEach(key -> {
-            if (key.startsWith(prefix)) {
-                String[] parts = key.substring(prefix.length()).split("/", 2);
+            if (key.startsWith("data/")) {
+                String[] parts = key.substring("data/".length()).split("/", 2);
                 if (parts.length > 1) {
                     namespaces.add(parts[0]);
                 }
@@ -65,36 +75,36 @@ public class InMemoryResourcePack implements PackResources {
         });
         return namespaces;
     }
-    @Override
-    public void close() {
-        // Nothing to close
-    }
+
+    @org.jetbrains.annotations.Nullable
     @Override
     public <T> T getMetadataSection(MetadataSectionType<T> sectionType) throws IOException {
-        if ("pack".equals(sectionType.name())) { // Check the section name
+        if ("pack".equals(sectionType.name())) { // Use name() method to get the section name
             IoSupplier<InputStream> supplier = getRootResource("pack.mcmeta");
             if (supplier != null) {
                 try (InputStream stream = supplier.get()) {
-                    // Parse the JSON using Gson
                     JsonObject json = new Gson().fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class);
-
-                    // Deserialize the JSON using the Codec from the MetadataSectionType
-                    return sectionType.codec()
-                            .parse(JsonOps.INSTANCE, json.getAsJsonObject("pack"))
+                    // Use the Codec from the sectionType to deserialize the JSON object
+                    return sectionType.codec().parse(JsonOps.INSTANCE, json.getAsJsonObject("pack"))
                             .resultOrPartial(error -> {
-                                // Log or handle errors here
-                                System.err.println("Error parsing metadata section: " + error);
+                                System.err.println("Failed to parse metadata section: " + error);
                             })
-                            .orElse(null); // Return null if parsing fails
+                            .orElse(null);
                 }
             }
         }
         return null;
     }
 
+
+    @Override
+    public void close() {
+        // Nothing to close
+    }
+
     @Override
     public PackLocationInfo location() {
-        return new PackLocationInfo("productiveslimes", Component.literal("In Memory Pack"),
+        return new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
                 new PackSource() {
                     @Override
                     public Component decorate(Component name) {
@@ -105,6 +115,11 @@ public class InMemoryResourcePack implements PackResources {
                         return true;
                     }
                 }, Optional.empty());
+    }
+
+    @Override
+    public String packId() {
+        return "productiveslimes_datapack";
     }
     @Override
     public boolean isHidden() {

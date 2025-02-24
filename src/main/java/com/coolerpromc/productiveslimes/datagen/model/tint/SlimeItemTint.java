@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.util;
+package com.coolerpromc.productiveslimes.datagen.model.tint;
 
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.mojang.serialization.MapCodec;

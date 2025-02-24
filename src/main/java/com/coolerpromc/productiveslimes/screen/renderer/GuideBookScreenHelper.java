@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.util;
+package com.coolerpromc.productiveslimes.screen.renderer;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;

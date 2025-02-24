@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.util;
+package com.coolerpromc.productiveslimes.datagen.model.special;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.renderer.FluidTankBlockEntityRenderer;

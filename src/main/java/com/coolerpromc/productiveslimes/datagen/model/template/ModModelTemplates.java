@@ -1,4 +1,4 @@
-package com.coolerpromc.productiveslimes.datagen.template;
+package com.coolerpromc.productiveslimes.datagen.model.template;
 
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;

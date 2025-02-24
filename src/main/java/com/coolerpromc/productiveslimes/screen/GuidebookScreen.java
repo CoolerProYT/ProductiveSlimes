@@ -9,7 +9,7 @@ import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.*;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.ModTier;
-import com.coolerpromc.productiveslimes.util.GuideBookScreenHelper;
+import com.coolerpromc.productiveslimes.screen.renderer.GuideBookScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
