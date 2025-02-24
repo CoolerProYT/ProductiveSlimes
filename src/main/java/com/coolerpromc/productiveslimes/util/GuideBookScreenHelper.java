@@ -4,8 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.coolerpromc.productiveslimes.screen.renderer.FluidTankRenderer;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
@@ -36,13 +36,13 @@ public class GuideBookScreenHelper {
         }
     }
 
-    public static SlimeData generateSlimeData(ModTiers tiers){
+    public static SlimeData generateSlimeData(ModTier tiers){
         return new SlimeData(
                 1,
                 tiers.color(),
                 tiers.cooldown(),
                 BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slimeball")).get().value().getDefaultInstance(),
-                ModTierLists.getItemByKey(tiers.growthItemKey()).asItem().getDefaultInstance(),
+                ModTiers.getItemByKey(tiers.growthItemKey()).asItem().getDefaultInstance(),
                 (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slime")).get().value()
         );
     }

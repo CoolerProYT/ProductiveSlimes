@@ -5,8 +5,8 @@ import com.coolerpromc.productiveslimes.block.custom.*;
 import com.coolerpromc.productiveslimes.block.custom.PipeBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.worldgen.tree.ModTreeGrowers;
 import net.minecraft.world.item.BlockItem;
@@ -85,10 +85,10 @@ public class ModBlocks {
 
     public static void registerTierBlocks(){
         for (Tier name : Tier.values()){
-            ModTiers tier = ModTierLists.getTierByName(name);
+            ModTier tier = ModTiers.getTierByName(name);
             String blockName = tier.name() + "_slime_block";
             DeferredBlock<SlimeBlock> registeredSlimeBlock = registerSlimeBlock(blockName, MapColor.byId(tier.mapColorId()), tier.color());
-            ModTierLists.addRegisteredBlock(tier.name(), registeredSlimeBlock);
+            ModTiers.addRegisteredBlock(tier.name(), registeredSlimeBlock);
         }
     }
 

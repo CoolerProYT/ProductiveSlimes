@@ -2,8 +2,8 @@ package com.coolerpromc.productiveslimes.datagen.loot;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -80,8 +80,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         dropSelf(ModBlocks.ENERGY_SLIME_BLOCK.get());
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
-            dropSelf(ModTierLists.getBlockByName(tiers.name()).get());
+            ModTier tiers = ModTiers.getTierByName(tier);
+            dropSelf(ModTiers.getBlockByName(tiers.name()).get());
         }
     }
 

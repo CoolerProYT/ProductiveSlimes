@@ -3,8 +3,8 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -27,16 +27,16 @@ public class ModItemTagGenerator extends ItemTagsProvider {
         slimeballTag.add(ModItems.ENERGY_SLIME_BALL.get());
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
-            slimeballTag.add(ModTierLists.getSlimeballItemByName(tiers.name()).get());
+            ModTier tiers = ModTiers.getTierByName(tier);
+            slimeballTag.add(ModTiers.getSlimeballItemByName(tiers.name()).get());
         }
 
         var dnaTag = tag(ModTags.Items.DNA_ITEM);
         dnaTag.add(ModItems.SLIME_DNA.get());
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
-            dnaTag.add(ModTierLists.getDnaItemByName(tiers.name()).get());
+            ModTier tiers = ModTiers.getTierByName(tier);
+            dnaTag.add(ModTiers.getDnaItemByName(tiers.name()).get());
         }
 
         tag(ItemTags.LOGS_THAT_BURN)

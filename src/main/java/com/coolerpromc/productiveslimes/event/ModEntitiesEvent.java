@@ -4,8 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.slime.*;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -38,9 +38,9 @@ public class ModEntitiesEvent {
         }
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
+            ModTier tiers = ModTiers.getTierByName(tier);
 
-            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTierLists.getEntityByName(tiers.name());
+            DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ModTiers.getEntityByName(tiers.name());
             event.put(slime.get(), BaseSlime.createAttributes().build());
         }
 

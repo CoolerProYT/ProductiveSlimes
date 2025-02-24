@@ -7,8 +7,8 @@ import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.coolerpromc.productiveslimes.networking.recipe.ClientRecipeManager;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.recipe.*;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.util.GuideBookScreenHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -195,8 +195,8 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
                 return true;
             } else if (selectedSection == 1) {
-                int totalRecipeHeight = (int) ((Math.ceil((double) ModTierLists.getRegisteredTiers().size() / COLUMNS)) * RECIPE_HEIGHT) + INFO_SECTION_HEIGHT;
-                int totalCooldownHeight = (int) ((Math.ceil((double) ModTierLists.getRegisteredTiers().size() / COLUMNS)) * 46) + INFO_SECTION_HEIGHT;
+                int totalRecipeHeight = (int) ((Math.ceil((double) ModTiers.getRegisteredTiers().size() / COLUMNS)) * RECIPE_HEIGHT) + INFO_SECTION_HEIGHT;
+                int totalCooldownHeight = (int) ((Math.ceil((double) ModTiers.getRegisteredTiers().size() / COLUMNS)) * 46) + INFO_SECTION_HEIGHT;
                 int maxContentScroll = Math.max(0, totalRecipeHeight - navHeight + SLIME_AND_SLIMEBALL_INFO_HEIGHT + SLIME_AND_SLIMEBALL_SECOND_INFO_HEIGHT + totalCooldownHeight + SLIME_AND_SLIMEBALL_THIRD_INFO_HEIGHT);
 
                 contentScrollOffset = GuideBookScreenHelper.scrollOffset(contentScrollOffset, verticalAmount, maxContentScroll, scrollSpeed);
@@ -721,14 +721,14 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         SLIME_AND_SLIMEBALL_INFO_HEIGHT = contentY + font.wordWrapHeight(description, wordWarpLength) + font.wordWrapHeight(description2, wordWarpLength) + font.wordWrapHeight(title2, wordWarpLength) + font.wordWrapHeight(description3, wordWarpLength) + 40;
 
-        List<ModTiers> registeredTiers = ModTierLists.getRegisteredTiers();
+        List<ModTier> registeredTiers = ModTiers.getRegisteredTiers();
         int index = 0;
         int numRecipeRows = (int) Math.ceil((double) registeredTiers.size() / COLUMNS);
         int totalRecipeHeight = numRecipeRows * (RECIPE_HEIGHT + V_SPACING);
 
         ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_grow_gui.png");
 
-        for (ModTiers tiers : registeredTiers) {
+        for (ModTier tiers : registeredTiers) {
             int row = index / COLUMNS;
             int col = index % COLUMNS;
             int xPos = contentX + col * (RECIPE_WIDTH + H_SPACING);
@@ -787,7 +787,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         ResourceLocation COOLDOWN_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_cooldown_gui.png");
 
-        for (ModTiers tiers : registeredTiers) {
+        for (ModTier tiers : registeredTiers) {
             int row = index2 / COLUMNS;
             int col = index2 % COLUMNS;
             int xPos = contentX + col * (RECIPE_WIDTH + H_SPACING);

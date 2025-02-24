@@ -8,8 +8,8 @@ import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.coolerpromc.productiveslimes.entity.slime.Slime;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.util.InMemoryDataPack;
 import com.coolerpromc.productiveslimes.util.InMemoryResourcePack;
 import com.google.common.reflect.TypeToken;
@@ -202,8 +202,8 @@ public class CustomContentRegistry {
                     registerSpawnEggItem(ITEMS, variant);
                     registerFluid(variant);
 
-                    ModTiers registerTier = new ModTiers(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, variant.solidingOutput, variant.solidingOutputCount, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
-                    ModTierLists.addRegisteredTier(variant.getName(), registerTier);
+                    ModTier registerTier = new ModTier(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, variant.solidingOutput, variant.solidingOutputCount, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
+                    ModTiers.addRegisteredTier(variant.getName(), registerTier);
                 }
 
                 LOGGER.info("Loaded " + loadedVariants.size() + " custom tiers");

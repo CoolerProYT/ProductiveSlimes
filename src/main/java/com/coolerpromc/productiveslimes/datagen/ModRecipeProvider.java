@@ -4,8 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.datagen.builder.*;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.HolderGetter;
@@ -208,9 +208,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("BCB")
                 .pattern("ABA")
                 .define('A', Items.REDSTONE_BLOCK)
-                .define('B', ModTierLists.getBlockByName(Tier.IRON.getTierName()))
+                .define('B', ModTiers.getBlockByName(Tier.IRON.getTierName()))
                 .define('C', Tags.Items.INGOTS_IRON)
-                .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTierLists.getBlockByName(Tier.IRON.getTierName())))
+                .unlockedBy(getHasName(Items.REDSTONE_BLOCK), has(ModTiers.getBlockByName(Tier.IRON.getTierName())))
                 .save(output);
 
         ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModItems.SLIME_NEST_SPEED_UPGRADE_2, 1)
@@ -218,9 +218,9 @@ public class ModRecipeProvider extends RecipeProvider {
                 .pattern("BCB")
                 .pattern("ABA")
                 .define('A', ModItems.SLIME_NEST_SPEED_UPGRADE_1)
-                .define('B', ModTierLists.getBlockByName(Tier.GOLD.getTierName()))
+                .define('B', ModTiers.getBlockByName(Tier.GOLD.getTierName()))
                 .define('C', Tags.Items.INGOTS_GOLD)
-                .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1), has(ModTierLists.getBlockByName(Tier.GOLD.getTierName())))
+                .unlockedBy(getHasName(ModItems.SLIME_NEST_SPEED_UPGRADE_1), has(ModTiers.getBlockByName(Tier.GOLD.getTierName())))
                 .save(output);
 
         planksFromLogs(ModBlocks.SLIMY_PLANKS.get(), ModTags.Items.SLIMY_LOG, 4);
@@ -265,20 +265,20 @@ public class ModRecipeProvider extends RecipeProvider {
         dnaExtractingRecipe(output, Items.SLIME_BALL, ModItems.SLIME_DNA, 1, 0.9f);
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
-            slimeBlockToSlimeBall(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSlimeballItemByName(tiers.name()));
-            slimeBallToSlimeBlock(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getBlockByName(tiers.name()));
+            ModTier tiers = ModTiers.getTierByName(tier);
+            slimeBlockToSlimeBall(output, ModTiers.getBlockByName(tiers.name()), ModTiers.getSlimeballItemByName(tiers.name()));
+            slimeBallToSlimeBlock(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getBlockByName(tiers.name()));
 
-            meltingRecipe(output, ModTierLists.getBlockByName(tiers.name()), ModTierLists.getSourceByName(tiers.name()).get(), 2, 5000);
-            meltingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getSourceByName(tiers.name()).get(), 4, 1000);
+            meltingRecipe(output, ModTiers.getBlockByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 2, 5000);
+            meltingRecipe(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 4, 1000);
 
-            solidingRecipe(output, ModTierLists.getBucketItemByName(tiers.name()).get(), ModTierLists.getItemByKey(tiers.solidingOutputKey()), tiers.solidingOutputAmount());
+            solidingRecipe(output, ModTiers.getBucketItemByName(tiers.name()).get(), ModTiers.getItemByKey(tiers.solidingOutputKey()), tiers.solidingOutputAmount());
 
-            dnaExtractingRecipe(output, ModTierLists.getSlimeballItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
+            dnaExtractingRecipe(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getDnaItemByName(tiers.name()), 1, tiers.dnaOutputChance());
 
-            dnaSynthesizingSelfRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), ModTierLists.getDnaItemByName(tiers.name()).toStack(), ModTierLists.getDnaItemByName(tiers.name()).toStack(), new ItemStack(ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()), 2));
+            dnaSynthesizingSelfRecipe(output, ModTiers.getSpawnEggItemByName(tiers.name()), ModTiers.getDnaItemByName(tiers.name()).toStack(), ModTiers.getDnaItemByName(tiers.name()).toStack(), new ItemStack(ModTiers.getItemByKey(tiers.synthesizingInputItemKey()), 2));
 
-            dnaSynthesizingRecipe(output, ModTierLists.getSpawnEggItemByName(tiers.name()), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey1()).asItem().getDefaultInstance(), ModTierLists.getItemByKey(tiers.synthesizingInputDnaKey2()).asItem().getDefaultInstance(), new ItemStack(ModTierLists.getItemByKey(tiers.synthesizingInputItemKey()), 4));
+            dnaSynthesizingRecipe(output, ModTiers.getSpawnEggItemByName(tiers.name()), ModTiers.getItemByKey(tiers.synthesizingInputDnaKey1()).asItem().getDefaultInstance(), ModTiers.getItemByKey(tiers.synthesizingInputDnaKey2()).asItem().getDefaultInstance(), new ItemStack(ModTiers.getItemByKey(tiers.synthesizingInputItemKey()), 4));
         }
 
         squeezingRecipe(output, ModBlocks.SLIMY_DIRT, new ItemStack(Items.DIRT, 1), new ItemStack(ModItems.SLIMEBALL_FRAGMENT.get(), 1));

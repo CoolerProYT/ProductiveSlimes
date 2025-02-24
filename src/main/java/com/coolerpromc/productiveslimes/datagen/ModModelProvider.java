@@ -10,8 +10,8 @@ import com.coolerpromc.productiveslimes.item.custom.BucketItem;
 import com.coolerpromc.productiveslimes.item.custom.DnaItem;
 import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
@@ -100,9 +100,9 @@ public class ModModelProvider extends ModelProvider {
         slimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
-            slimeBlock(blockModels, ModTierLists.getBlockByName(tiers.name()).get());
-            fluidBlock(blockModels, ModTierLists.getLiquidBlockByName(tiers.name()).get());
+            ModTier tiers = ModTiers.getTierByName(tier);
+            slimeBlock(blockModels, ModTiers.getBlockByName(tiers.name()).get());
+            fluidBlock(blockModels, ModTiers.getLiquidBlockByName(tiers.name()).get());
         }
     }
 
@@ -120,12 +120,12 @@ public class ModModelProvider extends ModelProvider {
         slimeItem(itemModels, ModItems.SLIME_ITEM.get());
 
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
+            ModTier tiers = ModTiers.getTierByName(tier);
 
-            slimeballItem(itemModels, ModTierLists.getSlimeballItemByName(tiers.name()));
-            bucketItem(itemModels, ModTierLists.getBucketItemByName(tiers.name()));
-            dnaItem(itemModels, ModTierLists.getDnaItemByName(tiers.name()));
-            spawnEggItem(itemModels, ModTierLists.getSpawnEggItemByName(tiers.name()));
+            slimeballItem(itemModels, ModTiers.getSlimeballItemByName(tiers.name()));
+            bucketItem(itemModels, ModTiers.getBucketItemByName(tiers.name()));
+            dnaItem(itemModels, ModTiers.getDnaItemByName(tiers.name()));
+            spawnEggItem(itemModels, ModTiers.getSpawnEggItemByName(tiers.name()));
         }
     }
 

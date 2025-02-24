@@ -3,8 +3,8 @@ package com.coolerpromc.productiveslimes.command;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datacomponent.custom.SlimeData;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -75,8 +75,8 @@ public class ModCommands {
     }
     private static SlimeData createSlimeData(String slimeId, int size, CommandSourceStack source) {
         try {
-            ModTiers tier = ModTierLists.getTierByName(Tier.valueOf(slimeId.toUpperCase()));
-            return new SlimeData(size, tier.color(), tier.cooldown(), new ItemStack(ModTierLists.getSlimeballItemByName(slimeId).get()), new ItemStack(ModTierLists.getItemByKey(tier.growthItemKey())), ModTierLists.getEntityByName(slimeId).get());
+            ModTier tier = ModTiers.getTierByName(Tier.valueOf(slimeId.toUpperCase()));
+            return new SlimeData(size, tier.color(), tier.cooldown(), new ItemStack(ModTiers.getSlimeballItemByName(slimeId).get()), new ItemStack(ModTiers.getItemByKey(tier.growthItemKey())), ModTiers.getEntityByName(slimeId).get());
         } catch (IllegalArgumentException e) {
             source.sendFailure(Component.translatable("command.productiveslimes.invalid_tier"));
             return null;

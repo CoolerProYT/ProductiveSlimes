@@ -3,8 +3,8 @@ package com.coolerpromc.productiveslimes.item;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -48,8 +48,8 @@ public class ModCreativeTabs {
                         }
 
                         for (Tier tier : Tier.values()){
-                            ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBlockByName(tiers.name()).get());
+                            ModTier tiers = ModTiers.getTierByName(tier);
+                            pOutput.accept(ModTiers.getBlockByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -59,8 +59,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.ENERGY_SLIME_BALL);
 
                         for (Tier tier : Tier.values()){
-                            ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSlimeballItemByName(tiers.name()).get());
+                            ModTier tiers = ModTiers.getTierByName(tier);
+                            pOutput.accept(ModTiers.getSlimeballItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -70,8 +70,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.SLIME_DNA);
 
                         for (Tier tier : Tier.values()){
-                            ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getDnaItemByName(tiers.name()).get());
+                            ModTier tiers = ModTiers.getTierByName(tier);
+                            pOutput.accept(ModTiers.getDnaItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -81,8 +81,8 @@ public class ModCreativeTabs {
                         pOutput.accept(ModItems.ENERGY_SLIME_SPAWN_EGG);
 
                         for (Tier tier : Tier.values()){
-                            ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getSpawnEggItemByName(tiers.name()).get());
+                            ModTier tiers = ModTiers.getTierByName(tier);
+                            pOutput.accept(ModTiers.getSpawnEggItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
@@ -90,8 +90,8 @@ public class ModCreativeTabs {
                         }
 
                         for (Tier tier : Tier.values()){
-                            ModTiers tiers = ModTierLists.getTierByName(tier);
-                            pOutput.accept(ModTierLists.getBucketItemByName(tiers.name()).get());
+                            ModTier tiers = ModTiers.getTierByName(tier);
+                            pOutput.accept(ModTiers.getBucketItemByName(tiers.name()).get());
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){

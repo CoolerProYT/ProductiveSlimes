@@ -1,8 +1,8 @@
 package com.coolerpromc.productiveslimes.fluid;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
+import com.coolerpromc.productiveslimes.tier.ModTier;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -18,7 +18,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 public class ModFluids {
     public static void registerTierFluids() {
         for (Tier tier : Tier.values()){
-            ModTiers tiers = ModTierLists.getTierByName(tier);
+            ModTier tiers = ModTiers.getTierByName(tier);
 
             ModFluidResources.FluidStuff fluidStuff = ModFluidResources.register(() -> ModFluidResources.addFluid(
                     new ModBaseFluidType.FunkyFluidInfo(tiers.name(), tiers.color(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(tiers.mapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, tiers.color())),
@@ -26,11 +26,11 @@ public class ModFluids {
                     properties -> properties.explosionResistance(1000F).tickRate(20),
                     FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
 
-            ModTierLists.addRegisteredFluidType(tiers.name(), fluidStuff.getType());
-            ModTierLists.addRegisteredLiquidBlock(tiers.name(), fluidStuff.getBlock());
-            ModTierLists.addRegisteredBucketItem(tiers.name(), fluidStuff.getBucket());
-            ModTierLists.addRegisteredFlow(tiers.name(), fluidStuff.getFlow());
-            ModTierLists.addRegisteredSource(tiers.name(), fluidStuff.getSource());
+            ModTiers.addRegisteredFluidType(tiers.name(), fluidStuff.getType());
+            ModTiers.addRegisteredLiquidBlock(tiers.name(), fluidStuff.getBlock());
+            ModTiers.addRegisteredBucketItem(tiers.name(), fluidStuff.getBucket());
+            ModTiers.addRegisteredFlow(tiers.name(), fluidStuff.getFlow());
+            ModTiers.addRegisteredSource(tiers.name(), fluidStuff.getSource());
         }
     }
 }
