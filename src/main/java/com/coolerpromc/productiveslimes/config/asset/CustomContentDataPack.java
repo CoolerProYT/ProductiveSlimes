@@ -105,16 +105,7 @@ public class CustomContentDataPack implements PackResources {
     @Override
     public PackLocationInfo location() {
         return new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
-                new PackSource() {
-                    @Override
-                    public Component decorate(Component name) {
-                        return Component.literal("In Memory Pack");
-                    }
-                    @Override
-                    public boolean shouldAddAutomatically() {
-                        return true;
-                    }
-                }, Optional.empty());
+                PackSource.SERVER, Optional.empty());
     }
 
     @Override

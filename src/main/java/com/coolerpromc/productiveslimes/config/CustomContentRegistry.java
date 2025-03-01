@@ -71,8 +71,8 @@ public class CustomContentRegistry {
     private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
     private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
     private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
-    private static Map<String, byte[]> resourceData = new HashMap<>();
-    private static Map<String, byte[]> dataPackResources = new HashMap<>();
+    public static Map<String, byte[]> resourceData = new HashMap<>();
+    public static Map<String, byte[]> dataPackResources = new HashMap<>();
 
     public static void initialize(DeferredRegister.Items item, DeferredRegister.Blocks block, DeferredRegister<EntityType<?>> entityType) {
         createDefaultConfig();
@@ -80,65 +80,6 @@ public class CustomContentRegistry {
 
         generateResourcePackInMemory();
         generateDataPackInMemory();
-    }
-
-    public static void handleResourcePack(){
-        CustomContentResourcePack resourcePack = new CustomContentResourcePack(resourceData);
-        PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
-        Pack pack = Pack.readMetaAndCreate(
-                resourcePack.location(),
-                new Pack.ResourcesSupplier() {
-                    @Override
-                    public PackResources openPrimary(PackLocationInfo location) {
-                        return resourcePack;
-                    }
-                    @Override
-                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
-                        return resourcePack;
-                    }
-                },
-                PackType.CLIENT_RESOURCES,
-                new PackSelectionConfig(true, Pack.Position.TOP, true)
-        );
-        packRepository.addPackFinder((consumer) -> {
-            consumer.accept(pack);
-        });
-        Minecraft.getInstance().reloadResourcePacks();
-    }
-
-    public static void handleDatapack(MinecraftServer server) {
-        CustomContentDataPack dataPack = new CustomContentDataPack(dataPackResources);
-        Pack pack = Pack.readMetaAndCreate(
-                new PackLocationInfo("productiveslimes_datapack", Component.literal("In Memory Pack"),
-                        new PackSource() {
-                            @Override
-                            public Component decorate(Component name) {
-                                return Component.literal("In Memory Pack");
-                            }
-
-                            @Override
-                            public boolean shouldAddAutomatically() {
-                                return true;
-                            }
-                        }, Optional.empty()),
-                new Pack.ResourcesSupplier() {
-                    @Override
-                    public PackResources openPrimary(PackLocationInfo location) {
-                        return dataPack;
-                    }
-
-                    @Override
-                    public PackResources openFull(PackLocationInfo location, Pack.Metadata metadata) {
-                        return dataPack;
-                    }
-                },
-                PackType.SERVER_DATA,
-                new PackSelectionConfig(true, Pack.Position.TOP, true)
-        );
-
-        server.getPackRepository().addPackFinder((consumer) -> consumer.accept(pack));
-        List<Pack> packs = new ArrayList<>(server.getPackRepository().getSelectedPacks());
-        packs.add(pack);
     }
 
     public static List<CustomVariants> getLoadedTiers() {

@@ -128,13 +128,6 @@ public class ProductiveSlimes
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-        CustomContentRegistry.handleDatapack(event.getServer());
-        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
-    }
-
     private void enqueueIMC(final InterModEnqueueEvent event) {
 //        InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
     }
@@ -223,8 +216,6 @@ public class ProductiveSlimes
 
                 ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
-
-            CustomContentRegistry.handleResourcePack();
         }
 
         @SubscribeEvent
