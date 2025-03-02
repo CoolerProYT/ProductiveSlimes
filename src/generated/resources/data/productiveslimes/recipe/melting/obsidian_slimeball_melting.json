@@ -2,11 +2,11 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": {
-    "count": 4,
+    "count": 1,
     "ingredient": "productiveslimes:obsidian_slimeball"
   },
   "output": {
-    "amount": 1000,
+    "amount": 250,
     "id": "productiveslimes:source_molten_obsidian"
   }
 }

@@ -269,8 +269,8 @@ public class ModRecipeProvider extends RecipeProvider {
             slimeBlockToSlimeBall(output, ModTiers.getBlockByName(tiers.name()), ModTiers.getSlimeballItemByName(tiers.name()));
             slimeBallToSlimeBlock(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getBlockByName(tiers.name()));
 
-            meltingRecipe(output, ModTiers.getBlockByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 2, 5000);
-            meltingRecipe(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 4, 1000);
+            meltingRecipe(output, ModTiers.getBlockByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 1, 2250);
+            meltingRecipe(output, ModTiers.getSlimeballItemByName(tiers.name()), ModTiers.getSourceByName(tiers.name()).get(), 1, 250);
 
             solidingRecipe(output,new FluidStack(ModTiers.getSourceByName(tiers.name()).get(), tiers.solidingInputAmount()), ModTiers.getItemByKey(tiers.solidingOutputKey()), 1);
 

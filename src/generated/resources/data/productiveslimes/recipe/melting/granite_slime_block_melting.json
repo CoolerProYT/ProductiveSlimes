@@ -2,11 +2,11 @@
   "type": "productiveslimes:melting",
   "energy": 200,
   "ingredients": {
-    "count": 2,
+    "count": 1,
     "ingredient": "productiveslimes:granite_slime_block"
   },
   "output": {
-    "amount": 5000,
+    "amount": 2250,
     "id": "productiveslimes:source_molten_granite"
   }
 }
