@@ -6,15 +6,14 @@ import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.*;
 import com.coolerpromc.productiveslimes.command.ModCommands;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
-import com.coolerpromc.productiveslimes.config.fluid.FluidResources;
-import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datagen.model.special.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.datagen.model.tint.SlimeItemTint;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
 import com.coolerpromc.productiveslimes.entity.renderer.*;
-import com.coolerpromc.productiveslimes.fluid.ModFluidResources;
+import com.coolerpromc.productiveslimes.fluid.ModBaseFluidType;
+import com.coolerpromc.productiveslimes.fluid.FluidResources;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkManager;
 import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkStateManager;
@@ -63,7 +62,6 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -94,8 +92,6 @@ public class ProductiveSlimes
             ENTITY_TYPES.register(modEventBus);
         }
 
-        FluidResources.register(modEventBus);
-
         ModTiers.init();
 
         ModItems.registerTierItems();
@@ -108,7 +104,7 @@ public class ProductiveSlimes
         ModEntities.register(modEventBus);
 
         ModFluids.registerTierFluids();
-        ModFluidResources.register(modEventBus);
+        FluidResources.register(modEventBus);
 
         ModCreativeTabs.register(modEventBus);
         ModRecipes.register(modEventBus);
@@ -244,12 +240,6 @@ public class ProductiveSlimes
         }
 
         public static void registerAllFluidType(RegisterClientExtensionsEvent event){
-            for (Tier tier : Tier.values()){
-                ModTier tiers = ModTiers.getTierByName(tier);
-                if (ModTiers.getFluidTypeByName(tiers.name()).get() instanceof com.coolerpromc.productiveslimes.fluid.ModBaseFluidType modBaseFluidType)
-                    event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
-            }
-
             FluidResources.fluidList.forEach(fluid -> {
                 if (fluid.TYPE.get() instanceof ModBaseFluidType modBaseFluidType)
                     event.registerFluidType(modBaseFluidType.getClientExtensions(), modBaseFluidType);
@@ -276,12 +266,6 @@ public class ProductiveSlimes
         }
 
         public static void registerAllFluidRenderLayer() {
-            for (Tier tier : Tier.values()){
-                ModTier tiers = ModTiers.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTiers.getSourceByName(tiers.name()).get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModTiers.getFlowByName(tiers.name()).get(), RenderType.translucent());
-            }
-
             FluidResources.fluidList.stream()
                     .filter(fluid -> fluid.isTranslucent)
                     .forEach(fluid -> {

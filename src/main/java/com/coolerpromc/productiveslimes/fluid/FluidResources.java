@@ -24,14 +24,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class ModFluidResources {
+public class FluidResources {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, ProductiveSlimes.MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ProductiveSlimes.MODID);
     public static final DeferredRegister<FluidType> FLUIDTYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ProductiveSlimes.MODID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, ProductiveSlimes.MODID);
 
-    public static List<FluidStuff> fluidList = new ArrayList<FluidStuff>();
+    public static List<FluidStuff> fluidList = new ArrayList<>();
 
     public static FluidStuff addFluid(ModBaseFluidType.FunkyFluidInfo info, Block.Properties properties, BiFunction<FluidType.Properties, ModBaseFluidType.FunkyFluidInfo, FluidType> type, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, LiquidBlock> block, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Source> source, Function<BaseFlowingFluid.Properties, BaseFlowingFluid.Flowing> flowing, @Nullable Consumer<BaseFlowingFluid.Properties> fluidProperties, FluidType.Properties prop) {
         FluidStuff fluid = new FluidStuff(info.name, info.color,info.isTranslucent, type.apply(prop, info), block, fluidProperties, source, flowing, properties);
