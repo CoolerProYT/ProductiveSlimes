@@ -23,7 +23,7 @@ public class EnergyGeneratorScreen extends AbstractContainerScreen<EnergyGenerat
         super.init();
         this.inventoryLabelY = 74;
         this.titleLabelY = 5;
-        this.titleLabelX = 43;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
         this.imageWidth = 217;
 
         int x = (width - 176) / 2;

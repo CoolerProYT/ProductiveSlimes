@@ -21,7 +21,7 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
     protected void init() {
         super.init();
         this.inventoryLabelY = 74;
-        this.titleLabelX = 54;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
         this.titleLabelY = 5;
     }
 

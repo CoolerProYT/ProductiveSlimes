@@ -18,7 +18,7 @@ public class SlimeballCollectorScreen extends AbstractContainerScreen<SlimeballC
     protected void init() {
         super.init();
         this.inventoryLabelY = 74;
-        this.titleLabelX = 49;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
         this.titleLabelY = 5;
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;

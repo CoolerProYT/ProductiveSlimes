@@ -24,7 +24,7 @@ public class SlimeNestScreen extends AbstractContainerScreen<SlimeNestMenu> {
     protected void init() {
         super.init();
         this.inventoryLabelY = 100000;
-        this.titleLabelX = 35;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
         this.titleLabelY = 5;
     }
 
