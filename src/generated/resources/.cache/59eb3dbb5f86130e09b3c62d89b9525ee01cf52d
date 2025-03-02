@@ -1,4 +1,4 @@
-// 1.21.4	2025-01-02T15:43:16.7475897	Loot Tables
+// 1.21.4	2025-03-02T19:17:49.9791285	Loot Tables
 54882a6c99ed875fe1aef3b80298eed5ae169884 data/productiveslimes/loot_table/blocks/amethyst_slime_block.json
 c30011866f8200e59e31002232dae02050b6c9c4 data/productiveslimes/loot_table/blocks/andesite_slime_block.json
 af04a98611a463d6d02be4968c7050a78bb21ed8 data/productiveslimes/loot_table/blocks/basalt_slime_block.json
@@ -37,6 +37,7 @@ eed9348d9ecd5b86b64af0c4990b637ef61e1c16 data/productiveslimes/loot_table/blocks
 947d4dfd70b2e4dd90c7b33f7c3c69deeed2536b data/productiveslimes/loot_table/blocks/oak_leaves_slime_block.json
 97ad3e4454fc1cbc6045cc4f27e80ff9e46dbfe1 data/productiveslimes/loot_table/blocks/oak_slime_block.json
 65f8118852b841b1ac90f119eee6a26799c9f3b4 data/productiveslimes/loot_table/blocks/obsidian_slime_block.json
+0b542cd0d09eade37740d3a3b69fbc3dc7596e4d data/productiveslimes/loot_table/blocks/pipe.json
 bfece54f35010006b565060b5a542ecd787a6265 data/productiveslimes/loot_table/blocks/prismarine_slime_block.json
 6e2099d411c5c566b0b619035f30deed7a72bd61 data/productiveslimes/loot_table/blocks/quartz_slime_block.json
 83c526a79a47e6d9fd2004931ff240498680c848 data/productiveslimes/loot_table/blocks/redstone_slime_block.json

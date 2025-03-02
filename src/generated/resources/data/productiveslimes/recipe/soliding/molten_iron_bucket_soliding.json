@@ -2,7 +2,7 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": {
-    "amount": 1000,
+    "amount": 400,
     "id": "productiveslimes:source_molten_iron"
   },
   "output": [

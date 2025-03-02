@@ -131,7 +131,7 @@ public class CustomContentRegistry {
                     registerSpawnEggItem(ITEMS, variant);
                     registerFluid(variant);
 
-                    ModTier registerTier = new ModTier(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, variant.solidingOutput, variant.solidingOutputCount, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
+                    ModTier registerTier = new ModTier(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, 1000,variant.solidingOutput, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
                     ModTiers.addRegisteredTier(variant.getName(), registerTier);
                 }
 

@@ -22,6 +22,7 @@ import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +33,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ModModelProvider extends ModelProvider {
     public ModModelProvider(PackOutput output) {

@@ -2,12 +2,12 @@
   "type": "productiveslimes:soliding",
   "energy": 200,
   "ingredients": {
-    "amount": 1000,
+    "amount": 700,
     "id": "productiveslimes:source_molten_redstone"
   },
   "output": [
     {
-      "count": 2,
+      "count": 1,
       "id": "minecraft:redstone"
     }
   ]
