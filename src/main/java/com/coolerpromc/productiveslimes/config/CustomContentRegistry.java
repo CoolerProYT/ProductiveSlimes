@@ -54,11 +54,11 @@ public class CustomContentRegistry {
 
     private static List<CustomVariants> loadedVariants = new ArrayList<>();
 
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
-    private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
+    private static final Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     public static Map<String, byte[]> resourceData = new HashMap<>();
     public static Map<String, byte[]> dataPackResources = new HashMap<>();
 
@@ -97,17 +97,15 @@ public class CustomContentRegistry {
     private static void createDefaultConfig() {
         File configFile = new File(CONFIG_PATH);
         if (!configFile.exists()) {
-            List<CustomVariants> defaultTiers = Arrays.asList(
-                    new CustomVariants("birch", "#FFa69d6f",5, 1500, "minecraft:birch_log", "minecraft:birch_log",2,"productiveslimes:oak_slime_dna", "productiveslimes:oak_slime_dna", "minecraft:birch_log", 0.75)
+            List<CustomVariants> defaultTiers = List.of(
+                    new CustomVariants("birch", "#FFa69d6f", 5, 1500, "minecraft:birch_log", 250, "minecraft:birch_log", "productiveslimes:oak_slime_dna", "productiveslimes:oak_slime_dna", "minecraft:birch_log", 0.75)
             );
 
             try {
-                // Ensure the config directory exists
-                configFile.getParentFile().mkdirs();
-
-                // Write the default config
-                try (FileWriter writer = new FileWriter(configFile)) {
-                    GSON.toJson(defaultTiers, writer);
+                if (configFile.getParentFile().mkdirs()){
+                    try (FileWriter writer = new FileWriter(configFile)) {
+                        GSON.toJson(defaultTiers, writer);
+                    }
                 }
             } catch (IOException e) {
                 LOGGER.error("Failed to create default tier config", e);
@@ -131,7 +129,7 @@ public class CustomContentRegistry {
                     registerSpawnEggItem(ITEMS, variant);
                     registerFluid(variant);
 
-                    ModTier registerTier = new ModTier(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, 1000,variant.solidingOutput, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
+                    ModTier registerTier = new ModTier(variant.getName(), variant.getColor(), variant.mapColorId, variant.cooldown, variant.growthItem, variant.solidingInputAmount,variant.solidingOutput, variant.synthesizingInputItem, variant.synthesizingInputDna1, variant.synthesizingInputDna2, (float) variant.dnaOutputChance);
                     ModTiers.addRegisteredTier(variant.getName(), registerTier);
                 }
 
@@ -188,7 +186,6 @@ public class CustomContentRegistry {
     private static List<CustomVariants> validateTiers(List<CustomVariants> tiers) {
         return tiers.stream()
                 .filter(tier -> {
-                    // Validate name (no spaces, special characters, etc.)
                     if (!tier.name.matches("^[a-z0-9_]+$")) {
                         LOGGER.error("Invalid name format for tier: " + tier.name);
                         return false;
@@ -560,16 +557,14 @@ public class CustomContentRegistry {
         recipeObj.addProperty("energy", 200);
 
         JsonObject ingredientsObj = new JsonObject();
-        ingredientsObj.addProperty("count", 2);
+        ingredientsObj.addProperty("count", 1);
         ingredientsObj.addProperty("ingredient", "productiveslimes:" + name + "_slime_block");
         recipeObj.add("ingredients", ingredientsObj);
 
-        JsonArray outputArray = new JsonArray();
         JsonObject outputObj = new JsonObject();
-        outputObj.addProperty("count", 5);
-        outputObj.addProperty("id", "productiveslimes:molten_" + name + "_bucket");
-        outputArray.add(outputObj);
-        recipeObj.add("output", outputArray);
+        outputObj.addProperty("amount", 2250);
+        outputObj.addProperty("id", "productiveslimes:source_molten_" + name);
+        recipeObj.add("output", outputObj);
 
         String recipeJson = new GsonBuilder().setPrettyPrinting().create().toJson(recipeObj);
         dataPackResources.put(recipePath, recipeJson.getBytes(StandardCharsets.UTF_8));
@@ -583,16 +578,14 @@ public class CustomContentRegistry {
         recipeObj.addProperty("energy", 200);
 
         JsonObject ingredientsObj = new JsonObject();
-        ingredientsObj.addProperty("count", 4);
+        ingredientsObj.addProperty("count", 1);
         ingredientsObj.addProperty("ingredient", "productiveslimes:" + name + "_slimeball");
         recipeObj.add("ingredients", ingredientsObj);
 
-        JsonArray outputArray = new JsonArray();
         JsonObject outputObj = new JsonObject();
-        outputObj.addProperty("count", 1);
-        outputObj.addProperty("id", "productiveslimes:molten_" + name + "_bucket");
-        outputArray.add(outputObj);
-        recipeObj.add("output", outputArray);
+        outputObj.addProperty("amount", 250);
+        outputObj.addProperty("id", "productiveslimes:source_molten_" + name);
+        recipeObj.add("output", outputObj);
 
         String recipeJson = new GsonBuilder().setPrettyPrinting().create().toJson(recipeObj);
         dataPackResources.put(recipePath, recipeJson.getBytes(StandardCharsets.UTF_8));
@@ -605,23 +598,17 @@ public class CustomContentRegistry {
         recipeObj.addProperty("type", "productiveslimes:soliding");
         recipeObj.addProperty("energy", 200);
 
-        JsonArray ingredientsArray = new JsonArray();
-        ingredientsArray.add("productiveslimes:molten_" + variant.getName() + "_bucket");
-        recipeObj.add("ingredients", ingredientsArray);
+        JsonObject ingredientsObj = new JsonObject();
+        ingredientsObj.addProperty("amount", variant.getSolidingInputAmount());
+        ingredientsObj.addProperty("id", "productiveslimes:source_molten_" + variant.getName());
+        recipeObj.add("ingredients", ingredientsObj);
 
-        recipeObj.addProperty("inputCount", 1);
+        JsonObject outputObj = new JsonObject();
+        outputObj.addProperty("count", 1);
+        outputObj.addProperty("id", variant.getSolidingOutput());
 
         JsonArray outputArray = new JsonArray();
-
-        JsonObject output1 = new JsonObject();
-        output1.addProperty("count", variant.getSolidingOutputCount());
-        output1.addProperty("id", variant.getSolidingOutput());
-        outputArray.add(output1);
-
-        JsonObject output2 = new JsonObject();
-        output2.addProperty("count", 1);
-        output2.addProperty("id", "minecraft:bucket");
-        outputArray.add(output2);
+        outputArray.add(outputObj);
 
         recipeObj.add("output", outputArray);
 
@@ -743,21 +730,21 @@ public class CustomContentRegistry {
         private final int mapColorId;
         private final int cooldown;
         private final String growthItem;
+        private final int solidingInputAmount;
         private final String solidingOutput;
-        private final int solidingOutputCount;
         private final String synthesizingInputItem;
         private final String synthesizingInputDna1;
         private final String synthesizingInputDna2;
         private final double dnaOutputChance;
 
-        public CustomVariants(String name, String color, int mapColorId, int cooldown, String growthItem, String solidingOutput, int solidingOutputCount, String synthesizingInputDna1, String synthesizingInputDna2, String synthesizingInputItem, double dnaOutputChance) {
+        public CustomVariants(String name, String color, int mapColorId, int cooldown, String growthItem, int solidingInputAmount, String solidingOutput, String synthesizingInputDna1, String synthesizingInputDna2, String synthesizingInputItem, double dnaOutputChance) {
             this.name = name;
             this.color = color;
             this.mapColorId = mapColorId;
             this.cooldown = cooldown;
             this.growthItem = growthItem;
+            this.solidingInputAmount = solidingInputAmount;
             this.solidingOutput = solidingOutput;
-            this.solidingOutputCount = solidingOutputCount;
             this.synthesizingInputItem = synthesizingInputItem;
             this.synthesizingInputDna1 = synthesizingInputDna1;
             this.synthesizingInputDna2 = synthesizingInputDna2;
@@ -784,10 +771,9 @@ public class CustomContentRegistry {
             return growthItem;
         }
 
-        public int getSolidingOutputCount() {
-            return solidingOutputCount;
+        public int getSolidingInputAmount() {
+            return solidingInputAmount;
         }
-
         public String getSolidingOutput() {
             return solidingOutput;
         }
