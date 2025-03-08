@@ -102,10 +102,10 @@ public class CustomContentRegistry {
             );
 
             try {
-                if (configFile.getParentFile().mkdirs()){
-                    try (FileWriter writer = new FileWriter(configFile)) {
-                        GSON.toJson(defaultTiers, writer);
-                    }
+                configFile.getParentFile().mkdirs();
+
+                try (FileWriter writer = new FileWriter(configFile)) {
+                    GSON.toJson(defaultTiers, writer);
                 }
             } catch (IOException e) {
                 LOGGER.error("Failed to create default tier config", e);
