@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.datagen;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.CableBlock;
+import com.coolerpromc.productiveslimes.block.custom.PipeBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.datagen.model.template.ModModelTemplates;
 import com.coolerpromc.productiveslimes.item.ModItems;
@@ -63,6 +64,7 @@ public class ModModelProvider extends ModelProvider {
         horizontalBlockWithExistingBlockAndItemModel(blockModels, ModBlocks.SLIME_SQUEEZER.get(), "slime_squeezer");
         fluidTank(blockModels, ModBlocks.FLUID_TANK.get());
         cableBlock(blockModels, ModBlocks.CABLE.get(), "cable_core", "cable_part");
+        pipeBlock(blockModels, ModBlocks.PIPE.get(), "pipe_core", "pipe_part");
 
         simpleBlockWithExistingModel(blockModels, ModBlocks.SQUEEZER.get());
         simpleBlockWithExistingModel(blockModels, ModBlocks.SLIMY_GRASS_BLOCK.get());
@@ -186,6 +188,11 @@ public class ModModelProvider extends ModelProvider {
         blockModels.registerSimpleItemModel(block, blockLocation(core));
     }
 
+    private void pipeBlock(BlockModelGenerators blockModels, Block block, String core, String part){
+        blockModels.blockStateOutput.accept(pipePart(block, blockLocation(core), blockLocation(part)));
+        blockModels.registerSimpleItemModel(block, blockLocation(core));
+    }
+
     private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
@@ -286,6 +293,18 @@ public class ModModelProvider extends ModelProvider {
                 .with(Condition.condition().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
                 .with(Condition.condition().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
     }
+
+    private MultiPartGenerator pipePart(Block block, ResourceLocation coreModelLoc, ResourceLocation partModelLoc){
+        return MultiPartGenerator.multiPart(block)
+                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
+                .with(Condition.condition().term(PipeBlock.UP, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+                .with(Condition.condition().term(PipeBlock.DOWN, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(PipeBlock.NORTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
+                .with(Condition.condition().term(PipeBlock.SOUTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .with(Condition.condition().term(PipeBlock.EAST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(PipeBlock.WEST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+    }
+
 
     private Variant variantRotation(ResourceLocation modelLoc, VariantProperty<VariantProperties.Rotation> rot, VariantProperties.Rotation rotation){
         return Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.UV_LOCK, false).with(rot, rotation);
