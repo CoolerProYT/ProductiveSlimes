@@ -43,6 +43,10 @@ base {
     archivesName = mod_id
 }
 
+accessTransformers {
+    file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 //minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -98,7 +102,7 @@ dependencies {
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
     implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
-
+    implementation "curse.maven:lake-feature-fix-1203911:6213821"
     implementation "curse.maven:jade-324717:${jade_id}"
 }
 

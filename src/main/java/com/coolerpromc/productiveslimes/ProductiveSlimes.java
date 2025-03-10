@@ -121,7 +121,7 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
