@@ -153,10 +153,17 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.BOOK), has(Items.SLIME_BALL))
                 .save(output);
 
+        ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModBlocks.SLIMY_PORTAL_FRAME.get(), 1)
+                .requires(Items.GLASS)
+                .requires(Items.SLIME_BLOCK)
+                .unlockedBy(getHasName(Items.SLIME_BLOCK), has(Items.SLIME_BLOCK))
+                .save(output);
+
         ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, ModItems.SLIMEBALL_FRAGMENT.get(), 4)
                 .requires(Items.SLIME_BALL)
                 .unlockedBy(getHasName(Items.SLIME_BALL), has(Items.SLIME_BALL))
                 .save(output);
+
         ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, Items.SLIME_BALL, 1)
                 .pattern("AA ")
                 .pattern("AA ")

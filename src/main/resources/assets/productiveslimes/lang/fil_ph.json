@@ -493,5 +493,8 @@
 
   "block.productiveslimes.pipe": "Tubo",
   "productiveslimes.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "productiveslimes.tooltip.liquid.amount": "%s mB"
+  "productiveslimes.tooltip.liquid.amount": "%s mB",
+
+  "block.productiveslimes.slimy_portal": "Slime Portal",
+  "block.productiveslimes.slimy_portal_frame": "Slime Portal Frame"
 }

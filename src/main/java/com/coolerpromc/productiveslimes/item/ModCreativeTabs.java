@@ -38,8 +38,9 @@ public class ModCreativeTabs {
                                 // Ensure the field is a Supplier of Block (for blocks)
                                 if (Supplier.class.isAssignableFrom(field.getType())) {
                                     Supplier<?> supplier = (Supplier<?>) field.get(null);
-                                    if (supplier.get() instanceof Block) {
-                                        pOutput.accept((Block) supplier.get()); // Add block to the output
+                                    if (supplier.get() instanceof Block block) {
+                                        if (block == ModBlocks.SLIMY_PORTAL.get()) continue;
+                                        pOutput.accept((Block) supplier.get());
                                     }
                                 }
                             } catch (IllegalAccessException e) {

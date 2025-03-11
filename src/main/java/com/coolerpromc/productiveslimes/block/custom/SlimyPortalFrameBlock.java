@@ -1,0 +1,63 @@
+package com.coolerpromc.productiveslimes.block.custom;
+
+import com.coolerpromc.productiveslimes.util.SlimyPortalShape;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+import java.util.Optional;
+
+public class SlimyPortalFrameBlock extends Block {
+    public SlimyPortalFrameBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        if (!level.isClientSide && !state.is(newState.getBlock())) {
+            for (Direction direction : Direction.values()) {
+                BlockPos neighborPos = pos.relative(direction);
+                BlockState neighborState = level.getBlockState(neighborPos);
+                if (neighborState.getBlock() instanceof SlimyPortalBlock) {
+                    ((SlimyPortalBlock) neighborState.getBlock()).removePortal(level, neighborPos);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (!level.isClientSide && stack.getItem() == Items.SLIME_BALL) {
+            Optional<SlimyPortalShape> optional = SlimyPortalShape.findEmptyPortalShape(level, pos.above(), Direction.Axis.X);
+            if (optional.isEmpty()) {
+                optional = SlimyPortalShape.findEmptyPortalShape(level, pos.above(), Direction.Axis.Z);
+            }
+            if (optional.isPresent()) {
+                SlimyPortalShape portalShape = optional.get();
+                portalShape.createPortalBlocks(level);
+                level.playSound(
+                        null,
+                        pos,
+                        SoundEvents.SLIME_SQUISH,
+                        SoundSource.BLOCKS,
+                        1.0F,
+                        level.getRandom().nextFloat() * 0.4F + 0.8F
+                );
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
+        return InteractionResult.PASS;
+    }
+}

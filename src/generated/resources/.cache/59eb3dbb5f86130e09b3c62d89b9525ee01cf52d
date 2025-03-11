@@ -1,4 +1,4 @@
-// 1.21.4	2025-03-02T19:17:49.9791285	Loot Tables
+// 1.21.4	2025-03-11T15:54:12.5212144	Loot Tables
 54882a6c99ed875fe1aef3b80298eed5ae169884 data/productiveslimes/loot_table/blocks/amethyst_slime_block.json
 c30011866f8200e59e31002232dae02050b6c9c4 data/productiveslimes/loot_table/blocks/andesite_slime_block.json
 af04a98611a463d6d02be4968c7050a78bb21ed8 data/productiveslimes/loot_table/blocks/basalt_slime_block.json
@@ -65,6 +65,7 @@ c138ff6869984654adbfec29af81b417d368df62 data/productiveslimes/loot_table/blocks
 750e061b8554d4865f6787f02da6bf21efbc8a15 data/productiveslimes/loot_table/blocks/slimy_leaves.json
 da1e59ebb39a734b9d4e24edc89b0784775874ce data/productiveslimes/loot_table/blocks/slimy_log.json
 d9b18a844ff6ae68eeefe65a4b76bae7a260ba2f data/productiveslimes/loot_table/blocks/slimy_planks.json
+d30b15b27b77732eb3a4db82b389299063c1e895 data/productiveslimes/loot_table/blocks/slimy_portal_frame.json
 7a4d9ad268ce1ad9c527be25935b5ef851d1d300 data/productiveslimes/loot_table/blocks/slimy_pressure_plate.json
 855689edf07462648bc39e95642c7d17824074db data/productiveslimes/loot_table/blocks/slimy_sapling.json
 06bcc62f0fe4c3552e015b15067ceb1736ba649b data/productiveslimes/loot_table/blocks/slimy_slab.json

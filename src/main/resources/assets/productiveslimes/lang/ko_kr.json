@@ -491,5 +491,8 @@
 
   "block.productiveslimes.pipe": "파이프",
   "productiveslimes.tooltip.liquid.amount.with.capacity": "%s / %s mB",
-  "productiveslimes.tooltip.liquid.amount": "%s mB"
+  "productiveslimes.tooltip.liquid.amount": "%s mB",
+
+  "block.productiveslimes.slimy_portal": "슬라임 포털",
+  "block.productiveslimes.slimy_portal_frame": "슬라임 포털 프레임"
 }

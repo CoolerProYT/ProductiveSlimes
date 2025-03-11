@@ -81,6 +81,9 @@ public class ModBlocks {
     public static final DeferredBlock<SlabBlock> SLIMY_COBBLED_DEEPSLATE_SLAB = registerBlock("slimy_cobbled_deepslate_slab", ModSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_SLAB));
     public static final DeferredBlock<WallBlock> SLIMY_COBBLED_DEEPSLATE_WALL = registerBlock("slimy_cobbled_deepslate_wall", ModWallBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_WALL));
 
+    public static final DeferredBlock<SlimyPortalFrameBlock> SLIMY_PORTAL_FRAME = registerBlock("slimy_portal_frame", SlimyPortalFrameBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion());
+    public static final DeferredBlock<SlimyPortalBlock> SLIMY_PORTAL = registerBlock("slimy_portal", SlimyPortalBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_PORTAL).noOcclusion().noLootTable());
+
     public static final DeferredBlock<SlimeBlock> ENERGY_SLIME_BLOCK = registerSlimeBlock("energy_slime_block", MapColor.COLOR_YELLOW, 0xFFffff70);
 
     public static void registerTierBlocks(){

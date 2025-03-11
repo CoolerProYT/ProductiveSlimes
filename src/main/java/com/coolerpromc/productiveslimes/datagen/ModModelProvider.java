@@ -29,6 +29,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -100,6 +101,9 @@ public class ModModelProvider extends ModelProvider {
 
         trapdoorBlockWithRenderType(blockModels, ModBlocks.SLIMY_TRAPDOOR.get());
         doorBlockWithRenderType(blockModels, ModBlocks.SLIMY_DOOR.get());
+
+        portalBlock(blockModels, ModBlocks.SLIMY_PORTAL.get());
+        portalFrame(blockModels, ModBlocks.SLIMY_PORTAL_FRAME.get());
 
         // Slimes Blocks
         slimeBlock(blockModels, ModBlocks.ENERGY_SLIME_BLOCK.get());
@@ -198,6 +202,11 @@ public class ModModelProvider extends ModelProvider {
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
 
+    private void portalFrame(BlockModelGenerators blockModels, Block block){
+        ResourceLocation resourceLocation = ModelTemplates.CUBE_ALL.extend().renderType("translucent").build().create(block, TextureMapping.cube(blockLocation(getBlockName(block))), blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, resourceLocation)));
+    }
+
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.defaultTexture(block);
         ResourceLocation resourcelocation = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
@@ -234,6 +243,57 @@ public class ModModelProvider extends ModelProvider {
                                 resourcelocation7
                         )
                 );
+    }
+
+    private void portalBlock(BlockModelGenerators blockModels, Block block){
+        TextureSlot portal = TextureSlot.create("portal");
+
+        TextureMapping textureMapping = new TextureMapping();
+        textureMapping.put(TextureSlot.PARTICLE, blockLocation(getBlockName(block)));
+        textureMapping.put(portal, blockLocation(getBlockName(block)));
+
+        ResourceLocation resourceLocation = ModelTemplates.create(TextureSlot.PARTICLE, portal)
+                .extend()
+                .element(elementBuilder -> elementBuilder
+                        .from(0,0,6)
+                        .to(16,16,10)
+                        .face(Direction.SOUTH, faceBuilder -> faceBuilder
+                                .uvs(0, 0, 16, 16)
+                                .texture(portal)
+                        )
+                        .face(Direction.NORTH, faceBuilder -> faceBuilder
+                                .uvs(0, 0, 16, 16)
+                                .texture(portal)
+                        )
+                )
+                .renderType("translucent")
+                .build()
+                .createWithSuffix(block, "_ns", textureMapping, blockModels.modelOutput);
+
+        ResourceLocation resourceLocation1 = ModelTemplates.create(TextureSlot.PARTICLE, portal)
+                .extend()
+                .element(elementBuilder -> elementBuilder
+                        .from(6,0,0)
+                        .to(10,16,16)
+                        .face(Direction.EAST, faceBuilder -> faceBuilder
+                                .uvs(0, 0, 16, 16)
+                                .texture(portal)
+                        )
+                        .face(Direction.WEST, faceBuilder -> faceBuilder
+                                .uvs(0, 0, 16, 16)
+                                .texture(portal)
+                        )
+                )
+                .renderType("translucent")
+                .build()
+                .createWithSuffix(block, "_ew", textureMapping, blockModels.modelOutput);
+
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block)
+                .with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
+                .select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, resourceLocation))
+                .select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, resourceLocation1))));
+
+        blockModels.registerSimpleItemModel(block, resourceLocation);
     }
 
     // Item models
