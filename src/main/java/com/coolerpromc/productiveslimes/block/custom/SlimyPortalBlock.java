@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -29,13 +30,17 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class SlimyPortalBlock extends Block implements Portal {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-    public static final int TELEPORT_DELAY = 80;
+    protected static final VoxelShape X_AXIS_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
+    protected static final VoxelShape Z_AXIS_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
+
 
     public SlimyPortalBlock(Properties properties) {
         super(properties);
@@ -67,6 +72,17 @@ public class SlimyPortalBlock extends Block implements Portal {
                         )
         )
                 : 0;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        switch (state.getValue(AXIS)) {
+            case Z:
+                return Z_AXIS_AABB;
+            case X:
+            default:
+                return X_AXIS_AABB;
+        }
     }
 
     @Override
@@ -139,7 +155,7 @@ public class SlimyPortalBlock extends Block implements Portal {
         int cz = center.getZ();
         for (int x = cx - horizontalRadius; x <= cx + horizontalRadius; x++) {
             for (int z = cz - horizontalRadius; z <= cz + horizontalRadius; z++) {
-                for (int y = 63; y < level.getMaxY(); y++) {
+                for (int y = level.getMinY(); y < level.getMaxY(); y++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if (level.getBlockState(pos).getBlock() == ModBlocks.SLIMY_PORTAL.get()) {
                         double distance = pos.distSqr(center);
