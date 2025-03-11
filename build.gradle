@@ -49,9 +49,6 @@ accessTransformers {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
-
 runs {
     configureEach {
         systemProperty 'forge.logging.markers', 'REGISTRIES'
@@ -101,7 +98,6 @@ dependencies {
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
     implementation "curse.maven:lake-feature-fix-1203911:6213821"
     implementation "curse.maven:jade-324717:${jade_id}"
 }
@@ -119,8 +115,6 @@ tasks.withType(ProcessResources).configureEach {
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            terrablender_version   : terrablender_version,
-            terrablender_version_range: terrablender_version_range,
     ]
     inputs.properties replaceProperties
 
