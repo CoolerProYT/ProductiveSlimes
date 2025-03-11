@@ -8,6 +8,9 @@ import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import com.coolerpromc.productiveslimes.worldgen.dimension.ModDimensionTypes;
 import com.coolerpromc.productiveslimes.worldgen.dimension.ModDimensions;
 import com.coolerpromc.productiveslimes.worldgen.noise.ModNoiseSettings;
+import com.coolerpromc.productiveslimes.worldgen.structure.ModStructureSets;
+import com.coolerpromc.productiveslimes.worldgen.structure.ModStructureTemplatePools;
+import com.coolerpromc.productiveslimes.worldgen.structure.ModStructures;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -24,7 +27,10 @@ public class ModWorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.NOISE_SETTINGS, ModNoiseSettings::boostrap)
             .add(Registries.BIOME, ModBiomes::boostrap)
             .add(Registries.LEVEL_STEM, ModDimensions::boostrap)
-            .add(Registries.DIMENSION_TYPE, ModDimensionTypes::boostrap);
+            .add(Registries.DIMENSION_TYPE, ModDimensionTypes::boostrap)
+            .add(Registries.STRUCTURE_SET, ModStructureSets::bootstrap)
+            .add(Registries.STRUCTURE, ModStructures::bootstrap)
+            .add(Registries.TEMPLATE_POOL, ModStructureTemplatePools::bootstrap);
 
     public ModWorldGenProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(ProductiveSlimes.MODID));

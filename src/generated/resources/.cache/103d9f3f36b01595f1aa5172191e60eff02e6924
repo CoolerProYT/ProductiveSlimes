@@ -1,4 +1,4 @@
-// 1.21.4	2025-03-10T16:06:21.3342132	Registries
+// 1.21.4	2025-03-11T12:46:12.1144504	Registries
 d817499f08b68d2ecc0f5551a995c7573659b39f data/productiveslimes/dimension/slimy_world.json
 9ff404f355f01698b8ee6c79b5885abbe3f224d7 data/productiveslimes/dimension_type/slimy_world.json
 3d6f3e2bb261a6894d069b32ae00db163e0160bd data/productiveslimes/worldgen/biome/slimy_land.json
@@ -10,3 +10,8 @@ a004d398bee5ca6bce64127070083a87231f8243 data/productiveslimes/worldgen/noise_se
 90a1b0c26248b2f9403e6fd488ad4484ceff3131 data/productiveslimes/worldgen/placed_feature/lake_molten_dirt.json
 cea49b7ab771d11bbd07eea822886bf49ded3423 data/productiveslimes/worldgen/placed_feature/lake_molten_stone.json
 26f8aef9801edd96b158a3da02fc8544a8747614 data/productiveslimes/worldgen/placed_feature/slimy_tree.json
+98efabedb9a610dd5c265e309f3c88f141f0ea73 data/productiveslimes/worldgen/structure/slimy_village.json
+6c2eac409467f5f441007826d0d7434891eb5b1c data/productiveslimes/worldgen/structure_set/slimy_village.json
+9a0c27a227780f77de8940b407ccc61b45d28ead data/productiveslimes/worldgen/template_pool/slimy_village/buildings.json
+ea66da14303aa8eed1b70ec57ca958f53742415c data/productiveslimes/worldgen/template_pool/slimy_village/streets.json
+d45b81e483595f5a68844e25ad6fa00dd71c5ebe data/productiveslimes/worldgen/template_pool/slimy_village/village_center.json
