@@ -4,7 +4,6 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -21,11 +20,6 @@ public class ModBiomes {
     public static void boostrap(BootstrapContext<Biome> context){
         context.register(SLIMY_LAND, slimyLand(context));
         context.register(SLIMY_OCEAN, slimyOcean(context));
-    }
-
-    public static void globalOverworldGeneration(BiomeGenerationSettings.Builder builder) {
-        BiomeDefaultFeatures.addSurfaceFreezing(builder);
-        BiomeDefaultFeatures.addDefaultOres(builder);
     }
 
     private static Biome slimyLand(BootstrapContext<Biome> context){
@@ -46,8 +40,6 @@ public class ModBiomes {
         biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_DIRT));
         biomeBuilder.addFeature(GenerationStep.Decoration.LAKES, placedFeatureHolderGetter.getOrThrow(ModPlacedFeatures.LAKE_MOLTEN_STONE));
 
-        globalOverworldGeneration(biomeBuilder);
-
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
                 .downfall(0.4f)
@@ -64,8 +56,6 @@ public class ModBiomes {
     }
 
     private static Biome slimyOcean(BootstrapContext<Biome> context){
-        HolderGetter<PlacedFeature> placedFeatureHolderGetter = context.lookup(Registries.PLACED_FEATURE);
-
         BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(
                 context.lookup(Registries.PLACED_FEATURE),
                 context.lookup(Registries.CONFIGURED_CARVER)
