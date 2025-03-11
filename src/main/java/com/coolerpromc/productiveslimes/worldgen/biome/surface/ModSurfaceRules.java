@@ -35,17 +35,6 @@ public class ModSurfaceRules {
                                         SLIMY_DIRT
                                 )
                         )
-                ),
-                SurfaceRules.ifTrue(
-                        SurfaceRules.yStartCheck(VerticalAnchor.absolute(0), 5),
-                        SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(5, true, 80, CaveSurface.FLOOR),
-                                SLIMY_STONE
-                        )
-                ),
-                SurfaceRules.ifTrue(
-                        SurfaceRules.stoneDepthCheck(80, true, 256, CaveSurface.FLOOR),
-                        SLIMY_DEEPSLATE
                 )
         );
 
