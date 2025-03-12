@@ -107,6 +107,15 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.REDSTONE))
                 .save(output);
 
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PIPE.get(),8)
+                .pattern(" A ")
+                .pattern("ABA")
+                .pattern(" A ")
+                .define('A', Items.COPPER_INGOT)
+                .define('B', Items.BUCKET)
+                .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT))
+                .save(output);
+
         ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, ModBlocks.DNA_EXTRACTOR.get(),1)
                 .pattern("AAA")
                 .pattern("ACA")

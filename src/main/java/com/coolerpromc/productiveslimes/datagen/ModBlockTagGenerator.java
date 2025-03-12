@@ -73,6 +73,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.FLUID_TANK.get())
                 .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get())
+                .add(ModBlocks.PIPE.get())
                 .add(ModBlocks.SLIME_NEST.get())
                 .add(ModBlocks.SLIMEBALL_COLLECTOR.get())
                 .add(ModBlocks.SLIMY_STONE.get())
@@ -118,6 +119,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 .add(ModBlocks.FLUID_TANK.get())
                 .add(ModBlocks.SLIME_SQUEEZER.get())
                 .add(ModBlocks.CABLE.get())
+                .add(ModBlocks.PIPE.get())
                 .add(ModBlocks.SLIME_NEST.get())
                 .add(ModBlocks.SLIMEBALL_COLLECTOR.get());
     }
