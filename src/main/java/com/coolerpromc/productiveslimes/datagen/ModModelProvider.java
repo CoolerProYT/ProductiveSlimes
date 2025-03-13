@@ -281,7 +281,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
         SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
-        itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
+        itemModels.itemModelOutput.accept(spawnEggItem, ItemModelUtils.tintedModel(itemLocation("template_slime_spawn_egg"), ItemModelUtils.constantTint(spawnEggItem.getColor())));
     }
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){
