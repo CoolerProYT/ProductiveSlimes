@@ -5,6 +5,7 @@
 		"0": "productiveslimes:block/fluid_tank_texture",
 		"particle": "productiveslimes:block/fluid_tank_texture"
 	},
+	"render_type": "cutout",
 	"elements": [
 		{
 			"from": [2, 0, 2],

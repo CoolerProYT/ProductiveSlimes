@@ -5,6 +5,7 @@
 		"0": "productiveslimes:block/soliding_station_texture",
 		"particle": "productiveslimes:block/soliding_station_texture"
 	},
+	"render_type": "cutout",
 	"elements": [
 		{
 			"from": [11, 2, 13],

@@ -38,7 +38,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -198,14 +197,6 @@ public class ProductiveSlimes
                 }
 
                 registerAllFluidRenderLayer();
-                registerAllSlimeBlockRenderLayer();
-
-                registerBlockRenderLayer(
-                        ModBlocks.LIQUID_SOLIDING_STATION.get(),
-                        ModBlocks.FLUID_TANK.get()
-                );
-
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
         }
 
@@ -267,27 +258,6 @@ public class ProductiveSlimes
                         ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), RenderType.translucent());
                         ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), RenderType.translucent());
                     });
-        }
-
-        private static void registerBlockRenderLayer(Block... blocks) {
-            for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
-            }
-        }
-
-        public static void registerAllSlimeBlockRenderLayer() {
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENERGY_SLIME_BLOCK.get(), RenderType.translucent());
-
-            for (Tier tier : Tier.values()){
-                ModTier tiers = ModTiers.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTiers.getBlockByName(tiers.name()).get(), RenderType.translucent());
-            }
-
-            for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
-                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.TRANSLUCENT);
-                }
-            }
         }
     }
 }
