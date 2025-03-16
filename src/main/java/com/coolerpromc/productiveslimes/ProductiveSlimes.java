@@ -6,6 +6,7 @@ import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.block.entity.renderer.*;
 import com.coolerpromc.productiveslimes.command.ModCommands;
 import com.coolerpromc.productiveslimes.config.CustomContentRegistry;
+import com.coolerpromc.productiveslimes.dataattachment.ModDataAttachments;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datagen.model.special.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.datagen.model.tint.SlimeItemTint;
@@ -37,6 +38,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.api.distmarker.Dist;
@@ -109,6 +112,8 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
+        ModDataAttachments.register(modEventBus);
+
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
@@ -129,6 +134,13 @@ public class ProductiveSlimes
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        Boolean isFirstTimeLogin = player.getData(ModDataAttachments.IS_FIRST_TIME_LOGIN);
+
+        if (isFirstTimeLogin) {
+            player.setData(ModDataAttachments.IS_FIRST_TIME_LOGIN, false);
+            player.addItem(new ItemStack(ModItems.GUIDEBOOK.get()));
+        }
     }
 
     @SubscribeEvent
