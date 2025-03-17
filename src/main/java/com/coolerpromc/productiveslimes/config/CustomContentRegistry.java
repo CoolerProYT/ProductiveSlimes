@@ -231,6 +231,7 @@ public class CustomContentRegistry {
 
 
             String blockstatePath = "assets/productiveslimes/blockstates/" + id + ".json";
+            String moltenBlockstatePath = "assets/productiveslimes/blockstates/molten_" + variants.getName() + "_block.json";
             String modelPath = "assets/productiveslimes/models/block/" + id + ".json";
             String bucketModelPath = "assets/productiveslimes/models/item/molten_" + variants.getName() + "_bucket.json";
             String slimeBlockModelPath = "assets/productiveslimes/models/item/" + variants.getName() + "_slime_block.json";
@@ -264,6 +265,14 @@ public class CustomContentRegistry {
                     "  \"variants\": {\n" +
                     "    \"\": {\n" +
                     "      \"model\": \"productiveslimes:block/"+ id + "\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
+
+            String moltenBlockstateContent = "{\n" +
+                    "  \"variants\": {\n" +
+                    "    \"\": {\n" +
+                    "      \"model\": \"minecraft:block/water\"\n" +
                     "    }\n" +
                     "  }\n" +
                     "}";
@@ -372,6 +381,7 @@ public class CustomContentRegistry {
                     "}";
 
             resourceData.put(blockstatePath, blockstateContent.getBytes(StandardCharsets.UTF_8));
+            resourceData.put(moltenBlockstatePath, moltenBlockstateContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(modelPath, blockModelContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(bucketModelPath, bucketModelContent.getBytes(StandardCharsets.UTF_8));
             resourceData.put(slimeBlockModelPath, slimeBlockModelContent.getBytes(StandardCharsets.UTF_8));
