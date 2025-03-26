@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -84,3 +85,4 @@ public class SolidingRecipeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 }
+*/

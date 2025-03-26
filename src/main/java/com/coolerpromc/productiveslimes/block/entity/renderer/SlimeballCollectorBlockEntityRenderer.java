@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import java.util.OptionalDouble;
@@ -19,7 +20,7 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
     public SlimeballCollectorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
     }
     @Override
-    public void render(SlimeballCollectorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(SlimeballCollectorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 p_401186_) {
         if (blockEntity.getLevel() == null) return;
         if (blockEntity.getData().get(0) == 0) return;
         // Define the collection area AABB (match this with your logic).
@@ -38,21 +39,11 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
     }
     private void renderOutline(PoseStack poseStack, MultiBufferSource bufferSource, AABB aabb) {
         // Buffer for lines.
-        var buffer = bufferSource.getBuffer(RenderType.create("glow_lines", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINES, 256,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
-                        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(2.0))) // Line width
-                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                        .setOutputState(RenderStateShard.ITEM_ENTITY_TARGET)
-                        .setCullState(RenderStateShard.NO_CULL) // Disable culling
-                        .createCompositeState(false)
-        ));
+        var buffer = bufferSource.getBuffer(RenderType.lines());
         RenderSystem.lineWidth(2.0f);
-        RenderSystem.disableCull();
         // Render the outer box.
         drawBox(poseStack, buffer, aabb, 1.0f, 0.0f, 0.0f, 1.0f); // Red color.
         RenderSystem.lineWidth(1.0f);
-        RenderSystem.enableCull();
     }
     private void renderGrid(PoseStack poseStack, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
         PoseStack.Pose pose = poseStack.last();

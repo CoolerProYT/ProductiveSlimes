@@ -195,11 +195,11 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompound("Inventory"));
-        this.energyHandler.deserializeNBT(pRegistries, pTag.get("Energy"));
-        this.progress = pTag.getInt("Progress");
-        this.maxProgress = pTag.getInt("MaxProgress");
-        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompound("Upgrades"));
+        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Inventory"));
+        this.energyHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Energy"));
+        this.progress = pTag.getIntOr("Progress", 0);
+        this.maxProgress = pTag.getIntOr("MaxProgress", 100);
+        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Upgrades"));
     }
 
     @Nullable
@@ -236,5 +236,10 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
     public boolean canBurn(ItemStack stack) {
         return getBurnTime(stack) > 0;
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

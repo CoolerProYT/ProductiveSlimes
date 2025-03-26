@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.*;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.item.custom.ModBlockItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
@@ -54,7 +55,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SLIMY_WOOD = registerBlock("slimy_wood", ModFlammableRotatedPillarBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD));
     public static final DeferredBlock<Block> STRIPPED_SLIMY_WOOD = registerBlock("stripped_slimy_wood", ModFlammableRotatedPillarBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD));
     public static final DeferredBlock<Block> SLIMY_PLANKS = registerBlock("slimy_planks", ModFlammableBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS));
-    public static final DeferredBlock<Block> SLIMY_LEAVES = registerBlock("slimy_leaves", ModLeavesBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES));
+    public static final DeferredBlock<Block> SLIMY_LEAVES = registerBlock("slimy_leaves", properties -> new ModLeavesBlock(0.01f, properties), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES));
     public static final DeferredBlock<Block> SLIMY_SAPLING = registerBlock("slimy_sapling", properties -> new ModSaplingBlock(ModTreeGrowers.SLIMY, properties), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING));
     // Slimy Wood
     public static final DeferredBlock<SlabBlock> SLIMY_SLAB = registerBlock("slimy_slab", ModSlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB));
@@ -101,7 +102,7 @@ public class ModBlocks {
     }
 
     private static <T extends Block> DeferredItem<BlockItem> registerBlockItem(String name, DeferredBlock<T> block){
-        return ModItems.ITEMS.registerItem(name, properties -> new BlockItem(block.get(), properties.useBlockDescriptionPrefix()));
+        return ModItems.ITEMS.registerItem(name, properties -> new ModBlockItem(block.get(), properties.useBlockDescriptionPrefix()));
     }
 
     public static void register(IEventBus eventBus) {

@@ -86,19 +86,19 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
-    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+//    implementation "dev.architectury:architectury-neoforge:${architectury_version}"
+//    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+//    compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
+//    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
 //    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
 //    runtimeOnly "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
+//    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 
-    compileOnly "curse.maven:jade-324717:${jade_id}"
+//    compileOnly "curse.maven:jade-324717:${jade_id}"
 }
 
 tasks.withType(ProcessResources).configureEach {

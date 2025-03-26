@@ -6,11 +6,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ModLeavesBlock extends LeavesBlock {
-    public ModLeavesBlock(Properties properties) {
-        super(properties);
+public class ModLeavesBlock extends TintedParticleLeavesBlock {
+    public ModLeavesBlock(float leafParticleChance, Properties properties) {
+        super(leafParticleChance, properties);
     }
 
     @Override

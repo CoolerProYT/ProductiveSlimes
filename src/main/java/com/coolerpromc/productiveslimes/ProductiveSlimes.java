@@ -26,7 +26,7 @@ import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
+//import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -115,7 +115,7 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
+//        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);

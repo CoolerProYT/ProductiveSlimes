@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -33,3 +34,4 @@ public class REIPluginServer implements REICommonPlugin {
         registry.beginRecipeFiller(SqueezingRecipe.class).filterType(ModRecipes.SQUEEZING_TYPE.get()).fill(SqueezingRecipeDisplay::new);
     }
 }
+*/

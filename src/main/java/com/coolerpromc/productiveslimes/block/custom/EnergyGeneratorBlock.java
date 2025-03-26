@@ -70,18 +70,6 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof EnergyGeneratorBlockEntity) {
-                ((EnergyGeneratorBlockEntity) blockEntity).drops();
-            }
-        }
-
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-    }
-
-    @Override
     public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
         List<ItemStack> drops = super.getDrops(pState, pParams);
         BlockEntity blockEntity = pParams.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -163,18 +151,5 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
-        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
-
-        if (pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0) != 0) {
-            int energy = pStack.getOrDefault(ModDataComponents.ENERGY.get(), 0);
-            pTooltip.add(Component.translatable("tooltip.productiveslimes.energy_stored")
-                    .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))
-                    .append(Component.translatable("tooltip.productiveslimes.energy_amount", energy)
-                            .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
-        }
     }
 }

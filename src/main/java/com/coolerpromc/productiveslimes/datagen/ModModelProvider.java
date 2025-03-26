@@ -18,13 +18,16 @@ import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -129,7 +132,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation(getBlockName(block)))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(blockLocation(getBlockName(block)))).build())));
     }
 
     private void fluidTank(BlockModelGenerators blockModels, Block block){
@@ -156,7 +159,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void fluidBlock(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(mcLocation("block/water"))).build())));
     }
 
     private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
@@ -178,7 +181,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void saplingBlock(BlockModelGenerators blockModels, Block block){
         blockModels.registerSimpleItemModel(block.asItem(), BlockModelGenerators.PlantType.NOT_TINTED.createItemModel(blockModels, block));
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput)));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput))).build())));
     }
 
     private void cableBlock(BlockModelGenerators blockModels, Block block, String core, String part){
@@ -187,7 +190,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(blockLocation("template_slime_block"))).build())));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
 
@@ -218,12 +221,13 @@ public class ModModelProvider extends ModelProvider {
 
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.defaultTexture(block);
-        ResourceLocation resourcelocation = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation1 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation2 = ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation texture = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
+        MultiVariant resourcelocation = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(texture)).build());
+        MultiVariant resourcelocation1 = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput))).build());
+        MultiVariant resourcelocation2 = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))).build());
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, resourcelocation, resourcelocation1, resourcelocation2));
-        blockModels.registerSimpleItemModel(block, resourcelocation1);
+        blockModels.registerSimpleItemModel(block, texture);
     }
 
     private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
@@ -242,14 +246,14 @@ public class ModModelProvider extends ModelProvider {
                 .accept(
                         BlockModelGenerators.createDoor(
                                 block,
-                                resourcelocation,
-                                resourcelocation1,
-                                resourcelocation2,
-                                resourcelocation3,
-                                resourcelocation4,
-                                resourcelocation5,
-                                resourcelocation6,
-                                resourcelocation7
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation1)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation2)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation3)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation4)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation5)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation6)).build()),
+                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation7)).build())
                         )
                 );
     }

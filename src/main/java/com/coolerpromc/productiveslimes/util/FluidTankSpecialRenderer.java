@@ -9,17 +9,15 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public record FluidTankSpecialRenderer() implements SpecialModelRenderer {
+public record FluidTankSpecialRenderer() implements SpecialModelRenderer<ImmutableFluidStack> {
     @Nullable
     @Override
     public ImmutableFluidStack extractArgument(ItemStack stack) {
@@ -27,10 +25,10 @@ public record FluidTankSpecialRenderer() implements SpecialModelRenderer {
     }
 
     @Override
-    public void render(@Nullable Object patterns, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void render(@Nullable ImmutableFluidStack patterns, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
         poseStack.pushPose();
         BlockState blockState = ModBlocks.FLUID_TANK.get().defaultBlockState();
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, packedLight, packedOverlay, ModelData.EMPTY, RenderType.CUTOUT);
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, packedLight, packedOverlay);
         poseStack.popPose();
 
         if (patterns instanceof ImmutableFluidStack immutableFluidStack){
