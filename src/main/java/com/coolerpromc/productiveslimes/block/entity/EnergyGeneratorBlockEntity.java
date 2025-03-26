@@ -185,7 +185,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         super.saveAdditional(pTag, pRegistries);
 
         pTag.put("Inventory", itemHandler.serializeNBT(pRegistries));
-        pTag.put("Energy", energyHandler.serializeNBT(pRegistries));
+        pTag.putInt("Energy", energyHandler.getEnergyStored());
         pTag.putInt("Progress", progress);
         pTag.putInt("MaxProgress", maxProgress);
         pTag.put("Upgrades", upgradeHandler.serializeNBT(pRegistries));
@@ -196,7 +196,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         super.loadAdditional(pTag, pRegistries);
 
         this.itemHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Inventory"));
-        this.energyHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Energy"));
+        this.energyHandler.setEnergy(pTag.getIntOr("Energy", 0));
         this.progress = pTag.getIntOr("Progress", 0);
         this.maxProgress = pTag.getIntOr("MaxProgress", 100);
         this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Upgrades"));
@@ -206,6 +206,11 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 
     public void drops() {

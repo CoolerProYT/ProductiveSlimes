@@ -65,7 +65,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import terrablender.api.SurfaceRuleManager;
+//import terrablender.api.SurfaceRuleManager;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -123,7 +123,7 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
@@ -211,7 +211,7 @@ public class ProductiveSlimes
                         ModBlocks.FLUID_TANK.get()
                 );
 
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), RenderType.CUTOUT);
             });
 
             CustomContentRegistry.handleResourcePack();

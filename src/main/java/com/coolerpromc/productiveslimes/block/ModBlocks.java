@@ -25,22 +25,22 @@ import java.util.function.Function;
 public class ModBlocks {
     public static DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
 
-    public static final DeferredBlock<Block> MELTING_STATION = registerBlock("melting_station", MeltingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> MELTING_STATION = registerBlock("melting_station", MeltingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
-    public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station", SolidingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> LIQUID_SOLIDING_STATION = registerBlock("soliding_station", SolidingStationBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
-    public static final DeferredBlock<Block> ENERGY_GENERATOR = registerBlock("energy_generator", EnergyGeneratorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> ENERGY_GENERATOR = registerBlock("energy_generator", EnergyGeneratorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
-    public static final DeferredBlock<Block> CABLE = registerBlock("cable", CableBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> CABLE = registerBlock("cable", CableBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
-    public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlock("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> DNA_EXTRACTOR = registerBlock("dna_extractor", DnaExtractorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
-    public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer", DnaSynthesizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
-    public static final DeferredBlock<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer", SlimeSqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
-    public static final DeferredBlock<Block> SQUEEZER = registerBlock("squeezer", SqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().noLootTable());
-    public static final DeferredBlock<Block> SLIME_NEST = registerBlock("slime_nest", SlimeNestBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
-    public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
-    public static final DeferredBlock<Block> SLIMEBALL_COLLECTOR = registerBlock("slimeball_collector", SlimeballCollectorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+    public static final DeferredBlock<Block> DNA_SYNTHESIZER = registerBlock("dna_synthesizer", DnaSynthesizerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
+    public static final DeferredBlock<Block> SLIME_SQUEEZER = registerBlock("slime_squeezer", SlimeSqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
+    public static final DeferredBlock<Block> SQUEEZER = registerBlock("squeezer", SqueezerBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().noLootTable().sound(SoundType.METAL));
+    public static final DeferredBlock<Block> SLIME_NEST = registerBlock("slime_nest", SlimeNestBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
+    public static final DeferredBlock<Block> FLUID_TANK = registerBlock("fluid_tank", FluidTankBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
+    public static final DeferredBlock<Block> SLIMEBALL_COLLECTOR = registerBlock("slimeball_collector", SlimeballCollectorBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().sound(SoundType.METAL));
 
     public static final DeferredBlock<Block> SLIMY_GRASS_BLOCK = registerBlock("slimy_grass_block", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK));
     public static final DeferredBlock<Block> SLIMY_DIRT = registerBlock("slimy_dirt", SlimyBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT));

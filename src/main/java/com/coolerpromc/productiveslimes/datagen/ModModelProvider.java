@@ -15,6 +15,7 @@ import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -22,6 +23,7 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -132,7 +134,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(blockLocation(getBlockName(block)))).build())));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(getBlockName(block)))))));
     }
 
     private void fluidTank(BlockModelGenerators blockModels, Block block){
@@ -141,25 +143,25 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void oppositeHorizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(oppositeHorizontalRotation()));
     }
 
     private void oppositeHorizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(oppositeHorizontalRotation()));
         blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
     private void horizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(horizontalRotation()));
     }
 
     private void horizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(horizontalRotation()));
         blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
     private void fluidBlock(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(mcLocation("block/water"))).build())));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(mcLocation("block/water"))))));
     }
 
     private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
@@ -181,7 +183,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void saplingBlock(BlockModelGenerators blockModels, Block block){
         blockModels.registerSimpleItemModel(block.asItem(), BlockModelGenerators.PlantType.NOT_TINTED.createItemModel(blockModels, block));
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput))).build())));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, new MultiVariant(WeightedList.of(new Variant(ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput))))));
     }
 
     private void cableBlock(BlockModelGenerators blockModels, Block block, String core, String part){
@@ -190,7 +192,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.<Variant>builder().add(new Variant(blockLocation("template_slime_block"))).build())));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation("template_slime_block"))))));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
 
@@ -222,12 +224,13 @@ public class ModModelProvider extends ModelProvider {
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.defaultTexture(block);
         ResourceLocation texture = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
-        MultiVariant resourcelocation = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(texture)).build());
-        MultiVariant resourcelocation1 = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput))).build());
-        MultiVariant resourcelocation2 = new MultiVariant(WeightedList.<Variant>builder().add(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))).build());
+        ResourceLocation texture2 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
+        MultiVariant resourcelocation = new MultiVariant(WeightedList.of(new Variant(texture)));
+        MultiVariant resourcelocation1 = new MultiVariant(WeightedList.of(new Variant(texture2)));
+        MultiVariant resourcelocation2 = new MultiVariant(WeightedList.of(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))));
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, resourcelocation, resourcelocation1, resourcelocation2));
-        blockModels.registerSimpleItemModel(block, texture);
+        blockModels.registerSimpleItemModel(block, texture2);
     }
 
     private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
@@ -246,14 +249,14 @@ public class ModModelProvider extends ModelProvider {
                 .accept(
                         BlockModelGenerators.createDoor(
                                 block,
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation1)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation2)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation3)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation4)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation5)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation6)).build()),
-                                new MultiVariant(WeightedList.<Variant>builder().add(new Variant(resourcelocation7)).build())
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation1))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation2))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation3))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation4))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation5))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation6))),
+                                new MultiVariant(WeightedList.of(new Variant(resourcelocation7)))
                         )
                 );
     }
@@ -294,35 +297,35 @@ public class ModModelProvider extends ModelProvider {
     }
 
     // Helper methods
-    private MultiVariantGenerator oppositeHorizontalRotation(Block block, ResourceLocation modelLoc){
-        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
-                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
+    private PropertyDispatch<VariantMutator> oppositeHorizontalRotation(){
+        return PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, BlockModelGenerators.NOP)
+                .select(Direction.WEST, BlockModelGenerators.Y_ROT_90)
+                .select(Direction.NORTH, BlockModelGenerators.Y_ROT_180)
+                .select(Direction.EAST, BlockModelGenerators.Y_ROT_270);
     }
 
-    private MultiVariantGenerator horizontalRotation(Block block, ResourceLocation modelLoc){
-        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
-                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+    private PropertyDispatch<VariantMutator> horizontalRotation(){
+        return PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
+                .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
+                .select(Direction.NORTH, BlockModelGenerators.NOP)
+                .select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
     }
 
     private MultiPartGenerator cablePart(Block block, ResourceLocation coreModelLoc, ResourceLocation partModelLoc){
         return MultiPartGenerator.multiPart(block)
-                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
-                .with(Condition.condition().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-                .with(Condition.condition().term(CableBlock.DOWN, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-                .with(Condition.condition().term(CableBlock.NORTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
-                .with(Condition.condition().term(CableBlock.SOUTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                .with(Condition.condition().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                .with(Condition.condition().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
+                .with(new MultiVariant(WeightedList.of(new Variant(coreModelLoc))))
+                .with(new ConditionBuilder().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantMutator.X_ROT.withValue(Quadrant.R270)))
+                .with(new ConditionBuilder().term(CableBlock.DOWN, true), variantRotation(partModelLoc, VariantMutator.X_ROT.withValue(Quadrant.R90)))
+                .with(new ConditionBuilder().term(CableBlock.NORTH, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R0)))
+                .with(new ConditionBuilder().term(CableBlock.SOUTH, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R180)))
+                .with(new ConditionBuilder().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R90)))
+                .with(new ConditionBuilder().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R270)));
     }
 
-    private Variant variantRotation(ResourceLocation modelLoc, VariantProperty<VariantProperties.Rotation> rot, VariantProperties.Rotation rotation){
-        return Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.UV_LOCK, false).with(rot, rotation);
+    private MultiVariant variantRotation(ResourceLocation modelLoc, VariantMutator rot){
+        return new MultiVariant(WeightedList.of(new Variant(modelLoc).with(VariantMutator.UV_LOCK.withValue(false)).with(rot)));
     }
 
     private String getBlockName(Block block){

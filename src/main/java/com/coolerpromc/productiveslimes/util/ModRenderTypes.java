@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.OptionalDouble;
 
@@ -24,6 +25,6 @@ public class ModRenderTypes extends RenderStateShard {
     }
 
     private static RenderType createDefault(String name, VertexFormat format, VertexFormat.Mode mode, RenderType.CompositeState state) {
-        return RenderType.create(name, 256, false, false, RenderPipeline.builder().build(), state);
+        return RenderType.lines();
     }
 }
