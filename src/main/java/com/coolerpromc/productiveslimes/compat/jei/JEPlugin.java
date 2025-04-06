@@ -1,15 +1,18 @@
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
+import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.*;
 import com.coolerpromc.productiveslimes.screen.*;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.List;
@@ -55,5 +58,14 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(DnaExtractorScreen.class, 77, 38, 26, 8, DnaExtractingCategory.DNA_EXTRACTING_TYPE);
         registration.addRecipeClickArea(DnaSynthesizerScreen.class, 77, 38, 26, 8, DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
         registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
+    }
+
+    @Override
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MELTING_STATION.get()), MeltingCategory.MELTING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.LIQUID_SOLIDING_STATION.get()), SolidingCategory.SOLIDING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.DNA_EXTRACTOR.get()), DnaExtractingCategory.DNA_EXTRACTING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.DNA_SYNTHESIZER.get()), DnaSynthesizingCategory.DNA_SYNTHESIZING_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.SLIME_SQUEEZER.get()), SqueezingCategory.SQUEEZING_TYPE);
     }
 }
