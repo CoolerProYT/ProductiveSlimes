@@ -26,7 +26,7 @@ import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
-//import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
+import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -53,7 +53,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -65,7 +64,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-//import terrablender.api.SurfaceRuleManager;
+import terrablender.api.SurfaceRuleManager;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes
@@ -115,7 +114,7 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-//        ModTerrablender.registerBiomes();
+        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
@@ -123,7 +122,7 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
