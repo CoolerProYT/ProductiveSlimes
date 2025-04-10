@@ -51,7 +51,7 @@ public class ExtractOnlyFluidTank implements IFluidHandler, IFluidTank {
     }
 
     public ExtractOnlyFluidTank readFromNBT(HolderLookup.Provider lookupProvider, CompoundTag nbt) {
-        fluid = FluidStack.parseOptional(lookupProvider, nbt.getCompound("Fluid"));
+        fluid = FluidStack.parseOptional(lookupProvider, nbt.getCompoundOrEmpty("Fluid"));
         return this;
     }
 

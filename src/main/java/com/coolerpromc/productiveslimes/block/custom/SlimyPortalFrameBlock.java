@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.block.custom;
 import com.coolerpromc.productiveslimes.util.SlimyPortalShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,9 +24,8 @@ public class SlimyPortalFrameBlock extends Block {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        if (!level.isClientSide && !state.is(newState.getBlock())) {
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean p_394545_) {
+        if (!level.isClientSide) {
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);
                 BlockState neighborState = level.getBlockState(neighborPos);

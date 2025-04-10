@@ -9,11 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -21,12 +21,14 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
+
 public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<SlimeSqueezerBlockEntity> {
     public SlimeSqueezerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
     }
     @Override
-    public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        var squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
+    public void render(SlimeSqueezerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay, Vec3 p_401186_) {
+        BlockStateModel squeezer = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(ModBlocks.SQUEEZER.get().defaultBlockState());
         float progressRatio = (float) blockEntity.getData().get(0) / (float) blockEntity.getData().get(1);
         float startPoint = 0.8f;
         float endPoint = 0.15f;
@@ -78,14 +80,13 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         itemRenderer.renderStatic(outputItem2, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, buffer, blockEntity.getLevel(), 1);
         poseStack.popPose();
     }
-    private void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
+    private void renderModel(BlockStateModel model, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
         RandomSource rand = RandomSource.create();
         for (Direction direction : Direction.values()) {
             rand.setSeed(42L);
             Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(
                     poseStack.last(),
                     buffer.getBuffer(RenderType.cutout()),
-                    null,
                     model,
                     1.0F, 1.0F, 1.0F,
                     light,

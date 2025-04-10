@@ -115,18 +115,6 @@ public class PipeBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onRemove(state, level, pos, newState, isMoving);
-        if (!level.isClientSide()) {
-            // When this pipe is removed, schedule neighbor updates.
-            for (Direction direction : Direction.values()) {
-                BlockPos neighborPos = pos.relative(direction);
-                level.scheduleTick(neighborPos, this, 1);
-            }
-        }
-    }
-
-    @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         updateConnections(level, pos, state);
     }

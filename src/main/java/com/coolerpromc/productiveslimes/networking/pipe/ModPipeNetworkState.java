@@ -1,32 +1,54 @@
 package com.coolerpromc.productiveslimes.networking.pipe;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import com.coolerpromc.productiveslimes.networking.cable.ModCableNetworkState;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ModPipeNetworkState extends SavedData {
     private final Map<Integer, PipeNetwork> networks = new HashMap<>();
     private int nextId = 1;
 
-    public static final Factory<ModPipeNetworkState> MY_TYPE =
-            new Factory<>(
+    public static final SavedDataType<ModPipeNetworkState> MY_TYPE =
+            new SavedDataType<>(
+                    "productiveslimes_pipe_networks",
                     ModPipeNetworkState::new,
-                    (nbt, registry) -> {
-                        ModPipeNetworkState state = new ModPipeNetworkState();
-                        state.readNbt(nbt, registry);
-                        return state;
-                    },
+                    ctx -> RecordCodecBuilder.create(instance -> instance.group(
+                                    Codec.list(
+                                            RecordCodecBuilder.<Map.Entry<Integer, PipeNetwork>>create(entryInstance ->
+                                                    entryInstance.group(
+                                                            Codec.INT.fieldOf("NetId").forGetter(Map.Entry::getKey),
+                                                            PipeNetwork.CODEC.fieldOf("PipeNetwork").forGetter(Map.Entry::getValue)
+                                                    ).apply(entryInstance, AbstractMap.SimpleEntry::new)
+                                            )
+                                    ).xmap(
+                                            entries -> entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                                            map -> new ArrayList<>(map.entrySet())
+                                    ).fieldOf("Networks").forGetter(ModPipeNetworkState::getAllNetworks),
+                                    Codec.INT.fieldOf("NextId").forGetter(ModPipeNetworkState::getNextId)
+                            ).apply(instance, ModPipeNetworkState::new)
+                    ),
                     DataFixTypes.LEVEL
             );
 
     public ModPipeNetworkState() {
         super();
+    }
+
+    private ModPipeNetworkState(Map<Integer, PipeNetwork> networks, int nextId) {
+        this.networks.putAll(networks);
+        this.nextId = nextId;
+    }
+
+    public ModPipeNetworkState(Context context) {
     }
 
     public int getNextId() {
@@ -53,46 +75,5 @@ public class ModPipeNetworkState extends SavedData {
 
     public Map<Integer, PipeNetwork> getAllNetworks() {
         return networks;
-    }
-
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-        ListTag list = new ListTag();
-        for (Map.Entry<Integer, PipeNetwork> entry : networks.entrySet()) {
-            int netId = entry.getKey();
-            PipeNetwork net = entry.getValue();
-
-            CompoundTag netTag = new CompoundTag();
-            netTag.putInt("NetId", netId);
-            netTag.put("PipeNetwork", PipeNetwork.writeToNbt(net, new CompoundTag()));
-            list.add(netTag);
-        }
-        tag.put("Networks", list);
-
-        tag.putInt("NextId", this.nextId);
-        return tag;
-    }
-
-    protected void readNbt(CompoundTag nbt, HolderLookup.Provider registry) {
-        networks.clear();
-
-        if (nbt.contains("Networks", Tag.TAG_LIST)) {
-            ListTag list = nbt.getList("Networks", Tag.TAG_COMPOUND);
-            for (int i = 0; i < list.size(); i++) {
-                CompoundTag netTag = list.getCompound(i);
-                int netId = netTag.getInt("NetId");
-                PipeNetwork net = PipeNetwork.readFromNbt(netTag.getCompound("PipeNetwork"));
-
-                // Make sure the CableNetwork’s own ID is set:
-                net.setNetworkId(netId);
-
-                networks.put(netId, net);
-                if (netId >= nextId) {
-                    nextId = netId + 1;
-                }
-            }
-        }
-
-        this.nextId = Math.max(this.nextId, nbt.getInt("NextId"));
     }
 }

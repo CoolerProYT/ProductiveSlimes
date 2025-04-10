@@ -71,7 +71,7 @@ public class PipeBlockEntity extends BlockEntity implements IFluidHandler {
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        newlyPlaced = pTag.getBoolean("NewlyPlaced");
+        newlyPlaced = pTag.getBooleanOr("NewlyPlaced", false);
     }
 
     @Override

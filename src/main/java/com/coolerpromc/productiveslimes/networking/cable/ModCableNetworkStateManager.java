@@ -8,14 +8,11 @@ public class ModCableNetworkStateManager {
 
     public static ModCableNetworkState getOrCreate(ServerLevel world) {
         DimensionDataStorage manager = world.getDataStorage();
-        ModCableNetworkState existing = manager.get(
-                ModCableNetworkState.MY_TYPE,
-                KEY
-        );
+        ModCableNetworkState existing = manager.get(ModCableNetworkState.MY_TYPE);
 
         if (existing == null) {
             existing = new ModCableNetworkState();
-            manager.set(KEY, existing);
+            manager.set(ModCableNetworkState.MY_TYPE, existing);
         }
 
         return existing;

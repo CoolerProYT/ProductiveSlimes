@@ -102,8 +102,8 @@ public abstract class BaseSlime extends Slime {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.entityData.set(ID_SIZE, pCompound.getInt("size"));
-        this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
+        this.entityData.set(ID_SIZE, pCompound.getIntOr("size", 1));
+        this.entityData.set(GROWTH_COUNTER, pCompound.getIntOr("growth_counter", 0));
     }
 
     public void setResource(ItemStack stack) {

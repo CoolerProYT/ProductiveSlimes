@@ -1,7 +1,10 @@
 package com.coolerpromc.productiveslimes.networking.pipe;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -22,12 +25,27 @@ public class PipeNetwork {
 
     private final Set<BlockPos> cablePositions = new HashSet<>();
 
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("x").forGetter(BlockPos::getX),
+            Codec.INT.fieldOf("y").forGetter(BlockPos::getY),
+            Codec.INT.fieldOf("z").forGetter(BlockPos::getZ)
+    ).apply(instance, BlockPos::new));
+
+    public static final Codec<PipeNetwork> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.optionalFieldOf("NetworkId", -1).forGetter(net -> net.networkId),
+            Codec.INT.fieldOf("TotalFluid").forGetter(net -> net.totalFluid),
+            Codec.STRING.fieldOf("Fluid").forGetter(net -> BuiltInRegistries.FLUID.getKey(net.fluid).toString()),
+            Codec.INT.fieldOf("TotalCapacity").forGetter(net -> net.totalCapacity),
+            BLOCK_POS_CODEC.listOf().fieldOf("Positions").forGetter(net -> net.cablePositions.stream().toList())
+    ).apply(instance, PipeNetwork::new));
+
     public PipeNetwork() {}
 
-    private PipeNetwork(int networkId, int totalFluid, int totalCapacity, List<BlockPos> cablePositions) {
+    private PipeNetwork(int networkId, int totalFluid, String fluid, int totalCapacity, List<BlockPos> cablePositions) {
         this.networkId = networkId;
         this.totalFluid = totalFluid;
         this.totalCapacity = totalCapacity;
+        this.fluid = BuiltInRegistries.FLUID.getValue(ResourceLocation.parse(fluid));
         this.cablePositions.addAll(cablePositions);
     }
 
@@ -122,49 +140,5 @@ public class PipeNetwork {
             }
         }
         return new FluidStack(fluid, drained);
-    }
-
-    public static CompoundTag writeToNbt(PipeNetwork net, CompoundTag nbt) {
-        nbt.putInt("NetworkId", net.networkId);
-
-        nbt.putInt("totalFluid", net.totalFluid);
-        nbt.putString("Fluid", BuiltInRegistries.FLUID.getKey(net.fluid).toString());
-        nbt.putInt("TotalCapacity", net.totalCapacity);
-
-        ListTag posList = new ListTag();
-        for (BlockPos pos : net.cablePositions) {
-            CompoundTag posTag = new CompoundTag();
-            posTag.putInt("x", pos.getX());
-            posTag.putInt("y", pos.getY());
-            posTag.putInt("z", pos.getZ());
-            posList.add(posTag);
-        }
-        nbt.put("Positions", posList);
-
-        return nbt;
-    }
-
-    public static PipeNetwork readFromNbt(CompoundTag nbt) {
-        PipeNetwork net = new PipeNetwork();
-
-        if (nbt.contains("NetworkId")) {
-            net.networkId = nbt.getInt("NetworkId");
-        }
-
-        net.totalFluid = nbt.getInt("totalFluid");
-        net.fluid = BuiltInRegistries.FLUID.getValue(ResourceLocation.tryParse(nbt.getString("Fluid")));
-        net.totalCapacity = nbt.getInt("TotalCapacity");
-
-        if (nbt.contains("Positions", Tag.TAG_LIST)) {
-            ListTag list = nbt.getList("Positions", Tag.TAG_COMPOUND);
-            for (int i = 0; i < list.size(); i++) {
-                CompoundTag posTag = list.getCompound(i);
-                int x = posTag.getInt("x");
-                int y = posTag.getInt("y");
-                int z = posTag.getInt("z");
-                net.cablePositions.add(new BlockPos(x, y, z));
-            }
-        }
-        return net;
     }
 }

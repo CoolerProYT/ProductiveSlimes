@@ -156,11 +156,11 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
-        energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
+        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputInventory"));
+        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputInventory"));
+        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
 
-        progress = pTag.getInt("dna_extractor.progress");
+        progress = pTag.getIntOr("dna_extractor.progress", 0);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
@@ -353,5 +353,10 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

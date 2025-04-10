@@ -8,11 +8,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMenu>{
+
+public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMenu> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/slime_squeezer_gui.png");
+
     public SlimeSqueezerScreen(SlimeSqueezerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
+
     @Override
     protected void init() {
         super.init();
@@ -20,10 +23,10 @@ public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMe
         this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
         this.titleLabelY = 5;
     }
+
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
@@ -31,11 +34,13 @@ public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMe
         pGuiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 9, y + 13 + (57 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
         renderProgressArrow(pGuiGraphics, x, y);
     }
+
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
+        if (menu.isCrafting()) {
             guiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 77, y + 38, 176, 0, menu.getScaledProgress(), 8, 256, 256);
         }
     }
+
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
@@ -44,7 +49,7 @@ public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMe
         int energyStored = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
         Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
-        if(isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
+        if (isHovering(9, 13, 9, 57, pMouseX, pMouseY)) {
             pGuiGraphics.renderTooltip(this.font, text, pMouseX, pMouseY);
         }
     }

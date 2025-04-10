@@ -14,11 +14,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -48,7 +47,7 @@ public class SlimyPortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier p_405359_) {
         if (entity.canUsePortal(false)){
             entity.setAsInsidePortal(this, pos);
         }
@@ -381,17 +380,22 @@ public class SlimyPortalBlock extends Block implements Portal {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        if (!level.isClientSide && !state.is(newState.getBlock())) {
-            for (Direction direction : Direction.values()) {
-                BlockPos neighborPos = pos.relative(direction);
-                BlockState neighborState = level.getBlockState(neighborPos);
-                if (neighborState.getBlock() instanceof SlimyPortalBlock) {
-                    ((SlimyPortalBlock) neighborState.getBlock()).removePortal(level, neighborPos);
-                }
-            }
-        }
+    protected BlockState updateShape(
+            BlockState p_54928_,
+            LevelReader p_374413_,
+            ScheduledTickAccess p_374339_,
+            BlockPos p_54932_,
+            Direction p_54929_,
+            BlockPos p_54933_,
+            BlockState p_54930_,
+            RandomSource p_374242_
+    ) {
+        Direction.Axis direction$axis = p_54929_.getAxis();
+        Direction.Axis direction$axis1 = p_54928_.getValue(AXIS);
+        boolean flag = direction$axis1 != direction$axis && direction$axis.isHorizontal();
+        return !flag && !p_54930_.is(this) && !PortalShape.findAnyShape(p_374413_, p_54932_, direction$axis1).isComplete()
+                ? Blocks.AIR.defaultBlockState()
+                : super.updateShape(p_54928_, p_374413_, p_374339_, p_54932_, p_54929_, p_54933_, p_54930_, p_374242_);
     }
 
     protected void removePortal(Level level, BlockPos pos) {

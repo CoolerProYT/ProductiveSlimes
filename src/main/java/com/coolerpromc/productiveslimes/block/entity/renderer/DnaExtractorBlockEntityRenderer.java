@@ -16,13 +16,14 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.phys.Vec3;
 
 public class DnaExtractorBlockEntityRenderer implements BlockEntityRenderer<DnaExtractorBlockEntity> {
     public DnaExtractorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
 
     }
     @Override
-    public void render(DnaExtractorBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(DnaExtractorBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, Vec3 p_401186_) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack itemStack = pBlockEntity.getRenderStack();
 

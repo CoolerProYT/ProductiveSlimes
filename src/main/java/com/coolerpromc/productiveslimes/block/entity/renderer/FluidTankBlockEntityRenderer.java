@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -22,7 +23,7 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
     }
 
     @Override
-    public void render(FluidTankBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(FluidTankBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay, Vec3 p_401186_) {
         FluidStack fluidStack = pBlockEntity.getFluidStack();
         renderFluid(pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, fluidStack);
     }

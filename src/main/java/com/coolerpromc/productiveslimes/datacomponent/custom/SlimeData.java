@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, ItemStack growthItem, EntityType<BaseSlime> slime){
     public static final Codec<SlimeData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -43,21 +44,22 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         tag.putString("slime", Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(slime).toString()));
         return tag;
     }
+
     public static SlimeData fromTag(CompoundTag tag, HolderLookup.Provider provider) {
-        boolean slime = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getString("slime"))).isPresent();
+        boolean slime = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getStringOr("slime", ""))).isPresent();
         EntityType<BaseSlime> entityType;
-        if (!slime){
+        if (!slime) {
             entityType = null;
-        }
-        else{
-            entityType = (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getString("slime"))).get().getDelegate().value();
+        } else {
+            entityType = (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocation.parse(tag.getStringOr("slime", null)));
+
         }
         return new SlimeData(
-                tag.getInt("size"),
-                tag.getInt("color"),
-                tag.getInt("cooldown"),
-                ItemStack.parseOptional(provider, tag.getCompound("drop")),
-                ItemStack.parseOptional(provider, tag.getCompound("growth_item")),
+                tag.getIntOr("size", 1),
+                tag.getIntOr("color", 0),
+                tag.getIntOr("cooldown", 0),
+                ItemStack.parse(provider, tag.getCompoundOrEmpty("drop")).orElse(ItemStack.EMPTY),
+                ItemStack.parse(provider, tag.getCompoundOrEmpty("growth_item")).orElse(ItemStack.EMPTY),
                 entityType
         );
     }

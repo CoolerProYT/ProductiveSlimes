@@ -8,14 +8,11 @@ public class ModPipeNetworkStateManager {
 
     public static ModPipeNetworkState getOrCreate(ServerLevel world) {
         DimensionDataStorage manager = world.getDataStorage();
-        ModPipeNetworkState existing = manager.get(
-                ModPipeNetworkState.MY_TYPE,
-                KEY
-        );
+        ModPipeNetworkState existing = manager.get(ModPipeNetworkState.MY_TYPE);
 
         if (existing == null) {
             existing = new ModPipeNetworkState();
-            manager.set(KEY, existing);
+            manager.set(ModPipeNetworkState.MY_TYPE, existing);
         }
 
         return existing;

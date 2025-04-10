@@ -106,6 +106,6 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage{
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        newlyPlaced = pTag.getBoolean("NewlyPlaced");
+        newlyPlaced = pTag.getBooleanOr("NewlyPlaced", true);
     }
 }

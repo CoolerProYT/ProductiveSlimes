@@ -187,12 +187,12 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        drainInputSlot.deserializeNBT(pRegistries, pTag.getCompound("DrainInputInventory"));
-        drainOutputSlot.deserializeNBT(pRegistries, pTag.getCompound("DrainOutputInventory"));
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));;
-        energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
+        drainInputSlot.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("DrainInputInventory"));
+        drainOutputSlot.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("DrainOutputInventory"));
+        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputInventory"));;
+        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
 
-        progress = pTag.getInt("melting_station.progress");
+        progress = pTag.getIntOr("melting_station.progress", 0);
         outputHandler.readFromNBT(pRegistries, pTag);
     }
 
@@ -343,5 +343,10 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

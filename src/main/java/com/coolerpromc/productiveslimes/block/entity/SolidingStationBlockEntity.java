@@ -246,14 +246,14 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        fillInputHandler.deserializeNBT(pRegistries, pTag.getCompound("FillInputInventory"));
-        fillOutputHandler.deserializeNBT(pRegistries, pTag.getCompound("FillOutputInventory"));
-        drainInputHandler.deserializeNBT(pRegistries, pTag.getCompound("DrainInputInventory"));
-        drainOutputHandler.deserializeNBT(pRegistries, pTag.getCompound("DrainOutputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
-        energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
+        fillInputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("FillInputInventory"));
+        fillOutputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("FillOutputInventory"));
+        drainInputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("DrainInputInventory"));
+        drainOutputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("DrainOutputInventory"));
+        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputInventory"));
+        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
 
-        progress = pTag.getInt("soliding_station.progress");
+        progress = pTag.getIntOr("soliding_station.progress", 0);
         fluidTank.readFromNBT(pRegistries, pTag);
     }
 
@@ -454,7 +454,6 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         return false;
     }
 
-
     private boolean hasProgressFinished() {
         return progress >= maxProgress;
     }
@@ -476,5 +475,10 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

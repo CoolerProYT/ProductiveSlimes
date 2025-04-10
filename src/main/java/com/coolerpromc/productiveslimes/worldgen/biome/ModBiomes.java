@@ -25,11 +25,11 @@ public class ModBiomes {
     private static Biome slimyLand(BootstrapContext<Biome> context){
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 
-        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 10, 1, 1));
-        spawnBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.BAT, 100, 1, 1));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("dirt").get(), 100, 1, 1));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("stone").get(), 65, 1, 1));
-        spawnBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("iron").get(), 10, 1, 1));
+        spawnBuilder.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 1, 1));
+        spawnBuilder.addSpawn(MobCategory.MONSTER, 100, new MobSpawnSettings.SpawnerData(EntityType.BAT, 1, 1));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 100, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("dirt").get(), 1, 1));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 65, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("stone").get(), 1, 1));
+        spawnBuilder.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(ModTiers.getEntityByName("iron").get(), 1, 1));
 
         HolderGetter<PlacedFeature> placedFeatureHolderGetter = context.lookup(Registries.PLACED_FEATURE);
 

@@ -37,7 +37,7 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
     }
 
     @Override
-    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, double pFallDistance) {
         if (pEntity.isSuppressingBounce()) {
             super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance);
         } else {

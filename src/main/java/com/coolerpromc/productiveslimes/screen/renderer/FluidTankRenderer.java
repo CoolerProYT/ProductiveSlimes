@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -28,10 +27,6 @@ public class FluidTankRenderer {
         int fluidColorTint = fluidTypeExtensions.getTintColor(fluidStack);
 
         int fluidMeterPos = tankCapacity == -1 || (fluidStack.getAmount() > 0 && fluidStack.getAmount() == tankCapacity) ? 0:(h - ((fluidStack.getAmount() <= 0 || tankCapacity == 0)?0: (Math.min(fluidStack.getAmount(), tankCapacity - 1) * h / tankCapacity + 1)));
-
-        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
-
-        RenderSystem.setShader(CoreShaders.POSITION_TEX);
 
         Matrix4f mat = guiGraphics.pose().last().pose();
 

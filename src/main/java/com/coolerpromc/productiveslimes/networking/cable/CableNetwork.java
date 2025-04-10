@@ -1,5 +1,7 @@
 package com.coolerpromc.productiveslimes.networking.cable;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -15,6 +17,19 @@ public class CableNetwork {
     private int totalCapacity = 0;
 
     private final Set<BlockPos> cablePositions = new HashSet<>();
+
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("x").forGetter(BlockPos::getX),
+            Codec.INT.fieldOf("y").forGetter(BlockPos::getY),
+            Codec.INT.fieldOf("z").forGetter(BlockPos::getZ)
+    ).apply(instance, BlockPos::new));
+
+    public static final Codec<CableNetwork> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.optionalFieldOf("NetworkId", -1).forGetter(net -> net.networkId),
+            Codec.INT.fieldOf("TotalEnergy").forGetter(net -> net.totalEnergy),
+            Codec.INT.fieldOf("TotalCapacity").forGetter(net -> net.totalCapacity),
+            BLOCK_POS_CODEC.listOf().fieldOf("Positions").forGetter(net -> net.cablePositions.stream().toList())
+    ).apply(instance, CableNetwork::new));
 
     public CableNetwork() {}
 
@@ -82,47 +97,5 @@ public class CableNetwork {
             totalEnergy -= extracted;
         }
         return extracted;
-    }
-
-    public static CompoundTag writeToNbt(CableNetwork net, CompoundTag nbt) {
-        nbt.putInt("NetworkId", net.networkId);
-
-        nbt.putInt("TotalEnergy", net.totalEnergy);
-        nbt.putInt("TotalCapacity", net.totalCapacity);
-
-        ListTag posList = new ListTag();
-        for (BlockPos pos : net.cablePositions) {
-            CompoundTag posTag = new CompoundTag();
-            posTag.putInt("x", pos.getX());
-            posTag.putInt("y", pos.getY());
-            posTag.putInt("z", pos.getZ());
-            posList.add(posTag);
-        }
-        nbt.put("Positions", posList);
-
-        return nbt;
-    }
-
-    public static CableNetwork readFromNbt(CompoundTag nbt) {
-        CableNetwork net = new CableNetwork();
-
-        if (nbt.contains("NetworkId")) {
-            net.networkId = nbt.getInt("NetworkId");
-        }
-
-        net.totalEnergy = nbt.getInt("TotalEnergy");
-        net.totalCapacity = nbt.getInt("TotalCapacity");
-
-        if (nbt.contains("Positions", Tag.TAG_LIST)) {
-            ListTag list = nbt.getList("Positions", Tag.TAG_COMPOUND);
-            for (int i = 0; i < list.size(); i++) {
-                CompoundTag posTag = list.getCompound(i);
-                int x = posTag.getInt("x");
-                int y = posTag.getInt("y");
-                int z = posTag.getInt("z");
-                net.cablePositions.add(new BlockPos(x, y, z));
-            }
-        }
-        return net;
     }
 }
