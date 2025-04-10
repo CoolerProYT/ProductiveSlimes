@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Soliding;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -95,4 +94,3 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
         return 83;
     }
 }
-*/

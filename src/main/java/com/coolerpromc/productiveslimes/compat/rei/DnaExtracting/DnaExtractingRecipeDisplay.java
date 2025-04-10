@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.DnaExtracting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -89,4 +88,3 @@ public class DnaExtractingRecipeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 }
-*/

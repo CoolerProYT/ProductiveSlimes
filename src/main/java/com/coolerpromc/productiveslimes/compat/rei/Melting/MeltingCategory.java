@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -97,4 +96,3 @@ public class MeltingCategory implements DisplayCategory<MeltingRecipeDisplay> {
         return 83;
     }
 }
-*/

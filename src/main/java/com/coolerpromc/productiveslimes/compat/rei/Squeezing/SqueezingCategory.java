@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Squeezing;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -72,4 +71,4 @@ public class SqueezingCategory implements DisplayCategory<SqueezingRecipeDisplay
     public int getDisplayHeight() {
         return 83;
     }
-}*/
+}

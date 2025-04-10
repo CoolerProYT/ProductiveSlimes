@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Squeezing;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -70,4 +69,4 @@ public class SqueezingRecipeDisplay extends BasicDisplay {
     public @Nullable DisplaySerializer<? extends Display> getSerializer() {
         return SERIALIZER;
     }
-}*/
+}

@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.rei.Melting;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -80,4 +79,3 @@ public class MeltingRecipeDisplay extends BasicDisplay {
         return SERIALIZER;
     }
 }
-*/
