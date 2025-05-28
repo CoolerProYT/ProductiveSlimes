@@ -4,6 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.custom.CableBlock;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
+import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.datagen.template.ModModelTemplates;
 import com.coolerpromc.productiveslimes.item.ModItems;
 import com.coolerpromc.productiveslimes.item.custom.BucketItem;
@@ -13,23 +14,20 @@ import com.coolerpromc.productiveslimes.item.custom.SpawnEggItem;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
+import com.coolerpromc.productiveslimes.util.FluidTankTint;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
-import com.mojang.math.Quadrant;
+import com.coolerpromc.productiveslimes.util.property.*;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.block.model.Variant;
-import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -134,34 +132,114 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void simpleBlockWithExistingModel(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(getBlockName(block)))))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation(getBlockName(block)))));
     }
 
     private void fluidTank(BlockModelGenerators blockModels, Block block){
         oppositeHorizontalBlockWithExistingBlockModel(blockModels, block, "fluid_tank");
-        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.specialModel(blockLocation("fluid_tank"), new FluidTankSpecialRenderer.Unbaked(blockLocation("fluid_tank"))));
+
+        ResourceLocation fluidTankEmpty = itemLocation("fluid_tank/fluid_tank_empty");
+        ResourceLocation fluidTank3k = itemLocation("fluid_tank/fluid_tank_1");
+        ResourceLocation fluidTank6k = itemLocation("fluid_tank/fluid_tank_2");
+        ResourceLocation fluidTank9k = itemLocation("fluid_tank/fluid_tank_3");
+        ResourceLocation fluidTank12k = itemLocation("fluid_tank/fluid_tank_4");
+        ResourceLocation fluidTank15k = itemLocation("fluid_tank/fluid_tank_5");
+        ResourceLocation fluidTank18k = itemLocation("fluid_tank/fluid_tank_6");
+        ResourceLocation fluidTank21k = itemLocation("fluid_tank/fluid_tank_7");
+        ResourceLocation fluidTank24k = itemLocation("fluid_tank/fluid_tank_8");
+        ResourceLocation fluidTank27k = itemLocation("fluid_tank/fluid_tank_9");
+        ResourceLocation fluidTank30k = itemLocation("fluid_tank/fluid_tank_10");
+        ResourceLocation fluidTank33k = itemLocation("fluid_tank/fluid_tank_11");
+        ResourceLocation fluidTank36k = itemLocation("fluid_tank/fluid_tank_12");
+        ResourceLocation fluidTank40k = itemLocation("fluid_tank/fluid_tank_13");
+        ResourceLocation fluidTank45k = itemLocation("fluid_tank/fluid_tank_14");
+        ResourceLocation fluidTankFull = itemLocation("fluid_tank/fluid_tank_full");
+
+        List<ItemTintSource> tintSources = List.of(ItemModelUtils.constantTint(-1), new FluidTankTint(16777215));
+
+        blockModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.conditional(
+                new FluidTankProperty(),
+                new BlockModelWrapper.Unbaked(fluidTankEmpty, tintSources),
+                ItemModelUtils.conditional(
+                        new FluidTankProperty3k(),
+                        new BlockModelWrapper.Unbaked(fluidTank3k, tintSources),
+                        ItemModelUtils.conditional(
+                                new FluidTankProperty6k(),
+                                new BlockModelWrapper.Unbaked(fluidTank6k, tintSources),
+                                ItemModelUtils.conditional(
+                                        new FluidTankProperty9k(),
+                                        new BlockModelWrapper.Unbaked(fluidTank9k, tintSources),
+                                        ItemModelUtils.conditional(
+                                                new FluidTankProperty12k(),
+                                                new BlockModelWrapper.Unbaked(fluidTank12k, tintSources),
+                                                ItemModelUtils.conditional(
+                                                        new FluidTankProperty15k(),
+                                                        new BlockModelWrapper.Unbaked(fluidTank15k, tintSources),
+                                                        ItemModelUtils.conditional(
+                                                                new FluidTankProperty18k(),
+                                                                new BlockModelWrapper.Unbaked(fluidTank18k, tintSources),
+                                                                ItemModelUtils.conditional(
+                                                                        new FluidTankProperty21k(),
+                                                                        new BlockModelWrapper.Unbaked(fluidTank21k, tintSources),
+                                                                        ItemModelUtils.conditional(
+                                                                                new FluidTankProperty24k(),
+                                                                                new BlockModelWrapper.Unbaked(fluidTank24k, tintSources),
+                                                                                ItemModelUtils.conditional(
+                                                                                        new FluidTankProperty27k(),
+                                                                                        new BlockModelWrapper.Unbaked(fluidTank27k, tintSources),
+                                                                                        ItemModelUtils.conditional(
+                                                                                                new FluidTankProperty30k(),
+                                                                                                new BlockModelWrapper.Unbaked(fluidTank30k, tintSources),
+                                                                                                ItemModelUtils.conditional(
+                                                                                                        new FluidTankProperty33k(),
+                                                                                                        new BlockModelWrapper.Unbaked(fluidTank33k, tintSources),
+                                                                                                        ItemModelUtils.conditional(
+                                                                                                                new FluidTankProperty36k(),
+                                                                                                                new BlockModelWrapper.Unbaked(fluidTank36k, tintSources),
+                                                                                                                ItemModelUtils.conditional(
+                                                                                                                        new FluidTankProperty40k(),
+                                                                                                                        new BlockModelWrapper.Unbaked(fluidTank40k, tintSources),
+                                                                                                                        ItemModelUtils.conditional(
+                                                                                                                                new FluidTankProperty45k(),
+                                                                                                                                new BlockModelWrapper.Unbaked(fluidTank45k, tintSources),
+                                                                                                                                new BlockModelWrapper.Unbaked(fluidTankFull, tintSources)
+                                                                                                                        )
+                                                                                                                )
+                                                                                                        )
+                                                                                                )
+                                                                                        )
+                                                                                )
+                                                                        )
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        ));
     }
 
     private void oppositeHorizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(oppositeHorizontalRotation()));
+        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
     }
 
     private void oppositeHorizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(oppositeHorizontalRotation()));
+        blockModels.blockStateOutput.accept(oppositeHorizontalRotation(block, blockLocation(modelName)));
         blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
     private void horizontalBlockWithExistingBlockModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(horizontalRotation()));
+        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
     }
 
     private void horizontalBlockWithExistingBlockAndItemModel(BlockModelGenerators blockModels, Block block, String modelName) {
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation(modelName))))).with(horizontalRotation()));
+        blockModels.blockStateOutput.accept(horizontalRotation(block, blockLocation(modelName)));
         blockModels.itemModelOutput.accept(block.asItem(), new BlockModelWrapper.Unbaked(itemLocation(modelName), Collections.emptyList()));
     }
 
     private void fluidBlock(BlockModelGenerators blockModels, Block block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(mcLocation("block/water"))))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, mcLocation("block/water"))));
     }
 
     private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
@@ -183,7 +261,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void saplingBlock(BlockModelGenerators blockModels, Block block){
         blockModels.registerSimpleItemModel(block.asItem(), BlockModelGenerators.PlantType.NOT_TINTED.createItemModel(blockModels, block));
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, new MultiVariant(WeightedList.of(new Variant(ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput))))));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, ModelTemplates.CROSS.extend().renderType("cutout").build().create(block, TextureMapping.cross(block), blockModels.modelOutput)));
     }
 
     private void cableBlock(BlockModelGenerators blockModels, Block block, String core, String part){
@@ -192,7 +270,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void slimeBlock(BlockModelGenerators blockModels, SlimeBlock block){
-        blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(new Variant(blockLocation("template_slime_block"))))));
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, blockLocation("template_slime_block"))));
         blockModels.registerSimpleTintedItemModel(block, blockLocation("template_slime_block"), ItemModelUtils.constantTint(block.getColor()));
     }
 
@@ -223,14 +301,12 @@ public class ModModelProvider extends ModelProvider {
 
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.defaultTexture(block);
-        ResourceLocation texture = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation texture2 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
-        MultiVariant resourcelocation = new MultiVariant(WeightedList.of(new Variant(texture)));
-        MultiVariant resourcelocation1 = new MultiVariant(WeightedList.of(new Variant(texture2)));
-        MultiVariant resourcelocation2 = new MultiVariant(WeightedList.of(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))));
+        ResourceLocation resourcelocation = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation1 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
+        ResourceLocation resourcelocation2 = ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput);
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, resourcelocation, resourcelocation1, resourcelocation2));
-        blockModels.registerSimpleItemModel(block, texture2);
+        blockModels.registerSimpleItemModel(block, resourcelocation1);
     }
 
     private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
@@ -249,14 +325,14 @@ public class ModModelProvider extends ModelProvider {
                 .accept(
                         BlockModelGenerators.createDoor(
                                 block,
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation1))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation2))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation3))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation4))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation5))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation6))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation7)))
+                                resourcelocation,
+                                resourcelocation1,
+                                resourcelocation2,
+                                resourcelocation3,
+                                resourcelocation4,
+                                resourcelocation5,
+                                resourcelocation6,
+                                resourcelocation7
                         )
                 );
     }
@@ -288,7 +364,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void spawnEggItem(ItemModelGenerators itemModels, DeferredItem<Item> item) {
         SpawnEggItem spawnEggItem = (SpawnEggItem) item.get();
-        itemModels.itemModelOutput.accept(spawnEggItem, ItemModelUtils.tintedModel(itemLocation("template_slime_spawn_egg"), ItemModelUtils.constantTint(spawnEggItem.getColor())));
+        itemModels.generateSpawnEgg(spawnEggItem, spawnEggItem.getBg(), spawnEggItem.getFg());
     }
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){
@@ -297,35 +373,35 @@ public class ModModelProvider extends ModelProvider {
     }
 
     // Helper methods
-    private PropertyDispatch<VariantMutator> oppositeHorizontalRotation(){
-        return PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, BlockModelGenerators.NOP)
-                .select(Direction.WEST, BlockModelGenerators.Y_ROT_90)
-                .select(Direction.NORTH, BlockModelGenerators.Y_ROT_180)
-                .select(Direction.EAST, BlockModelGenerators.Y_ROT_270);
+    private MultiVariantGenerator oppositeHorizontalRotation(Block block, ResourceLocation modelLoc){
+        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
+                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)));
     }
 
-    private PropertyDispatch<VariantMutator> horizontalRotation(){
-        return PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
-                .select(Direction.SOUTH, BlockModelGenerators.Y_ROT_180)
-                .select(Direction.WEST, BlockModelGenerators.Y_ROT_270)
-                .select(Direction.NORTH, BlockModelGenerators.NOP)
-                .select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
+    private MultiVariantGenerator horizontalRotation(Block block, ResourceLocation modelLoc){
+        return MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+                .select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+                .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, modelLoc))
+                .select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
     }
 
     private MultiPartGenerator cablePart(Block block, ResourceLocation coreModelLoc, ResourceLocation partModelLoc){
         return MultiPartGenerator.multiPart(block)
-                .with(new MultiVariant(WeightedList.of(new Variant(coreModelLoc))))
-                .with(new ConditionBuilder().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantMutator.X_ROT.withValue(Quadrant.R270)))
-                .with(new ConditionBuilder().term(CableBlock.DOWN, true), variantRotation(partModelLoc, VariantMutator.X_ROT.withValue(Quadrant.R90)))
-                .with(new ConditionBuilder().term(CableBlock.NORTH, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R0)))
-                .with(new ConditionBuilder().term(CableBlock.SOUTH, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R180)))
-                .with(new ConditionBuilder().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R90)))
-                .with(new ConditionBuilder().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R270)));
+                .with(Variant.variant().with(VariantProperties.MODEL, coreModelLoc))
+                .with(Condition.condition().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+                .with(Condition.condition().term(CableBlock.DOWN, true), variantRotation(partModelLoc, VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(CableBlock.NORTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
+                .with(Condition.condition().term(CableBlock.SOUTH, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                .with(Condition.condition().term(CableBlock.EAST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                .with(Condition.condition().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantProperties.Y_ROT, VariantProperties.Rotation.R270));
     }
 
-    private MultiVariant variantRotation(ResourceLocation modelLoc, VariantMutator rot){
-        return new MultiVariant(WeightedList.of(new Variant(modelLoc).with(VariantMutator.UV_LOCK.withValue(false)).with(rot)));
+    private Variant variantRotation(ResourceLocation modelLoc, VariantProperty<VariantProperties.Rotation> rot, VariantProperties.Rotation rotation){
+        return Variant.variant().with(VariantProperties.MODEL, modelLoc).with(VariantProperties.UV_LOCK, false).with(rot, rotation);
     }
 
     private String getBlockName(Block block){

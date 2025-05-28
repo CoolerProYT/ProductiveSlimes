@@ -25,6 +25,7 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.*;
+import com.coolerpromc.productiveslimes.util.property.*;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
@@ -53,7 +54,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -216,7 +217,7 @@ public class ProductiveSlimes
                         ModBlocks.FLUID_TANK.get()
                 );
 
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), RenderType.CUTOUT);
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), renderType -> true);
             });
 
             CustomContentRegistry.handleResourcePack();
@@ -234,12 +235,27 @@ public class ProductiveSlimes
 
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_tint"), FluidTankTint.MAP_CODEC);
             event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item_tint"), SlimeItemTint.MAP_CODEC);
         }
 
         @SubscribeEvent
-        public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank"), FluidTankSpecialRenderer.Unbaked.MAP_CODEC);
+        public static void onRegisterConditionalItemModelProperty(RegisterConditionalItemModelPropertyEvent event) {
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_empty"), FluidTankProperty.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_3k"), FluidTankProperty3k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_6k"), FluidTankProperty6k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_9k"), FluidTankProperty9k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_12k"), FluidTankProperty12k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_15k"), FluidTankProperty15k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_18k"), FluidTankProperty18k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_21k"), FluidTankProperty21k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_24k"), FluidTankProperty24k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_27k"), FluidTankProperty27k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_30k"), FluidTankProperty30k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_33k"), FluidTankProperty33k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_36k"), FluidTankProperty36k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_40k"), FluidTankProperty40k.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank_less_than_45k"), FluidTankProperty45k.MAP_CODEC);
         }
 
         @SubscribeEvent

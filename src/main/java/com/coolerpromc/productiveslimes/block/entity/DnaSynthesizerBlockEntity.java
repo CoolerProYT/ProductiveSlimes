@@ -183,12 +183,12 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputSlot"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputSlot"));
-        eggHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("EggSlot"));
-        energyHandler.setEnergy(pTag.getIntOr("Energy", 0));
+        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputSlot"));
+        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputSlot"));
+        eggHandler.deserializeNBT(pRegistries, pTag.getCompound("EggSlot"));
+        energyHandler.setEnergy(pTag.getInt("Energy"));
 
-        progress = pTag.getIntOr("dna_synthesizing.progress", 0);
+        progress = pTag.getInt("dna_synthesizing.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
@@ -352,10 +352,5 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
-    }
-
-    @Override
-    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
-        drops();
     }
 }

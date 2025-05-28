@@ -19,14 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
-
 public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNestBlockEntity> {
     public int tick;
     public SlimeNestBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
     @Override
-    public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 p_401186_) {
+    public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if (blockEntity.getSlime() == null) return;
         if (blockEntity.getSlime().isEmpty()) return;
         if (blockEntity.getSlime().get(ModDataComponents.SLIME_DATA.get()) == null) return;

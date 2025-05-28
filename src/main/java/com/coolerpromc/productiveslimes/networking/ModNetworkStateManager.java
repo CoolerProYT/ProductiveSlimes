@@ -8,11 +8,13 @@ public class ModNetworkStateManager {
 
     public static ModNetworkState getOrCreate(ServerLevel world) {
         DimensionDataStorage manager = world.getDataStorage();
-        ModNetworkState existing = manager.get(ModNetworkState.MY_TYPE);
-
+        ModNetworkState existing = manager.get(
+                ModNetworkState.MY_TYPE,
+                KEY
+        );
         if (existing == null) {
             existing = new ModNetworkState();
-            manager.set(ModNetworkState.MY_TYPE, existing);
+            manager.set(KEY, existing);
         }
         return existing;
     }

@@ -49,7 +49,7 @@ public class ModGameEventBus {
 
     @SubscribeEvent
     public static void onVillagerTrades(VillagerTradesEvent event) {
-        if (event.getType() == ModVillagers.SCIENTIST){
+        if (event.getType() == ModVillagers.SCIENTIST.value()){
             Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
             //Novice
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(

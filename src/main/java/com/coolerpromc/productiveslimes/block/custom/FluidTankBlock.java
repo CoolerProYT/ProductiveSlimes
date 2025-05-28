@@ -70,6 +70,18 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
     }
 
     @Override
+    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if (pState.getBlock() != pNewState.getBlock()){
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof FluidTankBlockEntity){
+                ((FluidTankBlockEntity) blockEntity).drops();
+            }
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    }
+
+    @Override
     protected InteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         if (!pLevel.isClientSide()) {
             bucketUsed(pLevel, pPos, pPlayer);
@@ -188,5 +200,18 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
         }
 
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    }
+
+
+    @Override
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltip, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltip, pTooltipFlag);
+
+        if (pStack.getOrDefault(ModDataComponents.FLUID_STACK.get(), FluidStack.EMPTY) != FluidStack.EMPTY) {
+            ImmutableFluidStack immutableFluidStack = pStack.get(ModDataComponents.FLUID_STACK.get());
+            FluidStack fluidStack = (immutableFluidStack != null) ? immutableFluidStack.fluidStack() : FluidStack.EMPTY;
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.fluid_stored").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable(fluidStack.getDescriptionId()).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+            pTooltip.add(Component.translatable("tooltip.productiveslimes.stored_amount").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00))).append(Component.translatable("tooltip.productiveslimes.fluid_amount", fluidStack.getAmount() / 1000).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFFFF)))));
+        }
     }
 }

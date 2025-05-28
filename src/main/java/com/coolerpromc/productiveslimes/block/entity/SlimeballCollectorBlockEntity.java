@@ -23,31 +23,26 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
-
 public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuProvider {
     private static final int RANGE_XZ = 8;
     private static final int RANGE_Y = 256;
     private int enableOutline = 0;
-    private final ItemStackHandler inventory = new ItemStackHandler(9) {
+    private final ItemStackHandler inventory = new ItemStackHandler(9){
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return false;
         }
-
         @Override
         public int getSlotLimit(int slot) {
             return 64;
         }
-
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
     private final ContainerData data;
-
     public SlimeballCollectorBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.SLIMEBALL_COLLECTOR_BE.get(), pos, blockState);
         this.data = new ContainerData() {
@@ -59,7 +54,6 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
                     default -> 0;
                 };
             }
-
             @Override
             public void set(int index, int value) {
                 switch (index) {
@@ -69,48 +63,40 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
                         break;
                 }
             }
-
             @Override
             public int getCount() {
                 return 2;
             }
         };
     }
-
     public ItemStackHandler getInventory() {
         return inventory;
     }
-
     public ContainerData getData() {
         return data;
     }
-
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.productiveslimes.slimeball_collector");
     }
-
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
         return new SlimeballCollectorMenu(containerId, playerInventory, this, this.data);
     }
-
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         tag.put("inventory", inventory.serializeNBT(registries));
         tag.putInt("enableOutline", enableOutline);
         super.saveAdditional(tag, registries);
     }
-
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        inventory.deserializeNBT(registries, tag.getCompoundOrEmpty("inventory"));
-        enableOutline = tag.getIntOr("enableOutline", 0);
+        inventory.deserializeNBT(registries, tag.getCompound("inventory"));
+        enableOutline = tag.getInt("enableOutline");
     }
-
-    public void drops() {
+    public void drops(){
         SimpleContainer container = new SimpleContainer(9);
         for (int i = 0; i < inventory.getSlots(); i++) {
             if (!inventory.getStackInSlot(i).isEmpty()) {
@@ -119,7 +105,6 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
         }
         Containers.dropContents(level, worldPosition, container);
     }
-
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (this.level == null || this.level.isClientSide) return;
         // Define the collection area: 16x16 in X and Z, full height in Y.
@@ -135,7 +120,6 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
             }
         }
     }
-
     private void collectItem(ItemEntity item) {
         if (!hasSpaceForItem(item.getItem())) {
             return;
@@ -152,16 +136,14 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
             }
         }
     }
-
     private boolean hasSpaceForItem(ItemStack stack) {
         for (int i = 0; i < inventory.getSlots(); i++) {
-            if (inventory.getStackInSlot(i).isEmpty() || inventory.getStackInSlot(i).is(stack.getItem()) && inventory.getStackInSlot(i).getCount() + stack.getCount() <= inventory.getStackInSlot(i).getMaxStackSize()) {
+            if (inventory.getStackInSlot(i).isEmpty() || inventory.getStackInSlot(i).is(stack.getItem()) && inventory.getStackInSlot(i).getCount() + stack.getCount() <= inventory.getStackInSlot(i).getMaxStackSize()){
                 return true;
             }
         }
         return false;
     }
-
     public void setEnableOutline(int enableOutline) {
         this.enableOutline = enableOutline;
         setChanged();

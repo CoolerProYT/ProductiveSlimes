@@ -1,8 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "productiveslimes:item/template_slime_spawn_egg",
+    "model": "minecraft:item/template_spawn_egg",
     "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -11902935
+      },
       {
         "type": "minecraft:constant",
         "value": -11902935

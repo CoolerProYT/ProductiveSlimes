@@ -150,11 +150,11 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputInventory"));
-        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
+        inputHandler.deserializeNBT(pRegistries, pTag.getCompound("InputInventory"));
+        outputHandler.deserializeNBT(pRegistries, pTag.getCompound("OutputInventory"));
+        energyHandler.setEnergy(pTag.getInt("EnergyInventory"));
 
-        progress = pTag.getIntOr("soliding_station.progress", 0);
+        progress = pTag.getInt("soliding_station.progress");
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {

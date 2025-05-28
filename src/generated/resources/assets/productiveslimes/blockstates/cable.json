@@ -8,6 +8,7 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
         "x": 270
       },
       "when": {
@@ -17,6 +18,7 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
         "x": 90
       },
       "when": {
@@ -25,7 +27,9 @@
     },
     {
       "apply": {
-        "model": "productiveslimes:block/cable_part"
+        "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
+        "y": 0
       },
       "when": {
         "north": "true"
@@ -34,6 +38,7 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
         "y": 180
       },
       "when": {
@@ -43,6 +48,7 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
         "y": 90
       },
       "when": {
@@ -52,6 +58,7 @@
     {
       "apply": {
         "model": "productiveslimes:block/cable_part",
+        "uvlock": false,
         "y": 270
       },
       "when": {

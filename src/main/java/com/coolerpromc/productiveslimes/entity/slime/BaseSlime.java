@@ -1,7 +1,9 @@
 package com.coolerpromc.productiveslimes.entity.slime;
 
+import com.coolerpromc.productiveslimes.entity.ModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -99,8 +102,8 @@ public abstract class BaseSlime extends Slime {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.entityData.set(ID_SIZE, pCompound.getIntOr("size", 1));
-        this.entityData.set(GROWTH_COUNTER, pCompound.getIntOr("growth_counter", 0));
+        this.entityData.set(ID_SIZE, pCompound.getInt("size"));
+        this.entityData.set(GROWTH_COUNTER, pCompound.getInt("growth_counter"));
     }
 
     public void setResource(ItemStack stack) {

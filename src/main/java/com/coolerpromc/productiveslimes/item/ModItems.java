@@ -23,7 +23,7 @@ public class ModItems {
     public static final DeferredItem<Item> SLIMEBALL_FRAGMENT = ITEMS.registerItem("slimeball_fragment", Item::new, new Item.Properties());
 
     public static final DeferredItem<Item> ENERGY_SLIME_BALL = ITEMS.registerItem("energy_slimeball", properties -> new SlimeballItem(0xFFFFFF70, properties), new Item.Properties());
-    public static final DeferredItem<Item> ENERGY_SLIME_SPAWN_EGG = ITEMS.registerItem("energy_slime_spawn_egg", properties -> new SpawnEggItem(ModEntities.ENERGY_SLIME.get(), 0xffff70, properties), new Item.Properties());
+    public static final DeferredItem<Item> ENERGY_SLIME_SPAWN_EGG = ITEMS.registerItem("energy_slime_spawn_egg", properties -> new SpawnEggItem(ModEntities.ENERGY_SLIME.get(), 0xffff70, 0xFFFF00, properties), new Item.Properties());
 
     public static final DeferredItem<Item> SLIME_DNA = ITEMS.registerItem("slime_dna", properties -> new DnaItem(0xFF7BC35C, properties), new Item.Properties());
 
@@ -38,7 +38,7 @@ public class ModItems {
 
             DeferredItem<Item> slimeball = ITEMS.registerItem(slimeballName, properties -> new SlimeballItem(color, properties), new Item.Properties());
             DeferredItem<Item> dna = ITEMS.registerItem(dnaName, properties -> new DnaItem(color, properties), new Item.Properties());
-            DeferredItem<Item> spawnEgg = ITEMS.registerItem(spawnEggName, properties -> new SpawnEggItem(ModTierLists.getEntityByName(tiers.name()).get(), color, properties), new Item.Properties());
+            DeferredItem<Item> spawnEgg = ITEMS.registerItem(spawnEggName, properties -> new SpawnEggItem(ModTierLists.getEntityByName(tiers.name()).get(), color, color, properties), new Item.Properties());
 
             ModTierLists.addRegisteredSlimeballItem(tiers.name(), slimeball);
             ModTierLists.addRegisteredDnaItem(tiers.name(), dna);

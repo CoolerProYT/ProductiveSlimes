@@ -309,6 +309,17 @@ public class SlimeballCollectorBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof SlimeballCollectorBlockEntity slimeballCollectorBlockEntity) {
+                slimeballCollectorBlockEntity.drops();
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
     protected InteractionResult useItemOn(ItemStack p_316304_, BlockState p_316362_, Level level, BlockPos pos, Player player, InteractionHand p_316595_, BlockHitResult p_316140_) {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
