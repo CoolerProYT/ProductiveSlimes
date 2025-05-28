@@ -3,7 +3,7 @@ package com.coolerpromc.productiveslimes.compat.jei;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
+import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -20,17 +20,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-public class SolidingCategory extends AbstractRecipeCategory<RecipeHolder<SolidingRecipe>> {
+public class SqueezingCategory extends AbstractRecipeCategory<RecipeHolder<SqueezingRecipe>> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
-    public static final IRecipeHolderType<SolidingRecipe> SOLIDING_TYPE = IRecipeHolderType.create(ModRecipes.SOLIDING_TYPE.get());
+    public static final IRecipeHolderType<SqueezingRecipe> SQUEEZING_TYPE = IRecipeHolderType.create(ModRecipes.SQUEEZING_TYPE.get());
     private int tickCount = 0;
 
-    public SolidingCategory(IGuiHelper helper) {
-        super(SOLIDING_TYPE, Component.translatable("block.productiveslimes.liquid_soliding_station"), helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.LIQUID_SOLIDING_STATION.get())), 168, 77);
+    public SqueezingCategory(IGuiHelper helper) {
+        super(SQUEEZING_TYPE, Component.translatable("block.productiveslimes.slime_squeezer"), helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SLIME_SQUEEZER.get())), 168, 77);
     }
 
     @Override
-    public void draw(RecipeHolder<SolidingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<SqueezingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(RenderType::guiTextured, TEXTURE, 0, 0, 5, 5, 168, 77, 256, 256);
 
         tickCount++;
@@ -51,7 +51,7 @@ public class SolidingCategory extends AbstractRecipeCategory<RecipeHolder<Solidi
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, RecipeHolder<SolidingRecipe> solidingRecipe, IFocusGroup iFocusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, RecipeHolder<SqueezingRecipe> solidingRecipe, IFocusGroup iFocusGroup) {
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT,29,29).add(solidingRecipe.value().getInputItems().get(0));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,110,29).add(solidingRecipe.value().getOutputs().get(0));
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).add(solidingRecipe.value().getOutputs().get(1));

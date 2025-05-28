@@ -56,6 +56,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -131,6 +132,11 @@ public class ProductiveSlimes
         CustomContentRegistry.handleDatapack(event.getServer());
         event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
 
+    }
+
+    @SubscribeEvent
+    public void onOnDatapackSync(OnDatapackSyncEvent event) {
+        event.sendRecipes(ModRecipes.DNA_EXTRACTING_TYPE.get(), ModRecipes.DNA_SYNTHESIZING_TYPE.get(), ModRecipes.SOLIDING_TYPE.get(), ModRecipes.SQUEEZING_TYPE.get(), ModRecipes.MELTING_TYPE.get());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
