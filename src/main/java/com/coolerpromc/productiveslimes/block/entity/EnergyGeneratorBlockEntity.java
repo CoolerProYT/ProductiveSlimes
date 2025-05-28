@@ -185,7 +185,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         super.saveAdditional(pTag, pRegistries);
 
         pTag.put("Inventory", itemHandler.serializeNBT(pRegistries));
-        pTag.put("Energy", energyHandler.serializeNBT(pRegistries));
+        pTag.putInt("Energy", energyHandler.getEnergyStored());
         pTag.putInt("Progress", progress);
         pTag.putInt("MaxProgress", maxProgress);
         pTag.put("Upgrades", upgradeHandler.serializeNBT(pRegistries));
@@ -195,17 +195,22 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompound("Inventory"));
-        this.energyHandler.deserializeNBT(pRegistries, pTag.get("Energy"));
-        this.progress = pTag.getInt("Progress");
-        this.maxProgress = pTag.getInt("MaxProgress");
-        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompound("Upgrades"));
+        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Inventory"));
+        this.energyHandler.setEnergy(pTag.getIntOr("Energy", 0));
+        this.progress = pTag.getIntOr("Progress", 0);
+        this.maxProgress = pTag.getIntOr("MaxProgress", 100);
+        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Upgrades"));
     }
 
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 
     public void drops() {
@@ -236,5 +241,10 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
     public boolean canBurn(ItemStack stack) {
         return getBurnTime(stack) > 0;
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

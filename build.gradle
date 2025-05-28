@@ -98,7 +98,7 @@ dependencies {
 
     implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 
-    compileOnly "curse.maven:jade-324717:${jade_id}"
+    implementation "curse.maven:jade-324717:${jade_id}"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -126,8 +126,8 @@ tasks.withType(ProcessResources).configureEach {
 
 subsystems {
     parchment {
-        minecraftVersion = "1.21.4"
-        mappingsVersion = "2024.12.07"
+        minecraftVersion = parchment_minecraft_version
+        mappingsVersion = parchment_mappings_version
     }
 }
 

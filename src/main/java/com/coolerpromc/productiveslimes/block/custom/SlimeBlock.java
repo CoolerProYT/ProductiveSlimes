@@ -37,14 +37,14 @@ public class SlimeBlock extends HalfTransparentBlock implements TranslucentHighl
     }
 
     @Override
-    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, double pFallDistance) {
         if (pEntity.isSuppressingBounce()) {
             super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance);
         } else {
             pEntity.causeFallDamage(pFallDistance, 0.0F, pLevel.damageSources().fall());
         }
     }
-
+    
     /**
      * Called when an Entity lands on this Block.
      * This method is responsible for doing any modification on the motion of the entity that should result from the landing.

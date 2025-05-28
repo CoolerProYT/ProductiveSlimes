@@ -4,20 +4,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 
 public class SpawnEggItem extends net.minecraft.world.item.SpawnEggItem {
-    private final int bg;
-    private final int fg;
+    private final int color;
 
-    public SpawnEggItem(EntityType<? extends Mob> p_43207_, int bg, int fg, Properties p_43210_) {
+    public SpawnEggItem(EntityType<? extends Mob> p_43207_, int color, Properties p_43210_) {
         super(p_43207_, p_43210_);
-        this.bg = bg;
-        this.fg = fg;
+        this.color = color;
     }
 
-    public int getBg() {
-        return bg;
-    }
-
-    public int getFg() {
-        return fg;
+    public int getColor() {
+        return color;
     }
 }

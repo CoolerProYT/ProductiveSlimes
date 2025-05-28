@@ -20,9 +20,7 @@ public class CustomButton extends Button {
 
 
         if (!icon.isEmpty()) {
-            RenderSystem.enableBlend();
             pGuiGraphics.renderItem(icon, this.getX() + this.width / 2 - 8, this.getY() + this.height / 2 - 8);
-            RenderSystem.disableBlend();
         }
     }
 }

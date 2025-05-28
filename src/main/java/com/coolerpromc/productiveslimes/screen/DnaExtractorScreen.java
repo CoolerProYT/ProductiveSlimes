@@ -28,7 +28,6 @@ public class DnaExtractorScreen extends AbstractContainerScreen<DnaExtractorMenu
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
