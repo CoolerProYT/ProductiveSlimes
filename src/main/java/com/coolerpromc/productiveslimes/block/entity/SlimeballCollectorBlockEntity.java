@@ -1,11 +1,10 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
-import com.coolerpromc.productiveslimes.item.custom.SlimeballItem;
 import com.coolerpromc.productiveslimes.screen.SlimeballCollectorMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -19,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -97,17 +98,26 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("inventory", inventory.serializeNBT(registries));
-        tag.putInt("enableOutline", enableOutline);
-        super.saveAdditional(tag, registries);
+    protected void saveAdditional(ValueOutput valueOutput) {
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+        for (int i = 0;i < inventory.getSlots();i++){
+            itemStacks.set(i, inventory.getStackInSlot(i));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("enableOutline", enableOutline);
+        super.saveAdditional(valueOutput);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        inventory.deserializeNBT(registries, tag.getCompoundOrEmpty("inventory"));
-        enableOutline = tag.getIntOr("enableOutline", 0);
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
+
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            inventory.setStackInSlot(i, itemStacks.get(i));
+        }
+        enableOutline = valueInput.getIntOr("enableOutline", 0);
     }
 
     public void drops() {
@@ -165,5 +175,10 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     public void setEnableOutline(int enableOutline) {
         this.enableOutline = enableOutline;
         setChanged();
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

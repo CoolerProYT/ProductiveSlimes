@@ -16,6 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import java.util.Set;
 
 public record FluidTankSpecialRenderer() implements SpecialModelRenderer<ImmutableFluidStack> {
     @Nullable
@@ -35,6 +38,11 @@ public record FluidTankSpecialRenderer() implements SpecialModelRenderer<Immutab
             FluidStack fluidStack = immutableFluidStack.fluidStack();
             FluidTankBlockEntityRenderer.renderFluid(poseStack, bufferSource, packedLight, packedOverlay, fluidStack);
         }
+    }
+
+    @Override
+    public void getExtents(Set<Vector3f> p_428206_) {
+
     }
 
     public record Unbaked(ResourceLocation texture) implements SpecialModelRenderer.Unbaked{

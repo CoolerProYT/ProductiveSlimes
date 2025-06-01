@@ -1,13 +1,7 @@
 package com.coolerpromc.productiveslimes.config.fluid;
 
-import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogParameters;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -102,15 +96,6 @@ public class ModBaseFluidType extends FluidType {
         @Override
         public Vector4f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
             return new Vector4f(FOG_COLOR.x, FOG_COLOR.y, FOG_COLOR.z, 1.0F);
-        }
-
-        @Override
-        public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, FogParameters fogParameters) {
-            float r = FOG_COLOR.x;
-            float g = FOG_COLOR.y;
-            float b = FOG_COLOR.z;
-            float a = 1.0F;
-            return new FogParameters(1f, 6f, FogShape.SPHERE, r, g, b, a);
         }
     }
 }

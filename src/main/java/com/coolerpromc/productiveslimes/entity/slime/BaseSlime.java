@@ -24,6 +24,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -90,17 +92,17 @@ public abstract class BaseSlime extends Slime {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("growth_counter", this.entityData.get(GROWTH_COUNTER));
-        pCompound.putInt("size", this.entityData.get(ID_SIZE));
+    public void addAdditionalSaveData(ValueOutput valueOutput) {
+        super.addAdditionalSaveData(valueOutput);
+        valueOutput.putInt("growth_counter", this.entityData.get(GROWTH_COUNTER));
+        valueOutput.putInt("size", this.entityData.get(ID_SIZE));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.entityData.set(ID_SIZE, pCompound.getIntOr("size", 1));
-        this.entityData.set(GROWTH_COUNTER, pCompound.getIntOr("growth_counter", 0));
+    public void readAdditionalSaveData(ValueInput valueInput) {
+        super.readAdditionalSaveData(valueInput);
+        this.entityData.set(ID_SIZE, valueInput.getIntOr("size", 1));
+        this.entityData.set(GROWTH_COUNTER, valueInput.getIntOr("growth_counter", 0));
     }
 
     public void setResource(ItemStack stack) {

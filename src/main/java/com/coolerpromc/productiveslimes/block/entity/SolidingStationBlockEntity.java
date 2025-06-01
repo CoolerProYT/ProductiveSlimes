@@ -2,17 +2,18 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-//import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.SolidingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -22,12 +23,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +41,7 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()){
+            if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -136,25 +138,36 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
-        pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
+    protected void saveAdditional(ValueOutput valueOutput) {
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        for (int i = 0;i < inputHandler.getSlots(); i++) {
+            itemStacks.set(i, inputHandler.getStackInSlot(i));
+        }
+        for (int i = inputHandler.getSlots();i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
+            itemStacks.set(i, outputHandler.getStackInSlot(i - inputHandler.getSlots()));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
-        pTag.putInt("soliding_station.progress", progress);
+        valueOutput.putInt("soliding_station.progress", progress);
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(valueOutput);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0; i < inputHandler.getSlots(); i++) {
+            inputHandler.setStackInSlot(i, itemStacks.get(i));
+        }
+        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
+            outputHandler.setStackInSlot(i - inputHandler.getSlots(), itemStacks.get(i));
+        }
+        energyHandler.setEnergy(valueInput.getIntOr("EnergyInventory", 0));
 
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputInventory"));
-        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
-
-        progress = pTag.getIntOr("soliding_station.progress", 0);
+        progress = valueInput.getIntOr("soliding_station.progress", 0);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
@@ -310,5 +323,10 @@ public class SolidingStationBlockEntity extends BlockEntity implements MenuProvi
 
     public ItemStack getRenderStack() {
         return inputHandler.getStackInSlot(0);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos p_394577_, BlockState p_394161_) {
+        drops();
     }
 }

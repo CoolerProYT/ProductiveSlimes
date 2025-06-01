@@ -37,34 +37,6 @@ public record SlimeData(int size, int color, int cooldown, ItemStack dropItem, I
         );
     }
 
-    public CompoundTag toTag(CompoundTag tag, HolderLookup.Provider provider) {
-        tag.putInt("size", size);
-        tag.putInt("color", color);
-        tag.putInt("cooldown", cooldown);
-        tag.put("drop", dropItem.save(provider));
-        tag.put("growth_item", growthItem.save(provider));
-        tag.putString("slime", Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(slime).toString()));
-        return tag;
-    }
-
-    public static SlimeData fromTag(CompoundTag tag, HolderLookup.Provider provider) {
-        boolean slime = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getStringOr("slime", ""))).isPresent();
-        EntityType<BaseSlime> entityType;
-        if (!slime) {
-            entityType = null;
-        } else {
-            entityType = (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(tag.getStringOr("slime", null))).get().getDelegate().value();
-        }
-        return new SlimeData(
-                tag.getIntOr("size", 1),
-                tag.getIntOr("color", 0),
-                tag.getIntOr("cooldown", 0),
-                ItemStack.parse(provider, tag.getCompoundOrEmpty("drop")).orElse(ItemStack.EMPTY),
-                ItemStack.parse(provider, tag.getCompoundOrEmpty("growth_item")).orElse(ItemStack.EMPTY),
-                entityType
-        );
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

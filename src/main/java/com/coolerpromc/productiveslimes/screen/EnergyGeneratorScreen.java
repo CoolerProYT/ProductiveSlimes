@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -49,15 +50,13 @@ public class EnergyGeneratorScreen extends AbstractContainerScreen<EnergyGenerat
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
         int x = (width - 176) / 2;
         int y = (height - imageHeight) / 2;
 
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
         int energyScaled = this.menu.getEnergyStoredScaled();
 
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 9, y + 13 + (57 - energyScaled), 232, 57 - energyScaled, 9, energyScaled, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 9, y + 13 + (57 - energyScaled), 232, 57 - energyScaled, 9, energyScaled, 256, 256);
 
         renderProgressArrow(guiGraphics, x, y);
     }
@@ -65,7 +64,7 @@ public class EnergyGeneratorScreen extends AbstractContainerScreen<EnergyGenerat
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
             int k = menu.getScaledProgress();
-            guiGraphics.blit(RenderType::guiTextured, TEXTURE, x + 81, y + 47 + 14 - k, 218, 14 - k, 14, k, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 81, y + 47 + 14 - k, 218, 14 - k, 14, k, 256, 256);
         }
     }
 
@@ -80,7 +79,7 @@ public class EnergyGeneratorScreen extends AbstractContainerScreen<EnergyGenerat
 
         Component text = Component.translatable("gui.productiveslimes.energy_stored", energyStored, maxEnergy);
         if(isHovering(9, 13, 9, 57, mouseX, mouseY)) {
-            guiGraphics.renderTooltip(this.font, text, mouseX, mouseY);
+            guiGraphics.setTooltipForNextFrame(this.font, text, mouseX, mouseY);
         }
     }
 }

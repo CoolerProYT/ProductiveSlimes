@@ -24,8 +24,8 @@ public class DataGenerators {
 
         event.addProvider(new ModModelProvider(packOutput));
 
-        ModBlockTagGenerator blockTagGenerator = event.addProvider(new ModBlockTagGenerator(packOutput, lookupProvider));
-        event.addProvider(new ModItemTagGenerator(packOutput, lookupProvider, blockTagGenerator.contentsGetter()));
+        event.addProvider(new ModBlockTagGenerator(packOutput, lookupProvider));
+        event.addProvider(new ModItemTagGenerator(packOutput, lookupProvider));
 
         event.addProvider(new ModFluidTagsProvider(packOutput, lookupProvider));
         event.addProvider(new ModWorldGenProvider(packOutput, lookupProvider));

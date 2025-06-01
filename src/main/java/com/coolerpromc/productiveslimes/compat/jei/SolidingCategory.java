@@ -14,6 +14,7 @@ import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeHolderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,22 +32,22 @@ public class SolidingCategory extends AbstractRecipeCategory<RecipeHolder<Solidi
 
     @Override
     public void draw(RecipeHolder<SolidingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 0, 0, 5, 5, 168, 77, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 0, 0, 5, 5, 168, 77, 256, 256);
 
         tickCount++;
         int arrowWidth = (tickCount % 600) * 26 / 600;
 
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 72, 33, 176, 0, arrowWidth, 8, 256, 256);
 
         int energyScaled = (int) Math.ceil((double) recipe.value().getEnergy() / 10000 * 57);
         energyScaled = arrowWidth >= 25 ? 0 : energyScaled;
 
-        guiGraphics.blit(RenderType::guiTextured, TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 4, 13 + (52 - energyScaled), 176, 65 - energyScaled, 9, energyScaled, 256, 256);
 
         Component text = Component.translatable("tooltip.productiveslimes.energy_usage", recipe.value().getEnergy());
 
         if (mouseX >= 4 && mouseX <= 13 && mouseY >= 8 && mouseY <= 65) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
+            guiGraphics.setTooltipForNextFrame(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
         }
     }
 

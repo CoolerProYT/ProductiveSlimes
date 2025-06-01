@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -45,7 +46,7 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
             height += 0.05f;
         }
 
-        VertexConsumer builder = pBufferSource.getBuffer(ItemBlockRenderTypes.getRenderLayer(state));
+        VertexConsumer builder = pBufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(ItemBlockRenderTypes.getRenderLayer(state)));
 
         drawQuad(builder, pPoseStack, 0.2f, height, 0.2f, 0.80f, height, 0.80f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), pPackedLight, color);
 
@@ -71,6 +72,7 @@ public class FluidTankBlockEntityRenderer implements BlockEntityRenderer<FluidTa
         builder.addVertex(poseStack.last().pose(), x, y, z)
                 .setColor(color)
                 .setUv(u, v)
+                .setUv1((int) u, (int) v)
                 .setLight(packedLight)
                 .setNormal(1, 0, 0);
     }

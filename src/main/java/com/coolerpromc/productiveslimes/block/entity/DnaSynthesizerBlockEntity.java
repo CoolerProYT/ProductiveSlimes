@@ -11,12 +11,14 @@ import com.coolerpromc.productiveslimes.screen.DnaSynthesizerMenu;
 import com.coolerpromc.productiveslimes.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -33,6 +35,8 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 import org.jline.utils.Log;
@@ -48,7 +52,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()){
+            if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -68,7 +72,7 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()){
+            if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -170,25 +174,43 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.put("InputSlot", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputSlot", outputHandler.serializeNBT(pRegistries));
-        pTag.put("EggSlot", eggHandler.serializeNBT(pRegistries));
-        pTag.putInt("Energy", energyHandler.getEnergyStored());
+    protected void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
 
-        pTag.putInt("dna_synthesizing.progress", progress);
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < inputHandler.getSlots(); i++) {
+            itemStacks.set(i, inputHandler.getStackInSlot(i));
+        }
+        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
+            itemStacks.set(i, outputHandler.getStackInSlot(i - inputHandler.getSlots()));
+        }
+        for (int i = inputHandler.getSlots() + outputHandler.getSlots(); i < inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(); i++) {
+            itemStacks.set(i, eggHandler.getStackInSlot(i - inputHandler.getSlots() - outputHandler.getSlots()));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("Energy", energyHandler.getEnergyStored());
+
+        valueOutput.putInt("dna_synthesizing.progress", progress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputSlot"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputSlot"));
-        eggHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("EggSlot"));
-        energyHandler.setEnergy(pTag.getIntOr("Energy", 0));
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
 
-        progress = pTag.getIntOr("dna_synthesizing.progress", 0);
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0; i < inputHandler.getSlots(); i++) {
+            inputHandler.setStackInSlot(i, itemStacks.get(i));
+        }
+        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
+            outputHandler.setStackInSlot(i - inputHandler.getSlots(), itemStacks.get(i));
+        }
+        for (int i = inputHandler.getSlots() + outputHandler.getSlots(); i < inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(); i++) {
+            eggHandler.setStackInSlot(i - inputHandler.getSlots() - outputHandler.getSlots(), itemStacks.get(i));
+        }
+        energyHandler.setEnergy(valueInput.getIntOr("Energy", 0));
+
+        progress = valueInput.getIntOr("dna_synthesizing.progress", 0);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {

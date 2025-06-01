@@ -7,6 +7,7 @@ import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
 import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -14,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -25,6 +27,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +48,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -63,7 +67,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
             ItemStack stack = getStackInSlot(slot);
@@ -92,7 +96,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -172,33 +176,49 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("upgradeHandler", upgradeHandler.serializeNBT(registries));
-        tag.put("slimeHandler", slimeHandler.serializeNBT(registries));
-        tag.put("outputHandler", outputHandler.serializeNBT(registries));
-        tag.putInt("counter", counter);
-        tag.putInt("cooldown", cooldown);
-        if (slimeData != null && !dropItem.isEmpty()) {
-            tag.put("dropItem", dropItem.save(registries));
-            tag.put("slimeData", slimeData.toTag(new CompoundTag(), registries));
+    protected void saveAdditional(ValueOutput valueOutput) {
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(upgradeHandler.getSlots() + slimeHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
+            itemStacks.set(i, upgradeHandler.getStackInSlot(i));
         }
-        tag.putInt("tick", tick);
-        tag.putFloat("multiplier", multiplier);
-        super.saveAdditional(tag, registries);
+        for (int i = upgradeHandler.getSlots(); i < slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
+            itemStacks.set(i, slimeHandler.getStackInSlot(i - upgradeHandler.getSlots()));
+        }
+        for (int i = upgradeHandler.getSlots() + slimeHandler.getSlots(); i < outputHandler.getSlots() + slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
+            itemStacks.set(i, outputHandler.getStackInSlot(i - upgradeHandler.getSlots() - slimeHandler.getSlots()));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("counter", counter);
+        valueOutput.putInt("cooldown", cooldown);
+        if (slimeData != null && !dropItem.isEmpty()) {
+            valueOutput.store("dropItem", ItemStack.CODEC, dropItem);
+            valueOutput.store("slimeData", SlimeData.CODEC, slimeData);
+        }
+        valueOutput.putInt("tick", tick);
+        valueOutput.putFloat("multiplier", multiplier);
+        super.saveAdditional(valueOutput);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        upgradeHandler.deserializeNBT(registries, tag.getCompoundOrEmpty("upgradeHandler"));
-        slimeHandler.deserializeNBT(registries, tag.getCompoundOrEmpty("slimeHandler"));
-        outputHandler.deserializeNBT(registries, tag.getCompoundOrEmpty("outputHandler"));
-        counter = tag.getIntOr("counter", 0);
-        cooldown = tag.getIntOr("cooldown", 0);
-        dropItem = ItemStack.parse(registries, tag.getCompoundOrEmpty("dropItem")).orElse(ItemStack.EMPTY);
-        slimeData = SlimeData.fromTag(tag.getCompoundOrEmpty("slimeData"), registries);
-        tick = tag.getIntOr("tick", 0);
-        multiplier = tag.getIntOr("multiplier", 1) / 10000F;
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(upgradeHandler.getSlots() + slimeHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
+            upgradeHandler.setStackInSlot(i, itemStacks.get(i));
+        }
+        for (int i = upgradeHandler.getSlots(); i < slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
+            slimeHandler.setStackInSlot(i - upgradeHandler.getSlots(), itemStacks.get(i));
+        }
+        for (int i = upgradeHandler.getSlots() + slimeHandler.getSlots(); i < outputHandler.getSlots() + slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
+            outputHandler.setStackInSlot(i - upgradeHandler.getSlots() - slimeHandler.getSlots(), itemStacks.get(i));
+        }
+        counter = valueInput.getIntOr("counter", 0);
+        cooldown = valueInput.getIntOr("cooldown", 0);
+        dropItem = valueInput.read("dropItem", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        slimeData = valueInput.read("slimeData", SlimeData.CODEC).orElse(null);
+        tick = valueInput.getIntOr("tick", 0);
+        multiplier = valueInput.getIntOr("multiplier", 1) / 10000F;
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {

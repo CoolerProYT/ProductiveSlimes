@@ -7,11 +7,13 @@ import com.coolerpromc.productiveslimes.screen.EnergyGeneratorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -25,6 +27,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -181,25 +185,37 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
+    protected void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
 
-        pTag.put("Inventory", itemHandler.serializeNBT(pRegistries));
-        pTag.putInt("Energy", energyHandler.getEnergyStored());
-        pTag.putInt("Progress", progress);
-        pTag.putInt("MaxProgress", maxProgress);
-        pTag.put("Upgrades", upgradeHandler.serializeNBT(pRegistries));
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(itemHandler.getSlots() + upgradeHandler.getSlots(), ItemStack.EMPTY);
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            itemStacks.set(i, itemHandler.getStackInSlot(i));
+        }
+        for (int i = itemHandler.getSlots(); i < upgradeHandler.getSlots() + itemHandler.getSlots(); i++) {
+            itemStacks.set(i, upgradeHandler.getStackInSlot(i - itemHandler.getSlots()));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("Energy", energyHandler.getEnergyStored());
+        valueOutput.putInt("Progress", progress);
+        valueOutput.putInt("MaxProgress", maxProgress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
 
-        this.itemHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Inventory"));
-        this.energyHandler.setEnergy(pTag.getIntOr("Energy", 0));
-        this.progress = pTag.getIntOr("Progress", 0);
-        this.maxProgress = pTag.getIntOr("MaxProgress", 100);
-        this.upgradeHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("Upgrades"));
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(itemHandler.getSlots() + upgradeHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            itemHandler.setStackInSlot(i, itemStacks.get(i));
+        }
+        for (int i = itemHandler.getSlots(); i < upgradeHandler.getSlots() + itemHandler.getSlots(); i++) {
+            upgradeHandler.setStackInSlot(i - itemHandler.getSlots(), itemStacks.get(i));
+        }
+        this.energyHandler.setEnergy(valueInput.getIntOr("Energy", 0));
+        this.progress = valueInput.getIntOr("Progress", 0);
+        this.maxProgress = valueInput.getIntOr("MaxProgress", 100);
     }
 
     @Nullable

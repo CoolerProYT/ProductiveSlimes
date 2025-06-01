@@ -30,6 +30,7 @@ import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -115,7 +116,7 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
+//        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
@@ -123,7 +124,7 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
@@ -169,7 +170,7 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        RecipeManager recipeManager = player.server.getRecipeManager();
+        RecipeManager recipeManager = player.level().recipeAccess();
 
         player.connection.send(new RecipeSyncPayload(recipeManager.getRecipes().stream().toList()));
     }
@@ -216,7 +217,7 @@ public class ProductiveSlimes
                         ModBlocks.FLUID_TANK.get()
                 );
 
-                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), RenderType.CUTOUT);
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.CABLE.get(), ChunkSectionLayer.CUTOUT);
             });
 
             CustomContentRegistry.handleResourcePack();
@@ -282,35 +283,35 @@ public class ProductiveSlimes
         public static void registerAllFluidRenderLayer() {
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getSourceByName(tiers.name()).get(), RenderType.translucent());
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getFlowByName(tiers.name()).get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getSourceByName(tiers.name()).get(), ChunkSectionLayer.TRANSLUCENT);
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getFlowByName(tiers.name()).get(), ChunkSectionLayer.TRANSLUCENT);
             }
 
             FluidResources.fluidList.stream()
                     .filter(fluid -> fluid.isTranslucent)
                     .forEach(fluid -> {
-                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), RenderType.translucent());
-                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), RenderType.translucent());
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID.get(), ChunkSectionLayer.TRANSLUCENT);
+                        ItemBlockRenderTypes.setRenderLayer(fluid.FLUID_FLOW.get(), ChunkSectionLayer.TRANSLUCENT);
                     });
         }
 
         private static void registerBlockRenderLayer(Block... blocks) {
             for (Block b : blocks) {
-                ItemBlockRenderTypes.setRenderLayer(b, RenderType.cutout());
+                ItemBlockRenderTypes.setRenderLayer(b, ChunkSectionLayer.CUTOUT);
             }
         }
 
         public static void registerAllSlimeBlockRenderLayer() {
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENERGY_SLIME_BLOCK.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ENERGY_SLIME_BLOCK.get(), ChunkSectionLayer.TRANSLUCENT);
 
             for (Tier tier : Tier.values()){
                 ModTiers tiers = ModTierLists.getTierByName(tier);
-                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getBlockByName(tiers.name()).get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModTierLists.getBlockByName(tiers.name()).get(), ChunkSectionLayer.TRANSLUCENT);
             }
 
             for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                 if (CustomContentRegistry.getSlimeBlockForVariant(variant.getName()).get() instanceof SlimeBlock block){
-                    ItemBlockRenderTypes.setRenderLayer(block, RenderType.TRANSLUCENT);
+                    ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.TRANSLUCENT);
                 }
             }
         }

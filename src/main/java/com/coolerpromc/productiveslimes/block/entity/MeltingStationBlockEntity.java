@@ -7,9 +7,11 @@ import com.coolerpromc.productiveslimes.recipe.ModRecipes;
 import com.coolerpromc.productiveslimes.screen.MeltingStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -25,6 +27,8 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -146,27 +150,43 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag.put("BucketInventory", bucketHandler.serializeNBT(pRegistries));
-        pTag.put("InputInventory", inputHandler.serializeNBT(pRegistries));
-        pTag.put("OutputInventory", outputHandler.serializeNBT(pRegistries));
-        pTag.putInt("EnergyInventory", energyHandler.getEnergyStored());
+    protected void saveAdditional(ValueOutput valueOutput) {
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(bucketHandler.getSlots() + inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        for (int i = 0;i < bucketHandler.getSlots();i++){
+            itemStacks.set(i, bucketHandler.getStackInSlot(i));
+        }
+        for (int i = bucketHandler.getSlots();i < inputHandler.getSlots() + bucketHandler.getSlots();i++){
+            itemStacks.set(i, inputHandler.getStackInSlot(i - bucketHandler.getSlots()));
+        }
+        for (int i = bucketHandler.getSlots() + inputHandler.getSlots();i < outputHandler.getSlots() + bucketHandler.getSlots() + inputHandler.getSlots();i++){
+            itemStacks.set(i, outputHandler.getStackInSlot(i - bucketHandler.getSlots() - inputHandler.getSlots()));
+        }
+        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
 
-        pTag.putInt("melting_station.progress", progress);
+        valueOutput.putInt("melting_station.progress", progress);
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(valueOutput);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
 
-        bucketHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("BucketInventory"));
-        inputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("InputInventory"));
-        outputHandler.deserializeNBT(pRegistries, pTag.getCompoundOrEmpty("OutputInventory"));
-        energyHandler.setEnergy(pTag.getIntOr("EnergyInventory", 0));
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(bucketHandler.getSlots() + inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(valueInput, itemStacks);
+        for (int i = 0;i < bucketHandler.getSlots();i++){
+            bucketHandler.setStackInSlot(i, itemStacks.get(i));
+        }
+        for (int i = bucketHandler.getSlots();i < inputHandler.getSlots() + bucketHandler.getSlots();i++){
+            inputHandler.setStackInSlot(i - bucketHandler.getSlots(), itemStacks.get(i));
+        }
+        for (int i = bucketHandler.getSlots() + inputHandler.getSlots();i < outputHandler.getSlots() + bucketHandler.getSlots() + inputHandler.getSlots();i++){
+            outputHandler.setStackInSlot(i - bucketHandler.getSlots() - inputHandler.getSlots(), itemStacks.get(i));
+        }
+        energyHandler.setEnergy(valueInput.getIntOr("EnergyInventory", 0));
 
-        progress = pTag.getIntOr("melting_station.progress", 0);
+        progress = valueInput.getIntOr("melting_station.progress", 0);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {

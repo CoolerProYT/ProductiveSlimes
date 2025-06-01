@@ -9,6 +9,8 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -63,16 +65,16 @@ public class FluidTankBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        pTag = fluidTank.writeToNBT(pRegistries, pTag);
+    protected void saveAdditional(ValueOutput valueOutput) {
+        valueOutput.store("fluidTank", FluidStack.CODEC, fluidTank.getFluid());
 
-        super.saveAdditional(pTag, pRegistries);
+        super.saveAdditional(valueOutput);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        fluidTank.readFromNBT(pRegistries, pTag);
+    protected void loadAdditional(ValueInput valueInput) {
+        super.loadAdditional(valueInput);
+        fluidTank.setFluid(valueInput.read("fluidTank", FluidStack.CODEC).orElse(FluidStack.EMPTY));
     }
 
     @Nullable
