@@ -99,25 +99,16 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
 
     @Override
     protected void saveAdditional(ValueOutput valueOutput) {
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
-        for (int i = 0;i < inventory.getSlots();i++){
-            itemStacks.set(i, inventory.getStackInSlot(i));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        inventory.serialize(valueOutput.child("inventory"));
         valueOutput.putInt("enableOutline", enableOutline);
         super.saveAdditional(valueOutput);
     }
 
     @Override
     protected void loadAdditional(ValueInput valueInput) {
-        super.loadAdditional(valueInput);
-
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inventory.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            inventory.setStackInSlot(i, itemStacks.get(i));
-        }
+        inventory.deserialize(valueInput.childOrEmpty("inventory"));
         enableOutline = valueInput.getIntOr("enableOutline", 0);
+        super.loadAdditional(valueInput);
     }
 
     public void drops() {

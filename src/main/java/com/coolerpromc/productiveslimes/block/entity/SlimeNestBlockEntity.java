@@ -177,17 +177,9 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     protected void saveAdditional(ValueOutput valueOutput) {
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(upgradeHandler.getSlots() + slimeHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
-            itemStacks.set(i, upgradeHandler.getStackInSlot(i));
-        }
-        for (int i = upgradeHandler.getSlots(); i < slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
-            itemStacks.set(i, slimeHandler.getStackInSlot(i - upgradeHandler.getSlots()));
-        }
-        for (int i = upgradeHandler.getSlots() + slimeHandler.getSlots(); i < outputHandler.getSlots() + slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
-            itemStacks.set(i, outputHandler.getStackInSlot(i - upgradeHandler.getSlots() - slimeHandler.getSlots()));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        upgradeHandler.serialize(valueOutput.child("upgradeHandler"));
+        slimeHandler.serialize(valueOutput.child("slimeHandler"));
+        outputHandler.serialize(valueOutput.child("outputHandler"));
         valueOutput.putInt("counter", counter);
         valueOutput.putInt("cooldown", cooldown);
         if (slimeData != null && !dropItem.isEmpty()) {
@@ -201,24 +193,16 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     protected void loadAdditional(ValueInput valueInput) {
-        super.loadAdditional(valueInput);
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(upgradeHandler.getSlots() + slimeHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0; i < upgradeHandler.getSlots(); i++) {
-            upgradeHandler.setStackInSlot(i, itemStacks.get(i));
-        }
-        for (int i = upgradeHandler.getSlots(); i < slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
-            slimeHandler.setStackInSlot(i - upgradeHandler.getSlots(), itemStacks.get(i));
-        }
-        for (int i = upgradeHandler.getSlots() + slimeHandler.getSlots(); i < outputHandler.getSlots() + slimeHandler.getSlots() + upgradeHandler.getSlots(); i++) {
-            outputHandler.setStackInSlot(i - upgradeHandler.getSlots() - slimeHandler.getSlots(), itemStacks.get(i));
-        }
+        upgradeHandler.deserialize(valueInput.childOrEmpty("upgradeHandler"));
+        slimeHandler.deserialize(valueInput.childOrEmpty("slimeHandler"));
+        outputHandler.deserialize(valueInput.childOrEmpty("outputHandler"));
         counter = valueInput.getIntOr("counter", 0);
         cooldown = valueInput.getIntOr("cooldown", 0);
         dropItem = valueInput.read("dropItem", ItemStack.CODEC).orElse(ItemStack.EMPTY);
         slimeData = valueInput.read("slimeData", SlimeData.CODEC).orElse(null);
         tick = valueInput.getIntOr("tick", 0);
         multiplier = valueInput.getIntOr("multiplier", 1) / 10000F;
+        super.loadAdditional(valueInput);
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {

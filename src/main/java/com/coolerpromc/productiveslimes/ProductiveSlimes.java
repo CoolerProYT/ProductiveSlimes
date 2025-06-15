@@ -11,7 +11,7 @@ import com.coolerpromc.productiveslimes.config.fluid.ModBaseFluidType;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.entity.SlimeModel;
-import com.coolerpromc.productiveslimes.entity.renderer.*;
+import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
 import com.coolerpromc.productiveslimes.fluid.ModFluidResources;
 import com.coolerpromc.productiveslimes.fluid.ModFluids;
 import com.coolerpromc.productiveslimes.item.ModCreativeTabs;
@@ -24,12 +24,10 @@ import com.coolerpromc.productiveslimes.screen.ModMenuTypes;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
-import com.coolerpromc.productiveslimes.util.*;
+import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
+import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
-import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
@@ -66,7 +64,6 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import terrablender.api.SurfaceRuleManager;
 
 @Mod(ProductiveSlimes.MODID)
 public class ProductiveSlimes

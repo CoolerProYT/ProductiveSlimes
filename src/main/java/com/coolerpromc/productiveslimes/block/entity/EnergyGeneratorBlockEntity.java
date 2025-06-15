@@ -188,14 +188,8 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     protected void saveAdditional(ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
 
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(itemHandler.getSlots() + upgradeHandler.getSlots(), ItemStack.EMPTY);
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            itemStacks.set(i, itemHandler.getStackInSlot(i));
-        }
-        for (int i = itemHandler.getSlots(); i < upgradeHandler.getSlots() + itemHandler.getSlots(); i++) {
-            itemStacks.set(i, upgradeHandler.getStackInSlot(i - itemHandler.getSlots()));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        itemHandler.serialize(valueOutput.child("ItemHandler"));
+        upgradeHandler.serialize(valueOutput.child("UpgradeHandler"));
         valueOutput.putInt("Energy", energyHandler.getEnergyStored());
         valueOutput.putInt("Progress", progress);
         valueOutput.putInt("MaxProgress", maxProgress);
@@ -205,14 +199,8 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     protected void loadAdditional(ValueInput valueInput) {
         super.loadAdditional(valueInput);
 
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(itemHandler.getSlots() + upgradeHandler.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            itemHandler.setStackInSlot(i, itemStacks.get(i));
-        }
-        for (int i = itemHandler.getSlots(); i < upgradeHandler.getSlots() + itemHandler.getSlots(); i++) {
-            upgradeHandler.setStackInSlot(i - itemHandler.getSlots(), itemStacks.get(i));
-        }
+        itemHandler.deserialize(valueInput.childOrEmpty("ItemHandler"));
+        upgradeHandler.deserialize(valueInput.childOrEmpty("UpgradeHandler"));
         this.energyHandler.setEnergy(valueInput.getIntOr("Energy", 0));
         this.progress = valueInput.getIntOr("Progress", 0);
         this.maxProgress = valueInput.getIntOr("MaxProgress", 100);

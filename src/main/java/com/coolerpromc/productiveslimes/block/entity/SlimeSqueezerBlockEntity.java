@@ -130,14 +130,8 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     protected void saveAdditional(ValueOutput valueOutput) {
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        for (int i = 0; i < inputHandler.getSlots(); i++) {
-            itemStacks.set(i, inputHandler.getStackInSlot(i));
-        }
-        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
-            itemStacks.set(i, outputHandler.getStackInSlot(i - inputHandler.getSlots()));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        inputHandler.serialize(valueOutput.child("inputHandler"));
+        outputHandler.serialize(valueOutput.child("outputHandler"));
         valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
         valueOutput.putInt("slime_squeezer.progress", progress);
         super.saveAdditional(valueOutput);
@@ -145,17 +139,11 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     protected void loadAdditional(ValueInput valueInput) {
-        super.loadAdditional(valueInput);
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0; i < inputHandler.getSlots(); i++) {
-            inputHandler.setStackInSlot(i, itemStacks.get(i));
-        }
-        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
-            outputHandler.setStackInSlot(i - inputHandler.getSlots(), itemStacks.get(i));
-        }
+        inputHandler.deserialize(valueInput.childOrEmpty("inputHandler"));
+        outputHandler.deserialize(valueInput.childOrEmpty("outputHandler"));
         energyHandler.setEnergy(valueInput.getIntOr("EnergyInventory", 0));
         progress = valueInput.getIntOr("slime_squeezer.progress", 0);
+        super.loadAdditional(valueInput);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {

@@ -66,15 +66,14 @@ public class FluidTankBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(ValueOutput valueOutput) {
-        valueOutput.store("fluidTank", FluidStack.CODEC, fluidTank.getFluid());
-
+        fluidTank.serialize(valueOutput);
         super.saveAdditional(valueOutput);
     }
 
     @Override
     protected void loadAdditional(ValueInput valueInput) {
+        fluidTank.deserialize(valueInput);
         super.loadAdditional(valueInput);
-        fluidTank.setFluid(valueInput.read("fluidTank", FluidStack.CODEC).orElse(FluidStack.EMPTY));
     }
 
     @Nullable

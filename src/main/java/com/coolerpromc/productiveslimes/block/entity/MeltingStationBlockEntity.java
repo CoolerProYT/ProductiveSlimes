@@ -151,19 +151,10 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     protected void saveAdditional(ValueOutput valueOutput) {
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(bucketHandler.getSlots() + inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        for (int i = 0;i < bucketHandler.getSlots();i++){
-            itemStacks.set(i, bucketHandler.getStackInSlot(i));
-        }
-        for (int i = bucketHandler.getSlots();i < inputHandler.getSlots() + bucketHandler.getSlots();i++){
-            itemStacks.set(i, inputHandler.getStackInSlot(i - bucketHandler.getSlots()));
-        }
-        for (int i = bucketHandler.getSlots() + inputHandler.getSlots();i < outputHandler.getSlots() + bucketHandler.getSlots() + inputHandler.getSlots();i++){
-            itemStacks.set(i, outputHandler.getStackInSlot(i - bucketHandler.getSlots() - inputHandler.getSlots()));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        bucketHandler.serialize(valueOutput.child("bucketHandler"));
+        inputHandler.serialize(valueOutput.child("inputHandler"));
+        outputHandler.serialize(valueOutput.child("outputHandler"));
         valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
-
         valueOutput.putInt("melting_station.progress", progress);
 
         super.saveAdditional(valueOutput);
@@ -173,19 +164,10 @@ public class MeltingStationBlockEntity extends BlockEntity implements MenuProvid
     protected void loadAdditional(ValueInput valueInput) {
         super.loadAdditional(valueInput);
 
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(bucketHandler.getSlots() + inputHandler.getSlots() + outputHandler.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0;i < bucketHandler.getSlots();i++){
-            bucketHandler.setStackInSlot(i, itemStacks.get(i));
-        }
-        for (int i = bucketHandler.getSlots();i < inputHandler.getSlots() + bucketHandler.getSlots();i++){
-            inputHandler.setStackInSlot(i - bucketHandler.getSlots(), itemStacks.get(i));
-        }
-        for (int i = bucketHandler.getSlots() + inputHandler.getSlots();i < outputHandler.getSlots() + bucketHandler.getSlots() + inputHandler.getSlots();i++){
-            outputHandler.setStackInSlot(i - bucketHandler.getSlots() - inputHandler.getSlots(), itemStacks.get(i));
-        }
+        bucketHandler.deserialize(valueInput.childOrEmpty("bucketHandler"));
+        inputHandler.deserialize(valueInput.childOrEmpty("inputHandler"));
+        outputHandler.deserialize(valueInput.childOrEmpty("outputHandler"));
         energyHandler.setEnergy(valueInput.getIntOr("EnergyInventory", 0));
-
         progress = valueInput.getIntOr("melting_station.progress", 0);
     }
 

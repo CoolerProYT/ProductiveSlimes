@@ -177,19 +177,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     protected void saveAdditional(ValueOutput valueOutput) {
         super.saveAdditional(valueOutput);
 
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(), ItemStack.EMPTY);
-        for (int i = 0; i < inputHandler.getSlots(); i++) {
-            itemStacks.set(i, inputHandler.getStackInSlot(i));
-        }
-        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
-            itemStacks.set(i, outputHandler.getStackInSlot(i - inputHandler.getSlots()));
-        }
-        for (int i = inputHandler.getSlots() + outputHandler.getSlots(); i < inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(); i++) {
-            itemStacks.set(i, eggHandler.getStackInSlot(i - inputHandler.getSlots() - outputHandler.getSlots()));
-        }
-        ContainerHelper.saveAllItems(valueOutput, itemStacks);
+        inputHandler.serialize(valueOutput.child("input_handler"));
+        outputHandler.serialize(valueOutput.child("output_handler"));
+        eggHandler.serialize(valueOutput.child("egg_handler"));
         valueOutput.putInt("Energy", energyHandler.getEnergyStored());
-
         valueOutput.putInt("dna_synthesizing.progress", progress);
     }
 
@@ -197,19 +188,10 @@ public class DnaSynthesizerBlockEntity extends BlockEntity implements MenuProvid
     protected void loadAdditional(ValueInput valueInput) {
         super.loadAdditional(valueInput);
 
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(valueInput, itemStacks);
-        for (int i = 0; i < inputHandler.getSlots(); i++) {
-            inputHandler.setStackInSlot(i, itemStacks.get(i));
-        }
-        for (int i = inputHandler.getSlots(); i < outputHandler.getSlots() + inputHandler.getSlots(); i++) {
-            outputHandler.setStackInSlot(i - inputHandler.getSlots(), itemStacks.get(i));
-        }
-        for (int i = inputHandler.getSlots() + outputHandler.getSlots(); i < inputHandler.getSlots() + outputHandler.getSlots() + eggHandler.getSlots(); i++) {
-            eggHandler.setStackInSlot(i - inputHandler.getSlots() - outputHandler.getSlots(), itemStacks.get(i));
-        }
+        inputHandler.deserialize(valueInput.childOrEmpty("input_handler"));
+        outputHandler.deserialize(valueInput.childOrEmpty("output_handler"));
+        eggHandler.deserialize(valueInput.childOrEmpty("egg_handler"));
         energyHandler.setEnergy(valueInput.getIntOr("Energy", 0));
-
         progress = valueInput.getIntOr("dna_synthesizing.progress", 0);
     }
 
