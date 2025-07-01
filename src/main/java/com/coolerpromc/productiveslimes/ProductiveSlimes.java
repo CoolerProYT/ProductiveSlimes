@@ -175,7 +175,7 @@ public class ProductiveSlimes
         player.connection.send(new RecipeSyncPayload(recipeManager.getRecipes().stream().toList()));
     }
 
-    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

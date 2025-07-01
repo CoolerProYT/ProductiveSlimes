@@ -103,7 +103,7 @@ dependencies {
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-" + terrablender_version
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:1.21.6-" + terrablender_version
 
     compileOnly "curse.maven:jade-324717:${jade_id}"
 }

@@ -26,7 +26,7 @@ import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = ProductiveSlimes.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = ProductiveSlimes.MODID, value = Dist.CLIENT)
 public class ModGameEventBus {
     @SubscribeEvent
     public static void onRenderHighlight(RenderHighlightEvent.Block event) {
