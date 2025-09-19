@@ -1,23 +1,15 @@
 package com.coolerpromc.productiveslimes.event;
+
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.item.ModItems;
-import com.coolerpromc.productiveslimes.mixin.LevelRendererAccess;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
-import com.coolerpromc.productiveslimes.util.ModRenderTypes;
-import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -30,7 +22,7 @@ import java.util.List;
 public class ModGameEventBus {
     @SubscribeEvent
     public static void onRenderHighlight(RenderHighlightEvent.Block event) {
-        if (event.getCamera().getEntity() instanceof LivingEntity living) {
+        /*if (event.getCamera().getEntity() instanceof LivingEntity living) {
             Level world = living.level();
             BlockHitResult rtr = event.getTarget();
             BlockPos pos = rtr.getBlockPos();
@@ -44,7 +36,7 @@ public class ModGameEventBus {
                 );
                 event.setCanceled(true);
             }
-        }
+        }*/
     }
 
     @SubscribeEvent

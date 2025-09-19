@@ -19,7 +19,7 @@ public class GuidebookItem extends Item {
 
     @Override
     public InteractionResult use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
+        if (!pLevel.isClientSide()) {
             pPlayer.openMenu(new SimpleMenuProvider(
                     (windowId, playerInventory, playerEntity) -> new GuidebookMenu(windowId, playerInventory),
                     Component.translatable("item.productiveslimes.guidebook")

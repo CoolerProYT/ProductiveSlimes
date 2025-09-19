@@ -106,7 +106,7 @@ public class CableBlock extends Block implements EntityBlock {
     }
 
     private void updateConnections(Level level, BlockPos pos, BlockState state) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockState newState = state;
             for (Direction direction : Direction.values()) {
                 BlockPos neighborPos = pos.relative(direction);

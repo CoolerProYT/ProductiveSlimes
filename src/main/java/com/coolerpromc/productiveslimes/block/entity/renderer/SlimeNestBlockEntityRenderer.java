@@ -1,67 +1,98 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SlimeNestBlockEntity;
+import com.coolerpromc.productiveslimes.block.entity.renderstate.SlimeNestBlockEntityRenderState;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
+import com.coolerpromc.productiveslimes.entity.SlimeModel;
+import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
+import com.coolerpromc.productiveslimes.handler.SlimeData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.entity.state.SlimeRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNestBlockEntity> {
+public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNestBlockEntity, SlimeNestBlockEntityRenderState> {
     public int tick;
+    private final ItemModelResolver itemModelResolver;
+    private final EntityModelSet entityModelSet;
+    private final SlimeModel slimeModel;
+    private final SlimeModel slimeModelOuter;
+
     public SlimeNestBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+        this.itemModelResolver = context.itemModelResolver();
+        this.entityModelSet = context.entityModelSet();
+        this.slimeModel = new SlimeModel(entityModelSet.bakeLayer(ModelLayers.SLIME), -1);
+        this.slimeModelOuter = new SlimeModel(entityModelSet.bakeLayer(ModelLayers.SLIME_OUTER), -1);
     }
+
     @Override
-    public void render(SlimeNestBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 p_401186_) {
+    public void extractRenderState(SlimeNestBlockEntity blockEntity, SlimeNestBlockEntityRenderState renderState, float p_446851_, Vec3 p_445788_, @Nullable ModelFeatureRenderer.CrumblingOverlay p_446944_) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, p_446851_, p_445788_, p_446944_);
+        renderState.blockEntity = blockEntity;
+        SlimeData slimeData = blockEntity.getSlimeHandler().getStackInSlot(0).get(ModDataComponents.SLIME_DATA.get());
+        if (slimeData != null){
+            renderState.slimeColor = slimeData.color();
+        } else {
+            renderState.slimeColor = -1; // default
+        }
+
+        ItemStackRenderState itemStackRenderState = new ItemStackRenderState();
+        this.itemModelResolver.updateForTopItem(itemStackRenderState, blockEntity.getSlime(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, 0);
+        renderState.itemStackRenderState = itemStackRenderState;
+    }
+
+    @Override
+    public void submit(SlimeNestBlockEntityRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState p_451022_) {
+        SlimeNestBlockEntity blockEntity = renderState.blockEntity;
         if (blockEntity.getSlime() == null) return;
         if (blockEntity.getSlime().isEmpty()) return;
         if (blockEntity.getSlime().get(ModDataComponents.SLIME_DATA.get()) == null) return;
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        ItemStack slime = blockEntity.getSlime();
         Level level = blockEntity.getLevel();
-        // Get the center of the block
+
         double centerX = blockEntity.getBlockPos().getX() + 0.5;
         double centerY = blockEntity.getBlockPos().getY() + 0.5;
         double centerZ = blockEntity.getBlockPos().getZ() + 0.5;
-        // Ensure level is not null and is client-side
-        if (level == null || !level.isClientSide) return;
+
+        if (level == null || !level.isClientSide()) return;
         tick = blockEntity.getData().get(4);
-        // Calculate squishAmount based on tickCount
+
         float squishAmount = 1.0F + 0.1F * (float) Math.sin(tick * 0.1F);
-        // Vertical bounce sync with squish
         float bounce = 0.1F * (float) Math.sin(tick * 0.1F);
-        // Adjust the scale and position based on squish
         float scaleX = squishAmount;
-        float scaleY = 1.0F / squishAmount; // Opposite squish for a "flattening" effect
+        float scaleY = 1.0F / squishAmount;
         float scaleZ = squishAmount;
-        // Center the rendered item
-        float renderX = 0.0F; // Offset in the pose stack to remain centered
-        float renderY = 0.0F + bounce; // Apply vertical bounce
+        float renderX = 0.0F;
+        float renderY = 0.0F + bounce;
         float renderZ = 0.0F;
-        // Spawn particles during the squish
+
         if (tick % 20 == 0) {
-            for (int i = 0; i < 5; i++) { // Spawn 5 particles
-                double offsetX = level.random.nextDouble() * 0.4 - 0.2; // Random offset around the X-axis
-                double offsetY = level.random.nextDouble() * 0.3;       // Random offset upward
-                double offsetZ = level.random.nextDouble() * 0.4 - 0.2; // Random offset around the Z-axis
-                // Add the particle with a randomized position surrounding the slime
+            for (int i = 0; i < 5; i++) {
+                double offsetX = level.random.nextDouble() * 0.4 - 0.2;
+                double offsetY = level.random.nextDouble() * 0.3;
+                double offsetZ = level.random.nextDouble() * 0.4 - 0.2;
+
                 level.addParticle(
                         new ItemParticleOption(ParticleTypes.ITEM,
-                                new ItemStack(slime.get(ModDataComponents.SLIME_DATA.get()).growthItem().getItem())),
+                                new ItemStack(blockEntity.getSlime().get(ModDataComponents.SLIME_DATA.get()).growthItem().getItem())),
                         centerX + offsetX,
                         centerY + offsetY,
                         centerZ + offsetZ,
@@ -70,32 +101,19 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
             }
         }
         Direction direction = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-        int degree = 0;
-        switch (direction) {
-            case NORTH:
-                degree = 0;
-                break;
-            case EAST:
-                degree = 270;
-                break;
-            case SOUTH:
-                degree = 180;
-                break;
-            case WEST:
-                degree = 90;
-                break;
-        }
-        // Render the squishing slime at the center of the block
+        float degree = direction.toYRot();
         poseStack.pushPose();
-        poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX, centerY - blockEntity.getBlockPos().getY() + renderY - 0.05f, centerZ - blockEntity.getBlockPos().getZ() + renderZ);
-        poseStack.scale(scaleX, scaleY, scaleZ); // Apply squish scaling
+        poseStack.translate(centerX - blockEntity.getBlockPos().getX() + renderX, 1.7, centerZ - blockEntity.getBlockPos().getZ() + renderZ);
+        poseStack.scale(scaleX, scaleY, scaleZ);
+        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         poseStack.mulPose(Axis.YP.rotationDegrees(degree));
-        itemRenderer.renderStatic(slime, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), 1);
+        nodeCollector.order(0).submitModel(this.slimeModel, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
+        nodeCollector.order(1).submitModel(this.slimeModelOuter, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
         poseStack.popPose();
     }
-    private int getLightLevel(Level level, BlockPos pos) {
-        int bLight = level.getBrightness(LightLayer.BLOCK, pos);
-        int sLight = level.getBrightness(LightLayer.SKY, pos);
-        return LightTexture.pack(bLight, sLight);
+
+    @Override
+    public SlimeNestBlockEntityRenderState createRenderState() {
+        return new SlimeNestBlockEntityRenderState();
     }
 }

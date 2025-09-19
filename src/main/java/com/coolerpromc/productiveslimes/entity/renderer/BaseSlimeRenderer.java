@@ -6,12 +6,11 @@ import com.coolerpromc.productiveslimes.entity.SlimeOuterLayer;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -24,9 +23,9 @@ public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeRenderState, 
     }
 
     @Override
-    public void render(SlimeRenderState p_361886_, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-        this.shadowRadius = 0.25F * (float)p_361886_.size;
-        super.render(p_361886_, pPoseStack, pBuffer, pPackedLight);
+    public void submit(SlimeRenderState p_433493_, PoseStack p_434615_, SubmitNodeCollector p_433768_, CameraRenderState p_450931_) {
+        this.shadowRadius = 0.25F * (float)p_433493_.size;
+        super.submit(p_433493_, p_434615_, p_433768_, p_450931_);
     }
 
     @Override

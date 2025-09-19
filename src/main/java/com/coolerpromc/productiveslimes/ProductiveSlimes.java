@@ -25,6 +25,7 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
+import com.coolerpromc.productiveslimes.util.SlimeItemSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
 import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
@@ -116,7 +117,7 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
+//        ModTerrablender.registerBiomes();
 
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
@@ -124,14 +125,14 @@ public class ProductiveSlimes
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
         CustomContentRegistry.handleDatapack(event.getServer());
-        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
+//        event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
 
     }
 
@@ -208,7 +209,6 @@ public class ProductiveSlimes
                 for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
                     EntityRenderers.register(CustomContentRegistry.getSlimeForVariant(variant.getName()).get(), pContext -> new BaseSlimeRenderer(pContext, variant.getColor()));
                 }
-
                 registerAllFluidRenderLayer();
                 registerAllSlimeBlockRenderLayer();
 
@@ -241,6 +241,7 @@ public class ProductiveSlimes
         @SubscribeEvent
         public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
             event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank"), FluidTankSpecialRenderer.Unbaked.MAP_CODEC);
+            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item"), SlimeItemSpecialRenderer.Unbaked.MAP_CODEC);
         }
 
         @SubscribeEvent

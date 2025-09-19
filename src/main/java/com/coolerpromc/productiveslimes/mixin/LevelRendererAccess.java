@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,4 +16,4 @@ public interface LevelRendererAccess {
             PoseStack matrixStackIn, VertexConsumer bufferIn, Entity entityIn, double xIn, double yIn, double zIn,
             BlockPos blockPosIn, BlockState blockStateIn, int packedLightIn
     );
-}
+}*/

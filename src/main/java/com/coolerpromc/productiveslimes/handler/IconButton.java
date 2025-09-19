@@ -3,6 +3,7 @@ package com.coolerpromc.productiveslimes.handler;
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -37,7 +38,7 @@ public class IconButton extends Button {
     }
 
     @Override
-    public void onClick(double mouseX, double mouseY) {
+    public void onClick(MouseButtonEvent p_446368_, boolean p_434377_) {
         this.isOpen = !this.isOpen;
         this.onPress.onPress(this);
     }

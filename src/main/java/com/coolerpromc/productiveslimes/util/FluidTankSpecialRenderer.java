@@ -9,7 +9,11 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +22,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.List;
 import java.util.Set;
 
 public record FluidTankSpecialRenderer() implements SpecialModelRenderer<ImmutableFluidStack> {
@@ -28,29 +33,29 @@ public record FluidTankSpecialRenderer() implements SpecialModelRenderer<Immutab
     }
 
     @Override
-    public void render(@Nullable ImmutableFluidStack patterns, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(@Nullable ImmutableFluidStack patterns, ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoilType) {
         poseStack.pushPose();
         BlockState blockState = ModBlocks.FLUID_TANK.get().defaultBlockState();
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, packedLight, packedOverlay);
+        nodeCollector.submitBlockModel(poseStack, RenderType.CUTOUT, Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState), -1, -1, -1, packedLight, packedOverlay, 0);
         poseStack.popPose();
 
         if (patterns instanceof ImmutableFluidStack immutableFluidStack){
             FluidStack fluidStack = immutableFluidStack.fluidStack();
-            FluidTankBlockEntityRenderer.renderFluid(poseStack, bufferSource, packedLight, packedOverlay, fluidStack);
+            FluidTankBlockEntityRenderer.renderFluid(poseStack, nodeCollector, packedLight, packedOverlay, fluidStack);
         }
     }
 
     @Override
-    public void getExtents(Set<Vector3f> p_428206_) {
-
+    public void getExtents(Set<Vector3f> extents) {
+        extents.add(new Vector3f(0.0f, 0.0f, 0.0f));
+        extents.add(new Vector3f(1.0f, 1.0f, 1.0f));
     }
 
     public record Unbaked(ResourceLocation texture) implements SpecialModelRenderer.Unbaked{
         public static final MapCodec<Unbaked> MAP_CODEC = ResourceLocation.CODEC.fieldOf("texture").xmap(FluidTankSpecialRenderer.Unbaked::new, FluidTankSpecialRenderer.Unbaked::texture);
 
-        @Nullable
         @Override
-        public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
+        public @Nullable SpecialModelRenderer<?> bake(BakingContext p_433472_) {
             return new FluidTankSpecialRenderer();
         }
 

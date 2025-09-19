@@ -1,26 +1,36 @@
 package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SlimeballCollectorBlockEntity;
+import com.coolerpromc.productiveslimes.block.entity.renderstate.SlimeballCollectorBlockEntityRenderState;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import java.util.OptionalDouble;
-public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRenderer<SlimeballCollectorBlockEntity> {
+
+public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRenderer<SlimeballCollectorBlockEntity, SlimeballCollectorBlockEntityRenderState> {
     public SlimeballCollectorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
     }
+
     @Override
-    public void render(SlimeballCollectorBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 p_401186_) {
+    public void extractRenderState(SlimeballCollectorBlockEntity blockEntity, SlimeballCollectorBlockEntityRenderState renderState, float p_446851_, Vec3 p_445788_, @Nullable ModelFeatureRenderer.CrumblingOverlay p_446944_) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, p_446851_, p_445788_, p_446944_);
+        renderState.blockEntity = blockEntity;
+    }
+
+    @Override
+    public void submit(SlimeballCollectorBlockEntityRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState p_451022_) {
+        SlimeballCollectorBlockEntity blockEntity = renderState.blockEntity;
         if (blockEntity.getLevel() == null) return;
         if (blockEntity.getData().get(0) == 0) return;
         // Define the collection area AABB (match this with your logic).
@@ -34,32 +44,21 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
         poseStack.pushPose();
         poseStack.translate(-blockEntity.getBlockPos().getX(), -blockEntity.getBlockPos().getY(), -blockEntity.getBlockPos().getZ());
         // Render the outline box.
-        renderOutline(poseStack, bufferSource, collectionArea);
+        renderOutline(poseStack, nodeCollector, collectionArea);
         poseStack.popPose();
     }
-    private void renderOutline(PoseStack poseStack, MultiBufferSource bufferSource, AABB aabb) {
+
+    private void renderOutline(PoseStack poseStack, SubmitNodeCollector nodeCollector, AABB aabb) {
         // Buffer for lines.
-        var buffer = bufferSource.getBuffer(RenderType.lines());
         RenderSystem.lineWidth(2.0f);
         // Render the outer box.
-        drawBox(poseStack, buffer, aabb, 1.0f, 0.0f, 0.0f, 1.0f); // Red color.
+        nodeCollector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
+            drawBox(pose, vertexConsumer, aabb, 1.0f, 0.0f, 0.0f, 1.0f);
+        });
         RenderSystem.lineWidth(1.0f);
     }
-    private void renderGrid(PoseStack poseStack, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
-        PoseStack.Pose pose = poseStack.last();
-        Matrix4f matrix = pose.pose();
-        // Chunk grid size (16 blocks).
-        int chunkSize = 16;
-        // Loop through the X and Z axes to draw the grid.
-        for (double x = Math.ceil(box.minX / chunkSize) * chunkSize; x < box.maxX; x += chunkSize) {
-            drawLine(matrix, buffer, x, box.minY, box.minZ, x, box.maxY, box.minZ, red, green, blue, alpha); // Vertical lines.
-        }
-        for (double z = Math.ceil(box.minZ / chunkSize) * chunkSize; z < box.maxZ; z += chunkSize) {
-            drawLine(matrix, buffer, box.minX, box.minY, z, box.minX, box.maxY, z, red, green, blue, alpha); // Horizontal lines.
-        }
-    }
-    private void drawBox(PoseStack poseStack, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
-        PoseStack.Pose pose = poseStack.last();
+
+    private void drawBox(PoseStack.Pose pose, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {
         Matrix4f matrix = pose.pose();
         Matrix3f normal = pose.normal();
         float x1 = (float) box.minX;
@@ -83,10 +82,16 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
         drawLine(matrix, buffer, x1, y2, z1, x2, y2, z1, red, green, blue, alpha);
         drawLine(matrix, buffer, x1, y2, z1, x1, y2, z2, red, green, blue, alpha);
     }
+
     private void drawLine(Matrix4f matrix, VertexConsumer buffer,
                           double x1, double y1, double z1, double x2, double y2, double z2,
                           float red, float green, float blue, float alpha) {
-        buffer.addVertex(matrix, (float) x1, (float) y1, (float) z1).setColor(red, green, blue, alpha).setNormal(1.0f, 0.0f, 0.0f);
-        buffer.addVertex(matrix, (float) x2, (float) y2, (float) z2).setColor(red, green, blue, alpha).setNormal(1.0f, 0.0f, 0.0f);
+        buffer.addVertex(matrix, (float) x1, (float) y1, (float) z1).setColor(red, green, blue, alpha).setUv(0, 0).setLight(0x00F000F0).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(1, 0, 0);
+        buffer.addVertex(matrix, (float) x2, (float) y2, (float) z2).setColor(red, green, blue, alpha).setUv(0, 0).setLight(0x00F000F0).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(1, 0, 0);
+    }
+
+    @Override
+    public SlimeballCollectorBlockEntityRenderState createRenderState() {
+        return new SlimeballCollectorBlockEntityRenderState();
     }
 }

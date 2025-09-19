@@ -2,9 +2,7 @@ package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.screen.SlimeballCollectorMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -122,7 +120,7 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
-        if (this.level == null || this.level.isClientSide) return;
+        if (this.level == null || this.level.isClientSide()) return;
         // Define the collection area: 16x16 in X and Z, full height in Y.
         AABB collectionArea = new AABB(
                 worldPosition.getX() - RANGE_XZ, -64, worldPosition.getZ() - RANGE_XZ,

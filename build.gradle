@@ -11,7 +11,6 @@ mixin {
     config "${mod_id}.mixins.json"
 }
 
-
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
@@ -39,10 +38,10 @@ repositories {
     maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
     maven { url "https://maven.architectury.dev/" }
     maven {
-        name 'Maven for PR #2297'
-        url 'https://prmaven.neoforged.net/NeoForge/pr2297'
+        name = "Maven for PR #2639"
+        url = uri("https://prmaven.neoforged.net/NeoForge/pr2639")
         content {
-            includeModule('net.neoforged', 'neoforge')
+            includeModule("net.neoforged", "neoforge")
         }
     }
 }
@@ -91,7 +90,8 @@ configurations {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
+//    implementation "net.neoforged:neoforge:${neo_version}"
+    implementation "net.neoforged:neoforge:21.5.0-alpha.1.21.9-pre1.20250918.184530"
 
     compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
@@ -103,7 +103,7 @@ dependencies {
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    implementation "com.github.glitchfiend:TerraBlender-neoforge:1.21.6-" + terrablender_version
+    compileOnly "com.github.glitchfiend:TerraBlender-neoforge:1.21.6-" + terrablender_version
 
     compileOnly "curse.maven:jade-324717:${jade_id}"
 }

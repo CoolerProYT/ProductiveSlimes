@@ -63,7 +63,7 @@ public class Slime extends BaseSlime {
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         if(pHand == InteractionHand.MAIN_HAND) {
             if(pPlayer.isCrouching()) {
-                if(!level().isClientSide){
+                if(!level().isClientSide()){
                     if (pPlayer.getItemInHand(pHand).getItem() == growthItem && this.getSize() < 4 && pPlayer.getItemInHand(pHand).getCount() > this.getSize()) {
                         super.growthSlime(pPlayer, pHand, this);
                     }

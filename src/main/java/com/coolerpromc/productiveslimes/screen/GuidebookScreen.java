@@ -4,8 +4,8 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.coolerpromc.productiveslimes.handler.SlimeData;
-import com.coolerpromc.productiveslimes.networking.ClientRecipeManager;
 import com.coolerpromc.productiveslimes.item.ModItems;
+import com.coolerpromc.productiveslimes.networking.ClientRecipeManager;
 import com.coolerpromc.productiveslimes.recipe.*;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
@@ -15,14 +15,16 @@ import com.coolerpromc.productiveslimes.util.MouseUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -238,9 +240,9 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     }
 
     @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (pMouseX >= 10 && pMouseX < 10 + NAVIGATION_WIDTH && pMouseY >= 10 && pMouseY < this.height - 10) {
-            int sectionIndex = (int) ((pMouseY - 10) / NAV_TEXT_HEIGHT);
+    public boolean mouseClicked(MouseButtonEvent buttonEvent, boolean p_432883_) {
+        if (buttonEvent.x() >= 10 && buttonEvent.x() < 10 + NAVIGATION_WIDTH && buttonEvent.y() >= 10 && buttonEvent.y() < this.height - 10) {
+            int sectionIndex = (int) ((buttonEvent.y() - 10) / NAV_TEXT_HEIGHT);
             if (sectionIndex >= 0 && sectionIndex < sections.size()) {
                 if (sectionIndex == selectedSection) {
                     return true;
@@ -250,7 +252,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
                 return true;
             }
         }
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+        return super.mouseClicked(buttonEvent, p_432883_);
     }
 
     @Override

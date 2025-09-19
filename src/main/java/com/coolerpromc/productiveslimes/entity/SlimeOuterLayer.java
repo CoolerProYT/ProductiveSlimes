@@ -1,15 +1,11 @@
 package com.coolerpromc.productiveslimes.entity;
 
 import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
-import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -24,20 +20,16 @@ public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
     }
 
     @Override
-    public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, SlimeRenderState p_361554_, float p_117353_, float p_117354_) {
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = p_361554_.appearsGlowing && p_361554_.isInvisible;
-        if (!p_361554_.isInvisible || flag) {
-            VertexConsumer vertexconsumer;
+    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int light, SlimeRenderState slimeRenderState, float p_435384_, float p_433573_) {
+        boolean flag = slimeRenderState.appearsGlowing() && slimeRenderState.isInvisible;
+        if (!slimeRenderState.isInvisible || flag) {
+            int i = LivingEntityRenderer.getOverlayCoords(slimeRenderState, 0.0F);
             if (flag) {
-                vertexconsumer = pBuffer.getBuffer(RenderType.outline(BaseSlimeRenderer.BASE_TEXTURE));
+                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderType.outline(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
             } else {
-                vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucentEmissive(BaseSlimeRenderer.BASE_TEXTURE));
+                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
             }
-
-            this.model.setupAnim(p_361554_);
-            this.model.renderToBuffer(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F), model.color);
-            this.getParentModel().root().render(pPoseStack, vertexconsumer, pPackedLight, LivingEntityRenderer.getOverlayCoords(p_361554_, 0.0F), model.color);
+            nodeCollector.order(0).submitModel(this.getParentModel(), slimeRenderState, poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
         }
     }
 }

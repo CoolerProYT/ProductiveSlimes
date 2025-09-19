@@ -7,7 +7,6 @@ import com.coolerpromc.productiveslimes.item.custom.NestUpgradeItem;
 import com.coolerpromc.productiveslimes.screen.SlimeNestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -15,7 +14,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -224,7 +222,7 @@ public class SlimeNestBlockEntity extends BlockEntity implements MenuProvider {
         tick += 3;
         cooldown = (int) Math.ceil(cooldown / speed);
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
         if (!hasAvailableSlot(dropItem)) {

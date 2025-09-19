@@ -178,11 +178,6 @@ public abstract class BaseSlime extends Slime {
     }
 
     @Override
-    protected boolean shouldDespawnInPeaceful() {
-        return false;
-    }
-
-    @Override
     public int getSize() {
         return this.entityData.get(ID_SIZE);
     }

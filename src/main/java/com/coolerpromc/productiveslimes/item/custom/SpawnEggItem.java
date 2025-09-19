@@ -7,7 +7,7 @@ public class SpawnEggItem extends net.minecraft.world.item.SpawnEggItem {
     private final int color;
 
     public SpawnEggItem(EntityType<? extends Mob> p_43207_, int color, Properties p_43210_) {
-        super(p_43207_, p_43210_);
+        super(p_43210_.spawnEgg(p_43207_));
         this.color = color;
     }
 

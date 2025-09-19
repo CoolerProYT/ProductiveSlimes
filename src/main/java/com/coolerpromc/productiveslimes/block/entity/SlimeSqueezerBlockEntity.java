@@ -164,7 +164,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     private void resetProgress() {
         progress = 0;
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
@@ -273,7 +273,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     private void increaseCraftingProgress() {
         progress++;
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }

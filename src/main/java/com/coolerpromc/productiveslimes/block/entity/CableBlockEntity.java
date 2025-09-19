@@ -29,7 +29,7 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
     @Override
     public void setRemoved() {
         super.setRemoved();
-        if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             if (shouldRemoveCableEntity(serverLevel)) {
                 ModNetworkManager.onCableRemoved(serverLevel, this.getBlockPos());
             }
@@ -46,7 +46,7 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
     public static void tick(Level level, BlockPos pos, CableBlockEntity blockEntity) {
         if (!blockEntity.initialized) {
             blockEntity.initialized = true;
-            if (!level.isClientSide && level instanceof ServerLevel serverWorld && blockEntity.newlyPlaced) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverWorld && blockEntity.newlyPlaced) {
                 ModNetworkManager.rebuildNetwork(serverWorld, pos);
             }
         }

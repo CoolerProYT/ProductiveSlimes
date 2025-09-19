@@ -14,13 +14,17 @@ import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
+import com.coolerpromc.productiveslimes.util.SlimeItemSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
-import net.minecraft.client.data.models.blockstates.*;
+import net.minecraft.client.data.models.blockstates.ConditionBuilder;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.client.renderer.block.model.VariantMutator;
@@ -294,6 +298,7 @@ public class ModModelProvider extends ModelProvider {
     private void slimeItem(ItemModelGenerators itemModels, Item item){
         ResourceLocation model = itemLocation("slime_item");
         itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
+        itemModels.itemModelOutput.accept(item, ItemModelUtils.specialModel(model, new SlimeItemSpecialRenderer.Unbaked(model)));
     }
 
     // Helper methods
