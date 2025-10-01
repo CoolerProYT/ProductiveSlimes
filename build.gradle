@@ -90,8 +90,8 @@ configurations {
 }
 
 dependencies {
-//    implementation "net.neoforged:neoforge:${neo_version}"
-    implementation "net.neoforged:neoforge:21.5.0-alpha.1.21.9-pre1.20250918.184530"
+    implementation "net.neoforged:neoforge:${neo_version}"
+//    implementation "net.neoforged:neoforge:21.5.0-alpha.1.21.9-pre1.20250918.184530"
 
     compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"

@@ -30,7 +30,7 @@ public record SlimeItemSpecialRenderer() implements SpecialModelRenderer<SlimeDa
     }
 
     @Override
-    public void submit(@Nullable SlimeData slimeData, ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(@Nullable SlimeData slimeData, ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoilType, int i) {
         EntityModelSet entityModelSet = Minecraft.getInstance().getEntityModels();
         SlimeModel slimeModel = new SlimeModel(entityModelSet.bakeLayer(ModelLayers.SLIME), -1);
         SlimeModel slimeModelOuter = new SlimeModel(entityModelSet.bakeLayer(ModelLayers.SLIME_OUTER), -1);

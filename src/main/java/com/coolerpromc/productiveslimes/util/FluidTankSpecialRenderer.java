@@ -33,7 +33,7 @@ public record FluidTankSpecialRenderer() implements SpecialModelRenderer<Immutab
     }
 
     @Override
-    public void submit(@Nullable ImmutableFluidStack patterns, ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoilType) {
+    public void submit(@Nullable ImmutableFluidStack patterns, ItemDisplayContext displayContext, PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoilType, int i) {
         poseStack.pushPose();
         BlockState blockState = ModBlocks.FLUID_TANK.get().defaultBlockState();
         nodeCollector.submitBlockModel(poseStack, RenderType.CUTOUT, Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState), -1, -1, -1, packedLight, packedOverlay, 0);
