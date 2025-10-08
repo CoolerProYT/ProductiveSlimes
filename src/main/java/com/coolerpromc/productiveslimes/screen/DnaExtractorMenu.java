@@ -9,8 +9,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class DnaExtractorMenu extends AbstractContainerMenu {
     public final DnaExtractorBlockEntity blockEntity;
@@ -31,12 +31,12 @@ public class DnaExtractorMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 34, 34));
+        ItemStacksResourceHandler inputHandler = blockEntity.getInputHandler();
+        this.addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, 0, 34, 34));
 
-        IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 115, 34));
-        this.addSlot(new SlotItemHandler(outputHandler, 1, 135, 34));
+        ItemStacksResourceHandler outputHandler = blockEntity.getOutputHandler();
+        this.addSlot(new ResourceHandlerSlot(outputHandler, outputHandler::set, 0, 115, 34));
+        this.addSlot(new ResourceHandlerSlot(outputHandler, outputHandler::set, 1, 135, 34));
 
         addDataSlots(data);
     }

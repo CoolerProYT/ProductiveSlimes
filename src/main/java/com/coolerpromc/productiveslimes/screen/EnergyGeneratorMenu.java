@@ -2,7 +2,6 @@ package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.block.ModBlocks;
 import com.coolerpromc.productiveslimes.block.entity.EnergyGeneratorBlockEntity;
-import com.coolerpromc.productiveslimes.handler.CustomFuelSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,8 +9,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class EnergyGeneratorMenu extends AbstractContainerMenu {
     public final EnergyGeneratorBlockEntity blockEntity;
@@ -35,14 +34,14 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler iItemHandler = blockEntity.getItemHandler();
-        this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 25));
+        ItemStacksResourceHandler iItemHandler = blockEntity.getItemHandler();
+        this.addSlot(new ResourceHandlerSlot(iItemHandler, iItemHandler::set, 0, 80, 25));
 
-        IItemHandler upgradeHandler = blockEntity.getUpgradeHandler();
-        this.addSlot(new SlotItemHandler(upgradeHandler, 0, 179, 29));
-        this.addSlot(new SlotItemHandler(upgradeHandler, 1, 197, 29));
-        this.addSlot(new SlotItemHandler(upgradeHandler, 2, 179, 47));
-        this.addSlot(new SlotItemHandler(upgradeHandler, 3, 197, 47));
+        ItemStacksResourceHandler upgradeHandler = blockEntity.getUpgradeHandler();
+        this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 0, 179, 29));
+        this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 1, 197, 29));
+        this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 2, 179, 47));
+        this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 3, 197, 47));
 
 //        this.toggleExtraSlots();
         addDataSlots(data);
@@ -54,15 +53,15 @@ public class EnergyGeneratorMenu extends AbstractContainerMenu {
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
-        IItemHandler iItemHandler = blockEntity.getItemHandler();
-        this.addSlot(new SlotItemHandler(iItemHandler, 0, 80, 25));
+        ItemStacksResourceHandler iItemHandler = blockEntity.getItemHandler();
+        this.addSlot(new ResourceHandlerSlot(iItemHandler, iItemHandler::set, 0, 80, 25));
 
         if (showExtraSlots) {
-            IItemHandler upgradeHandler = blockEntity.getUpgradeHandler();
-            this.addSlot(new SlotItemHandler(upgradeHandler, 0, 179, 29));
-            this.addSlot(new SlotItemHandler(upgradeHandler, 1, 197, 29));
-            this.addSlot(new SlotItemHandler(upgradeHandler, 2, 179, 47));
-            this.addSlot(new SlotItemHandler(upgradeHandler, 3, 197, 47));
+            ItemStacksResourceHandler upgradeHandler = blockEntity.getUpgradeHandler();
+            this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 0, 179, 29));
+            this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 1, 197, 29));
+            this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 2, 179, 47));
+            this.addSlot(new ResourceHandlerSlot(upgradeHandler, upgradeHandler::set, 3, 197, 47));
         }
 
         this.broadcastChanges();

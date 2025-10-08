@@ -1,6 +1,5 @@
 package com.coolerpromc.productiveslimes.block.custom;
 
-import com.coolerpromc.productiveslimes.block.entity.DnaExtractorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.FluidTankBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.ModBlockEntities;
 import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
@@ -10,19 +9,12 @@ import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,7 +33,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -84,32 +77,51 @@ public class FluidTankBlock extends BaseEntityBlock implements TranslucentHighli
             if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BucketItem bucketItem && bucketItem != Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
                     if (bucketItem.getFluidStack().getFluidType() == fluidTankBlockEntity.getFluidStack().getFluidType()) {
-                        if (fluidTankBlockEntity.getFluidTank().getFluidAmount() + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacity()) {
+                        if (fluidTankBlockEntity.getFluidTank().getAmountAsInt(0) + 1000 <= fluidTankBlockEntity.getFluidTank().getCapacityAsInt(0, fluidTankBlockEntity.getFluidTank().getResource(0))) {
                             FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
-                            int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
-                            if (filled > 0 && !pPlayer.isCreative()) {
-                                pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-                                pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
+                            try(Transaction tx = Transaction.open(null)){
+                                int filled = fluidTankBlockEntity.getFluidTank().insert(0, FluidResource.of(fluidToAdd), fluidToAdd.getAmount(), tx);
+                                if (filled > 0) {
+                                    tx.commit();
+                                    if (!pPlayer.isCreative()){
+                                        pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                                        pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
+                                    }
+                                }
                             }
                         }
                     }
                 } else {
                     FluidStack fluidToAdd = new FluidStack(bucketItem.getFluidStack().getFluid(), 1000);
-                    int filled = fluidTankBlockEntity.getFluidTank().fill(fluidToAdd, IFluidHandler.FluidAction.EXECUTE);
-                    if (filled > 0 && !pPlayer.isCreative()) {
-                        pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-                        pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
+                    try(Transaction tx = Transaction.open(null)){
+                        int filled = fluidTankBlockEntity.getFluidTank().insert(0, FluidResource.of(fluidToAdd), fluidToAdd.getAmount(), tx);
+                        if (filled > 0) {
+                            tx.commit();
+                            if (!pPlayer.isCreative()){
+                                pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
+                                pPlayer.addItem(new ItemStack(Items.BUCKET, 1));
+                            }
+                        }
                     }
                 }
             } else if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.BUCKET) {
                 if (!fluidTankBlockEntity.getFluidStack().isEmpty()) {
-                    FluidStack drainedFluid = fluidTankBlockEntity.getFluidTank().drain(1000, IFluidHandler.FluidAction.SIMULATE);
-                    if (drainedFluid.getAmount() == 1000) {
+                    int drainedFluid;
+                    try(Transaction tx = Transaction.open(null)){
+                        drainedFluid = fluidTankBlockEntity.getFluidTank().extract(0, fluidTankBlockEntity.getFluidTank().getResource(0), 1000, tx);
+                    }
+
+                    if (drainedFluid == 1000) {
                         pPlayer.addItem(new ItemStack(fluidTankBlockEntity.getFluidStack().getFluid().getBucket()));
                         pPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
-                        fluidTankBlockEntity.getFluidTank().drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                        if (fluidTankBlockEntity.getFluidTank().getFluidAmount() == 0) {
-                            fluidTankBlockEntity.setFluidStack(FluidStack.EMPTY);
+                        try(Transaction tx2 = Transaction.open(null)){
+                            int extracted = fluidTankBlockEntity.getFluidTank().extract(0, fluidTankBlockEntity.getFluidTank().getResource(0), 1000, tx2);
+                            if (extracted == 1000){
+                                tx2.commit();
+                                if (fluidTankBlockEntity.getFluidTank().getAmountAsInt(0) == 0) {
+                                    fluidTankBlockEntity.setFluidStack(FluidStack.EMPTY);
+                                }
+                            }
                         }
                     }
                 }

@@ -3,9 +3,8 @@ package com.coolerpromc.productiveslimes.networking;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +23,8 @@ public class CableNetwork {
             Codec.INT.fieldOf("TotalCapacity").forGetter(net -> net.totalCapacity),
             BLOCK_POS_CODEC.listOf().fieldOf("Positions").forGetter(net -> net.cablePositions.stream().toList())
     ).apply(instance, CableNetwork::new));
+
+    private final EnergyJournal energyJournal = new EnergyJournal();
 
     private int networkId = -1;
     private int totalEnergy = 0;
@@ -82,20 +83,35 @@ public class CableNetwork {
         this.totalEnergy = Math.min(newAmount, totalCapacity);
     }
 
-    public int insertEnergy(int amount, boolean simulate) {
+    public int insertEnergy(int amount, TransactionContext context) {
         int space = totalCapacity - totalEnergy;
         int accepted = Math.min(space, amount);
-        if (!simulate) {
+        if (accepted > 0) {
+            energyJournal.updateSnapshots(context);
             totalEnergy += accepted;
         }
         return accepted;
     }
 
-    public int extractEnergy(int amount, boolean simulate) {
+    public int extractEnergy(int amount, TransactionContext context) {
         int extracted = Math.min(totalEnergy, amount);
-        if (!simulate) {
+        if (extracted > 0) {
+            energyJournal.updateSnapshots(context);
             totalEnergy -= extracted;
         }
         return extracted;
+    }
+
+    private class EnergyJournal extends SnapshotJournal<Integer> {
+
+        @Override
+        protected Integer createSnapshot() {
+            return totalEnergy;
+        }
+
+        @Override
+        protected void revertToSnapshot(Integer integer) {
+            totalEnergy = integer;
+        }
     }
 }

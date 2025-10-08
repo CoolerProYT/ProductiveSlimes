@@ -14,10 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import org.jetbrains.annotations.Nullable;
 
-public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
+public class CableBlockEntity extends BlockEntity implements EnergyHandler {
     public static final int CAPACITY_PER_CABLE = 10_000;
     private boolean initialized = false;
     private boolean newlyPlaced = true;
@@ -52,42 +53,6 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
         }
     }
 
-    @Override
-    public int receiveEnergy(int toReceive, boolean simulate) {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net == null ? 0 : net.insertEnergy(toReceive, simulate);
-    }
-
-    @Override
-    public int extractEnergy(int toExtract, boolean simulate) {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net == null ? 0 : net.extractEnergy(toExtract, simulate);
-    }
-
-    @Override
-    public int getEnergyStored() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net == null ? 0 : net.getTotalEnergy();
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net == null ? 0 : net.getTotalCapacity();
-    }
-
-    @Override
-    public boolean canExtract() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net != null && net.getTotalEnergy() > 0;
-    }
-
-    @Override
-    public boolean canReceive() {
-        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
-        return net != null && net.getTotalEnergy() < net.getTotalCapacity();
-    }
-
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -109,5 +74,29 @@ public class CableBlockEntity extends BlockEntity implements IEnergyStorage {
     protected void loadAdditional(ValueInput valueInput) {
         super.loadAdditional(valueInput);
         newlyPlaced = valueInput.getBooleanOr("NewlyPlaced", true);
+    }
+
+    @Override
+    public long getAmountAsLong() {
+        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        return net == null ? 0 : net.getTotalEnergy();
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        return net == null ? 0 : net.getTotalCapacity();
+    }
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        return net == null ? 0 : net.insertEnergy(amount, transaction);
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+        CableNetwork net = ModNetworkManager.getNetwork(this.getBlockPos());
+        return net == null ? 0 : net.extractEnergy(amount, transaction);
     }
 }

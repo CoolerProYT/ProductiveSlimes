@@ -1,21 +1,17 @@
 package com.coolerpromc.productiveslimes.block.entity;
 
 import com.coolerpromc.productiveslimes.handler.CustomEnergyStorage;
-//import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.DnaExtractingRecipe;
 import com.coolerpromc.productiveslimes.recipe.ModRecipes;
-//import com.coolerpromc.productiveslimes.recipe.SolidingRecipe;
 import com.coolerpromc.productiveslimes.screen.DnaExtractorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -33,7 +29,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -42,9 +40,9 @@ import java.util.Random;
 
 public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider {
     private float rotation;
-    private final ItemStackHandler inputHandler = new ItemStackHandler(1){
+    private final ItemStacksResourceHandler inputHandler = new ItemStacksResourceHandler(1){
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int index, ItemStack previousContents) {
             setChanged();
             if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -52,14 +50,14 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isValid(int index, ItemResource resource) {
             return true;
         }
     };
 
-    private final ItemStackHandler outputHandler = new ItemStackHandler(2){
+    private final ItemStacksResourceHandler outputHandler = new ItemStacksResourceHandler(2){
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int index, ItemStack previousContents) {
             setChanged();
             if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -67,7 +65,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isValid(int index, ItemResource resource) {
             return false;
         }
     };
@@ -86,8 +84,8 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
                 return switch (pIndex) {
                     case 0 -> DnaExtractorBlockEntity.this.progress;
                     case 1 -> DnaExtractorBlockEntity.this.maxProgress;
-                    case 2 -> DnaExtractorBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 -> DnaExtractorBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    case 2 -> DnaExtractorBlockEntity.this.energyHandler.getAmountAsInt();
+                    case 3 -> DnaExtractorBlockEntity.this.energyHandler.getCapacityAsInt();
                     default -> 0;
                 };
             }
@@ -108,11 +106,11 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
         };
     }
 
-    public ItemStackHandler getInputHandler() {
+    public ItemStacksResourceHandler getInputHandler() {
         return inputHandler;
     }
 
-    public ItemStackHandler getOutputHandler() {
+    public ItemStacksResourceHandler getOutputHandler() {
         return outputHandler;
     }
 
@@ -127,9 +125,9 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     public void drops(){
         SimpleContainer inventory = new SimpleContainer(3);
-        inventory.setItem(0, inputHandler.getStackInSlot(0));
-        inventory.setItem(1, outputHandler.getStackInSlot(0));
-        inventory.setItem(2, outputHandler.getStackInSlot(1));
+        inventory.setItem(0, inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0)));
+        inventory.setItem(1, outputHandler.getResource(0).toStack(outputHandler.getAmountAsInt(0)));
+        inventory.setItem(2, outputHandler.getResource(1).toStack(outputHandler.getAmountAsInt(1)));
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -151,7 +149,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
         inputHandler.serialize(valueOutput.child("inputHandler"));
         outputHandler.serialize(valueOutput.child("outputHandler"));
-        valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
+        valueOutput.putInt("EnergyInventory", energyHandler.getAmountAsInt());
         valueOutput.putInt("dna_extractor.progress", progress);
     }
 
@@ -167,7 +165,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<DnaExtractingRecipe>> recipe = getCurrentRecipe();
-        if(hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()){
+        if(hasRecipe() && energyHandler.getAmountAsInt() >= recipe.get().value().getEnergy()){
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
 
@@ -191,22 +189,24 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             List<ItemStack> results = recipe.get().value().getOutputs();
 
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, recipe.get().value().getInputCount(), false);
+            try(Transaction tx = Transaction.open(null)){
+                if (this.inputHandler.extract(0, this.inputHandler.getResource(0), recipe.get().value().getInputCount(), tx) == recipe.get().value().getInputCount()){
+                    tx.commit();
+                }
+            }
 
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
                 int outputSlot = findSuitableOutputSlot(result);
                 if (outputSlot != -1) {
                     if (result.getItem() == Items.SLIME_BALL){
-                        this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
-                                this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                        this.outputHandler.set(outputSlot, ItemResource.of(result.getItem()), this.outputHandler.getAmountAsInt(outputSlot) + result.getCount());
                     }
                     else{
                         Random random = new Random();
                         float chance = recipe.get().value().getOutputChance();
                         if (random.nextFloat() < chance){
-                            this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(),
-                                    this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                            this.outputHandler.set(outputSlot, ItemResource.of(result.getItem()), this.outputHandler.getAmountAsInt(outputSlot) + result.getCount());
                         }
                     }
 
@@ -222,8 +222,8 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     private int findSuitableOutputSlot(ItemStack result) {
         // Implement logic to find a suitable output slot for the given result
         // Return the slot index or -1 if no suitable slot is found
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || (stackInSlot.getItem() == result.getItem() && stackInSlot.getCount() + result.getCount() <= stackInSlot.getMaxStackSize())) {
                 return i;
             }
@@ -238,7 +238,7 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             return false;
         }
 
-        if (inputHandler.getStackInSlot(0).getCount() < recipe.get().value().getInputCount()) {
+        if (inputHandler.getAmountAsInt(0) < recipe.get().value().getInputCount()) {
             return false;
         }
 
@@ -260,8 +260,8 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
             count++;
         }
 
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if(!stackInSlot.isEmpty()){
                 for (ItemStack result : results){
                     if(stackInSlot.getItem() == result.getItem()){
@@ -281,12 +281,12 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
 
     private Optional<RecipeHolder<DnaExtractingRecipe>> getCurrentRecipe(){
         ServerLevel level = (ServerLevel) this.level;
-        return level.recipeAccess().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+        return level.recipeAccess().getRecipeFor(ModRecipes.DNA_EXTRACTING_TYPE.get(), new SingleRecipeInput(inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0))), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || (stackInSlot.getItem() == result.getItem() && stackInSlot.getCount() + result.getCount() <= stackInSlot.getMaxStackSize())) {
                 return true;
             }
@@ -295,8 +295,8 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private boolean canInsertItemIntoOutputSlot(Item item) {
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || stackInSlot.getItem() == item) {
                 return true;
             }
@@ -318,19 +318,19 @@ public class DnaExtractorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public ItemStack getRenderStack() {
-        if (outputHandler.getStackInSlot(0).isEmpty() && outputHandler.getStackInSlot(1).isEmpty()) {
-            return inputHandler.getStackInSlot(0);
+        if (outputHandler.getResource(0).isEmpty() && outputHandler.getResource(1).isEmpty()) {
+            return inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0));
         }
         else {
-            if (!outputHandler.getStackInSlot(0).isEmpty() && outputHandler.getStackInSlot(0).getItem() != Items.SLIME_BALL) {
-                return outputHandler.getStackInSlot(0);
+            if (!outputHandler.getResource(0).isEmpty() && outputHandler.getResource(0).getItem() != Items.SLIME_BALL) {
+                return outputHandler.getResource(0).toStack(outputHandler.getAmountAsInt(0));
             }
             else {
-                if (outputHandler.getStackInSlot(1).isEmpty()){
-                    return outputHandler.getStackInSlot(0);
+                if (outputHandler.getResource(1).isEmpty()){
+                    return outputHandler.getResource(0).toStack(outputHandler.getAmountAsInt(0));
                 }
                 else {
-                    return outputHandler.getStackInSlot(1);
+                    return outputHandler.getResource(1).toStack(outputHandler.getAmountAsInt(1));
 
                 }
             }

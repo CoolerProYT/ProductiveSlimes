@@ -12,43 +12,43 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class FluidTankBlockEntity extends BlockEntity {
     public final int capacity = 50000;
 
-    private final FluidTank fluidTank = new FluidTank(capacity){
+    private final FluidStacksResourceHandler fluidTank = new FluidStacksResourceHandler(1, capacity){
         @Override
-        protected void onContentsChanged() {
+        protected void onContentsChanged(int index, FluidStack previousContents) {
             setChanged();
-            if (!level.isClientSide()){
+            if (level != null && !level.isClientSide()){
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
 
         @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return super.isFluidValid(stack);
+        public boolean isValid(int index, FluidResource resource) {
+            return true;
         }
     };
 
     public FluidTankBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.FLUID_TANK_BE.get(), pPos, pBlockState);
-        fluidTank.setFluid(FluidStack.EMPTY);
+        fluidTank.set(0, FluidResource.EMPTY, 0);
     }
 
-    public FluidTank getFluidTank() {
+    public FluidStacksResourceHandler getFluidTank() {
         return fluidTank;
     }
 
     public void setFluidStack(FluidStack stack) {
-        fluidTank.setFluid(stack);
+        fluidTank.set(0, FluidResource.of(stack), stack.getAmount());
     }
 
     public FluidStack getFluidStack() {
-        return fluidTank.getFluid();
+        return fluidTank.getResource(0).toStack(fluidTank.getAmountAsInt(0));
     }
 
     public void drops(){

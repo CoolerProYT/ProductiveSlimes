@@ -34,10 +34,10 @@ public class DnaSynthesizerBlockEntityRenderer implements BlockEntityRenderer<Dn
         renderState.blockEntity = blockEntity;
 
         List<ItemStack> itemStacks = List.of(
-                blockEntity.getInputHandler().getStackInSlot(0),
-                blockEntity.getInputHandler().getStackInSlot(1),
-                blockEntity.getInputHandler().getStackInSlot(2),
-                blockEntity.getOutputHandler().getStackInSlot(0)
+                blockEntity.getInputHandler().getResource(0).toStack(),
+                blockEntity.getInputHandler().getResource(1).toStack(),
+                blockEntity.getInputHandler().getResource(2).toStack(),
+                blockEntity.getOutputHandler().getResource(0).toStack()
         );
 
         ItemStackRenderState itemStackRenderState = new ItemStackRenderState();

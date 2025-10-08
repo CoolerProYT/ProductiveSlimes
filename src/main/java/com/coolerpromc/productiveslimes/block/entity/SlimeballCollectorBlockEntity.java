@@ -20,7 +20,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,19 +30,19 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     private static final int RANGE_XZ = 8;
     private static final int RANGE_Y = 256;
     private int enableOutline = 0;
-    private final ItemStackHandler inventory = new ItemStackHandler(9) {
+    private final ItemStacksResourceHandler inventory = new ItemStacksResourceHandler(9) {
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isValid(int index, ItemResource resource) {
             return false;
         }
 
         @Override
-        public int getSlotLimit(int slot) {
+        protected int getCapacity(int index, ItemResource resource) {
             return 64;
         }
 
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int index, ItemStack previousContents) {
             setChanged();
         }
     };
@@ -76,7 +77,7 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
         };
     }
 
-    public ItemStackHandler getInventory() {
+    public ItemStacksResourceHandler getInventory() {
         return inventory;
     }
 
@@ -111,9 +112,9 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
 
     public void drops() {
         SimpleContainer container = new SimpleContainer(9);
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            if (!inventory.getStackInSlot(i).isEmpty()) {
-                container.addItem(inventory.getStackInSlot(i));
+        for (int i = 0; i < inventory.size(); i++) {
+            if (!inventory.getResource(i).isEmpty()) {
+                container.addItem(inventory.getResource(i).toStack(inventory.getAmountAsInt(i)));
             }
         }
         Containers.dropContents(level, worldPosition, container);
@@ -139,13 +140,13 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
         if (!hasSpaceForItem(item.getItem())) {
             return;
         }
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            if (inventory.getStackInSlot(i).isEmpty()) {
-                inventory.setStackInSlot(i, item.getItem());
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.getResource(i).isEmpty()) {
+                inventory.set(i, ItemResource.of(item.getItem()), item.getItem().getCount());
                 item.remove(Entity.RemovalReason.KILLED);
                 return;
-            } else if (inventory.getStackInSlot(i).is(item.getItem().getItem()) && inventory.getStackInSlot(i).getCount() + item.getItem().getCount() <= inventory.getStackInSlot(i).getMaxStackSize()) {
-                inventory.getStackInSlot(i).grow(item.getItem().getCount());
+            } else if (inventory.getResource(i).is(item.getItem().getItem()) && inventory.getAmountAsInt(i) + item.getItem().getCount() <= inventory.getResource(i).getMaxStackSize()) {
+                inventory.set(i, inventory.getResource(i), item.getItem().getCount() + inventory.getAmountAsInt(i));
                 item.remove(Entity.RemovalReason.KILLED);
                 return;
             }
@@ -153,8 +154,8 @@ public class SlimeballCollectorBlockEntity extends BlockEntity implements MenuPr
     }
 
     private boolean hasSpaceForItem(ItemStack stack) {
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            if (inventory.getStackInSlot(i).isEmpty() || inventory.getStackInSlot(i).is(stack.getItem()) && inventory.getStackInSlot(i).getCount() + stack.getCount() <= inventory.getStackInSlot(i).getMaxStackSize()) {
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.getResource(i).isEmpty() || inventory.getResource(i).is(stack.getItem()) && inventory.getAmountAsInt(i) + stack.getCount() <= inventory.getResource(i).getMaxStackSize()) {
                 return true;
             }
         }

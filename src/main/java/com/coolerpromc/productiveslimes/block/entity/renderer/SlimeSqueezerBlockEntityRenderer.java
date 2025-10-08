@@ -45,9 +45,9 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         renderState.blockEntity = blockEntity;
 
         List<ItemStack> itemStacks = List.of(
-                blockEntity.getInputHandler().getStackInSlot(0),
-                blockEntity.getOutputHandler().getStackInSlot(0),
-                blockEntity.getOutputHandler().getStackInSlot(1)
+                blockEntity.getInputHandler().getResource(0).toStack(),
+                blockEntity.getOutputHandler().getResource(0).toStack(),
+                blockEntity.getOutputHandler().getResource(1).toStack()
         );
 
         ItemStackRenderState itemStackRenderState = new ItemStackRenderState();

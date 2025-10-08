@@ -48,7 +48,7 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
     public void extractRenderState(SlimeNestBlockEntity blockEntity, SlimeNestBlockEntityRenderState renderState, float p_446851_, Vec3 p_445788_, @Nullable ModelFeatureRenderer.CrumblingOverlay p_446944_) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, p_446851_, p_445788_, p_446944_);
         renderState.blockEntity = blockEntity;
-        SlimeData slimeData = blockEntity.getSlimeHandler().getStackInSlot(0).get(ModDataComponents.SLIME_DATA.get());
+        SlimeData slimeData = blockEntity.getSlimeHandler().getResource(0).get(ModDataComponents.SLIME_DATA.get());
         if (slimeData != null){
             renderState.slimeColor = slimeData.color();
         } else {

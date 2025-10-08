@@ -7,17 +7,12 @@ import com.coolerpromc.productiveslimes.util.TranslucentHighlightFix;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -71,7 +66,7 @@ public class SolidingStationBlock extends BaseEntityBlock implements Translucent
             ItemStack stack = new ItemStack(this);
             SolidingStationBlockEntity solidingStationBlockEntity = (SolidingStationBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), solidingStationBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.set(ModDataComponents.ENERGY.get(), solidingStationBlockEntity.getEnergyHandler().getAmountAsInt());
 
             drops.clear();
             drops.add(stack);

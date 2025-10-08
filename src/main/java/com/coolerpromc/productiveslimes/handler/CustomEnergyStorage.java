@@ -1,8 +1,8 @@
 package com.coolerpromc.productiveslimes.handler;
 
-import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
 
-public class CustomEnergyStorage extends EnergyStorage {
+public class CustomEnergyStorage extends SimpleEnergyHandler {
     public CustomEnergyStorage(int capacity) {
         super(capacity);
     }
@@ -29,7 +29,7 @@ public class CustomEnergyStorage extends EnergyStorage {
     }
 
     public void setMaxReceive(int maxReceive) {
-        this.maxReceive = maxReceive;
+        this.maxInsert = maxReceive;
     }
 
     public void setMaxExtract(int maxExtract) {

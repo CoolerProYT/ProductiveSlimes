@@ -9,8 +9,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class MeltingStationMenu extends AbstractContainerMenu {
     public final MeltingStationBlockEntity blockEntity;
@@ -31,14 +31,14 @@ public class MeltingStationMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler bucketHandler = blockEntity.getBucketHandler();
-        this.addSlot(new SlotItemHandler(bucketHandler, 0, 25, 34));
+        ItemStacksResourceHandler bucketHandler = blockEntity.getBucketHandler();
+        this.addSlot(new ResourceHandlerSlot(bucketHandler, bucketHandler::set, 0, 25, 34));
 
-        IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 45, 34));
+        ItemStacksResourceHandler inputHandler = blockEntity.getInputHandler();
+        this.addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, 0, 45, 34));
 
-        IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 134, 34));
+        ItemStacksResourceHandler outputHandler = blockEntity.getOutputHandler();
+        this.addSlot(new ResourceHandlerSlot(outputHandler, outputHandler::set, 0, 134, 34));
 
         addDataSlots(data);
     }

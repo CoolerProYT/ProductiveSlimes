@@ -1,11 +1,13 @@
 package com.coolerpromc.productiveslimes.networking;
 
 import com.coolerpromc.productiveslimes.block.entity.CableBlockEntity;
+import com.coolerpromc.productiveslimes.util.TransferUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import java.util.*;
 
@@ -194,23 +196,23 @@ public class ModNetworkManager {
     public static void tickAllNetworks(ServerLevel world) {
         ModNetworkState state = ModNetworkStateManager.getOrCreate(world);
         for (CableNetwork network : state.getAllNetworks().values()) {
-            Set<IEnergyStorage> consumers = findAllConsumersForNetwork(world, network);
+            Set<EnergyHandler> consumers = findAllConsumersForNetwork(world, network);
             if (!consumers.isEmpty() && network.getTotalEnergy() > 0) {
                 distributeEnergyFairly(network, consumers);
             }
         }
     }
 
-    private static Set<IEnergyStorage> findAllConsumersForNetwork(ServerLevel world, CableNetwork network) {
-        Set<IEnergyStorage> consumers = new HashSet<>();
+    private static Set<EnergyHandler> findAllConsumersForNetwork(ServerLevel world, CableNetwork network) {
+        Set<EnergyHandler> consumers = new HashSet<>();
         for (BlockPos cablePos : network.getCablePositions()) {
             for (Direction dir : Direction.values()) {
                 BlockPos neighborPos = cablePos.relative(dir);
                 if (world.getBlockEntity(neighborPos) instanceof CableBlockEntity) {
                     continue;
                 }
-                IEnergyStorage maybeStorage = world.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, dir.getOpposite());
-                if (maybeStorage != null && maybeStorage.canReceive()) {
+                EnergyHandler maybeStorage = world.getCapability(Capabilities.Energy.BLOCK, neighborPos, dir.getOpposite());
+                if (maybeStorage != null && TransferUtil.canInsert(maybeStorage)) {
                     consumers.add(maybeStorage);
                 }
             }
@@ -218,14 +220,14 @@ public class ModNetworkManager {
         return consumers;
     }
 
-    private static void distributeEnergyFairly(CableNetwork net, Set<IEnergyStorage> consumers) {
+    private static void distributeEnergyFairly(CableNetwork net, Set<EnergyHandler> consumers) {
         int cableEnergy = net.getTotalEnergy();
         int maxSend = Math.min(cableEnergy, 1000);
         if (maxSend <= 0) return;
         int totalFree = 0;
-        Map<IEnergyStorage, Integer> spaceMap = new HashMap<>();
-        for (IEnergyStorage consumer : consumers) {
-            int space = consumer.getMaxEnergyStored() - consumer.getEnergyStored();
+        Map<EnergyHandler, Integer> spaceMap = new HashMap<>();
+        for (EnergyHandler consumer : consumers) {
+            int space = consumer.getCapacityAsInt() - consumer.getAmountAsInt();
             if (space > 0) {
                 totalFree += space;
                 spaceMap.put(consumer, space);
@@ -235,24 +237,32 @@ public class ModNetworkManager {
         int toDistribute = Math.min(maxSend, net.getTotalEnergy());
         net.setTotalEnergy(net.getTotalEnergy() - toDistribute);
         int leftover = toDistribute;
-        for (Iterator<Map.Entry<IEnergyStorage, Integer>> it = spaceMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<IEnergyStorage, Integer> entry = it.next();
-            IEnergyStorage consumer = entry.getKey();
+        for (Iterator<Map.Entry<EnergyHandler, Integer>> it = spaceMap.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<EnergyHandler, Integer> entry = it.next();
+            EnergyHandler consumer = entry.getKey();
             int space = entry.getValue();
             if (leftover <= 0) break;
-            if (totalFree <= leftover) {
-                int accepted = consumer.receiveEnergy(space, false);
-                leftover -= accepted;
-                totalFree -= space;
-            } else {
-                double fraction = (double) space / (double) totalFree;
-                int portion = (int) Math.floor(fraction * toDistribute);
-                if (!it.hasNext()) {
-                    portion = leftover;
+            try(Transaction tx = Transaction.open(null)){
+                if (totalFree <= leftover) {
+                    int accepted = consumer.insert(space, tx);
+                    if (accepted > 0){
+                        leftover -= accepted;
+                        totalFree -= space;
+                        tx.commit();
+                    }
+                } else {
+                    double fraction = (double) space / (double) totalFree;
+                    int portion = (int) Math.floor(fraction * toDistribute);
+                    if (!it.hasNext()) {
+                        portion = leftover;
+                    }
+                    int accepted = consumer.insert(portion, tx);
+                    if (accepted > 0){
+                        leftover -= accepted;
+                        totalFree -= space;
+                        tx.commit();
+                    }
                 }
-                int accepted = consumer.receiveEnergy(portion, false);
-                leftover -= accepted;
-                totalFree -= space;
             }
         }
     }

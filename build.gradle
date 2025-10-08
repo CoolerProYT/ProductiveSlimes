@@ -98,14 +98,14 @@ dependencies {
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
 //    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
-    compileOnly "mezz.jei:jei-1.21.5-neoforge-api:${jei_version}"
-//    runtimeOnly "mezz.jei:jei-1.21.5-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-1.21.9-neoforge-api:${jei_version}"
+//    runtimeOnly "mezz.jei:jei-1.21.9-neoforge:${jei_version}"
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    compileOnly "com.github.glitchfiend:TerraBlender-neoforge:1.21.6-" + terrablender_version
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:1.21.9-" + terrablender_version
 
-    compileOnly "curse.maven:jade-324717:${jade_id}"
+    implementation "curse.maven:jade-324717:${jade_id}"
 }
 
 tasks.withType(ProcessResources).configureEach {

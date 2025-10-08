@@ -9,15 +9,18 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
+
 public class SlimeballCollectorMenu extends AbstractContainerMenu {
     public final SlimeballCollectorBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+
     public SlimeballCollectorMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
         this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
+
     public SlimeballCollectorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.SLIMEBALL_COLLECTOR_MENU.get(), pContainerId);
         checkContainerSize(inv, 3);
@@ -26,21 +29,24 @@ public class SlimeballCollectorMenu extends AbstractContainerMenu {
         this.data = data;
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
-        IItemHandler inputHandler = blockEntity.getInventory();
-        for (int i = 0; i < inputHandler.getSlots();i++){
-            addSlot(new SlotItemHandler(inputHandler, i, 8 + (i * 18), 34));
+        ItemStacksResourceHandler inputHandler = blockEntity.getInventory();
+        for (int i = 0; i < inputHandler.size(); i++) {
+            addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, i, 8 + (i * 18), 34));
         }
         addDataSlots(data);
     }
+
     public boolean isCrafting() {
         return data.get(0) > 0;
     }
+
     public int getScaledProgress() {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);  // Max Progress
         int progressArrowSize = 26; // This is the height in pixels of your arrow
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
     }
+
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
@@ -50,6 +56,7 @@ public class SlimeballCollectorMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
     // THIS YOU HAVE TO DEFINE!
     private static final int TE_INVENTORY_SLOT_COUNT = 9;
+
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
@@ -81,11 +88,13 @@ public class SlimeballCollectorMenu extends AbstractContainerMenu {
         sourceSlot.onTake(pPlayer, sourceStack);
         return copyOfSourceStack;
     }
+
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
                 pPlayer, ModBlocks.SLIMEBALL_COLLECTOR.get());
     }
+
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
@@ -93,6 +102,7 @@ public class SlimeballCollectorMenu extends AbstractContainerMenu {
             }
         }
     }
+
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));

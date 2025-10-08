@@ -12,11 +12,11 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 public class ModCapabilities {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.MELTING_STATION_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.MELTING_STATION_BE.get(),
                 (be, side) -> {
                     if (side == Direction.DOWN) {
@@ -30,11 +30,11 @@ public class ModCapabilities {
                     }
                 });
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.SOLIDING_STATION_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.SOLIDING_STATION_BE.get(),
                 (be, side) -> {
                     if (side == Direction.DOWN) {
@@ -45,25 +45,25 @@ public class ModCapabilities {
                     }
                 });
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.ENERGY_GENERATOR_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.ENERGY_GENERATOR_BE.get(),
                 (be, side) -> {
                     return be.getItemHandler();
                 });
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.CABLE_BE.get(),
                 (be, side) -> be);
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.DNA_EXTRACTOR_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.DNA_EXTRACTOR_BE.get(),
                 (be, side) -> {
                     if (side == Direction.DOWN) {
@@ -74,11 +74,11 @@ public class ModCapabilities {
                     }
                 });
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.DNA_SYNTHESIZER_BE.get(),
                 (be, side) -> be.getEnergyHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.DNA_EXTRACTOR_BE.get(),
                 (be, side) -> {
                     if (side == Direction.DOWN) {
@@ -89,14 +89,14 @@ public class ModCapabilities {
                     }
                 });
 
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Fluid.BLOCK,
                 ModBlockEntities.FLUID_TANK_BE.get(),
                 (be, side) -> be.getFluidTank());
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.SLIME_SQUEEZER_BE.get(),
                 (be, side) -> be.getEnergyHandler());
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.SLIME_SQUEEZER_BE.get(),
                 (be, side) -> {
                     if (side == Direction.DOWN) {
@@ -107,11 +107,11 @@ public class ModCapabilities {
                     }
                 });
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.SLIME_NEST_BE.get(),
                 (be, side) -> be.getOutputHandler());
 
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        event.registerBlockEntity(Capabilities.Item.BLOCK,
                 ModBlockEntities.SLIMEBALL_COLLECTOR_BE.get(),
                 (be, side) -> be.getInventory());
     }

@@ -21,7 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 import javax.annotation.Nullable;
 
@@ -126,7 +126,7 @@ public class CableBlock extends Block implements EntityBlock {
     }
 
     private boolean canConnectBasedOnBlock(Block block) {
-        return block instanceof IEnergyStorage;
+        return block instanceof EnergyHandler;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class CableBlock extends Block implements EntityBlock {
 
     private boolean canConnectTo(Level level, BlockPos pos, Direction direction) {
         // Access the capability at the neighbor position and side
-        IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction.getOpposite());
+        EnergyHandler energyStorage = level.getCapability(Capabilities.Energy.BLOCK, pos, direction.getOpposite());
         if (energyStorage != null) {
             return true;
         } else {

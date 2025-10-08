@@ -27,34 +27,35 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1){
+    private final ItemStacksResourceHandler itemHandler = new ItemStacksResourceHandler(1){
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return canBurn(stack);
+        public boolean isValid(int index, ItemResource resource) {
+            return canBurn(resource.toStack());
         }
     };
     protected final ContainerData data;
 
     private final CustomEnergyStorage energyHandler = new CustomEnergyStorage(10000, 0, 100, 0);
 
-    private final ItemStackHandler upgradeHandler = new ItemStackHandler(4){
+    private final ItemStacksResourceHandler upgradeHandler = new ItemStacksResourceHandler(4){
         @Override
-        public int getSlotLimit(int slot) {
+        protected int getCapacity(int index, ItemResource resource) {
             return 1;
         }
 
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem() == ModItems.ENERGY_MULTIPLIER_UPGRADE.get();
+        public boolean isValid(int index, ItemResource resource) {
+            return resource.getItem() == ModItems.ENERGY_MULTIPLIER_UPGRADE.get();
         }
     };
 
@@ -69,11 +70,11 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
         return data;
     }
 
-    public ItemStackHandler getItemHandler() {
+    public ItemStacksResourceHandler getItemHandler() {
         return itemHandler;
     }
 
-    public ItemStackHandler getUpgradeHandler() {
+    public ItemStacksResourceHandler getUpgradeHandler() {
         return upgradeHandler;
     }
 
@@ -83,8 +84,8 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
             @Override
             public int get(int pIndex) {
                 return switch (pIndex) {
-                    case 0 -> EnergyGeneratorBlockEntity.this.energyHandler.getEnergyStored();
-                    case 1 -> EnergyGeneratorBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    case 0 -> EnergyGeneratorBlockEntity.this.energyHandler.getAmountAsInt();
+                    case 1 -> EnergyGeneratorBlockEntity.this.energyHandler.getCapacityAsInt();
                     case 2 -> EnergyGeneratorBlockEntity.this.progress;
                     case 3 -> EnergyGeneratorBlockEntity.this.maxProgress;
                     default -> throw new UnsupportedOperationException("Unexpected value: " + pIndex);
@@ -124,21 +125,25 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
         AtomicBoolean isDirty = new AtomicBoolean(false);
 
-        if (this.energyHandler.getEnergyStored() < this.energyHandler.getMaxEnergyStored()) {
+        if (this.energyHandler.getAmountAsInt() < this.energyHandler.getCapacityAsInt()) {
             if (this.progress <= 0) {
-                if (canBurn(this.itemHandler.getStackInSlot(0))) {
-                    this.progress = this.maxProgress = getBurnTime(this.itemHandler.getStackInSlot(0));
-                    this.itemHandler.getStackInSlot(0).shrink(1);
-                    isDirty.set(true);
+                if (canBurn(this.itemHandler.getResource(0).toStack())) {
+                    this.progress = this.maxProgress = getBurnTime(this.itemHandler.getResource(0).toStack());
+                    try(Transaction tx = Transaction.open(null)){
+                        if (this.itemHandler.extract(0, this.itemHandler.getResource(0), 1, tx) == 1){
+                            tx.commit();
+                            isDirty.set(true);
+                        }
+                    }
                 }
             } else {
                 this.progress--;
 
                 int upgrade = 0;
-                for (int i = 0; i < this.upgradeHandler.getSlots(); i++) {
-                    if (this.upgradeHandler.getStackInSlot(i).isEmpty()) continue;
+                for (int i = 0; i < this.upgradeHandler.size(); i++) {
+                    if (this.upgradeHandler.getResource(i).isEmpty()) continue;
 
-                    if (this.upgradeHandler.getStackInSlot(i).getItem() == ModItems.ENERGY_MULTIPLIER_UPGRADE.get()) {
+                    if (this.upgradeHandler.getResource(i).getItem() == ModItems.ENERGY_MULTIPLIER_UPGRADE.get()) {
                         upgrade++;
                     }
                 }
@@ -161,16 +166,22 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
                 Level level = this.level;
                 BlockPos neighborPos = this.getBlockPos().relative(direction);
 
-                Optional<IEnergyStorage> neighborEnergy = Optional.ofNullable(level.getCapability(Capabilities.EnergyStorage.BLOCK, neighborPos, direction.getOpposite()));
+                Optional<EnergyHandler> neighborEnergy = Optional.ofNullable(level.getCapability(Capabilities.Energy.BLOCK, neighborPos, direction.getOpposite()));
 
                 if (neighborEnergy.isPresent()) {
-                    IEnergyStorage neighborStorage = neighborEnergy.get();
+                    EnergyHandler neighborStorage = neighborEnergy.get();
+                    int energyToExtract;
 
-                    if (neighborStorage.canReceive()) {
-                        int energyToExtract = Math.min(this.energyHandler.extractEnergy(1000, true), neighborStorage.receiveEnergy(1000, true));
+                    try(Transaction tx = Transaction.open(null)){
+                        energyToExtract = Math.min(neighborStorage.insert(100, tx), this.energyHandler.extract(100, tx));
+                    }
 
-                        this.energyHandler.extractEnergy(energyToExtract, false);
-                        neighborStorage.receiveEnergy(energyToExtract, false);
+                    if (energyToExtract > 0){
+                        try(Transaction tx2 = Transaction.open(null)){
+                            if (this.energyHandler.extract(energyToExtract, tx2) == neighborStorage.insert(energyToExtract, tx2)){
+                                tx2.commit();
+                            }
+                        }
                     }
                 }
             }
@@ -187,7 +198,7 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
 
         itemHandler.serialize(valueOutput.child("ItemHandler"));
         upgradeHandler.serialize(valueOutput.child("UpgradeHandler"));
-        valueOutput.putInt("Energy", energyHandler.getEnergyStored());
+        valueOutput.putInt("Energy", energyHandler.getAmountAsInt());
         valueOutput.putInt("Progress", progress);
         valueOutput.putInt("MaxProgress", maxProgress);
     }
@@ -215,9 +226,9 @@ public class EnergyGeneratorBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public void drops() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
-        for(int i = 0; i < itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        SimpleContainer inventory = new SimpleContainer(itemHandler.size());
+        for(int i = 0; i < itemHandler.size(); i++) {
+            inventory.setItem(i, itemHandler.getResource(i).toStack(itemHandler.getAmountAsInt(i)));
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }

@@ -6,19 +6,12 @@ import com.coolerpromc.productiveslimes.datacomponent.ModDataComponents;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -78,7 +71,7 @@ public class EnergyGeneratorBlock extends BaseEntityBlock{
             ItemStack stack = new ItemStack(this);
             EnergyGeneratorBlockEntity energyGeneratorBlockEntity = (EnergyGeneratorBlockEntity) blockEntity;
 
-            stack.set(ModDataComponents.ENERGY.get(), energyGeneratorBlockEntity.getEnergyHandler().getEnergyStored());
+            stack.set(ModDataComponents.ENERGY.get(), energyGeneratorBlockEntity.getEnergyHandler().getAmountAsInt());
 
             drops.clear();
             drops.add(stack);

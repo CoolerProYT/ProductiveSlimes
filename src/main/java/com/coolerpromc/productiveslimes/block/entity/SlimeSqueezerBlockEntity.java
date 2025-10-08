@@ -6,14 +6,12 @@ import com.coolerpromc.productiveslimes.recipe.SqueezingRecipe;
 import com.coolerpromc.productiveslimes.screen.SlimeSqueezerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -30,16 +28,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
 public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inputHandler = new ItemStackHandler(1) {
+    private final ItemStacksResourceHandler inputHandler = new ItemStacksResourceHandler(1) {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int index, ItemStack previousContents) {
             setChanged();
             if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -47,18 +47,18 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isValid(int index, ItemResource resource) {
             return true;
         }
     };
-    private final ItemStackHandler outputHandler = new ItemStackHandler(2) {
+    private final ItemStacksResourceHandler outputHandler = new ItemStacksResourceHandler(2) {
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int index, ItemStack previousContents) {
             setChanged();
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
+        public boolean isValid(int index, ItemResource resource) {
             return false;
         }
     };
@@ -75,8 +75,8 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
                 return switch (pIndex) {
                     case 0 -> SlimeSqueezerBlockEntity.this.progress;
                     case 1 -> SlimeSqueezerBlockEntity.this.maxProgress;
-                    case 2 -> SlimeSqueezerBlockEntity.this.energyHandler.getEnergyStored();
-                    case 3 -> SlimeSqueezerBlockEntity.this.energyHandler.getMaxEnergyStored();
+                    case 2 -> SlimeSqueezerBlockEntity.this.energyHandler.getAmountAsInt();
+                    case 3 -> SlimeSqueezerBlockEntity.this.energyHandler.getCapacityAsInt();
                     default -> 0;
                 };
             }
@@ -97,11 +97,11 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         };
     }
 
-    public ItemStackHandler getInputHandler() {
+    public ItemStacksResourceHandler getInputHandler() {
         return inputHandler;
     }
 
-    public ItemStackHandler getOutputHandler() {
+    public ItemStacksResourceHandler getOutputHandler() {
         return outputHandler;
     }
 
@@ -111,9 +111,9 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
 
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(3);
-        inventory.setItem(0, inputHandler.getStackInSlot(0));
-        inventory.setItem(1, outputHandler.getStackInSlot(0));
-        inventory.setItem(2, outputHandler.getStackInSlot(1));
+        inventory.setItem(0, inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0)));
+        inventory.setItem(1, outputHandler.getResource(0).toStack(outputHandler.getAmountAsInt(0)));
+        inventory.setItem(2, outputHandler.getResource(1).toStack(outputHandler.getAmountAsInt(1)));
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
@@ -132,7 +132,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     protected void saveAdditional(ValueOutput valueOutput) {
         inputHandler.serialize(valueOutput.child("inputHandler"));
         outputHandler.serialize(valueOutput.child("outputHandler"));
-        valueOutput.putInt("EnergyInventory", energyHandler.getEnergyStored());
+        valueOutput.putInt("EnergyInventory", energyHandler.getAmountAsInt());
         valueOutput.putInt("slime_squeezer.progress", progress);
         super.saveAdditional(valueOutput);
     }
@@ -148,7 +148,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         Optional<RecipeHolder<SqueezingRecipe>> recipe = getCurrentRecipe();
-        if (hasRecipe() && energyHandler.getEnergyStored() >= recipe.get().value().getEnergy()) {
+        if (hasRecipe() && energyHandler.getAmountAsInt() >= recipe.get().value().getEnergy()) {
             increaseCraftingProgress();
             setChanged(pLevel, pPos, pState);
             if (hasProgressFinished()) {
@@ -174,12 +174,16 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         if (recipe.isPresent()) {
             List<ItemStack> results = recipe.get().value().getOutputs();
             // Extract the input item from the input slot
-            this.inputHandler.extractItem(0, 1, false);
+            try(Transaction tx = Transaction.open(null)){
+                if (this.inputHandler.extract(0, this.inputHandler.getResource(0), 1, tx) == 1){
+                    tx.commit();
+                }
+            }
             // Loop through each result item and find suitable output slots
             for (ItemStack result : results) {
                 int outputSlot = findSuitableOutputSlot(result);
                 if (outputSlot != -1) {
-                    this.outputHandler.setStackInSlot(outputSlot, new ItemStack(result.getItem(), this.outputHandler.getStackInSlot(outputSlot).getCount() + result.getCount()));
+                    this.outputHandler.set(outputSlot, ItemResource.of(result.getItem()), this.outputHandler.getAmountAsInt(outputSlot) + result.getCount());
                 } else {
                     // Handle the case where no suitable output slot is found
                     // This can be logging an error, throwing an exception, or any other handling logic
@@ -192,8 +196,8 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     private int findSuitableOutputSlot(ItemStack result) {
         // Implement logic to find a suitable output slot for the given result
         // Return the slot index or -1 if no suitable slot is found
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || (stackInSlot.getItem() == result.getItem() && stackInSlot.getCount() + result.getCount() <= stackInSlot.getMaxStackSize())) {
                 return i;
             }
@@ -206,7 +210,7 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         if (recipe.isEmpty()) {
             return false;
         }
-        if (inputHandler.getStackInSlot(0).getCount() < 1) {
+        if (inputHandler.getAmountAsInt(0) < 1) {
             return false;
         }
         List<ItemStack> results = recipe.get().value().getOutputs();
@@ -224,8 +228,8 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
         for (ItemStack result : results) {
             count++;
         }
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (!stackInSlot.isEmpty()) {
                 for (ItemStack result : results) {
                     if (stackInSlot.getItem() == result.getItem()) {
@@ -243,12 +247,12 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
 
     private Optional<RecipeHolder<SqueezingRecipe>> getCurrentRecipe() {
         ServerLevel level = (ServerLevel) this.level;
-        return level.recipeAccess().getRecipeFor(ModRecipes.SQUEEZING_TYPE.get(), new SingleRecipeInput(inputHandler.getStackInSlot(0)), level);
+        return level.recipeAccess().getRecipeFor(ModRecipes.SQUEEZING_TYPE.get(), new SingleRecipeInput(inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0))), level);
     }
 
     private boolean canInsertAmountIntoOutputSlot(ItemStack result) {
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || (stackInSlot.getItem() == result.getItem() && stackInSlot.getCount() + result.getCount() <= stackInSlot.getMaxStackSize())) {
                 return true;
             }
@@ -257,8 +261,8 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     }
 
     private boolean canInsertItemIntoOutputSlot(Item item) {
-        for (int i = 0; i < this.outputHandler.getSlots(); i++) {
-            ItemStack stackInSlot = this.outputHandler.getStackInSlot(i);
+        for (int i = 0; i < this.outputHandler.size(); i++) {
+            ItemStack stackInSlot = this.outputHandler.getResource(i).toStack(this.outputHandler.getAmountAsInt(i));
             if (stackInSlot.isEmpty() || stackInSlot.getItem() == item) {
                 return true;
             }
@@ -294,11 +298,11 @@ public class SlimeSqueezerBlockEntity extends BlockEntity implements MenuProvide
     }
 
     public ItemStack getInputStack() {
-        return inputHandler.getStackInSlot(0);
+        return inputHandler.getResource(0).toStack(inputHandler.getAmountAsInt(0));
     }
 
     public ItemStack getOutputStack(int slot) {
-        return outputHandler.getStackInSlot(slot);
+        return outputHandler.getResource(slot).toStack(outputHandler.getAmountAsInt(slot));
     }
 
     @Override

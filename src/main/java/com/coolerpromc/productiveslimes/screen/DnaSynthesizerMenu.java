@@ -9,8 +9,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.ResourceHandlerSlot;
 
 public class DnaSynthesizerMenu extends AbstractContainerMenu {
     public final DnaSynthesizerBlockEntity blockEntity;
@@ -31,16 +31,16 @@ public class DnaSynthesizerMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        IItemHandler inputHandler = blockEntity.getInputHandler();
-        this.addSlot(new SlotItemHandler(inputHandler, 0, 31, 12));
-        this.addSlot(new SlotItemHandler(inputHandler, 1, 31, 55));
-        this.addSlot(new SlotItemHandler(inputHandler, 2, 52, 34));
+        ItemStacksResourceHandler inputHandler = blockEntity.getInputHandler();
+        this.addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, 0, 31, 12));
+        this.addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, 1, 31, 55));
+        this.addSlot(new ResourceHandlerSlot(inputHandler, inputHandler::set, 2, 52, 34));
 
-        IItemHandler outputHandler = blockEntity.getOutputHandler();
-        this.addSlot(new SlotItemHandler(outputHandler, 0, 125, 34));
+        ItemStacksResourceHandler outputHandler = blockEntity.getOutputHandler();
+        this.addSlot(new ResourceHandlerSlot(outputHandler, outputHandler::set, 0, 125, 34));
 
-        IItemHandler eggHandler = blockEntity.getEggHandler();
-        this.addSlot(new SlotItemHandler(eggHandler, 0, 82, 54));
+        ItemStacksResourceHandler eggHandler = blockEntity.getEggHandler();
+        this.addSlot(new ResourceHandlerSlot(eggHandler, eggHandler::set, 0, 82, 54));
 
         addDataSlots(data);
     }
