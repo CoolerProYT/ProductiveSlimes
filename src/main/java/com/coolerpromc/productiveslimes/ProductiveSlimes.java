@@ -28,6 +28,7 @@ import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
+import com.coolerpromc.productiveslimes.worldgen.biome.BiomeRegister;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -51,7 +52,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
@@ -112,14 +112,16 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-//        ModTerrablender.registerBiomes();
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+        BiomeRegister.init();
+        if (ModList.get().isLoaded("terrablender")){
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+        }
     }
 
     @SubscribeEvent
@@ -127,7 +129,6 @@ public class ProductiveSlimes
     {
         CustomContentRegistry.handleDatapack(event.getServer());
         event.getServer().getCommands().performCommand(event.getServer().getCommands().getDispatcher().parse("reload", event.getServer().createCommandSourceStack()), "reload");
-
     }
 
     @SubscribeEvent

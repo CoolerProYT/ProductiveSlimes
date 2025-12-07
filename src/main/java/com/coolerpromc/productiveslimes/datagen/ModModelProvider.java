@@ -297,7 +297,7 @@ public class ModModelProvider extends ModelProvider {
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){
         Identifier model = itemLocation("slime_item");
-        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
+//        itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
         itemModels.itemModelOutput.accept(item, ItemModelUtils.specialModel(model, new SlimeItemSpecialRenderer.Unbaked(model)));
     }
 

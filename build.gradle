@@ -1,14 +1,8 @@
 plugins {
     id 'java-library'
-    id 'eclipse'
-    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.173'
-    id "net.neoforged.gradle.mixin" version "7.0.142"
-}
-
-mixin {
-    config "${mod_id}.mixins.json"
+    id 'net.neoforged.moddev' version '2.0.121'
+    id 'idea'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -20,6 +14,7 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven { url = 'https://maven.minecraftforge.net/' }
     maven { // TOP
         url "https://maven.k-4u.nl"
@@ -52,34 +47,53 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
+neoForge {
+    version = project.neo_version
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
+    validateAccessTransformers = true
 
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
-    client {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    accessTransformers {
+        file('src/main/resources/META-INF/accesstransformer.cfg')
     }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
+    runs {
+        client {
+            client()
+
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            clientData()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
     }
 
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
-
-    clientData {
-        jvmArguments '-Dneoforge.datagen=true'
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
     }
 }
 
@@ -90,9 +104,6 @@ configurations {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
-//    implementation "net.neoforged:neoforge:21.5.0-alpha.1.21.9-pre1.20250918.184530"
-
     compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
@@ -108,35 +119,29 @@ dependencies {
     compileOnly "curse.maven:jade-324717:${jade_id}"
 }
 
-tasks.withType(ProcessResources).configureEach {
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
-            neo_version_range      : neo_version_range,
             loader_version_range   : loader_version_range,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
             mod_authors            : mod_authors,
-            mod_description        : mod_description,
-            terrablender_version   : terrablender_version,
-            terrablender_version_range: terrablender_version_range,
+            mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
 
-subsystems {
-    parchment {
-        minecraftVersion = parchment_minecraft_version
-        mappingsVersion = parchment_mappings_version
-    }
-}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 publishing {
     publications {
@@ -152,7 +157,7 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
 idea {
