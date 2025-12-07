@@ -28,13 +28,12 @@ import com.coolerpromc.productiveslimes.util.FluidTankSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemSpecialRenderer;
 import com.coolerpromc.productiveslimes.util.SlimeItemTint;
 import com.coolerpromc.productiveslimes.villager.ModVillagers;
-import com.coolerpromc.productiveslimes.worldgen.biome.ModTerrablender;
 import com.coolerpromc.productiveslimes.worldgen.biome.surface.ModSurfaceRules;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -81,10 +80,6 @@ public class ProductiveSlimes
     public ProductiveSlimes(IEventBus modEventBus, ModContainer modContainer)
     {
         modEventBus.addListener(this::commonSetup);
-        if (ModList.get().isLoaded("theoneprobe"))
-        {
-            modEventBus.addListener(this::enqueueIMC);
-        }
 
         if (!Boolean.getBoolean("neoforge.datagen")){
             CustomContentRegistry.initialize(ITEMS, BLOCKS, ENTITY_TYPES);
@@ -117,15 +112,14 @@ public class ProductiveSlimes
         ModDataComponents.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        ModTerrablender.registerBiomes();
-
+//        ModTerrablender.registerBiomes();
         NeoForge.EVENT_BUS.register(this);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
     }
 
     @SubscribeEvent
@@ -139,10 +133,6 @@ public class ProductiveSlimes
     @SubscribeEvent
     public void onOnDatapackSync(OnDatapackSyncEvent event) {
         event.sendRecipes(ModRecipes.DNA_EXTRACTING_TYPE.get(), ModRecipes.DNA_SYNTHESIZING_TYPE.get(), ModRecipes.SOLIDING_TYPE.get(), ModRecipes.SQUEEZING_TYPE.get(), ModRecipes.MELTING_TYPE.get());
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event) {
-//        InterModComms.sendTo("theoneprobe", "getTheOneProbe", GetTheOneProbe::new);
     }
 
     @SubscribeEvent
@@ -235,13 +225,13 @@ public class ProductiveSlimes
 
         @SubscribeEvent
         public static void onRegisterColorHandlers(RegisterColorHandlersEvent.ItemTintSources event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item_tint"), SlimeItemTint.MAP_CODEC);
+            event.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item_tint"), SlimeItemTint.MAP_CODEC);
         }
 
         @SubscribeEvent
         public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank"), FluidTankSpecialRenderer.Unbaked.MAP_CODEC);
-            event.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item"), SlimeItemSpecialRenderer.Unbaked.MAP_CODEC);
+            event.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "fluid_tank"), FluidTankSpecialRenderer.Unbaked.MAP_CODEC);
+            event.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_item"), SlimeItemSpecialRenderer.Unbaked.MAP_CODEC);
         }
 
         @SubscribeEvent

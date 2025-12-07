@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -11,7 +12,7 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.Collection;
@@ -20,8 +21,8 @@ import java.util.Collection;
 public class JEPlugin implements IModPlugin {
 
     @Override
-    public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"jei_plugin");
+    public Identifier getPluginUid() {
+        return Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"jei_plugin");
     }
 
     @Override
@@ -63,3 +64,4 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
     }
 }
+*/

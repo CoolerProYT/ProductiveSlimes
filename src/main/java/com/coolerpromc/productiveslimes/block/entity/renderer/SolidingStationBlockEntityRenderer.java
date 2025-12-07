@@ -7,17 +7,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
@@ -58,7 +58,7 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
         if (level == null) return;
 
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
-        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
+        Identifier stillTexture = fluidTypeExtensions.getStillTexture(fluidStack);
         if (stillTexture == null) return;
 
         FluidState state = fluidStack.getFluid().defaultFluidState();
@@ -68,7 +68,7 @@ public class SolidingStationBlockEntityRenderer implements BlockEntityRenderer<S
 
         float height = 0.8f;
 
-        nodeCollector.submitCustomGeometry(poseStack, RenderType.entityTranslucent(sprite.atlasLocation()), (pose, builder) -> {
+        nodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(sprite.atlasLocation()), (pose, builder) -> {
             drawQuad(builder, pose, 0.2f, height, 0.2f, 0.80f, height, 0.2f, 0.80f, height, 0.80f, 0.2f, height, 0.80f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), renderState.lightCoords, tintColor, 0, -1, 0);
 
             drawQuad(builder, pose, 0.2f, 0.05f, 0.2f, 0.80f, height, 0.2f, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), renderState.lightCoords, tintColor, 0, 0, -1);

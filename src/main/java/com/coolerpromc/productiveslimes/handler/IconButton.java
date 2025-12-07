@@ -5,12 +5,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class IconButton extends Button {
-    public static final ResourceLocation iconTexture = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/widgets.png");
+    public static final Identifier iconTexture = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/widgets.png");
     private final int closedTextureX;
     private final int closedTextureY;
     private final int openTextureX;
@@ -27,7 +26,7 @@ public class IconButton extends Button {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    protected void renderContents(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         int textureX = isOpen ? closedTextureX : openTextureX;
         int textureY = isOpen ? closedTextureY : openTextureY;
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, iconTexture, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);

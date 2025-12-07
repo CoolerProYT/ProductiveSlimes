@@ -8,16 +8,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -120,7 +118,7 @@ public class SlimeSqueezerBlockEntityRenderer implements BlockEntityRenderer<Sli
         RandomSource rand = RandomSource.create();
         for (Direction direction : Direction.values()) {
             rand.setSeed(42L);
-            nodeCollector.submitBlockModel(poseStack, RenderType.cutout(), model, 1.0f, 1.0f, 1.0f, light, overlay, 0);
+            nodeCollector.submitBlockModel(poseStack, RenderTypes.cutoutMovingBlock(), model, 1.0f, 1.0f, 1.0f, light, overlay, 0);
         }
     }
     private int getLightLevel(Level level, BlockPos pos) {

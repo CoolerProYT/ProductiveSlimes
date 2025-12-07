@@ -1,22 +1,25 @@
 package com.coolerpromc.productiveslimes.worldgen.biome;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.coolerpromc.productiveslimes.entity.ModEntities;
 import com.coolerpromc.productiveslimes.tier.ModTierLists;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class ModBiomes {
-    public static final ResourceKey<Biome> SLIMY_LAND = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimy_land"));
+    public static final ResourceKey<Biome> SLIMY_LAND = ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimy_land"));
 
     public static void boostrap(BootstrapContext<Biome> context){
         context.register(SLIMY_LAND, slimeLand(context));
@@ -54,12 +57,11 @@ public class ModBiomes {
                 .temperature(0.8f)
                 .generationSettings(biomeBuilder.build())
                 .mobSpawnSettings(spawnBuilder.build())
+                .setAttribute(EnvironmentAttributes.FOG_COLOR, 0xFFFFFF)
+                .setAttribute(EnvironmentAttributes.WATER_FOG_COLOR, 0x2b1b05)
+                .setAttribute(EnvironmentAttributes.SKY_COLOR, 0x6EB1FF)
                 .specialEffects((new BiomeSpecialEffects.Builder())
-                        .fogColor(0xFFFFFF)
                         .waterColor(0x254788)
-                        .waterFogColor(0x2b1b05)
-                        .skyColor(0x6EB1FF)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build())
-                .build();
+                .build()).build();
     }
 }

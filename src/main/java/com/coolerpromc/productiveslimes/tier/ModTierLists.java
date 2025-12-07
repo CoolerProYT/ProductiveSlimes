@@ -4,7 +4,7 @@ import com.coolerpromc.productiveslimes.ProductiveSlimes;
 import com.coolerpromc.productiveslimes.block.custom.SlimeBlock;
 import com.coolerpromc.productiveslimes.entity.slime.BaseSlime;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -24,16 +24,16 @@ import java.util.function.Supplier;
 public class ModTierLists {
     private static final Map<Tier , ModTiers> TIERS = new HashMap<>();
     private static final Map<String , ModTiers> REGISTERED_TIERS = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredBlock<SlimeBlock>> registeredBlock = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredSlimeballItem = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredDnaItem = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItem = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<FluidType>> registeredFluidType = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
-    private static final Map<ResourceLocation, DeferredItem<Item>> registeredBucketItem = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<BaseFlowingFluid.Source>> registeredSource = new HashMap<>();
-    private static final Map<ResourceLocation, Supplier<BaseFlowingFluid.Flowing>> registeredFlow = new HashMap<>();
+    private static final Map<Identifier, DeferredBlock<SlimeBlock>> registeredBlock = new HashMap<>();
+    private static final Map<Identifier, DeferredItem<Item>> registeredSlimeballItem = new HashMap<>();
+    private static final Map<Identifier, DeferredItem<Item>> registeredDnaItem = new HashMap<>();
+    private static final Map<Identifier, DeferredItem<Item>> registeredSpawnEggItem = new HashMap<>();
+    private static final Map<Identifier, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static final Map<Identifier, Supplier<FluidType>> registeredFluidType = new HashMap<>();
+    private static final Map<Identifier, Supplier<LiquidBlock>> registeredLiquidBlock = new HashMap<>();
+    private static final Map<Identifier, DeferredItem<Item>> registeredBucketItem = new HashMap<>();
+    private static final Map<Identifier, Supplier<BaseFlowingFluid.Source>> registeredSource = new HashMap<>();
+    private static final Map<Identifier, Supplier<BaseFlowingFluid.Flowing>> registeredFlow = new HashMap<>();
 
     public static void init(){
         TIERS.put(Tier.DIRT, new ModTiers("dirt", 0xFF866043, 10, 1500, "minecraft:dirt", "minecraft:dirt", 2, "minecraft:dirt", "productiveslimes:slime_dna", "productiveslimes:slime_dna", 0.75f));
@@ -83,42 +83,42 @@ public class ModTierLists {
     }
 
     public static void addRegisteredBlock(String name, DeferredBlock<SlimeBlock> block){
-        registeredBlock.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"), block);
+        registeredBlock.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"), block);
     }
 
     public static void addRegisteredSlimeballItem(String name, DeferredItem<Item> item){
-        registeredSlimeballItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slimeball"), item);
+        registeredSlimeballItem.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slimeball"), item);
     }
 
     public static void addRegisteredDnaItem(String name, DeferredItem<Item> item){
-        registeredDnaItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"), item);
+        registeredDnaItem.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"), item);
     }
     public static void addRegisteredSpawnEggItem(String name, DeferredItem<Item> item){
-        registeredSpawnEggItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"), item);
+        registeredSpawnEggItem.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"), item);
     }
 
     public static void addRegisteredSlime(String name, DeferredHolder<EntityType<?>, EntityType<BaseSlime>> entity){
-        registeredSlimes.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime"), entity);
+        registeredSlimes.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime"), entity);
     }
 
     public static void addRegisteredFluidType(String name, Supplier<FluidType> fluidType){
-        registeredFluidType.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_fluid"), fluidType);
+        registeredFluidType.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_fluid"), fluidType);
     }
 
     public static void addRegisteredLiquidBlock(String name, Supplier<LiquidBlock> liquidBlock){
-        registeredLiquidBlock.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"), liquidBlock);
+        registeredLiquidBlock.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"), liquidBlock);
     }
 
     public static void addRegisteredBucketItem(String name, DeferredItem<Item> bucketItem){
-        registeredBucketItem.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"), bucketItem);
+        registeredBucketItem.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"), bucketItem);
     }
 
     public static void addRegisteredSource(String name, Supplier<BaseFlowingFluid.Source> source){
-        registeredSource.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "source_molten_" + name), source);
+        registeredSource.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "source_molten_" + name), source);
     }
 
     public static void addRegisteredFlow(String name, Supplier<BaseFlowingFluid.Flowing> flow){
-        registeredFlow.put(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "flowing_molten_" + name), flow);
+        registeredFlow.put(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "flowing_molten_" + name), flow);
     }
 
     public static ModTiers getTierByName(Tier tier){
@@ -126,43 +126,43 @@ public class ModTierLists {
     }
 
     public static DeferredBlock<SlimeBlock> getBlockByName(String name){
-        return registeredBlock.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"));
+        return registeredBlock.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_block"));
     }
 
     public static DeferredItem<Item> getSlimeballItemByName(String name){
-        return registeredSlimeballItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slimeball"));
+        return registeredSlimeballItem.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slimeball"));
     }
 
     public static DeferredItem<Item> getDnaItemByName(String name){
-        return registeredDnaItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"));
+        return registeredDnaItem.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_dna"));
     }
 
     public static DeferredItem<Item> getSpawnEggItemByName(String name){
-        return registeredSpawnEggItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"));
+        return registeredSpawnEggItem.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime_spawn_egg"));
     }
 
     public static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> getEntityByName(String name){
-        return registeredSlimes.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime"));
+        return registeredSlimes.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name + "_slime"));
     }
 
     public static Supplier<FluidType> getFluidTypeByName(String name){
-        return registeredFluidType.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_fluid"));
+        return registeredFluidType.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_fluid"));
     }
 
     public static Supplier<LiquidBlock> getLiquidBlockByName(String name){
-        return registeredLiquidBlock.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"));
+        return registeredLiquidBlock.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_block"));
     }
 
     public static DeferredItem<Item> getBucketItemByName(String name){
-        return registeredBucketItem.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"));
+        return registeredBucketItem.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + name + "_bucket"));
     }
 
     public static Supplier<BaseFlowingFluid.Source> getSourceByName(String name){
-        return registeredSource.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "source_molten_" + name));
+        return registeredSource.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "source_molten_" + name));
     }
 
     public static Supplier<BaseFlowingFluid.Flowing> getFlowByName(String name){
-        return registeredFlow.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "flowing_molten_" + name));
+        return registeredFlow.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "flowing_molten_" + name));
     }
 
     public static void addRegisteredTier(String key, ModTiers value){
@@ -173,6 +173,6 @@ public class ModTierLists {
     }
 
     public static ItemLike getItemByKey(String key){
-        return BuiltInRegistries.ITEM.get(ResourceLocation.parse(key)).get().value();
+        return BuiltInRegistries.ITEM.get(Identifier.parse(key)).get().value();
     }
 }

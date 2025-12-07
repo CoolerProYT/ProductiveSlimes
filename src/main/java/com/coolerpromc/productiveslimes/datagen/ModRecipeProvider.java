@@ -13,7 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -309,7 +309,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .addOutput(new ItemStack(pResult, outputCount))
                 .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting/" + getItemName(pIngredient) + "_melting").toString());
     }
 
     protected void solidingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int pInputCount, int outputCount) {
@@ -320,7 +320,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .addOutput(new ItemStack(Items.BUCKET, pInputCount))
                 .setEnergy(200)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding/" + getItemName(pIngredient) + "_soliding").toString());
     }
 
     protected void dnaExtractingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, int outputCount, float outputChance) {
@@ -336,7 +336,7 @@ public class ModRecipeProvider extends RecipeProvider {
         recipeBuilder.setEnergy(400)
                 .setOutputChance(outputChance)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting/" + getItemName(pIngredient) + "_dna_extracting").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting/" + getItemName(pIngredient) + "_dna_extracting").toString());
 
     }
 
@@ -356,7 +356,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .setInputCount(inputCount)
                 .setEnergy(600)
                 .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing_self").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing_self").toString());
 
     }
 
@@ -376,7 +376,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .setInputCount(inputCount)
                 .setEnergy(600)
                 .unlockedBy(getHasName(Items.EGG), has(Items.EGG))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing/" + getItemName(pResult) + "_dna_synthesizing").toString());
 
     }
 
@@ -404,7 +404,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .addOutput(pResult2)
                 .setEnergy(300)
                 .unlockedBy(getHasName(pIngredient), has(pIngredient))
-                .save(pRecipeOutput, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing").toString());
+                .save(pRecipeOutput, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing/" + getItemName(pIngredient) + "_squeezing").toString());
     }
 
     private void smeltingRecipe(RecipeOutput pRecipeOutput, ItemLike pIngredient, ItemLike pResult, float pExperience, int pCookingTime) {

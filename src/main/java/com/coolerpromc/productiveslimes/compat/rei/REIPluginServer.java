@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.rei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -11,17 +12,17 @@ import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
 import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
 import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 import me.shedaniel.rei.forge.REIPluginCommon;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 @REIPluginCommon
 public class REIPluginServer implements REICommonPlugin {
     @Override
     public void registerDisplaySerializer(DisplaySerializerRegistry registry) {
-        registry.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting"), DnaExtractingRecipeDisplay.SERIALIZER);
-        registry.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing"), DnaSynthesizingRecipeDisplay.SERIALIZER);
-        registry.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting"), MeltingRecipeDisplay.SERIALIZER);
-        registry.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding"), SolidingRecipeDisplay.SERIALIZER);
-        registry.register(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing"), SqueezingRecipeDisplay.SERIALIZER);
+        registry.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extracting"), DnaExtractingRecipeDisplay.SERIALIZER);
+        registry.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing"), DnaSynthesizingRecipeDisplay.SERIALIZER);
+        registry.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting"), MeltingRecipeDisplay.SERIALIZER);
+        registry.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding"), SolidingRecipeDisplay.SERIALIZER);
+        registry.register(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing"), SqueezingRecipeDisplay.SERIALIZER);
     }
 
     @Override
@@ -33,3 +34,4 @@ public class REIPluginServer implements REICommonPlugin {
         registry.beginRecipeFiller(SqueezingRecipe.class).filterType(ModRecipes.SQUEEZING_TYPE.get()).fill(SqueezingRecipeDisplay::new);
     }
 }
+*/

@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -63,7 +63,7 @@ public class SqueezingRecipe implements Recipe<SingleRecipeInput>{
     }
     public static class Serializer implements RecipeSerializer<SqueezingRecipe>{
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing");
+        public static final Identifier ID = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezing");
         private final MapCodec<SqueezingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),

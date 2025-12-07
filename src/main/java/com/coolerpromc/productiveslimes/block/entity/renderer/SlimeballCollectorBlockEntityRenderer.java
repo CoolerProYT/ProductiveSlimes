@@ -2,14 +2,13 @@ package com.coolerpromc.productiveslimes.block.entity.renderer;
 
 import com.coolerpromc.productiveslimes.block.entity.SlimeballCollectorBlockEntity;
 import com.coolerpromc.productiveslimes.block.entity.renderstate.SlimeballCollectorBlockEntityRenderState;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.AABB;
@@ -49,13 +48,12 @@ public class SlimeballCollectorBlockEntityRenderer implements BlockEntityRendere
     }
 
     private void renderOutline(PoseStack poseStack, SubmitNodeCollector nodeCollector, AABB aabb) {
-        // Buffer for lines.
-        RenderSystem.lineWidth(2.0f);
         // Render the outer box.
-        nodeCollector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
+        nodeCollector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, vertexConsumer) -> {
+            vertexConsumer.setLineWidth(2.0f);
             drawBox(pose, vertexConsumer, aabb, 1.0f, 0.0f, 0.0f, 1.0f);
+            vertexConsumer.setLineWidth(1.0f);
         });
-        RenderSystem.lineWidth(1.0f);
     }
 
     private void drawBox(PoseStack.Pose pose, VertexConsumer buffer, AABB box, float red, float green, float blue, float alpha) {

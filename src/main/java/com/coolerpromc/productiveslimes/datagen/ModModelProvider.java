@@ -32,7 +32,7 @@ import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -169,7 +169,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void blockWithSlab(BlockModelGenerators blockModels, Block block, Block slab){
-        ResourceLocation texture = blockLocation(getBlockName(block));
+        Identifier texture = blockLocation(getBlockName(block));
         blockModels.new BlockFamilyProvider(TextureMapping.cube(texture)
                 .put(TextureSlot.BOTTOM, texture)
                 .put(TextureSlot.TOP, texture)
@@ -205,7 +205,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void stairsBlock(BlockModelGenerators blockModels, Block block, Block materialBlock){
-        ResourceLocation texture = blockLocation(getBlockName(materialBlock));
+        Identifier texture = blockLocation(getBlockName(materialBlock));
         blockModels.new BlockFamilyProvider(TextureMapping.defaultTexture(texture)
                 .put(TextureSlot.BOTTOM, texture)
                 .put(TextureSlot.TOP, texture)
@@ -227,40 +227,40 @@ public class ModModelProvider extends ModelProvider {
 
     private void trapdoorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.defaultTexture(block);
-        ResourceLocation texture = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation texture2 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
-        MultiVariant resourcelocation = new MultiVariant(WeightedList.of(new Variant(texture)));
-        MultiVariant resourcelocation1 = new MultiVariant(WeightedList.of(new Variant(texture2)));
-        MultiVariant resourcelocation2 = new MultiVariant(WeightedList.of(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))));
+        Identifier texture = ModModelTemplates.TRAPDOOR_TOP.create(block, texturemapping, blockModels.modelOutput);
+        Identifier texture2 = ModModelTemplates.TRAPDOOR_BOTTOM.create(block, texturemapping, blockModels.modelOutput);
+        MultiVariant Identifier = new MultiVariant(WeightedList.of(new Variant(texture)));
+        MultiVariant Identifier1 = new MultiVariant(WeightedList.of(new Variant(texture2)));
+        MultiVariant Identifier2 = new MultiVariant(WeightedList.of(new Variant(ModModelTemplates.TRAPDOOR_OPEN.create(block, texturemapping, blockModels.modelOutput))));
 
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, resourcelocation, resourcelocation1, resourcelocation2));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createTrapdoor(block, Identifier, Identifier1, Identifier2));
         blockModels.registerSimpleItemModel(block, texture2);
     }
 
     private void doorBlockWithRenderType(BlockModelGenerators blockModels, Block block){
         TextureMapping texturemapping = TextureMapping.door(block);
-        ResourceLocation resourcelocation = ModelTemplates.DOOR_BOTTOM_LEFT.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation1 = ModelTemplates.DOOR_BOTTOM_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation2 = ModelTemplates.DOOR_BOTTOM_RIGHT.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation3 = ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation4 = ModModelTemplates.DOOR_TOP_LEFT.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation5 = ModModelTemplates.DOOR_TOP_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation6 = ModModelTemplates.DOOR_TOP_RIGHT.create(block, texturemapping, blockModels.modelOutput);
-        ResourceLocation resourcelocation7 = ModModelTemplates.DOOR_TOP_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier = ModelTemplates.DOOR_BOTTOM_LEFT.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier1 = ModelTemplates.DOOR_BOTTOM_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier2 = ModelTemplates.DOOR_BOTTOM_RIGHT.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier3 = ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier4 = ModModelTemplates.DOOR_TOP_LEFT.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier5 = ModModelTemplates.DOOR_TOP_LEFT_OPEN.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier6 = ModModelTemplates.DOOR_TOP_RIGHT.create(block, texturemapping, blockModels.modelOutput);
+        Identifier Identifier7 = ModModelTemplates.DOOR_TOP_RIGHT_OPEN.create(block, texturemapping, blockModels.modelOutput);
 
         blockModels.registerSimpleFlatItemModel(block.asItem());
         blockModels.blockStateOutput
                 .accept(
                         BlockModelGenerators.createDoor(
                                 block,
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation1))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation2))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation3))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation4))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation5))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation6))),
-                                new MultiVariant(WeightedList.of(new Variant(resourcelocation7)))
+                                new MultiVariant(WeightedList.of(new Variant(Identifier))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier1))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier2))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier3))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier4))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier5))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier6))),
+                                new MultiVariant(WeightedList.of(new Variant(Identifier7)))
                         )
                 );
     }
@@ -296,7 +296,7 @@ public class ModModelProvider extends ModelProvider {
     }
 
     private void slimeItem(ItemModelGenerators itemModels, Item item){
-        ResourceLocation model = itemLocation("slime_item");
+        Identifier model = itemLocation("slime_item");
         itemModels.itemModelOutput.accept(item, new BlockModelWrapper.Unbaked(model, List.of(new SlimeItemTint(-1), new SlimeItemTint(-1))));
         itemModels.itemModelOutput.accept(item, ItemModelUtils.specialModel(model, new SlimeItemSpecialRenderer.Unbaked(model)));
     }
@@ -318,7 +318,7 @@ public class ModModelProvider extends ModelProvider {
                 .select(Direction.EAST, BlockModelGenerators.Y_ROT_90);
     }
 
-    private MultiPartGenerator cablePart(Block block, ResourceLocation coreModelLoc, ResourceLocation partModelLoc){
+    private MultiPartGenerator cablePart(Block block, Identifier coreModelLoc, Identifier partModelLoc){
         return MultiPartGenerator.multiPart(block)
                 .with(new MultiVariant(WeightedList.of(new Variant(coreModelLoc))))
                 .with(new ConditionBuilder().term(CableBlock.UP, true), variantRotation(partModelLoc, VariantMutator.X_ROT.withValue(Quadrant.R270)))
@@ -329,25 +329,25 @@ public class ModModelProvider extends ModelProvider {
                 .with(new ConditionBuilder().term(CableBlock.WEST, true), variantRotation(partModelLoc, VariantMutator.Y_ROT.withValue(Quadrant.R270)));
     }
 
-    private MultiVariant variantRotation(ResourceLocation modelLoc, VariantMutator rot){
+    private MultiVariant variantRotation(Identifier modelLoc, VariantMutator rot){
         return new MultiVariant(WeightedList.of(new Variant(modelLoc).with(VariantMutator.UV_LOCK.withValue(false)).with(rot)));
     }
 
     private String getBlockName(Block block){
-        ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+        Identifier location = BuiltInRegistries.BLOCK.getKey(block);
         return location.getPath();
     }
 
     private String getItemName(Item item){
-        ResourceLocation location = BuiltInRegistries.ITEM.getKey(item);
+        Identifier location = BuiltInRegistries.ITEM.getKey(item);
         return location.getPath();
     }
 
-    private ResourceLocation blockLocation(String modelName){
-        return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
+    private Identifier blockLocation(String modelName){
+        return Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "block/" + modelName);
     }
 
-    private ResourceLocation itemLocation(String modelName){
-        return ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
+    private Identifier itemLocation(String modelName){
+        return Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "item/" + modelName);
     }
 }

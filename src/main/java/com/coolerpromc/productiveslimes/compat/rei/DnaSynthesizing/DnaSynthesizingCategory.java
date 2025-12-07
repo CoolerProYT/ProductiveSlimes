@@ -14,10 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingRecipeDisplay> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/dna_synthesizer_gui.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/dna_synthesizer_gui.png");
 
     private int tickCount = 0;
 
@@ -50,7 +48,7 @@ public class DnaSynthesizingCategory implements DisplayCategory<DnaSynthesizingR
         Point startPoint = new Point(bounds.getCenterX() - 77, bounds.getCenterY() - 41);
         List<Widget> widgets = new LinkedList<>();
 
-        widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83)));
+//        widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83))); TODO: uncomment when REI updated
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 31, startPoint.y + 12))
                 .entries(display.getInputEntries().get(0)).markInput());

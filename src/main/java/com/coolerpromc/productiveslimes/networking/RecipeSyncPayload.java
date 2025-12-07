@@ -5,7 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public record RecipeSyncPayload(List<RecipeHolder<?>> recipes) implements CustomPacketPayload {
-    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "recipe_sync");
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "recipe_sync");
     public static final Type<RecipeSyncPayload> TYPE = new Type<>(ID);
 
     private static final StreamCodec<FriendlyByteBuf, List<RecipeHolder<?>>> RECIPE_HOLDER_STREAM_CODEC = StreamCodec.of(

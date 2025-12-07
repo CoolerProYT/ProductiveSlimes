@@ -10,17 +10,19 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 public record SlimeItemSpecialRenderer() implements SpecialModelRenderer<SlimeData> {
     @Nullable
@@ -41,20 +43,20 @@ public record SlimeItemSpecialRenderer() implements SpecialModelRenderer<SlimeDa
             poseStack.translate(0.25f, 1.5f, 0.25f);
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-            nodeCollector.order(0).submitModel(slimeModel, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), packedLight, packedOverlay, slimeData.color(), null, 0, null);
-            nodeCollector.order(1).submitModel(slimeModelOuter, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), packedLight, packedOverlay, slimeData.color(), null, 0, null);
+            nodeCollector.order(0).submitModel(slimeModel, new SlimeRenderState(), poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), packedLight, packedOverlay, slimeData.color(), null, 0, null);
+            nodeCollector.order(1).submitModel(slimeModelOuter, new SlimeRenderState(), poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), packedLight, packedOverlay, slimeData.color(), null, 0, null);
             poseStack.popPose();
         }
     }
 
     @Override
-    public void getExtents(Set<Vector3f> extents) {
-        extents.add(new Vector3f(0.0f, 0.0f, 0.0f));
-        extents.add(new Vector3f(1.0f, 1.0f, 1.0f));
+    public void getExtents(Consumer<Vector3fc> extents) {
+        extents.accept(new Vector3f(0.0f, 0.0f, 0.0f));
+        extents.accept(new Vector3f(1.0f, 1.0f, 1.0f));
     }
 
-    public record Unbaked(ResourceLocation texture) implements SpecialModelRenderer.Unbaked{
-        public static final MapCodec<Unbaked> MAP_CODEC = ResourceLocation.CODEC.fieldOf("texture").xmap(SlimeItemSpecialRenderer.Unbaked::new, SlimeItemSpecialRenderer.Unbaked::texture);
+    public record Unbaked(Identifier texture) implements SpecialModelRenderer.Unbaked{
+        public static final MapCodec<Unbaked> MAP_CODEC = Identifier.CODEC.fieldOf("texture").xmap(SlimeItemSpecialRenderer.Unbaked::new, SlimeItemSpecialRenderer.Unbaked::texture);
 
         @Override
         public @Nullable SpecialModelRenderer<?> bake(BakingContext p_433472_) {

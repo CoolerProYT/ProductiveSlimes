@@ -39,7 +39,7 @@ repositories {
     maven { url "https://maven.architectury.dev/" }
     maven {
         name = "Maven for PR #2639"
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr2639")
+        url = uri("https://prmaven.neoforged.net/NeoForge/pr2815")
         content {
             includeModule("net.neoforged", "neoforge")
         }
@@ -103,9 +103,9 @@ dependencies {
 
 //    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
 
-    implementation "com.github.glitchfiend:TerraBlender-neoforge:1.21.9-" + terrablender_version
+    compileOnly "com.github.glitchfiend:TerraBlender-neoforge:1.21.9-" + terrablender_version
 
-    implementation "curse.maven:jade-324717:${jade_id}"
+    compileOnly "curse.maven:jade-324717:${jade_id}"
 }
 
 tasks.withType(ProcessResources).configureEach {

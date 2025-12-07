@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.fluid;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public class FluidRegistry {
     public static FluidStack getFluidStackByName(String fluidName, int amount) {
-        ResourceLocation fluidLocation;
+        Identifier fluidLocation;
         try {
-            fluidLocation = ResourceLocation.parse(fluidName);
+            fluidLocation = Identifier.parse(fluidName);
         } catch (Exception e) {
             return FluidStack.EMPTY;
         }

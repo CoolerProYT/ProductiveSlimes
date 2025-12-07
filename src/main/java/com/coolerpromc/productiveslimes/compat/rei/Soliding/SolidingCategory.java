@@ -14,17 +14,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/soliding_station_gui.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/rei/soliding_station_gui.png");
 
     private int tickCount = 0;
 
@@ -48,7 +46,7 @@ public class SolidingCategory implements DisplayCategory<SolidingRecipeDisplay> 
         Point startPoint = new Point(bounds.getCenterX() - 77, bounds.getCenterY() - 41);
         List<Widget> widgets = new LinkedList<>();
 
-        widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83)));
+//        widgets.add(Widgets.createTexturedWidget(TEXTURE, new Rectangle(startPoint.x, startPoint.y, 153, 83))); TODO: uncomment when REI updated
 
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 26, startPoint.y + 34))
                 .entries(display.getInputEntries().getFirst()).markInput());

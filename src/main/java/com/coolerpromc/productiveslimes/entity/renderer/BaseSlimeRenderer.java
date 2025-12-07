@@ -11,11 +11,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeRenderState, SlimeModel> {
-    public static final ResourceLocation BASE_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
+    public static final Identifier BASE_TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/entity/template_slime_entity.png");
 
     public BaseSlimeRenderer(EntityRendererProvider.Context pContext, int color) {
         super(pContext, new SlimeModel(pContext.bakeLayer(ModelLayers.SLIME), color), 0.05f);
@@ -34,7 +34,7 @@ public class BaseSlimeRenderer extends MobRenderer<BaseSlime, SlimeRenderState, 
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SlimeRenderState p_368654_) {
+    public Identifier getTextureLocation(SlimeRenderState p_368654_) {
         return BASE_TEXTURE;
     }
 

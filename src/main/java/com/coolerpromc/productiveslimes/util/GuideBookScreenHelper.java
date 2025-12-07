@@ -10,7 +10,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,7 +24,7 @@ public class GuideBookScreenHelper {
 
     public static void renderItemSlot(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, int inputX, int inputY, ItemStack inputStack, Font font){
         if (pMouseX >= inputX && pMouseX < inputX + 16 && pMouseY >= inputY && pMouseY < inputY + 16) {
-            pGuiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ResourceLocation.withDefaultNamespace("container/slot_highlight_back"), inputX - 4, inputY - 4, 24, 24);
+            pGuiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("container/slot_highlight_back"), inputX - 4, inputY - 4, 24, 24);
         }
         pGuiGraphics.renderItem(inputStack, inputX, inputY);
         pGuiGraphics.renderItemDecorations(font, inputStack, inputX, inputY);
@@ -44,9 +44,9 @@ public class GuideBookScreenHelper {
                 1,
                 tiers.color(),
                 tiers.cooldown(),
-                BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slimeball")).get().value().getDefaultInstance(),
+                BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slimeball")).get().value().getDefaultInstance(),
                 ModTierLists.getItemByKey(tiers.growthItemKey()).asItem().getDefaultInstance(),
-                (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slime")).get().value()
+                (EntityType<BaseSlime>) BuiltInRegistries.ENTITY_TYPE.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, tiers.name() + "_slime")).get().value()
         );
     }
 }

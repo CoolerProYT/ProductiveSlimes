@@ -22,6 +22,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Function;
 
+@SuppressWarnings("removal")
 public class ModBlocks {
     public static DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(ProductiveSlimes.MODID);
 

@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -15,14 +16,13 @@ import mezz.jei.api.recipe.types.IRecipeHolderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class SqueezingCategory extends AbstractRecipeCategory<RecipeHolder<SqueezingRecipe>> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/soliding_station_gui.png");
     public static final IRecipeHolderType<SqueezingRecipe> SQUEEZING_TYPE = IRecipeHolderType.create(ModRecipes.SQUEEZING_TYPE.get());
     private int tickCount = 0;
 
@@ -58,3 +58,4 @@ public class SqueezingCategory extends AbstractRecipeCategory<RecipeHolder<Squee
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).add(solidingRecipe.value().getOutputs().get(1));
     }
 }
+*/

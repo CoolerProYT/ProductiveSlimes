@@ -2,7 +2,7 @@ package com.coolerpromc.productiveslimes.fluid;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.joml.Vector3f;
@@ -19,9 +19,9 @@ public class ModBaseFluidType extends FluidType {
 
     public ModBaseFluidType(Properties properties, FunkyFluidInfo info, int color) {
         super(properties);
-        ResourceLocation WATER_STILL_RL = ResourceLocation.parse("block/water_still");
-        ResourceLocation WATER_FLOWING_RL = ResourceLocation.parse("block/water_flow");
-        ResourceLocation WATER_OVERLAY_RL = ResourceLocation.parse("block/water_overlay");
+        Identifier WATER_STILL_RL = Identifier.parse("block/water_still");
+        Identifier WATER_FLOWING_RL = Identifier.parse("block/water_flow");
+        Identifier WATER_OVERLAY_RL = Identifier.parse("block/water_overlay");
 
         Color colorObject = new Color(info.color);
         FOG_COLOR = new Vector3f(colorObject.getRed()/255F, colorObject.getGreen()/255F, colorObject.getBlue()/255F);
@@ -54,15 +54,15 @@ public class ModBaseFluidType extends FluidType {
     }
 
     private static class ModClientFluidType implements IClientFluidTypeExtensions {
-        public final ResourceLocation TEXTURE_STILL;
-        public final ResourceLocation TEXTURE_FLOW;
-        public final ResourceLocation TEXTURE_OVERLAY;
+        public final Identifier TEXTURE_STILL;
+        public final Identifier TEXTURE_FLOW;
+        public final Identifier TEXTURE_OVERLAY;
         public final Vector3f FOG_COLOR;
         public final float fogStart;
         public final float fogEnd;
         public int color;
 
-        public ModClientFluidType(ResourceLocation textureStill, ResourceLocation textureFlow, ResourceLocation textureOverlay, Vector3f fogColor, float fogStart, float fogEnd, int color) {
+        public ModClientFluidType(Identifier textureStill, Identifier textureFlow, Identifier textureOverlay, Vector3f fogColor, float fogStart, float fogEnd, int color) {
             TEXTURE_STILL = textureStill;
             TEXTURE_FLOW = textureFlow;
             TEXTURE_OVERLAY = textureOverlay;
@@ -74,17 +74,17 @@ public class ModBaseFluidType extends FluidType {
 
 
         @Override
-        public ResourceLocation getStillTexture() {
+        public Identifier getStillTexture() {
             return TEXTURE_STILL;
         }
 
         @Override
-        public ResourceLocation getFlowingTexture() {
+        public Identifier getFlowingTexture() {
             return TEXTURE_FLOW;
         }
 
         @Override
-        public ResourceLocation getOverlayTexture() {
+        public Identifier getOverlayTexture() {
             return TEXTURE_OVERLAY;
         }
 

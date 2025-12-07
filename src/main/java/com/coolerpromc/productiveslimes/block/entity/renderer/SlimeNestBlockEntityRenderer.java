@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -18,6 +17,7 @@ import net.minecraft.client.renderer.entity.state.SlimeRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -107,8 +107,8 @@ public class SlimeNestBlockEntityRenderer implements BlockEntityRenderer<SlimeNe
         poseStack.scale(scaleX, scaleY, scaleZ);
         poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         poseStack.mulPose(Axis.YP.rotationDegrees(degree));
-        nodeCollector.order(0).submitModel(this.slimeModel, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
-        nodeCollector.order(1).submitModel(this.slimeModelOuter, new SlimeRenderState(), poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
+        nodeCollector.order(0).submitModel(this.slimeModel, new SlimeRenderState(), poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
+        nodeCollector.order(1).submitModel(this.slimeModelOuter, new SlimeRenderState(), poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, renderState.slimeColor, null, 0, null);
         poseStack.popPose();
     }
 

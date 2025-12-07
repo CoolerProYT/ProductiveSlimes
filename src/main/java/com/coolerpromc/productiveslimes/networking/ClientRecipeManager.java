@@ -1,13 +1,13 @@
 package com.coolerpromc.productiveslimes.networking;
 
 import com.coolerpromc.productiveslimes.recipe.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.*;
 
 public class ClientRecipeManager {
-    public static final Map<ResourceLocation, RecipeHolder<?>> CLIENT_RECIPES = new HashMap<>();
+    public static final Map<Identifier, RecipeHolder<?>> CLIENT_RECIPES = new HashMap<>();
     public static final List<DnaExtractingRecipe> DNA_EXTRACTING_RECIPES = new ArrayList<>();
     public static final List<DnaSynthesizingRecipe> DNA_SYNTHESIZING_RECIPES = new ArrayList<>();
     public static final List<MeltingRecipe> MELTING_RECIPES = new ArrayList<>();
@@ -23,7 +23,7 @@ public class ClientRecipeManager {
         SQUEEZING_RECIPES.clear();
 
         for (RecipeHolder<?> recipeHolder : recipes) {
-            CLIENT_RECIPES.put(recipeHolder.id().location(), recipeHolder);
+            CLIENT_RECIPES.put(recipeHolder.id().identifier(), recipeHolder);
             if (recipeHolder.value() instanceof DnaExtractingRecipe dnaExtractingRecipe) {
                 DNA_EXTRACTING_RECIPES.add(dnaExtractingRecipe);
             } else if (recipeHolder.value() instanceof DnaSynthesizingRecipe dnaSynthesizingRecipe) {
@@ -38,7 +38,7 @@ public class ClientRecipeManager {
         }
     }
 
-    public static Optional<RecipeHolder<?>> getRecipe(ResourceLocation id) {
+    public static Optional<RecipeHolder<?>> getRecipe(Identifier id) {
         return Optional.ofNullable(CLIENT_RECIPES.get(id));
     }
 

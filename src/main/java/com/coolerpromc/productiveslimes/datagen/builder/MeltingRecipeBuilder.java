@@ -1,19 +1,19 @@
 package com.coolerpromc.productiveslimes.datagen.builder;
 
 import com.coolerpromc.productiveslimes.recipe.MeltingRecipe;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.*;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.neoforged.neoforge.common.conditions.ICondition;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -90,6 +90,6 @@ public class MeltingRecipeBuilder implements RecipeBuilder {
                 this.energy
         );
 
-        pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.location().withPrefix("recipes/")));
+        pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.identifier().withPrefix("recipes/")));
     }
 }

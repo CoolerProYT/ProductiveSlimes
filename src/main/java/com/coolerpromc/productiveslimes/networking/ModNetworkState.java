@@ -2,10 +2,7 @@ package com.coolerpromc.productiveslimes.networking;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -50,7 +47,7 @@ public class ModNetworkState extends SavedData {
         this.nextId = nextId;
     }
 
-    public ModNetworkState(Context context) {
+    public ModNetworkState(ServerLevel context) {
     }
 
     public int getNextId() {

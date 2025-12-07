@@ -5,11 +5,10 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -95,6 +94,6 @@ public class SolidingRecipeBuilder implements RecipeBuilder {
         );
 
         // Pass the recipe and advancement to the output
-        pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.location().withPrefix("recipes/")));
+        pRecipeOutput.accept(p_379998_, recipe, advancement.build(p_379998_.identifier().withPrefix("recipes/")));
     }
 }

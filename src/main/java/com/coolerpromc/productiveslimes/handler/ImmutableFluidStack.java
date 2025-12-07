@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -20,7 +20,7 @@ public record ImmutableFluidStack(FluidStack fluidStack) {
             instance.group(
                     Codec.INT.fieldOf("amount").forGetter(stack -> stack.fluidStack().getAmount()),
                     Codec.STRING.fieldOf("fluid").forGetter(stack -> {
-                        ResourceLocation registryName = BuiltInRegistries.FLUID.getKey(stack.fluidStack().getFluid());
+                        Identifier registryName = BuiltInRegistries.FLUID.getKey(stack.fluidStack().getFluid());
                         if (registryName != null) {
                             return registryName.toString();
                         } else {

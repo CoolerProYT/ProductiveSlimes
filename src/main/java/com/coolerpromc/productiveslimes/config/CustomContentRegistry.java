@@ -20,8 +20,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
@@ -40,6 +40,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.SoundActions;
@@ -66,11 +67,11 @@ public class CustomContentRegistry {
 
     private static List<CustomVariants> loadedVariants = new ArrayList<>();
 
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
-    private static Map<ResourceLocation, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
-    private static Map<ResourceLocation, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
+    private static Map<Identifier, DeferredItem<Item>> registeredItems = new HashMap<>();
+    private static Map<Identifier, DeferredItem<Item>> registeredDnaItems = new HashMap<>();
+    private static Map<Identifier, DeferredItem<Item>> registeredSpawnEggItems = new HashMap<>();
+    private static Map<Identifier, DeferredBlock<Block>> registeredBlocks = new HashMap<>();
+    private static Map<Identifier, DeferredHolder<EntityType<?>, EntityType<BaseSlime>>> registeredSlimes = new HashMap<>();
     private static Map<String, byte[]> resourceData = new HashMap<>();
     private static Map<String, byte[]> dataPackResources = new HashMap<>();
 
@@ -149,23 +150,23 @@ public class CustomContentRegistry {
     }
 
     public static DeferredItem<Item> getSlimeballItemForVariant(String variantName){
-        return registeredItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slimeball"));
+        return registeredItems.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slimeball"));
     }
 
     public static DeferredItem<Item> getDnaItemForVariant(String variantName){
-        return registeredDnaItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_dna"));
+        return registeredDnaItems.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_dna"));
     }
 
     public static DeferredItem<Item> getSpawnEggItemForVariant(String variantName){
-        return registeredSpawnEggItems.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_spawn_egg"));
+        return registeredSpawnEggItems.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_spawn_egg"));
     }
 
     public static DeferredBlock<Block> getSlimeBlockForVariant(String variantName){
-        return registeredBlocks.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_block"));
+        return registeredBlocks.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime_block"));
     }
 
     public static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> getSlimeForVariant(String variantName){
-        return registeredSlimes.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime"));
+        return registeredSlimes.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variantName + "_slime"));
     }
 
     private static void createDefaultConfig() {
@@ -218,7 +219,7 @@ public class CustomContentRegistry {
 
     private static void registerSpawnEggItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_spawn_egg";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
+        Identifier itemId = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
         DeferredItem<Item> item = ITEMS.registerItem(itemName, properties -> new SpawnEggItem(properties.spawnEgg(getSlimeForVariant(variant.getName()).get())));
 
         registeredSpawnEggItems.put(itemId, item);
@@ -226,18 +227,18 @@ public class CustomContentRegistry {
 
     private static void registerSlime(DeferredRegister<EntityType<?>> ENTITY_TYPES, CustomVariants variant){
         String slimeName = variant.getName() + "_slime";
-        ResourceLocation slimeId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, slimeName);
+        Identifier slimeId = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, slimeName);
 
         DeferredHolder<EntityType<?>, EntityType<BaseSlime>> slime = ENTITY_TYPES.register(slimeName, () -> EntityType.Builder.<BaseSlime>of(
-                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(ResourceLocation.parse(variant.getGrowthItem())).get().value()),
-                MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, variant.getName() + "_slime"))));
+                (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, variant.getCooldown(), variant.getColor(), getSlimeballItemForVariant(variant.getName()).get(), BuiltInRegistries.ITEM.get(Identifier.parse(variant.getGrowthItem())).get().value()),
+                MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, variant.getName() + "_slime"))));
 
         registeredSlimes.put(slimeId, slime);
     }
 
     private static void registerSlimeBlock(DeferredRegister.Blocks BLOCKS, CustomVariants variant, DeferredRegister.Items ITEMS){
         String blockName = variant.getName() + "_slime_block";
-        ResourceLocation blockId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, blockName);
+        Identifier blockId = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, blockName);
         DeferredBlock<Block> block = registerBlock(blockName, MapColor.byId(variant.getMapColorId()), variant.getColor(), BLOCKS, ITEMS, variant.getName());
 
         registeredBlocks.put(blockId, block);
@@ -245,16 +246,16 @@ public class CustomContentRegistry {
 
     private static void registerSlimeballItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slimeball";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor(), properties), new Item.Properties());
+        Identifier itemId = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
+        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slimeball", properties -> new SlimeballItem(variant.getColor(), properties));
 
         registeredItems.put(itemId, item);
     }
 
     private static void registerDnaItem(DeferredRegister.Items ITEMS, CustomVariants variant){
         String itemName = variant.getName() + "_slime_dna";
-        ResourceLocation itemId = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
-        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor(), properties), new Item.Properties());
+        Identifier itemId = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, itemName);
+        DeferredItem<Item> item = ITEMS.registerItem(variant.name + "_slime_dna", properties -> new DnaItem(variant.getColor(), properties));
 
         registeredDnaItems.put(itemId, item);
     }
@@ -273,7 +274,7 @@ public class CustomContentRegistry {
     }
 
     private static DeferredBlock<Block> registerBlock(String name, MapColor mapColor, int color, DeferredRegister.Blocks BLOCKS, DeferredRegister.Items ITEMS, String variantName){
-        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties, mapColor, color), BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).noOcclusion());
+        DeferredBlock<Block> toReturn = BLOCKS.registerBlock(name, properties -> new SlimeBlock(properties.mapColor(MapColor.GRASS).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion(), mapColor, color));
         registerBlockItem(name,toReturn, ITEMS, variantName);
         return toReturn;
     }
@@ -285,7 +286,7 @@ public class CustomContentRegistry {
     private static void registerFluid(CustomVariants variants) {
         FluidResources.register(() -> FluidResources.addFluid(variants.getName().substring(0,1).toUpperCase() + variants.getName().substring(1),
                 new ModBaseFluidType.FunkyFluidInfo(variants.getName(), variants.getColor(), 0.1F, 1.5F, true), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.byId(variants.getMapColorId())), ((properties, funkyFluidInfo) -> new ModBaseFluidType(properties, funkyFluidInfo, variants.getColor())),
-                (supplier, properties) -> new LiquidBlock(supplier.get(), properties.setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variants.getName() + "_block")))),
+                (supplier, properties) -> new LiquidBlock(supplier.get(), properties.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variants.getName() + "_block")))),
                 properties -> properties.explosionResistance(1000F).tickRate(20),
                 FluidType.Properties.create().canExtinguish(true).supportsBoating(true).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).canHydrate(true).viscosity(3000).motionScale(0.007D)));
     }

@@ -4,12 +4,12 @@ import com.coolerpromc.productiveslimes.entity.renderer.BaseSlimeRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.SlimeRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
     private final SlimeModel model;
@@ -25,11 +25,11 @@ public class SlimeOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
         if (!slimeRenderState.isInvisible || flag) {
             int i = LivingEntityRenderer.getOverlayCoords(slimeRenderState, 0.0F);
             if (flag) {
-                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderType.outline(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
+                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderTypes.outline(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
             } else {
-                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
+                nodeCollector.order(1).submitModel(this.model, slimeRenderState, poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
             }
-            nodeCollector.order(0).submitModel(this.getParentModel(), slimeRenderState, poseStack, RenderType.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
+            nodeCollector.order(0).submitModel(this.getParentModel(), slimeRenderState, poseStack, RenderTypes.entityTranslucent(BaseSlimeRenderer.BASE_TEXTURE), light, i, this.model.color, null, slimeRenderState.outlineColor, null);
         }
     }
 }

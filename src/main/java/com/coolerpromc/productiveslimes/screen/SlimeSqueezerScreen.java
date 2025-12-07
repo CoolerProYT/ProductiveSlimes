@@ -1,16 +1,14 @@
 package com.coolerpromc.productiveslimes.screen;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 public class SlimeSqueezerScreen extends AbstractContainerScreen<SlimeSqueezerMenu>{
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/slime_squeezer_gui.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/slime_squeezer_gui.png");
     public SlimeSqueezerScreen(SlimeSqueezerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }

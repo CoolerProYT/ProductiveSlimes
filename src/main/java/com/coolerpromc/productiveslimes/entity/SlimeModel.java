@@ -13,13 +13,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 
 public class SlimeModel extends EntityModel<EntityRenderState> {
     public final int color;
     public static final ModelLayerLocation SLIME_TEXTURE =
-            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/entity/template_slime_entity.png"), "main");
+            new ModelLayerLocation(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/entity/template_slime_entity.png"), "main");
 
     private final ModelPart root;
 

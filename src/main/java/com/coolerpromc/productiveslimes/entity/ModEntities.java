@@ -9,7 +9,7 @@ import com.coolerpromc.productiveslimes.tier.ModTiers;
 import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ItemLike;
@@ -40,7 +40,7 @@ public class ModEntities {
     public static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> registerSlime(String name, int cooldown, int color, ItemLike dropItem, ItemLike growthItem) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.<BaseSlime>of(
                 (pEntityType, pLevel) -> new Slime(pEntityType, pLevel, cooldown, color, dropItem, growthItem),
-                MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, name))));
+                MobCategory.CREATURE).build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, name))));
     }
 
     public static void register(IEventBus eventBus) {

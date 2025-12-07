@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
@@ -115,7 +115,7 @@ public class DnaSynthesizingRecipe implements Recipe<MultipleRecipeInput> {
 
     public static class Serializer implements RecipeSerializer<DnaSynthesizingRecipe>{
         public static final DnaSynthesizingRecipe.Serializer INSTANCE = new DnaSynthesizingRecipe.Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing");
+        public static final Identifier ID = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizing");
         private final MapCodec<DnaSynthesizingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(recipe -> recipe.inputItems),
                 ItemStack.CODEC.listOf().fieldOf("output").forGetter(recipe -> recipe.output),

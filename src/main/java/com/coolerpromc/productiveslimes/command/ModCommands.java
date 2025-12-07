@@ -16,6 +16,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class ModCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("productiveslimes").requires(commandSourceStack -> commandSourceStack.hasPermission(2))
+        dispatcher.register(Commands.literal("productiveslimes").requires(commandSourceStack -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_OWNER))
                 .then(
                         Commands.literal("give").then(
                                 Commands.argument("slime_id", StringArgumentType.string()).suggests((context, builder) -> {

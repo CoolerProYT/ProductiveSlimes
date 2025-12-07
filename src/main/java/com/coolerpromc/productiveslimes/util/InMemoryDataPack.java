@@ -3,7 +3,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -35,7 +35,7 @@ public class InMemoryDataPack implements PackResources {
     }
     @Nullable
     @Override
-    public IoSupplier<InputStream> getResource(PackType packType, ResourceLocation location) {
+    public IoSupplier<InputStream> getResource(PackType packType, Identifier location) {
         if (packType != PackType.SERVER_DATA) {
             return null;
         }
@@ -55,7 +55,7 @@ public class InMemoryDataPack implements PackResources {
         resources.forEach((key, data) -> {
             if (key.startsWith(prefix)) {
                 String resourcePath = key.substring(("data/" + namespace + "/").length());
-                ResourceLocation location = ResourceLocation.fromNamespaceAndPath(namespace, resourcePath);
+                Identifier location = Identifier.fromNamespaceAndPath(namespace, resourcePath);
                 resourceOutput.accept(location, () -> new ByteArrayInputStream(data));
             }
         });

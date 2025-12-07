@@ -1,3 +1,4 @@
+/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -15,15 +16,14 @@ import mezz.jei.api.recipe.types.IRecipeHolderType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class DnaSynthesizingCategory extends AbstractRecipeCategory<RecipeHolder<DnaSynthesizingRecipe>> {
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/dna_synthesizer_gui.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID,"textures/gui/dna_synthesizer_gui.png");
     public static final IRecipeHolderType<DnaSynthesizingRecipe> DNA_SYNTHESIZING_TYPE = IRecipeHolderType.create(ModRecipes.DNA_SYNTHESIZING_TYPE.get());
     private int tickCount = 0;
 
@@ -63,3 +63,4 @@ public class DnaSynthesizingCategory extends AbstractRecipeCategory<RecipeHolder
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,120,29).add(dnaSynthesizingRecipe.value().getOutput().get(0));
     }
 }
+*/

@@ -9,7 +9,7 @@ import com.coolerpromc.productiveslimes.tier.Tier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
@@ -95,7 +95,7 @@ public class ModCreativeTabs {
                         }
 
                         for (CustomContentRegistry.CustomVariants variant : CustomContentRegistry.getLoadedTiers()){
-                            pOutput.accept(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value());
+                            pOutput.accept(BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "molten_" + variant.getName() + "_bucket")).get().value());
                         }
                     }).build());
 

@@ -18,7 +18,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,7 +42,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     private static final int WELCOME_PAGE_HEIGHT = 150;
     private static int ENERGY_GENERATION_INFO_HEIGHT = 150;
     private static int WORLD_GEN_INFO_HEIGHT = 150;
-    private static final ResourceLocation CRAFTING_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/crafting_table_gui.png");
+    private static final Identifier CRAFTING_TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/crafting_table_gui.png");
     private final List<Component> sections = List.of(
             Component.translatable("guidebook.productiveslimes.nav.welcome"),
             Component.translatable("guidebook.productiveslimes.slime_and_slimeball"),
@@ -256,8 +256,8 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
     }
 
     @Override
-    public void resize(@NotNull Minecraft minecraft, int width, int height) {
-        super.resize(minecraft, width, height);
+    public void resize(int width, int height) {
+        super.resize(width, height);
         contentScrollOffset = 0;
     }
 
@@ -267,7 +267,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int contentWidth = this.width - contentX - 10;
         contentX += (contentWidth - (RECIPE_WIDTH * COLUMNS)) / 2;
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/dna_extractor_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/dna_extractor_gui.png");
 
         int infoY = contentY - contentScrollOffset;
 
@@ -281,7 +281,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extractor"));
+        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_extractor"));
         if (extractor.isPresent()){
             if (extractor.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -356,7 +356,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int contentWidth = this.width - contentX - 10;
         contentX += (contentWidth - (RECIPE_WIDTH * COLUMNS)) / 2;
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/dna_synthesizer_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/dna_synthesizer_gui.png");
 
         int infoY = contentY - contentScrollOffset;
 
@@ -370,7 +370,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizer"));
+        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "dna_synthesizer"));
         if (extractor.isPresent()){
             if (extractor.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -459,7 +459,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int contentWidth = this.width - contentX - 10;
         contentX += (contentWidth - (RECIPE_WIDTH * COLUMNS)) / 2;
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/melting_station_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/melting_station_gui.png");
 
         int infoY = contentY - contentScrollOffset;
 
@@ -473,7 +473,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting_station"));
+        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "melting_station"));
         if (extractor.isPresent()){
             if (extractor.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -535,7 +535,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int contentWidth = this.width - contentX - 10;
         contentX += (contentWidth - (RECIPE_WIDTH * COLUMNS)) / 2;
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/soliding_station_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/soliding_station_gui.png");
 
         int infoY = contentY - contentScrollOffset;
 
@@ -549,7 +549,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f), infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding_station"));
+        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "soliding_station"));
         if(extractor.isPresent()){
             if (extractor.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -610,7 +610,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int contentWidth = this.width - contentX - 10;
         contentX += (contentWidth - (RECIPE_WIDTH * COLUMNS)) / 2;
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/slime_squeezer_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/rei/slime_squeezer_gui.png");
 
         int infoY = contentY - contentScrollOffset;
 
@@ -625,7 +625,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, contentX, infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, contentX + RECIPE_WIDTH + V_SPACING, infoY + 45, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> squeezer = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezer"));
+        Optional<RecipeHolder<?>> squeezer = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "squeezer"));
         if (squeezer.isPresent()){
             if (squeezer.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -640,7 +640,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
             }
         }
 
-        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_squeezer"));
+        Optional<RecipeHolder<?>> extractor = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_squeezer"));
         if (extractor.isPresent()){
             if (extractor.get().value() instanceof ShapedRecipe shapedRecipe) {
                 List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
@@ -729,7 +729,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int numRecipeRows = (int) Math.ceil((double) registeredTiers.size() / COLUMNS);
         int totalRecipeHeight = numRecipeRows * (RECIPE_HEIGHT + V_SPACING);
 
-        ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_grow_gui.png");
+        Identifier TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_grow_gui.png");
 
         for (ModTiers tiers : registeredTiers) {
             int row = index / COLUMNS;
@@ -788,7 +788,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         int numCooldownRow = (int) Math.ceil((double) registeredTiers.size() / COLUMNS);
         int totalCooldownHeight = numCooldownRow * (cooldownGUIHeight + V_SPACING);
 
-        ResourceLocation COOLDOWN_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_cooldown_gui.png");
+        Identifier COOLDOWN_TEXTURE = Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "textures/gui/guidebook/slime_cooldown_gui.png");
 
         for (ModTiers tiers : registeredTiers) {
             int row = index2 / COLUMNS;
@@ -822,7 +822,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         Component description6 = Component.translatable("guidebook.productiveslimes.slimeball_collector.description");
         pGuiGraphics.drawWordWrap(font, description6, contentX + 5, infoY3 + 20, wordWarpLength, 0xFFAAAAAA);
 
-        Optional<RecipeHolder<?>> slimeballCollectorHolder = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimeball_collector"));
+        Optional<RecipeHolder<?>> slimeballCollectorHolder = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slimeball_collector"));
         RecipeHolder<ShapedRecipe> slimeballCollector = (RecipeHolder<ShapedRecipe>) slimeballCollectorHolder.get();
         List<Optional<Ingredient>> ingredients = slimeballCollector.value().getIngredients();
 
@@ -854,7 +854,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         Component description8 = Component.translatable("guidebook.productiveslimes.slime_simulation_chamber_and_upgrades.description2");
         pGuiGraphics.drawWordWrap(font, description8, contentX + 5, infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + font.wordWrapHeight(description7, wordWarpLength) + 25, wordWarpLength, 0xFFAAAAAA);
 
-        Optional<RecipeHolder<?>> slimeNestHolder = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest"));
+        Optional<RecipeHolder<?>> slimeNestHolder = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest"));
         RecipeHolder<ShapedRecipe> SlimeNest = (RecipeHolder<ShapedRecipe>) slimeNestHolder.get();
         List<Optional<Ingredient>> ingredients2 = SlimeNest.value().getIngredients();
 
@@ -873,7 +873,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output2 = ModBlocks.SLIME_NEST.toStack();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f) + 95 + 18, textureY2 + 17 + 18, output2, font);
 
-        Optional<RecipeHolder<?>> upgrade1Holder = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest_speed_upgrade_1"));
+        Optional<RecipeHolder<?>> upgrade1Holder = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest_speed_upgrade_1"));
         RecipeHolder<ShapedRecipe> upgrade1 = (RecipeHolder<ShapedRecipe>) upgrade1Holder.get();
         List<Optional<Ingredient>> ingredients3 = upgrade1.value().getIngredients();
 
@@ -892,7 +892,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output3 = ModItems.SLIME_NEST_SPEED_UPGRADE_1.toStack();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, (int) (contentX + (contentWidth - RECIPE_WIDTH) / 2 * 0.8f) + 95 + 18, textureY3 + 17 + 18, output3, font);
 
-        Optional<RecipeHolder<?>> upgrade2Holder = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest_speed_upgrade_2"));
+        Optional<RecipeHolder<?>> upgrade2Holder = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "slime_nest_speed_upgrade_2"));
         RecipeHolder<ShapedRecipe> upgrade2 = (RecipeHolder<ShapedRecipe>) upgrade2Holder.get();
         List<Optional<Ingredient>> ingredients4 = upgrade2.value().getIngredients();
 
@@ -918,7 +918,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         Component description9 = Component.translatable("guidebook.productiveslimes.slimeball_fragment.description");
         pGuiGraphics.drawWordWrap(font, description9, contentX + 5, infoY3 + 110 + 18 + 26 + font.wordWrapHeight(note, wordWarpLength) + font.wordWrapHeight(title6, wordWarpLength) + font.wordWrapHeight(description7, wordWarpLength) + font.wordWrapHeight(description8, wordWarpLength) + 30 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 10 + RECIPE_HEIGHT + 10 + 5, wordWarpLength, 0xFFAAAAAA);
 
-        Optional<RecipeHolder<?>> slimeball = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath("minecraft", "slimeball_from_fragment"));
+        Optional<RecipeHolder<?>> slimeball = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath("minecraft", "slimeball_from_fragment"));
         RecipeHolder<ShapedRecipe> slimeballFragment = (RecipeHolder<ShapedRecipe>) slimeball.get();
         List<Optional<Ingredient>> ingredients5 = slimeballFragment.value().getIngredients();
 
@@ -995,7 +995,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
 
         pGuiGraphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TEXTURE, contentX + (contentWidth - RECIPE_WIDTH) / 2, recipeBaseY, 0, 0, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
 
-        Optional<RecipeHolder<?>> recipeHolder = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_slime_spawn_egg"));
+        Optional<RecipeHolder<?>> recipeHolder = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_slime_spawn_egg"));
         RecipeHolder<ShapedRecipe> recipe = (RecipeHolder<ShapedRecipe>) recipeHolder.get();
         List<Optional<Ingredient>> ingredients = recipe.value().getIngredients();
 
@@ -1010,7 +1010,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output = ModItems.ENERGY_SLIME_SPAWN_EGG.toStack();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, contentX + (contentWidth - RECIPE_WIDTH) / 2 + 95 + 18, recipeBaseY + 17 + 18, output, font);
 
-        Optional<RecipeHolder<?>> recipeHolder2 = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_generator"));
+        Optional<RecipeHolder<?>> recipeHolder2 = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_generator"));
         RecipeHolder<ShapedRecipe> recipe2 = (RecipeHolder<ShapedRecipe>) recipeHolder2.get();
         List<Optional<Ingredient>> ingredients2 = recipe2.value().getIngredients();
 
@@ -1029,7 +1029,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output2 = ModBlocks.ENERGY_GENERATOR.toStack();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, contentX + (contentWidth - RECIPE_WIDTH) / 2 + 95 + 18, recipeBaseY2 + 17 + 18, output2, font);
 
-        Optional<RecipeHolder<?>> recipeHolder3 = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_multiplier_upgrade"));
+        Optional<RecipeHolder<?>> recipeHolder3 = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "energy_multiplier_upgrade"));
         RecipeHolder<ShapedRecipe> recipe3 = (RecipeHolder<ShapedRecipe>) recipeHolder3.get();
         List<Optional<Ingredient>> ingredients3 = recipe3.value().getIngredients();
 
@@ -1048,7 +1048,7 @@ public class GuidebookScreen extends AbstractContainerScreen<GuidebookMenu> {
         ItemStack output3 = ModItems.ENERGY_MULTIPLIER_UPGRADE.toStack();
         GuideBookScreenHelper.renderItemSlot(pGuiGraphics, pMouseX, pMouseY, contentX + (contentWidth - RECIPE_WIDTH) / 2 + 95 + 18, recipeBaseY3 + 17 + 18, output3, font);
 
-        Optional<RecipeHolder<?>> recipeHolder4 = ClientRecipeManager.getRecipe(ResourceLocation.fromNamespaceAndPath(ProductiveSlimes.MODID, "cable"));
+        Optional<RecipeHolder<?>> recipeHolder4 = ClientRecipeManager.getRecipe(Identifier.fromNamespaceAndPath(ProductiveSlimes.MODID, "cable"));
         RecipeHolder<ShapedRecipe> recipe4 = (RecipeHolder<ShapedRecipe>) recipeHolder4.get();
         List<Optional<Ingredient>> ingredients4 = recipe4.value().getIngredients();
 

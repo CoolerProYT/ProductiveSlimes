@@ -6,9 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "SlimeMixin",
     "CustomMeleeAttackGoalMixin",
-    "CustomMoveTowardsTargetGoalMixin"
+    "CustomMoveTowardsTargetGoalMixin",
+    "SlimeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
