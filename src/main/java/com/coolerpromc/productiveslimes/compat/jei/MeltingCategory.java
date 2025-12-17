@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -59,4 +58,3 @@ public class MeltingCategory extends AbstractRecipeCategory<RecipeHolder<Melting
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 129, 29).add(recipe.value().getOutputs().get(0));
     }
 }
-*/

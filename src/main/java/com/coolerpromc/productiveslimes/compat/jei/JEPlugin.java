@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -64,4 +63,3 @@ public class JEPlugin implements IModPlugin {
         registration.addRecipeClickArea(SlimeSqueezerScreen.class, 77, 38, 26, 8, SqueezingCategory.SQUEEZING_TYPE);
     }
 }
-*/

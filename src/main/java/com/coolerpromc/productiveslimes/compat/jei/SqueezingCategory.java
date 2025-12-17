@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -58,4 +57,3 @@ public class SqueezingCategory extends AbstractRecipeCategory<RecipeHolder<Squee
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 130, 29).add(solidingRecipe.value().getOutputs().get(1));
     }
 }
-*/

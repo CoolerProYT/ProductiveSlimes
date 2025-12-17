@@ -30,7 +30,6 @@ public class ModBiomes {
         BiomeDefaultFeatures.addDefaultOres(builder);
     }
 
-
     private static Biome slimeLand(BootstrapContext<Biome> context){
         MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
 

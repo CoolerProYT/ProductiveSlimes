@@ -1,4 +1,3 @@
-/*
 package com.coolerpromc.productiveslimes.compat.jei;
 
 import com.coolerpromc.productiveslimes.ProductiveSlimes;
@@ -63,4 +62,3 @@ public class DnaSynthesizingCategory extends AbstractRecipeCategory<RecipeHolder
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT,120,29).add(dnaSynthesizingRecipe.value().getOutput().get(0));
     }
 }
-*/

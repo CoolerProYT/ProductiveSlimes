@@ -1,12 +1,9 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
 plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.121'
     id 'idea'
-    id "com.modrinth.minotaur" version "2.+"
-    id 'net.darkhax.curseforgegradle' version '1.1.28'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -113,14 +110,12 @@ dependencies {
     compileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:${rei_version}"
 //    runtimeOnly  "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
 
-    compileOnly "mezz.jei:jei-1.21.9-neoforge-api:${jei_version}"
-//    runtimeOnly "mezz.jei:jei-1.21.9-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-//    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"
 
-    compileOnly "com.github.glitchfiend:TerraBlender-neoforge:1.21.9-" + terrablender_version
-
-    compileOnly "curse.maven:jade-324717:${jade_id}"
+    implementation "curse.maven:jade-324717:${jade_id}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -171,20 +166,22 @@ idea {
     }
 }
 
-modrinth {
-    token = findProperty("MODRINTH_TOKEN")
-    projectId = "2G12HGTt"
-    versionNumber = mod_version
-    versionName = mod_name + " " + mod_version
-    versionType = "release"
-    uploadFile = jar
+publishMods {
+    file.set(jar.archiveFile)
+    type = STABLE
+    modLoaders.add("neoforge")
     changelog = file("changelog.md").text
-}
+    displayName = mod_id + "-" + mod_version
 
-tasks.register('publishCurseForge', TaskPublishCurseForge) {
-    apiToken = findProperty("CF_TOKEN")
-    def projectId = "1096659"
-    def mainFile = upload(projectId, jar)
-    mainFile.releaseType = 'release'
-    mainFile.changelog = file("changelog.md")
+    curseforge {
+        projectId = "1096659"
+        accessToken = findProperty("CF_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        projectId = '2G12HGTt'
+        accessToken = findProperty("MODRINTH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+    }
 }
